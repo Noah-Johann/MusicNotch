@@ -24,11 +24,12 @@ struct MusicNotchApp: App {
         let dynamicNotch = DynamicNotch {
             OpendPlayer()
         }
-        dynamicNotch.show(on: NSScreen.screens[1], for: 20)
+        dynamicNotch.show(on: NSScreen.screens[1])
         requestAllPermissions()
         SpotifyManager.shared.startAutoUpdate(withInterval: 1.0)
         print(SpotifyManager.shared.trackName)
-        getAudioOutputDevices()
+        getAudioOutputDevice()
+        registerForAudioDeviceChanges()
         
         
     }

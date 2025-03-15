@@ -4,59 +4,22 @@
 //
 //  Created by Noah Johann on 15.03.25.
 //
-
 import Foundation
 import CoreAudio
 
-func getAudioOutputDevices() {
-    var propertySize: UInt32 = 0
-    
-    // Größe des Property Arrays abfragen
+public var deviceIcon: String = ""
+
+func getAudioOutputDevice() {
+    // Aktuelles Standardausgabegerät ermitteln
+    var defaultOutputDeviceID: AudioDeviceID = 0
     var propertyAddress = AudioObjectPropertyAddress(
-        mSelector: kAudioHardwarePropertyDevices,
+        mSelector: kAudioHardwarePropertyDefaultOutputDevice,
         mScope: kAudioObjectPropertyScopeGlobal,
         mElement: kAudioObjectPropertyElementMain
     )
-    
-    // Größe des Geräte-Arrays ermitteln
-    var status = AudioObjectGetPropertyDataSize(
-        AudioObjectID(kAudioObjectSystemObject),
-        &propertyAddress,
-        0,
-        nil,
-        &propertySize
-    )
-    
-    guard status == noErr else {
-        print("Fehler beim Ermitteln der Gerätegröße: \(status)")
-        return
-    }
-    
-    // Speicher für Geräte reservieren
-    let deviceCount = Int(propertySize) / MemoryLayout<AudioDeviceID>.size
-    var audioDevices = [AudioDeviceID](repeating: 0, count: deviceCount)
-    
-    // Geräte abrufen
-    status = AudioObjectGetPropertyData(
-        AudioObjectID(kAudioObjectSystemObject),
-        &propertyAddress,
-        0,
-        nil,
-        &propertySize,
-        &audioDevices
-    )
-    
-    guard status == noErr else {
-        print("Fehler beim Abrufen der Geräte: \(status)")
-        return
-    }
-    
-    // Aktuelles Standardausgabegerät ermitteln
-    var defaultOutputDeviceID: AudioDeviceID = 0
-    propertyAddress.mSelector = kAudioHardwarePropertyDefaultOutputDevice
     var propSize = UInt32(MemoryLayout<AudioDeviceID>.size)
     
-    status = AudioObjectGetPropertyData(
+    var status = AudioObjectGetPropertyData(
         AudioObjectID(kAudioObjectSystemObject),
         &propertyAddress,
         0,
@@ -70,147 +33,168 @@ func getAudioOutputDevices() {
         return
     }
     
-    // Ausgabegeräte filtern und analysieren
-    for deviceID in audioDevices {
-        // Prüfen, ob das Gerät Ausgabe unterstützt
-        propertyAddress.mSelector = kAudioDevicePropertyStreamConfiguration
-        propertyAddress.mScope = kAudioDevicePropertyScopeOutput
+    guard defaultOutputDeviceID != 0 else {
+        print("Kein Standardausgabegerät gefunden")
+        return
+    }
+    
+    // Gerätename abrufen
+    var deviceName = "Unbekannt"
+    propertyAddress.mSelector = kAudioDevicePropertyDeviceNameCFString
+    propertyAddress.mScope = kAudioObjectPropertyScopeGlobal
+    propSize = UInt32(MemoryLayout<CFString?>.size)
+    
+    var nameRef: Unmanaged<CFString>?
+    status = AudioObjectGetPropertyData(
+        defaultOutputDeviceID,
+        &propertyAddress,
+        0,
+        nil,
+        &propSize,
+        &nameRef
+    )
+    
+    if status == noErr, let unwrappedRef = nameRef {
+        deviceName = unwrappedRef.takeRetainedValue() as String
+    }
+    
+    // Modell-UID abrufen
+    var modelUID = "Nicht verfügbar"
+    propertyAddress.mSelector = kAudioDevicePropertyModelUID
+    propSize = UInt32(MemoryLayout<CFString?>.size)
+    
+    var modelRef: Unmanaged<CFString>?
+    status = AudioObjectGetPropertyData(
+        defaultOutputDeviceID,
+        &propertyAddress,
+        0,
+        nil,
+        &propSize,
+        &modelRef
+    )
+    
+    if status == noErr, let unwrappedRef = modelRef {
+        modelUID = unwrappedRef.takeRetainedValue() as String
+    }
+    
+    // Transporttyp abrufen (Bluetooth, USB, etc.)
+    var transportType: UInt32 = 0
+    propertyAddress.mSelector = kAudioDevicePropertyTransportType
+    propSize = UInt32(MemoryLayout<UInt32>.size)
+    
+    _ = AudioObjectGetPropertyData(
+        defaultOutputDeviceID,
+        &propertyAddress,
+        0,
+        nil,
+        &propSize,
+        &transportType
+    )
+    
+    var transportString = "Unbekannt"
+    switch transportType {
+    case kAudioDeviceTransportTypeBuiltIn:
+        transportString = "Eingebaut"
+        deviceIcon = "macbook.gen2"
+    case kAudioDeviceTransportTypeBluetooth, kAudioDeviceTransportTypeBluetoothLE:
+        transportString = "Bluetooth"
+    case kAudioDeviceTransportTypeUSB:
+        transportString = "USB"
+    case kAudioDeviceTransportTypeAirPlay:
+        transportString = "AirPlay"
+    case kAudioDeviceTransportTypeVirtual:
+        transportString = "Virtuell"
+    case kAudioDeviceTransportTypeDisplayPort:
+        transportString = "DisplayPort"
+        deviceIcon = "display"
+    case kAudioDeviceTransportTypeHDMI:
+        transportString = "HDMI"
+        deviceIcon = "display"
+    default:
+        transportString = "Andere"
+        deviceIcon = "headphones"
+    }
+    
+    print("Standard-Ausgabegerät:")
+    print("  Name: \(deviceName)")
+    print("  Modell: \(modelUID)")
+    print("  Verbindungstyp: \(transportString)")
+    
+    // Für bestimmte Gerätetypen zusätzliche Informationen abrufen
+    if transportType == kAudioDeviceTransportTypeBluetooth || transportType == kAudioDeviceTransportTypeBluetoothLE {
+        // Spezifische Bluetooth-Geräte-Eigenschaften abrufen
+        // Diese können je nach Gerätetyp variieren
+        var bluetoothDeviceInfo = "Keine weiteren Informationen"
         
-        var streamConfigSize: UInt32 = 0
-        status = AudioObjectGetPropertyDataSize(
-            deviceID,
-            &propertyAddress,
-            0,
-            nil,
-            &streamConfigSize
-        )
-        
-        guard status == noErr, streamConfigSize > 0 else {
-            continue
-        }
-        
-        // Gerätename abrufen
-        var deviceName = "Unbekannt"
-        propertyAddress.mSelector = kAudioDevicePropertyDeviceNameCFString
-        propertyAddress.mScope = kAudioObjectPropertyScopeGlobal
+        // Bei Bluetooth-Geräten können weitere Eigenschaften interessant sein
+        propertyAddress.mSelector = kAudioDevicePropertyDeviceUID
         propSize = UInt32(MemoryLayout<CFString?>.size)
         
-        // Temporären Speicherbereich für den Namen erstellen
-        var nameRef: Unmanaged<CFString>?
+        var uidRef: Unmanaged<CFString>?
         status = AudioObjectGetPropertyData(
-            deviceID,
+            defaultOutputDeviceID,
             &propertyAddress,
             0,
             nil,
             &propSize,
-            &nameRef
+            &uidRef
         )
         
-        if status == noErr, let unwrappedRef = nameRef {
-            deviceName = unwrappedRef.takeRetainedValue() as String
+        if status == noErr, let unwrappedRef = uidRef {
+            let uid = unwrappedRef.takeRetainedValue() as String
+            bluetoothDeviceInfo = "Gerät-UID: \(uid)"
+            
+            // AirPods oder ähnliche Geräte können oft anhand der UID oder des ModelUID erkannt werden
+            if deviceName.contains("AirPods") || modelUID.contains("AirPods") || uid.contains("AirPods") {
+                print("  Gerät erkannt als: AirPods")
+                deviceIcon = "airpods"
+                if deviceName.contains("Pro") || uid.contains("Pro") || modelUID.contains("Pro") {
+                    print("  Variante: Pro")
+                    deviceIcon = "airpods.pro"
+                } else if deviceName.contains("Max") || uid.contains("Max") || modelUID.contains("Max") {
+                    print("  Variante: Max")
+                    deviceIcon = "airpods.max"
+                }
+            }
+            
+            //print("  \(bluetoothDeviceInfo)")
         }
-        
-        // Modell-UID abrufen
-        var modelUID = "Nicht verfügbar"
-        propertyAddress.mSelector = kAudioDevicePropertyModelUID
-        propSize = UInt32(MemoryLayout<CFString?>.size)
-        
-        var modelRef: Unmanaged<CFString>?
-        status = AudioObjectGetPropertyData(
-            deviceID,
-            &propertyAddress,
-            0,
-            nil,
-            &propSize,
-            &modelRef
-        )
-        
-        if status == noErr, let unwrappedRef = modelRef {
-            modelUID = unwrappedRef.takeRetainedValue() as String
-        }
-        
-        // Herstellername abrufen
-        var manufacturer = "Unbekannt"
-        propertyAddress.mSelector = kAudioDevicePropertyDeviceManufacturerCFString
-        propSize = UInt32(MemoryLayout<CFString?>.size)
-        
-        var manufacturerRef: Unmanaged<CFString>?
-        status = AudioObjectGetPropertyData(
-            deviceID,
-            &propertyAddress,
-            0,
-            nil,
-            &propSize,
-            &manufacturerRef
-        )
-        
-        if status == noErr, let unwrappedRef = manufacturerRef {
-            manufacturer = unwrappedRef.takeRetainedValue() as String
-        }
-        
-        // Transporttyp abrufen (Bluetooth, USB, etc.)
-        var transportType: UInt32 = 0
-        propertyAddress.mSelector = kAudioDevicePropertyTransportType
-        propSize = UInt32(MemoryLayout<UInt32>.size)
-        
-        _ = AudioObjectGetPropertyData(
-            deviceID,
-            &propertyAddress,
-            0,
-            nil,
-            &propSize,
-            &transportType
-        )
-        
-        // Prüfen, ob das Gerät aktuell verwendet wird (läuft)
-        propertyAddress.mSelector = kAudioDevicePropertyDeviceIsRunning
-        var isRunning: UInt32 = 0
-        propSize = UInt32(MemoryLayout<UInt32>.size)
-        
-        _ = AudioObjectGetPropertyData(
-            deviceID,
-            &propertyAddress,
-            0,
-            nil,
-            &propSize,
-            &isRunning
-        )
-        
-        // Ergebnisse zusammenstellen und ausgeben
-        let active = isRunning > 0
-        let isDefault = deviceID == defaultOutputDeviceID
-        
-        var transportString = "Unbekannt"
-        switch transportType {
-        case kAudioDeviceTransportTypeBuiltIn:
-            transportString = "Eingebaut"
-        case kAudioDeviceTransportTypeBluetooth, kAudioDeviceTransportTypeBluetoothLE:
-            transportString = "Bluetooth"
-        case kAudioDeviceTransportTypeUSB:
-            transportString = "USB"
-        case kAudioDeviceTransportTypeAirPlay:
-            transportString = "AirPlay"
-        case kAudioDeviceTransportTypeVirtual:
-            transportString = "Virtuell"
-        case kAudioDeviceTransportTypeAVB:
-            transportString = "AVB"
-        case kAudioDeviceTransportTypeThunderbolt:
-            transportString = "Thunderbolt"
-        case kAudioDeviceTransportTypeHDMI:
-            transportString = "HDMI"
-        case kAudioDeviceTransportTypeDisplayPort:
-            transportString = "DisplayPort"
-        default:
-            transportString = "Andere (\(transportType))"
-        }
-        
-        print("Gerät: \(deviceName)")
-        print("  Modell: \(modelUID)")
-        print("  Hersteller: \(manufacturer)")
-        print("  Verbindungstyp: \(transportString)")
-        print("  Aktiv: \(active)")
-        print("  Standard-Ausgabegerät: \(isDefault)")
-        print("")
+    }
+    
+    // Ausgabe der Gerät-ID für weitere Analysen
+    //print("  Gerät-ID: \(defaultOutputDeviceID)")
+    
+    if deviceName.contains("Externe Kopfhörer") || modelUID.contains("Codec Output") {
+        print("Headphones")
+        deviceIcon = "headphones"
     }
 }
 
+
+
+func registerForAudioDeviceChanges() {
+    var address = AudioObjectPropertyAddress(
+        mSelector: kAudioHardwarePropertyDefaultOutputDevice,
+        mScope: kAudioObjectPropertyScopeGlobal,
+        mElement: kAudioObjectPropertyElementMain
+    )
+    
+    let systemObjectID = AudioObjectID(kAudioObjectSystemObject)
+    
+    let callback: AudioObjectPropertyListenerProc = { _, _, _, _ in
+        print("Standard-Ausgabegerät hat sich geändert")
+        getAudioOutputDevice()
+        return noErr
+    }
+    
+    let status = AudioObjectAddPropertyListener(
+        systemObjectID,
+        &address,
+        callback,
+        nil
+    )
+    
+    if status == noErr {
+        print("Listener für Ausgabegerätänderungen registriert")
+    }
+}

@@ -12,7 +12,7 @@ struct OpendPlayer: View {
     var body: some View {
         VStack {
             HStack {
-                Image(systemName: "airpods.pro")
+                Image(systemName: deviceIcon)
                     .imageScale(.large)
                     .foregroundStyle(.tint)
                 Text(SpotifyManager.shared.trackName)
