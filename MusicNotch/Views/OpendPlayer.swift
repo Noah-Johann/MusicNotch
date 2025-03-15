@@ -24,7 +24,7 @@ struct OpendPlayer: View {
                 //Skip backward
                 Button(action: {
                     // Deine Aktion hier
-                    spotifyPlayPause()
+                    spotifyLastTrack()
                 }) {
                     Image(systemName: "backward.fill")
                         .imageScale(.large)
@@ -54,7 +54,7 @@ struct OpendPlayer: View {
                 //Skip forward
                 Button(action: {
                     // Deine Aktion hier
-                    spotifyPlayPause()
+                    spotifyNextTrack()
                 }) {
                     Image(systemName: "forward.fill")
                         .imageScale(.large)
