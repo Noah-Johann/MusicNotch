@@ -1,0 +1,24 @@
+{
+  "originHash" : "83c490d340655a7b73414ab496dbc224bad46f6d48e7c60c99c5b28307564126",
+  "pins" : [
+    {
+      "identity" : "audiokit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/AudioKit/AudioKit",
+      "state" : {
+        "revision" : "5b3fd238ef8ee95c9842ca4ea83ca58ee151e630",
+        "version" : "5.6.5"
+      }
+    },
+    {
+      "identity" : "dynamicnotchkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/MrKai77/DynamicNotchKit",
+      "state" : {
+        "branch" : "main",
+        "revision" : "0f2213c671585db887f53e86812134a7a6cc74e5"
+      }
+    }
+  ],
+  "version" : 3
+}
