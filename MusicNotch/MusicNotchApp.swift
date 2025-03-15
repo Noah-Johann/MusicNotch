@@ -28,7 +28,7 @@ struct MusicNotchApp: App {
         requestAllPermissions()
         SpotifyManager.shared.startAutoUpdate(withInterval: 1.0)
         print(SpotifyManager.shared.trackName)
-        print(getModelIdentifier())
+        getAudioOutputDevices()
         
         
     }
