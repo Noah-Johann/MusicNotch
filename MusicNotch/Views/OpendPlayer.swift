@@ -29,7 +29,11 @@ struct OpendPlayer: View {
                     Image(systemName: "backward.fill")
                         .imageScale(.large)
                         .foregroundStyle(.primary)
+
                 }
+                .background(Color.clear)
+                .buttonStyle(BorderlessButtonStyle())
+
                 
                 //Pause
                 Button(action: {
@@ -39,7 +43,13 @@ struct OpendPlayer: View {
                     Image(systemName: PlayIcon)
                         .imageScale(.large)
                         .foregroundStyle(.primary)
+                        .font(.system(size: 17, weight: .bold))
+                        .padding(.horizontal, 9)
+
                 }
+                .background(Color.clear)
+                .buttonStyle(BorderlessButtonStyle())
+
                 
                 //Skip forward
                 Button(action: {
@@ -49,7 +59,11 @@ struct OpendPlayer: View {
                     Image(systemName: "forward.fill")
                         .imageScale(.large)
                         .foregroundStyle(.primary)
+
                 }
+                .background(Color.clear)
+                .buttonStyle(BorderlessButtonStyle())
+
         }
         .padding()
     }
