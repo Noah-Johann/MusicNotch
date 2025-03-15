@@ -42,16 +42,6 @@
 			path = MusicNotch;
 			sourceTree = "<group>";
 		};
-		4FA87FD42D847DD800725978 /* MusicNotchTests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = MusicNotchTests;
-			sourceTree = "<group>";
-		};
-		4FA87FDE2D847DD800725978 /* MusicNotchUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = MusicNotchUITests;
-			sourceTree = "<group>";
-		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,8 +84,6 @@
 			isa = PBXGroup;
 			children = (
 				4FA87FC22D847DD700725978 /* MusicNotch */,
-				4FA87FD42D847DD800725978 /* MusicNotchTests */,
-				4FA87FDE2D847DD800725978 /* MusicNotchUITests */,
 				4F67B5F62D849896001FF27A /* Frameworks */,
 				4FA87FC12D847DD700725978 /* Products */,
 			);
@@ -151,9 +139,6 @@
 			dependencies = (
 				4FA87FD32D847DD800725978 /* PBXTargetDependency */,
 			);
-			fileSystemSynchronizedGroups = (
-				4FA87FD42D847DD800725978 /* MusicNotchTests */,
-			);
 			name = MusicNotchTests;
 			packageProductDependencies = (
 			);
@@ -173,9 +158,6 @@
 			);
 			dependencies = (
 				4FA87FDD2D847DD800725978 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				4FA87FDE2D847DD800725978 /* MusicNotchUITests */,
 			);
 			name = MusicNotchUITests;
 			packageProductDependencies = (
