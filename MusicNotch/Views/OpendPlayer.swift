@@ -21,6 +21,25 @@ struct OpendPlayer: View {
                 Text(SpotifyManager.shared.trackName)
             }
             
+        //Progress Bar
+            HStack {
+                Text(formatTime(SpotifyManager.shared.trackPosition))
+//                Slider(
+//                    value: Binding(
+//                        get: { Double(spotifyManager.trackPosition) },
+//                        set: { newPosition in
+//                            seekToPosition(position: Int(newPosition))
+//                        }
+//                    ),
+//                    in: 0...Double(max(1, spotifyManager.trackDuration))
+//                )
+//                .accentColor(.gray)
+                
+                Text("-\(formatTime(SpotifyManager.shared.trackDuration - SpotifyManager.shared.trackPosition))")
+                
+            }
+            
+        //Controls
             HStack {
             //Shuffle
                 Button(action: {
@@ -30,7 +49,7 @@ struct OpendPlayer: View {
 
                     Image(systemName: ShuffleIcon)
                             .imageScale(.large)
-                            .font(.system(size: 19))
+                            .font(.system(size: 18))
                             .foregroundStyle(.secondary)
                     
                 }
@@ -92,7 +111,7 @@ struct OpendPlayer: View {
                     .padding(.horizontal, 17)
                 
             }
-            .padding()
+            //.padding()
         }
     }
 }

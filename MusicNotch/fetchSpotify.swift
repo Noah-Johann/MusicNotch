@@ -11,8 +11,8 @@ class SpotifyManager: ObservableObject {
     @Published var trackName: String = ""
     @Published var artistName: String = ""
     @Published var albumName: String = ""
-    @Published var trackDuration: Int = 0 // in Sekunden
-    @Published var trackPosition: Int = 0 // in Sekunden
+    @Published var trackDuration: Int = 30 // in Sekunden
+    @Published var trackPosition: Int = 5 // in Sekunden
     @Published var isLoved: Bool = false
     @Published var trackId: String = ""
     @Published var volume: Int = 0 // 0-100
@@ -71,7 +71,7 @@ class SpotifyManager: ObservableObject {
                 end try
                 
                 try
-                    set trackDuration to duration of current track
+                    set trackDuration to duration of current track / 1000
                     set end of results to trackDuration
                 on error
                     set end of results to 0
@@ -172,6 +172,10 @@ class SpotifyManager: ObservableObject {
             
             //print("Aktueller Track: \(SpotifyManager.shared.trackName) von \(SpotifyManager.shared.artistName)")
             //print("Playing State: \(SpotifyManager.shared.isPlaying)")
+//            print("Trackposition: \(SpotifyManager.shared.trackPosition)")
+//            print("Trackduration: \(SpotifyManager.shared.trackDuration)")
+//            print(SpotifyManager.shared.trackDuration - SpotifyManager.shared.trackPosition)
+
             
             //Update Icons
             updatePlayIcon()
@@ -196,7 +200,7 @@ class SpotifyManager: ObservableObject {
                 self.trackNumber = Int(finalResult[13]) ?? 0
                 self.popularity = Int(finalResult[14]) ?? 0
                 self.shuffle = finalResult[15] == "true"
-                print("Shuffle aktiv: \(self.shuffle)")
+                //print("Shuffle aktiv: \(self.shuffle)")
             } else {
                 self.spotifyRunning = false
                 clearAllData()
