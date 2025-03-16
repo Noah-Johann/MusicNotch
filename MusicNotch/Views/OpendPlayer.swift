@@ -8,66 +8,93 @@ import SwiftUI
 import DynamicNotchKit
 
 struct OpendPlayer: View {
+    
     @ObservedObject var spotifyManager = SpotifyManager.shared
+    
+    
     var body: some View {
         VStack {
             HStack {
-                Image(systemName: deviceIcon)
+                
+                Image(systemName: "photo")
                     .imageScale(.large)
-                    .foregroundStyle(.tint)
                 Text(SpotifyManager.shared.trackName)
-                Button("play.filled") {
+            }
+            
+            HStack {
+            //Shuffle
+                Button(action: {
+                    spotifyShuffle()
+                })
+                {
+
+                    Image(systemName: ShuffleIcon)
+                            .imageScale(.large)
+                            .font(.system(size: 19))
+                            .foregroundStyle(.secondary)
                     
                 }
-            }
-            HStack {
-                //Skip backward
+                .background(Color.clear)
+                .buttonStyle(BorderlessButtonStyle())
+                .padding(.horizontal, 17)
+                
+                
+            //Skip backward
                 Button(action: {
-                    // Deine Aktion hier
                     spotifyLastTrack()
                 }) {
                     Image(systemName: "backward.fill")
                         .imageScale(.large)
                         .foregroundStyle(.primary)
-
+                        .font(.system(size: 17))
+                    
                 }
                 .background(Color.clear)
                 .buttonStyle(BorderlessButtonStyle())
-
+                .padding(.horizontal, 5)
                 
-                //Pause
+                
+                
+            //Pause
                 Button(action: {
-                    // Deine Aktion hier
                     spotifyPlayPause()
                 }) {
                     Image(systemName: PlayIcon)
                         .imageScale(.large)
                         .foregroundStyle(.primary)
-                        .font(.system(size: 17, weight: .bold))
-                        .padding(.horizontal, 9)
-
+                        .font(.system(size: 22, weight: .bold))
+                    
                 }
                 .background(Color.clear)
                 .buttonStyle(BorderlessButtonStyle())
-
+                .padding(.horizontal, 16)
                 
-                //Skip forward
+                
+            //Skip forward
                 Button(action: {
-                    // Deine Aktion hier
                     spotifyNextTrack()
                 }) {
                     Image(systemName: "forward.fill")
                         .imageScale(.large)
                         .foregroundStyle(.primary)
-
+                        .font(.system(size: 17))
+                    
                 }
                 .background(Color.clear)
                 .buttonStyle(BorderlessButtonStyle())
-
+                .padding(.horizontal, 5)
+                
+            //Speaker
+                Image(systemName: deviceIcon)
+                    .imageScale(.large)
+                    .foregroundStyle(.secondary)
+                    .font(.system(size: 17))
+                    .padding(.horizontal, 17)
+                
+            }
+            .padding()
         }
-        .padding()
     }
-}
 }
 
 #Preview {

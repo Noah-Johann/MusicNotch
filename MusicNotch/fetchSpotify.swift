@@ -21,6 +21,7 @@ class SpotifyManager: ObservableObject {
     @Published var discNumber: Int = 0
     @Published var trackNumber: Int = 0
     @Published var popularity: Int = 0
+    @Published var shuffle: Bool = false
     private var updateTimer: Timer?
     
     
@@ -139,10 +140,17 @@ class SpotifyManager: ObservableObject {
                     set end of results to 0
                 end try
                 
+                try
+                    set shuffle to shuffling
+                    set end of results to shuffle
+                on error
+                    set end of results to false
+                end try
+                
                 return results
             end tell
         else
-            return {false, "", "", "", 0, 0, false, "", 0, "", "", 0, 0, 0}
+            return {false, "", "", "", 0, 0, false, "", 0, "", "", 0, 0, 0, false}
         end if
         """
         
@@ -162,14 +170,16 @@ class SpotifyManager: ObservableObject {
                 finalResult.removeLast()
             }
             
-            print("Aktueller Track: \(SpotifyManager.shared.trackName) von \(SpotifyManager.shared.artistName)")
-            print("Playing State: \(SpotifyManager.shared.isPlaying)")
+            //print("Aktueller Track: \(SpotifyManager.shared.trackName) von \(SpotifyManager.shared.artistName)")
+            //print("Playing State: \(SpotifyManager.shared.isPlaying)")
             
+            //Update Icons
             updatePlayIcon()
+            updateShuffleIcon()
             
                         
             // Sicherstellen, dass genügend Daten vorhanden sind
-            if finalResult.count >= 15 {
+            if finalResult.count >= 16 {
                 self.spotifyRunning = finalResult[0] == "true"
                 self.isPlaying = finalResult[1] == "playing"
                 self.trackName = finalResult[2]
@@ -185,6 +195,8 @@ class SpotifyManager: ObservableObject {
                 self.discNumber = Int(finalResult[12]) ?? 0
                 self.trackNumber = Int(finalResult[13]) ?? 0
                 self.popularity = Int(finalResult[14]) ?? 0
+                self.shuffle = finalResult[15] == "true"
+                print("Shuffle aktiv: \(self.shuffle)")
             } else {
                 self.spotifyRunning = false
                 clearAllData()

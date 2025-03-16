@@ -13,7 +13,7 @@ public enum PlayState: String {
     case pause
 }
 
-public var PlayIcon: String = " "
+public var PlayIcon: String = "play.fill"
 
 public func setPlayIcon(for state: PlayState) {
     switch state {

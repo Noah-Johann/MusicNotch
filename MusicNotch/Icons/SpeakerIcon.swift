@@ -1,5 +1,5 @@
 //
-//  Speaker.swift
+//  SpeakerIcon.swift
 //  MusicNotch
 //
 //  Created by Noah Johann on 15.03.25.
@@ -7,7 +7,7 @@
 import Foundation
 import CoreAudio
 
-public var deviceIcon: String = ""
+public var deviceIcon: String = "headphones"
 
 func getAudioOutputDevice() {
     // Aktuelles Standardausgabegerät ermitteln
