@@ -203,7 +203,7 @@ class SpotifyManager: ObservableObject {
                 //print("Shuffle aktiv: \(self.shuffle)")
             } else {
                 self.spotifyRunning = false
-                clearAllData()
+                //clearAllData()
                 print("Fehler beim Abrufen der Spotify-Daten oder Spotify ist nicht gestartet")
             }
         } else {
