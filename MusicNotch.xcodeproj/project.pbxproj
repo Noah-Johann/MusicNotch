@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		4F67B5F82D849896001FF27A /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F67B5F72D849896001FF27A /* ScriptingBridge.framework */; };
 		4FA87FF02D847E5000725978 /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4FA87FEF2D847E5000725978 /* DynamicNotchKit */; };
-		4FB549342D85C15B008A50F2 /* AudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4FB549332D85C15B008A50F2 /* AudioKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,7 +48,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4FB549342D85C15B008A50F2 /* AudioKit in Frameworks */,
 				4F67B5F82D849896001FF27A /* ScriptingBridge.framework in Frameworks */,
 				4FA87FF02D847E5000725978 /* DynamicNotchKit in Frameworks */,
 			);
@@ -120,7 +118,6 @@
 			name = MusicNotch;
 			packageProductDependencies = (
 				4FA87FEF2D847E5000725978 /* DynamicNotchKit */,
-				4FB549332D85C15B008A50F2 /* AudioKit */,
 			);
 			productName = MusicNotch;
 			productReference = 4FA87FC02D847DD700725978 /* MusicNotch.app */;
@@ -201,7 +198,6 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				4FA87FEE2D847E5000725978 /* XCRemoteSwiftPackageReference "DynamicNotchKit" */,
-				4FB549322D85C15B008A50F2 /* XCRemoteSwiftPackageReference "AudioKit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 4FA87FC12D847DD700725978 /* Products */;
@@ -402,21 +398,26 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = MusicNotch/MusicNotch.entitlements;
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MusicNotch/Preview Content\"";
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = MusicNotch;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.framer.n-johann.MusicNotch";
+				PRODUCT_BUNDLE_IDENTIFIER = com.noahjohann.MusicNotch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -430,21 +431,26 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = MusicNotch/MusicNotch.entitlements;
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MusicNotch/Preview Content\"";
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = MusicNotch;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.framer.n-johann.MusicNotch";
+				PRODUCT_BUNDLE_IDENTIFIER = com.noahjohann.MusicNotch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 			};
@@ -564,14 +570,6 @@
 				kind = branch;
 			};
 		};
-		4FB549322D85C15B008A50F2 /* XCRemoteSwiftPackageReference "AudioKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/AudioKit/AudioKit";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.6.5;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -579,11 +577,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4FA87FEE2D847E5000725978 /* XCRemoteSwiftPackageReference "DynamicNotchKit" */;
 			productName = DynamicNotchKit;
-		};
-		4FB549332D85C15B008A50F2 /* AudioKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4FB549322D85C15B008A50F2 /* XCRemoteSwiftPackageReference "AudioKit" */;
-			productName = AudioKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

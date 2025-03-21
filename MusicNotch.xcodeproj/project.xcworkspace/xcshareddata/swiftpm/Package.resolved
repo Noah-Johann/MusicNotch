@@ -1,15 +1,6 @@
 {
-  "originHash" : "83c490d340655a7b73414ab496dbc224bad46f6d48e7c60c99c5b28307564126",
+  "originHash" : "d5769d12c0b5b65dda654df0cbb42bbd4eda359a7b80d39b0bb60240f971ce19",
   "pins" : [
-    {
-      "identity" : "audiokit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/AudioKit/AudioKit",
-      "state" : {
-        "revision" : "5b3fd238ef8ee95c9842ca4ea83ca58ee151e630",
-        "version" : "5.6.5"
-      }
-    },
     {
       "identity" : "dynamicnotchkit",
       "kind" : "remoteSourceControl",
