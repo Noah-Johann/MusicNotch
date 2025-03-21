@@ -17,7 +17,7 @@ struct NotchView<Content>: View where Content: View {
 
                 VStack(spacing: 0) {
                     Spacer()
-                        .frame(width: dynamicNotch.notchWidth + 20, height: dynamicNotch.notchHeight)
+                        .frame(width: dynamicNotch.notchWidth + 20, height: 0)
                     // We add an extra 20 here because the corner radius of the top increases when shown.
                     // (the remaining 10 has already been accounted for in refreshNotchSize)
 

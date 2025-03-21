@@ -24,18 +24,22 @@ struct OpendPlayer: View {
                         .scaledToFit()
                         .frame(width: 80, height: 80)
                         .cornerRadius(6)
+                        .padding(.vertical, 10)
                 }
                 
                 VStack {
                     Text(spotifyManager.trackName)
-                        .font(.system(size: 15, weight: .medium))
+                        .font(.system(size: 17, weight: .medium))
                         .foregroundColor(.primary)
                         .frame(width: 280, alignment: .leading)
                     Text(spotifyManager.artistName)
-                        .font(.system(size: 12, weight: .medium))
+                        .font(.system(size: 14, weight: .regular))
                         .foregroundColor(.secondary)
                         .frame(width: 280, alignment: .leading)
-                }.padding(.horizontal, 10)
+                }
+                .padding(.horizontal, 10)
+                .padding(.top, 47)
+                
             } .frame(width: 300)
             
         //Progress Bar

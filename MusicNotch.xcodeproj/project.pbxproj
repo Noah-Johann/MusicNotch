@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		4F67B5F82D849896001FF27A /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F67B5F72D849896001FF27A /* ScriptingBridge.framework */; };
-		4FA87FF02D847E5000725978 /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4FA87FEF2D847E5000725978 /* DynamicNotchKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,7 +48,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F67B5F82D849896001FF27A /* ScriptingBridge.framework in Frameworks */,
-				4FA87FF02D847E5000725978 /* DynamicNotchKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -117,7 +115,6 @@
 			);
 			name = MusicNotch;
 			packageProductDependencies = (
-				4FA87FEF2D847E5000725978 /* DynamicNotchKit */,
 			);
 			productName = MusicNotch;
 			productReference = 4FA87FC02D847DD700725978 /* MusicNotch.app */;
@@ -197,7 +194,6 @@
 			mainGroup = 4FA87FB72D847DD700725978;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				4FA87FEE2D847E5000725978 /* XCRemoteSwiftPackageReference "DynamicNotchKit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 4FA87FC12D847DD700725978 /* Products */;
@@ -560,25 +556,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		4FA87FEE2D847E5000725978 /* XCRemoteSwiftPackageReference "DynamicNotchKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/MrKai77/DynamicNotchKit";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		4FA87FEF2D847E5000725978 /* DynamicNotchKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4FA87FEE2D847E5000725978 /* XCRemoteSwiftPackageReference "DynamicNotchKit" */;
-			productName = DynamicNotchKit;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 4FA87FB82D847DD700725978 /* Project object */;
 }
