@@ -22,6 +22,8 @@ class SpotifyManager: ObservableObject {
     @Published var trackNumber: Int = 0
     @Published var popularity: Int = 0
     @Published var shuffle: Bool = false
+    @Published var albumArtURL: String = ""
+    @Published var albumArtImage: NSImage? = nil
     private var updateTimer: Timer?
     
     
@@ -31,6 +33,7 @@ class SpotifyManager: ObservableObject {
     // Aktualisiert alle Spotify-Informationen
     public func updateInfo() {
         collectBasicInfo()
+        self.fetchAlbumArt()
         // Hier könntest du z.B. auch das Album Artwork abrufen.
     }
     
@@ -147,10 +150,17 @@ class SpotifyManager: ObservableObject {
                     set end of results to false
                 end try
                 
+                try
+                    set albumArt to artwork url of current track
+                    set end of results to albumArt
+                on error
+                    set end of results to ""
+                end try
+                
                 return results
             end tell
         else
-            return {false, "", "", "", 0, 0, false, "", 0, "", "", 0, 0, 0, false}
+            return {false, "", "", "", 0, 0, false, "", 0, "", "", 0, 0, 0, false, ""}
         end if
         """
         
@@ -200,6 +210,7 @@ class SpotifyManager: ObservableObject {
                 self.trackNumber = Int(finalResult[13]) ?? 0
                 self.popularity = Int(finalResult[14]) ?? 0
                 self.shuffle = finalResult[15] == "true"
+                self.albumArtURL = finalResult[16]
                 //print("Shuffle aktiv: \(self.shuffle)")
             } else {
                 self.spotifyRunning = false
@@ -231,6 +242,7 @@ class SpotifyManager: ObservableObject {
         discNumber = 0
         trackNumber = 0
         popularity = 0
+        albumArtURL = ""
     }
     
     // Hilfsfunktion zur Ausführung eines AppleScript-Befehls
@@ -271,4 +283,13 @@ class SpotifyManager: ObservableObject {
         updateTimer = nil
     }
     
+    func fetchAlbumArt() {
+        guard let url = URL(string: albumArtURL) else { return }
+        URLSession.shared.dataTask(with: url) { data, _, _ in
+            guard let data = data, let image = NSImage(data: data) else { return }
+            DispatchQueue.main.async {
+                self.albumArtImage = image
+            }
+        }.resume()
+    }
 }

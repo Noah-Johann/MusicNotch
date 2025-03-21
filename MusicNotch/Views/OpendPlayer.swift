@@ -18,15 +18,33 @@ struct OpendPlayer: View {
         VStack {
             HStack {
                 
-                Image(systemName: "photo")
-                    .imageScale(.large)
-                Text(spotifyManager.trackName)
-            }
+                if let albumArt = spotifyManager.albumArtImage {
+                    Image(nsImage: albumArt)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 80, height: 80)
+                        .cornerRadius(6)
+                }
+                
+                VStack {
+                    Text(spotifyManager.trackName)
+                        .font(.system(size: 15, weight: .medium))
+                        .foregroundColor(.primary)
+                        .frame(width: 280, alignment: .leading)
+                    Text(spotifyManager.artistName)
+                        .font(.system(size: 12, weight: .medium))
+                        .foregroundColor(.secondary)
+                        .frame(width: 280, alignment: .leading)
+                }.padding(.horizontal, 10)
+            } .frame(width: 300)
             
         //Progress Bar
             HStack {
                 Text(formatTime(Int(trackposition)))
-                    .frame(minWidth: 60, maxWidth: 80, minHeight: 20)
+                    .frame(minWidth: 50, maxWidth: 80, minHeight: 20, alignment: .center)
+                    .foregroundColor(.secondary)
+                    .fontWeight(.semibold)
+                    .font(.system(size: 12))
                 
                 CustomSlider(value: $trackposition,
                 inRange: 0...Double(spotifyManager.trackDuration),
@@ -39,10 +57,13 @@ struct OpendPlayer: View {
                     if !isEditing {
                         progressChanged()
                     }
-                }) .frame(width: 300, height: 10, alignment: .center)
+                }) .frame(width: 280, height: 10, alignment: .center)
                 
                 Text("-\(formatTime(spotifyManager.trackDuration - Int(trackposition)))")
-                    .frame(minWidth: 60, maxWidth: 80, minHeight: 20)
+                    .frame(minWidth: 55, maxWidth: 80, minHeight: 20, alignment: .center)
+                    .foregroundColor(.secondary)
+                    .fontWeight(.semibold)
+                    .font(.system(size: 12))
                     
                 }
             
@@ -65,6 +86,7 @@ struct OpendPlayer: View {
                 .background(Color.clear)
                 .buttonStyle(BorderlessButtonStyle())
                 .padding(.horizontal, 17)
+                
                 
                 
                 

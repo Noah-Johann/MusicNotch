@@ -25,7 +25,7 @@ struct MusicNotchApp: App {
             OpendPlayer()
         }
         requestAllPermissions()
-        SpotifyManager.shared.startAutoUpdate(withInterval: 1.0)
+        SpotifyManager.shared.startAutoUpdate(withInterval: 1)
         print(SpotifyManager.shared.trackName)
         getAudioOutputDevice()
         registerForAudioDeviceChanges()

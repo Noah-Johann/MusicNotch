@@ -3,6 +3,7 @@
 //  Custom Seekbar
 //
 //  Created by Pratik on 08/01/23.
+//  Source: https://github.com/pratikg29/Custom-Slider-Control.git
 //
 
 import SwiftUI
