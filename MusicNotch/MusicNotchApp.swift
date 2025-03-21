@@ -30,7 +30,7 @@ struct MusicNotchApp: App {
         getAudioOutputDevice()
         registerForAudioDeviceChanges()
         dynamicNotch.show(on: NSScreen.screens[1])
-
+        
         
     }
 }

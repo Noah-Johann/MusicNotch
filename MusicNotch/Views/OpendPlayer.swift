@@ -10,7 +10,9 @@ import DynamicNotchKit
 struct OpendPlayer: View {
     
     @ObservedObject var spotifyManager = SpotifyManager.shared
-    
+    @State private var isDragging = false
+    @State public var sliderValue: Double = 0
+    @State private var trackposition : Double = 0
     
     var body: some View {
         VStack {
@@ -18,29 +20,35 @@ struct OpendPlayer: View {
                 
                 Image(systemName: "photo")
                     .imageScale(.large)
-                Text(SpotifyManager.shared.trackName)
+                Text(spotifyManager.trackName)
             }
             
         //Progress Bar
             HStack {
-                Text(formatTime(SpotifyManager.shared.trackPosition))
-//                Slider(
-//                    value: Binding(
-//                        get: { Double(spotifyManager.trackPosition) },
-//                        set: { newPosition in
-//                            seekToPosition(position: Int(newPosition))
-//                        }
-//                    ),
-//                    in: 0...Double(max(1, spotifyManager.trackDuration))
-//                )
-//                .accentColor(.gray)
+                Text(formatTime(Int(trackposition)))
+                    .frame(minWidth: 60, maxWidth: 80, minHeight: 20)
                 
-                Text("-\(formatTime(SpotifyManager.shared.trackDuration - SpotifyManager.shared.trackPosition))")
+                CustomSlider(value: $trackposition,
+                inRange: 0...Double(spotifyManager.trackDuration),
+                             activeFillColor: .white,
+                             fillColor: .white,
+                             emptyColor: .gray,
+                height: 8.0,
+                onEditingChanged: { isEditing in
+                    isDragging = isEditing
+                    if !isEditing {
+                        progressChanged()
+                    }
+                }) .frame(width: 300, height: 10, alignment: .center)
                 
-            }
+                Text("-\(formatTime(spotifyManager.trackDuration - Int(trackposition)))")
+                    .frame(minWidth: 60, maxWidth: 80, minHeight: 20)
+                    
+                }
             
         //Controls
             HStack {
+                
             //Shuffle
                 Button(action: {
                     spotifyShuffle()
@@ -48,14 +56,16 @@ struct OpendPlayer: View {
                 {
 
                     Image(systemName: ShuffleIcon)
-                            .imageScale(.large)
-                            .font(.system(size: 18))
-                            .foregroundStyle(.secondary)
+                        .imageScale(.large)
+                        .font(.system(size: 18))
+                        .foregroundStyle(.secondary)
+                        .frame(width: 30, height: 30)
                     
                 }
                 .background(Color.clear)
                 .buttonStyle(BorderlessButtonStyle())
                 .padding(.horizontal, 17)
+                
                 
                 
             //Skip backward
@@ -66,6 +76,7 @@ struct OpendPlayer: View {
                         .imageScale(.large)
                         .foregroundStyle(.primary)
                         .font(.system(size: 17))
+                        .frame(width: 30, height: 30)
                     
                 }
                 .background(Color.clear)
@@ -82,6 +93,7 @@ struct OpendPlayer: View {
                         .imageScale(.large)
                         .foregroundStyle(.primary)
                         .font(.system(size: 22, weight: .bold))
+                        .frame(width: 30, height: 30)
                     
                 }
                 .background(Color.clear)
@@ -97,6 +109,7 @@ struct OpendPlayer: View {
                         .imageScale(.large)
                         .foregroundStyle(.primary)
                         .font(.system(size: 17))
+                        .frame(width: 30, height: 30)
                     
                 }
                 .background(Color.clear)
@@ -108,10 +121,33 @@ struct OpendPlayer: View {
                     .imageScale(.large)
                     .foregroundStyle(.secondary)
                     .font(.system(size: 17))
+                    .frame(width: 30, height: 30)
                     .padding(.horizontal, 17)
                 
             }
-            //.padding()
+
+        }
+        .onReceive(spotifyManager.$trackPosition) { newValue in
+            if !isDragging {
+                trackposition = Double(newValue)
+            }
+        }
+    }
+    
+    private func progressChanged() {
+        print("Neuer Wert: \(trackposition)")
+        let script = """
+        tell application "Spotify"
+            set player position to \(trackposition)
+        end tell
+        """
+        
+        let appleScript = NSAppleScript(source: script)
+        var errorDict: NSDictionary?
+        appleScript?.executeAndReturnError(&errorDict)
+        
+        if let error = errorDict {
+            print("AppleScript Error: \(error)")
         }
     }
 }

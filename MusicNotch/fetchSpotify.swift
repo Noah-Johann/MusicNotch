@@ -177,7 +177,7 @@ class SpotifyManager: ObservableObject {
 //            print(SpotifyManager.shared.trackDuration - SpotifyManager.shared.trackPosition)
 
             
-            //Update Icons
+            //Update Assets
             updatePlayIcon()
             updateShuffleIcon()
             

@@ -8,6 +8,7 @@
 import Foundation
 import ScriptingBridge
 import AppKit
+import SwiftUICore
 
 func formatTime(_ seconds: Int) -> String {
     // Calculate hours, minutes, and remaining seconds
@@ -26,3 +27,8 @@ func formatTime(_ seconds: Int) -> String {
 func sendSetTime (_ time: Int) {
     
 }
+
+
+
+
+
