@@ -166,7 +166,7 @@ struct OpendPlayer: View {
             if !isDragging {
                 trackposition = Double(newValue)
             }
-        }
+        } .padding(.bottom, 15)
     }
     
     private func progressChanged() {
@@ -187,6 +187,6 @@ struct OpendPlayer: View {
     }
 }
 
-#Preview {
-    OpendPlayer()
-}
+//#Preview {
+//    OpendPlayer()
+//}
