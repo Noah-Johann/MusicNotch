@@ -21,7 +21,7 @@ struct MusicNotchApp: App {
     }
 
     func showDynamicNotch() {
-        let dynamicNotch = DynamicNotch {
+        let opendNotch = DynamicNotch {
             OpendPlayer()
         }
         requestAllPermissions()
@@ -29,7 +29,7 @@ struct MusicNotchApp: App {
         print(SpotifyManager.shared.trackName)
         getAudioOutputDevice()
         registerForAudioDeviceChanges()
-        dynamicNotch.show(on: NSScreen.screens[1])
+        opendNotch.show()
         
         
     }
