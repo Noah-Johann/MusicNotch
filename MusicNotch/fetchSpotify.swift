@@ -190,7 +190,7 @@ class SpotifyManager: ObservableObject {
             //Update Assets
             updatePlayIcon()
             updateShuffleIcon()
-            
+
                         
             // Sicherstellen, dass genügend Daten vorhanden sind
             if finalResult.count >= 16 {

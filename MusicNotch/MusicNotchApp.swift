@@ -29,7 +29,7 @@ struct MusicNotchApp: App {
         print(SpotifyManager.shared.trackName)
         getAudioOutputDevice()
         registerForAudioDeviceChanges()
-        opendNotch.show()
+        opendNotch.show(on: NSScreen.screens[1])
         
         
     }

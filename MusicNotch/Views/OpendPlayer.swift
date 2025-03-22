@@ -7,8 +7,10 @@
 import SwiftUI
 import DynamicNotchKit
 
+
 struct OpendPlayer: View {
-    
+    static let shared = OpendPlayer()
+
     @ObservedObject var spotifyManager = SpotifyManager.shared
     @State private var isDragging = false
     @State public var sliderValue: Double = 0
@@ -31,18 +33,24 @@ struct OpendPlayer: View {
                     Text(spotifyManager.trackName)
                         .font(.system(size: 17, weight: .medium))
                         .foregroundColor(.primary)
-                        .frame(width: 280, alignment: .leading)
+                        .frame(width: 260, alignment: .leading)
                     Text(spotifyManager.artistName)
                         .font(.system(size: 14, weight: .regular))
                         .foregroundColor(.secondary)
-                        .frame(width: 280, alignment: .leading)
+                        .frame(width: 260, alignment: .leading)
                 }
                 .padding(.horizontal, 10)
-                .padding(.top, 47)
+                .padding(.top, 27)
+                
+                AudioSpectrumView(isPlaying: spotifyManager.isPlaying)
+                    .foregroundColor(.white)
+                    .frame(width: 20, height: 20)
+                    .padding(.top)
+                    .padding(.trailing, 0)
                 
             } .frame(width: 300)
             
-        //Progress Bar
+            //Progress Bar
             HStack {
                 Text(formatTime(Int(trackposition)))
                     .frame(minWidth: 50, maxWidth: 80, minHeight: 20, alignment: .center)
@@ -51,12 +59,12 @@ struct OpendPlayer: View {
                     .font(.system(size: 12))
                 
                 CustomSlider(value: $trackposition,
-                inRange: 0...Double(spotifyManager.trackDuration),
+                             inRange: 0...Double(spotifyManager.trackDuration),
                              activeFillColor: .white,
                              fillColor: .white,
-                             emptyColor: .gray,
-                height: 8.0,
-                onEditingChanged: { isEditing in
+                             emptyColor: Color(NSColor.darkGray),
+                             height: 8.0,
+                             onEditingChanged: { isEditing in
                     isDragging = isEditing
                     if !isEditing {
                         progressChanged()
@@ -68,18 +76,18 @@ struct OpendPlayer: View {
                     .foregroundColor(.secondary)
                     .fontWeight(.semibold)
                     .font(.system(size: 12))
-                    
-                }
+                
+            }
             
-        //Controls
+            //Controls
             HStack {
                 
-            //Shuffle
+                //Shuffle
                 Button(action: {
                     spotifyShuffle()
                 })
                 {
-
+                    
                     Image(systemName: ShuffleIcon)
                         .imageScale(.large)
                         .font(.system(size: 18))
@@ -94,7 +102,7 @@ struct OpendPlayer: View {
                 
                 
                 
-            //Skip backward
+                //Skip backward
                 Button(action: {
                     spotifyLastTrack()
                 }) {
@@ -111,7 +119,7 @@ struct OpendPlayer: View {
                 
                 
                 
-            //Pause
+                //Pause
                 Button(action: {
                     spotifyPlayPause()
                 }) {
@@ -127,7 +135,7 @@ struct OpendPlayer: View {
                 .padding(.horizontal, 16)
                 
                 
-            //Skip forward
+                //Skip forward
                 Button(action: {
                     spotifyNextTrack()
                 }) {
@@ -142,7 +150,8 @@ struct OpendPlayer: View {
                 .buttonStyle(BorderlessButtonStyle())
                 .padding(.horizontal, 5)
                 
-            //Speaker
+                
+                //Speaker
                 Image(systemName: deviceIcon)
                     .imageScale(.large)
                     .foregroundStyle(.secondary)
@@ -151,7 +160,7 @@ struct OpendPlayer: View {
                     .padding(.horizontal, 17)
                 
             }
-
+            
         }
         .onReceive(spotifyManager.$trackPosition) { newValue in
             if !isDragging {
