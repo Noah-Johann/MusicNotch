@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4F27C7052D8E9C9F007B7033 /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F27C7042D8E9C9F007B7033 /* DynamicNotchKit */; };
+		4F27C7172D8F0E87007B7033 /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F27C7162D8F0E87007B7033 /* DynamicNotchKit */; };
 		4F67B5F82D849896001FF27A /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F67B5F72D849896001FF27A /* ScriptingBridge.framework */; };
 /* End PBXBuildFile section */
 
@@ -48,7 +48,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4F27C7052D8E9C9F007B7033 /* DynamicNotchKit in Frameworks */,
+				4F27C7172D8F0E87007B7033 /* DynamicNotchKit in Frameworks */,
 				4F67B5F82D849896001FF27A /* ScriptingBridge.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -117,7 +117,7 @@
 			);
 			name = MusicNotch;
 			packageProductDependencies = (
-				4F27C7042D8E9C9F007B7033 /* DynamicNotchKit */,
+				4F27C7162D8F0E87007B7033 /* DynamicNotchKit */,
 			);
 			productName = MusicNotch;
 			productReference = 4FA87FC02D847DD700725978 /* MusicNotch.app */;
@@ -197,7 +197,7 @@
 			mainGroup = 4FA87FB72D847DD700725978;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				4F27C7032D8E9C9F007B7033 /* XCRemoteSwiftPackageReference "DynamicNotchKit" */,
+				4F27C7152D8F0E87007B7033 /* XCLocalSwiftPackageReference "../DynamicNotchKit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 4FA87FC12D847DD700725978 /* Products */;
@@ -563,21 +563,16 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		4F27C7032D8E9C9F007B7033 /* XCRemoteSwiftPackageReference "DynamicNotchKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Noah-Johann/DynamicNotchKit";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
+/* Begin XCLocalSwiftPackageReference section */
+		4F27C7152D8F0E87007B7033 /* XCLocalSwiftPackageReference "../DynamicNotchKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../DynamicNotchKit;
 		};
-/* End XCRemoteSwiftPackageReference section */
+/* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		4F27C7042D8E9C9F007B7033 /* DynamicNotchKit */ = {
+		4F27C7162D8F0E87007B7033 /* DynamicNotchKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4F27C7032D8E9C9F007B7033 /* XCRemoteSwiftPackageReference "DynamicNotchKit" */;
 			productName = DynamicNotchKit;
 		};
 /* End XCSwiftPackageProductDependency section */

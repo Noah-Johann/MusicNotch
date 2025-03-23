@@ -11,6 +11,7 @@ import DynamicNotchKit
 @main
 struct MusicNotchApp: App {
     init() {
+        appSetup()
         showDynamicNotch()
     }
 
@@ -21,16 +22,23 @@ struct MusicNotchApp: App {
     }
 
     func showDynamicNotch() {
-        let opendNotch = DynamicNotch {
-            OpendPlayer()
+        var opendNotch = DynamicNotch(style: .notch) {
+            closedPlayer()
         }
+        opendNotch.show()
+        opendNotch.setContent { closedPlayer() }
+        
+        
+        
+    }
+    
+    func appSetup() {
         requestAllPermissions()
         SpotifyManager.shared.startAutoUpdate(withInterval: 1)
         print(SpotifyManager.shared.trackName)
         getAudioOutputDevice()
         registerForAudioDeviceChanges()
-        opendNotch.show(on: NSScreen.screens[1])
-        
-        
     }
 }
+
+
