@@ -1,6 +1,7 @@
 import Foundation
 import AppKit
 
+public var timer = 0
 class SpotifyManager: ObservableObject {
     // Singleton-Instanz für den Zugriff von überall
     static let shared = SpotifyManager()
@@ -34,6 +35,7 @@ class SpotifyManager: ObservableObject {
     public func updateInfo() {
         collectBasicInfo()
         self.fetchAlbumArt()
+        timer = timer + 1
         // Hier könntest du z.B. auch das Album Artwork abrufen.
     }
     
