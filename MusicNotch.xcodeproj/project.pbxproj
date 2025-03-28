@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4F0E5AAA2D95B897005C71B9 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 4F0E5AA92D95B897005C71B9 /* KeyboardShortcuts */; };
-		4F0E5AF62D96C7C3005C71B9 /* Luminare in Frameworks */ = {isa = PBXBuildFile; productRef = 4F0E5AF52D96C7C3005C71B9 /* Luminare */; };
-		4F27C7172D8F0E87007B7033 /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F27C7162D8F0E87007B7033 /* DynamicNotchKit */; };
 		4F67B5F82D849896001FF27A /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F67B5F72D849896001FF27A /* ScriptingBridge.framework */; };
+		4FABD4822D9704A500F8CFEA /* Luminare in Frameworks */ = {isa = PBXBuildFile; productRef = 4FABD4812D9704A500F8CFEA /* Luminare */; };
+		4FABD4852D9704BB00F8CFEA /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 4FABD4842D9704BB00F8CFEA /* KeyboardShortcuts */; };
+		4FABD4882D9704CC00F8CFEA /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4FABD4872D9704CC00F8CFEA /* DynamicNotchKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,10 +50,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4F27C7172D8F0E87007B7033 /* DynamicNotchKit in Frameworks */,
-				4F0E5AF62D96C7C3005C71B9 /* Luminare in Frameworks */,
+				4FABD4882D9704CC00F8CFEA /* DynamicNotchKit in Frameworks */,
 				4F67B5F82D849896001FF27A /* ScriptingBridge.framework in Frameworks */,
-				4F0E5AAA2D95B897005C71B9 /* KeyboardShortcuts in Frameworks */,
+				4FABD4822D9704A500F8CFEA /* Luminare in Frameworks */,
+				4FABD4852D9704BB00F8CFEA /* KeyboardShortcuts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -121,9 +121,9 @@
 			);
 			name = MusicNotch;
 			packageProductDependencies = (
-				4F27C7162D8F0E87007B7033 /* DynamicNotchKit */,
-				4F0E5AA92D95B897005C71B9 /* KeyboardShortcuts */,
-				4F0E5AF52D96C7C3005C71B9 /* Luminare */,
+				4FABD4812D9704A500F8CFEA /* Luminare */,
+				4FABD4842D9704BB00F8CFEA /* KeyboardShortcuts */,
+				4FABD4872D9704CC00F8CFEA /* DynamicNotchKit */,
 			);
 			productName = MusicNotch;
 			productReference = 4FA87FC02D847DD700725978 /* MusicNotch.app */;
@@ -203,9 +203,9 @@
 			mainGroup = 4FA87FB72D847DD700725978;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				4F27C7152D8F0E87007B7033 /* XCLocalSwiftPackageReference "../DynamicNotchKit" */,
-				4F0E5AA82D95B897005C71B9 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
-				4F0E5AF42D96C7C3005C71B9 /* XCRemoteSwiftPackageReference "Luminare" */,
+				4FABD4802D9704A500F8CFEA /* XCRemoteSwiftPackageReference "Luminare" */,
+				4FABD4832D9704BB00F8CFEA /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
+				4FABD4862D9704CB00F8CFEA /* XCRemoteSwiftPackageReference "DynamicNotchKit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 4FA87FC12D847DD700725978 /* Products */;
@@ -571,15 +571,16 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		4F27C7152D8F0E87007B7033 /* XCLocalSwiftPackageReference "../DynamicNotchKit" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../DynamicNotchKit;
-		};
-/* End XCLocalSwiftPackageReference section */
-
 /* Begin XCRemoteSwiftPackageReference section */
-		4F0E5AA82D95B897005C71B9 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */ = {
+		4FABD4802D9704A500F8CFEA /* XCRemoteSwiftPackageReference "Luminare" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/MrKai77/Luminare";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+		4FABD4832D9704BB00F8CFEA /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sindresorhus/KeyboardShortcuts";
 			requirement = {
@@ -587,9 +588,9 @@
 				kind = branch;
 			};
 		};
-		4F0E5AF42D96C7C3005C71B9 /* XCRemoteSwiftPackageReference "Luminare" */ = {
+		4FABD4862D9704CB00F8CFEA /* XCRemoteSwiftPackageReference "DynamicNotchKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/MrKai77/Luminare";
+			repositoryURL = "https://github.com/Noah-Johann/DynamicNotchKit";
 			requirement = {
 				branch = main;
 				kind = branch;
@@ -598,18 +599,19 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		4F0E5AA92D95B897005C71B9 /* KeyboardShortcuts */ = {
+		4FABD4812D9704A500F8CFEA /* Luminare */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4F0E5AA82D95B897005C71B9 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */;
-			productName = KeyboardShortcuts;
-		};
-		4F0E5AF52D96C7C3005C71B9 /* Luminare */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4F0E5AF42D96C7C3005C71B9 /* XCRemoteSwiftPackageReference "Luminare" */;
+			package = 4FABD4802D9704A500F8CFEA /* XCRemoteSwiftPackageReference "Luminare" */;
 			productName = Luminare;
 		};
-		4F27C7162D8F0E87007B7033 /* DynamicNotchKit */ = {
+		4FABD4842D9704BB00F8CFEA /* KeyboardShortcuts */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = 4FABD4832D9704BB00F8CFEA /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */;
+			productName = KeyboardShortcuts;
+		};
+		4FABD4872D9704CC00F8CFEA /* DynamicNotchKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4FABD4862D9704CB00F8CFEA /* XCRemoteSwiftPackageReference "DynamicNotchKit" */;
 			productName = DynamicNotchKit;
 		};
 /* End XCSwiftPackageProductDependency section */

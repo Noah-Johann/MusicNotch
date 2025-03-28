@@ -47,7 +47,7 @@ struct MusicNotchApp: App {
     static func showNotch() {
         
         if MusicNotch == nil {
-            MusicNotch = DynamicNotch(style: .notch(topCornerRadius: 5, bottomCornerRadius: 15)) {
+            MusicNotch = DynamicNotch(style: .notch) {
                 AnyView(closedPlayer()) // Ensure uniform return type
             }
             notchState = "closed"
