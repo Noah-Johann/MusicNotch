@@ -1,0 +1,24 @@
+{
+  "originHash" : "3ce32e13d6858899d8914ee404210dc206d11da4c9f9f482183768798ba8276b",
+  "pins" : [
+    {
+      "identity" : "keyboardshortcuts",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/sindresorhus/KeyboardShortcuts",
+      "state" : {
+        "branch" : "main",
+        "revision" : "045cf174010beb335fa1d2567d18c057b8787165"
+      }
+    },
+    {
+      "identity" : "luminare",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/MrKai77/Luminare",
+      "state" : {
+        "branch" : "main",
+        "revision" : "a9c1d600e972c5523c27eb7cd84637f4f05beaaa"
+      }
+    }
+  ],
+  "version" : 3
+}

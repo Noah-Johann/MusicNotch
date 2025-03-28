@@ -7,35 +7,38 @@
 
 import SwiftUI
 import DynamicNotchKit
+import KeyboardShortcuts
 
 @main
 struct MusicNotchApp: App {
-    static var opendNotch: DynamicNotch<AnyView>? = nil // Make it a static property
-
+    static var MusicNotch: DynamicNotch<AnyView>? = nil // Make it a static property
+    
     init() {
         appSetup()
         timer = 0
-        // Start the delay mechanism here to ensure proper timing
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
             MusicNotchApp.showNotch()
         }
-
+        
         for i in 0...30 {
             DispatchQueue.main.asyncAfter(deadline: .now() + Double(i) * 1) {
                 MusicNotchApp.showDynamicNotch()
             }
         }
     }
-
+    
     var body: some Scene {
         WindowGroup {
             OpendPlayer()
         }
+        Settings {
+            SettingsView()
+        }
     }
-
+    
     static func showDynamicNotch() {
-        if opendNotch == nil {
-            opendNotch = DynamicNotch(style: .notch) {
+        if MusicNotch == nil {
+            MusicNotch = DynamicNotch(style: .notch) {
                 AnyView(OpendPlayer()) // Ensure uniform return type
             }
         }
@@ -46,19 +49,31 @@ struct MusicNotchApp: App {
             print("Change content")
             
             DispatchQueue.main.async {
-                opendNotch?.setContent { AnyView(closedPlayer()) }
+                MusicNotch?.setContent { AnyView(closedPlayer()) }
             }
         }
         if timer == 25 {
             DispatchQueue.main.async {
-                opendNotch?.setContent { AnyView(OpendPlayer()) }
+                MusicNotch?.setContent { AnyView(OpendPlayer()) }
             }
         }
     }
     
+    static func showOnNotchScreen() {
+        guard let notchScreen = NSScreen.screens.first(where: { $0.safeAreaInsets.top > 0 }) else {
+            print("No notch screen found")
+            MusicNotch?.show(on: NSScreen.screens.first!)
+            return
+        }
+        
+        DispatchQueue.main.async {
+            MusicNotch?.show(on: notchScreen)
+        }
+    }
+
     static func showNotch() {
-        MusicNotchApp.opendNotch?.show() // Use the static opendNotch property
-        print("shownotch")
+        showOnNotchScreen()
+        print("showNotch called")
     }
     
     func appSetup() {

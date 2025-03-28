@@ -14,11 +14,10 @@ func getNotchHeight () -> CGFloat? {
         print("Menu bar height (with notch): \(menuBarHeight) pixels")
         return menuBarHeight
     } else {
-        print("No screen with a notch found")
-        return 15
+        print("no notch screen found")
+        return 40
     }
 }
-
 struct closedPlayer: View {
     static let shared = closedPlayer()
 
@@ -44,7 +43,7 @@ struct closedPlayer: View {
                     .foregroundColor(.white)
                     .frame(width: 15, height: 15)
                 
-            } .frame(width: 284, height: 42.5, alignment: .center)
+            } .frame(width: 284, height: getNotchHeight(), alignment: .center)
             
         }
     }
