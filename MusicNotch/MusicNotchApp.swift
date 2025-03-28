@@ -15,6 +15,7 @@ var notchState: String = "hide"
 struct MusicNotchApp: App {
     static var MusicNotch: DynamicNotch<AnyView>? = nil // Make it a static property
     @State private var appState = AppState()
+    @State private var showMenuBarIcon: Bool = true
     
     init() {
         appSetup()
@@ -25,12 +26,18 @@ struct MusicNotchApp: App {
     }
     
     var body: some Scene {
+        MenuBarExtra("boring.notch", systemImage: "music.note.tv", isInserted: $showMenuBarIcon) {
+            SettingsLink(label: {
+                Text("Settings")
+            })
+            Button("Quit", role: .destructive) {
+                NSApp.terminate(nil)
+            }
+        }
         Settings {
             SettingsView()
         }
     }
-    
-
     
     static func showOnNotchScreen() {
         guard let notchScreen = NSScreen.screens.first(where: { $0.safeAreaInsets.top > 0 }) else {
@@ -42,6 +49,8 @@ struct MusicNotchApp: App {
         DispatchQueue.main.async {
             MusicNotch?.show(on: notchScreen)
         }
+        NSApp.setActivationPolicy(.accessory)
+
     }
 
     static func showNotch() {

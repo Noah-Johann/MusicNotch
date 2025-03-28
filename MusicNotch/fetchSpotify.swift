@@ -208,7 +208,7 @@ class SpotifyManager: ObservableObject {
 
                         
             // Sicherstellen, dass genügend Daten vorhanden sind
-            if finalResult.count >= 16 {
+            if finalResult.count >= 17 {
                 self.spotifyRunning = finalResult[0] == "true"
                 self.isPlaying = finalResult[1] == "playing"
                 self.trackName = finalResult[2]
