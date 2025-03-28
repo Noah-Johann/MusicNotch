@@ -8,16 +8,7 @@ import SwiftUI
 import DynamicNotchKit
 import AppKit
 
-func getNotchHeight () -> CGFloat? {
-    if let screenWithNotch = NSScreen.screens.first(where: { $0.frame.origin.y != 0 }) {
-        let menuBarHeight = screenWithNotch.frame.height - screenWithNotch.visibleFrame.height
-        print("Menu bar height (with notch): \(menuBarHeight) pixels")
-        return menuBarHeight
-    } else {
-        print("no notch screen found")
-        return 40
-    }
-}
+
 struct closedPlayer: View {
     static let shared = closedPlayer()
 
@@ -43,7 +34,7 @@ struct closedPlayer: View {
                     .foregroundColor(.white)
                     .frame(width: 15, height: 15)
                 
-            } .frame(width: 284, height: getNotchHeight(), alignment: .center)
+            } .frame(width: 284, height: notchHeight + notchSizeChange, alignment: .center)
             
         }
     }

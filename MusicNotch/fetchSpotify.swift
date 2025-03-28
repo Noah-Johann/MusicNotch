@@ -3,7 +3,6 @@ import AppKit
 
 public var timer = 0
 class SpotifyManager: ObservableObject {
-    // Singleton-Instanz für den Zugriff von überall
     static let shared = SpotifyManager()
     
     // Öffentliche Eigenschaften
@@ -28,18 +27,32 @@ class SpotifyManager: ObservableObject {
     private var updateTimer: Timer?
     
     
-    // Private Initialisierung für Singleton
     private init() {}
     
-    // Aktualisiert alle Spotify-Informationen
     public func updateInfo() {
         collectBasicInfo()
         self.fetchAlbumArt()
-        timer = timer + 1
-        // Hier könntest du z.B. auch das Album Artwork abrufen.
+        
+        if self.isPlaying == false{
+            if notchState != "hide" {
+                timer = timer + 1
+            }
+            if timer > hideNotchTime {
+                MusicNotchApp.hideNotch()
+                notchState = "hide"
+            }
+        } else if self.isPlaying == true && timer >= 1{
+            if notchState == "hide" {
+                MusicNotchApp.showNotch()
+                notchState = "open"
+                MusicNotchApp.changeNotch()
+
+            }
+            timer = 0
+        }
+
     }
     
-    // Funktion zum Abrufen der Spotify-Daten
     public func collectBasicInfo() {
         let script = """
         if application "Spotify" is running then

@@ -8,5 +8,5 @@
 import Foundation
 
 public var hideNotchTime = 3
-public var notchSize: CGFloat = 0
+public var notchSizeChange: CGFloat = 0
 

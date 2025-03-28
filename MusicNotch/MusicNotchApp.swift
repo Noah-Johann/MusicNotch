@@ -9,55 +9,28 @@ import SwiftUI
 import DynamicNotchKit
 import KeyboardShortcuts
 
+var notchState: String = "hide"
+
 @main
 struct MusicNotchApp: App {
     static var MusicNotch: DynamicNotch<AnyView>? = nil // Make it a static property
+    @State private var appState = AppState()
     
     init() {
         appSetup()
         timer = 0
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             MusicNotchApp.showNotch()
-        }
-        
-        for i in 0...30 {
-            DispatchQueue.main.asyncAfter(deadline: .now() + Double(i) * 1) {
-                MusicNotchApp.showDynamicNotch()
-            }
         }
     }
     
     var body: some Scene {
-        WindowGroup {
-            OpendPlayer()
-        }
         Settings {
             SettingsView()
         }
     }
     
-    static func showDynamicNotch() {
-        if MusicNotch == nil {
-            MusicNotch = DynamicNotch(style: .notch) {
-                AnyView(OpendPlayer()) // Ensure uniform return type
-            }
-        }
-        
-        print(timer)
-        
-        if timer == 20 {
-            print("Change content")
-            
-            DispatchQueue.main.async {
-                MusicNotch?.setContent { AnyView(closedPlayer()) }
-            }
-        }
-        if timer == 25 {
-            DispatchQueue.main.async {
-                MusicNotch?.setContent { AnyView(OpendPlayer()) }
-            }
-        }
-    }
+
     
     static func showOnNotchScreen() {
         guard let notchScreen = NSScreen.screens.first(where: { $0.safeAreaInsets.top > 0 }) else {
@@ -72,8 +45,43 @@ struct MusicNotchApp: App {
     }
 
     static func showNotch() {
+        
+        if MusicNotch == nil {
+            MusicNotch = DynamicNotch(style: .notch(topCornerRadius: 5, bottomCornerRadius: 15)) {
+                AnyView(closedPlayer()) // Ensure uniform return type
+            }
+            notchState = "closed"
+        }
+        
         showOnNotchScreen()
         print("showNotch called")
+    }
+    
+    static func changeNotch() {
+        if notchState == "closed" {
+            DispatchQueue.main.async {
+                MusicNotch?.setContent { AnyView(OpendPlayer()) }
+            }
+            notchState = "open"
+        } else if notchState == "open" {
+            DispatchQueue.main.async {
+                MusicNotch?.setContent { AnyView(closedPlayer()) }
+            }
+            notchState = "closed"
+        } else {
+            print("Hidden")
+            return
+        }
+//         else if notchState == "hide" {
+//            DispatchQueue.main.async {
+//                MusicNotch?.setContent { AnyView(OpendPlayer()) }
+//            }
+//            showNotch()
+//        }
+    }
+    
+    static func hideNotch() {
+        MusicNotch?.hide()
     }
     
     func appSetup() {
@@ -82,5 +90,19 @@ struct MusicNotchApp: App {
         print(SpotifyManager.shared.trackName)
         getAudioOutputDevice()
         registerForAudioDeviceChanges()
+        callNotchHeight()
+    }
+}
+
+@MainActor
+@Observable
+final class AppState {
+    init() {
+        print("Registering keyboard shortcut...")
+
+        KeyboardShortcuts.onKeyUp(for: .toggleNotch) {
+            print("Keyboard shortcut pressed!")
+            MusicNotchApp.changeNotch()
+        }
     }
 }

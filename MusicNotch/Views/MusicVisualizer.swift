@@ -100,13 +100,10 @@ class AudioSpectrum: NSView {
     
     func setPlaying(_ playing: Bool) {
         isPlaying = playing
-        print("Set playing music thing")
         if isPlaying == true {
             startAnimating()
-            print("Start animation")
         } else {
             stopAnimating()
-            print("stop animation")
         }
     }
 }
