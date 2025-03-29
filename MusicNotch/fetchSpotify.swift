@@ -31,16 +31,24 @@ class SpotifyManager: ObservableObject {
     
     public func updateInfo() {
         collectBasicInfo()
-        self.fetchAlbumArt()
+        
+        if self.isPlaying == true {
+            
+            updatePlayIcon()
+            updateShuffleIcon()
+            self.fetchAlbumArt()
+        }
         
         if self.isPlaying == false{
             if notchState != "hide" {
                 timer = timer + 1
             }
+            
             if timer > hideNotchTime {
                 MusicNotchApp.hideNotch()
                 notchState = "hide"
             }
+            
         } else if self.isPlaying == true && timer >= 1{
             if notchState == "hide" {
                 MusicNotchApp.showNotch()
@@ -48,9 +56,9 @@ class SpotifyManager: ObservableObject {
                 MusicNotchApp.changeNotch()
 
             }
+            
             timer = 0
         }
-
     }
     
     public func collectBasicInfo() {
@@ -195,16 +203,7 @@ class SpotifyManager: ObservableObject {
                 finalResult.removeLast()
             }
             
-            //print("Aktueller Track: \(SpotifyManager.shared.trackName) von \(SpotifyManager.shared.artistName)")
-            //print("Playing State: \(SpotifyManager.shared.isPlaying)")
-//            print("Trackposition: \(SpotifyManager.shared.trackPosition)")
-//            print("Trackduration: \(SpotifyManager.shared.trackDuration)")
-//            print(SpotifyManager.shared.trackDuration - SpotifyManager.shared.trackPosition)
 
-            
-            //Update Assets
-            updatePlayIcon()
-            updateShuffleIcon()
 
                         
             // Sicherstellen, dass genügend Daten vorhanden sind
@@ -226,7 +225,6 @@ class SpotifyManager: ObservableObject {
                 self.popularity = Int(finalResult[14]) ?? 0
                 self.shuffle = finalResult[15] == "true"
                 self.albumArtURL = finalResult[16]
-                //print("Shuffle aktiv: \(self.shuffle)")
             } else {
                 self.spotifyRunning = false
                 //clearAllData()

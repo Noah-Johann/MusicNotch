@@ -27,6 +27,9 @@ struct MusicNotchApp: App {
     
     var body: some Scene {
         MenuBarExtra("boring.notch", systemImage: "music.note.tv", isInserted: $showMenuBarIcon) {
+            Button("About MusicNotch") {
+                NSApp.orderFrontStandardAboutPanel()
+            }
             SettingsLink(label: {
                 Text("Settings")
             })
@@ -43,12 +46,12 @@ struct MusicNotchApp: App {
         guard let notchScreen = NSScreen.screens.first(where: { $0.safeAreaInsets.top > 0 }) else {
             print("No notch screen found")
             MusicNotch?.show(on: NSScreen.screens.first!)
+            NSApp.setActivationPolicy(.accessory)
             return
         }
         
         DispatchQueue.main.async {
-            MusicNotch?.show(on: notchScreen)
-        }
+            MusicNotch?.show(on: notchScreen) }
         NSApp.setActivationPolicy(.accessory)
 
     }
@@ -57,13 +60,11 @@ struct MusicNotchApp: App {
         
         if MusicNotch == nil {
             MusicNotch = DynamicNotch(style: .notch) {
-                AnyView(closedPlayer()) // Ensure uniform return type
-            }
+                AnyView(closedPlayer()) }
             notchState = "closed"
         }
         
         showOnNotchScreen()
-        print("showNotch called")
     }
     
     static func changeNotch() {
@@ -92,7 +93,7 @@ struct MusicNotchApp: App {
     static func hideNotch() {
         MusicNotch?.hide()
     }
-    
+    @State var fetchTimer: Double = 1
     func appSetup() {
         requestAllPermissions()
         SpotifyManager.shared.startAutoUpdate(withInterval: 1)
@@ -107,10 +108,7 @@ struct MusicNotchApp: App {
 @Observable
 final class AppState {
     init() {
-        print("Registering keyboard shortcut...")
-
         KeyboardShortcuts.onKeyUp(for: .toggleNotch) {
-            print("Keyboard shortcut pressed!")
             MusicNotchApp.changeNotch()
         }
     }
