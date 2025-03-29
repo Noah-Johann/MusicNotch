@@ -13,9 +13,6 @@ struct closedPlayer: View {
     static let shared = closedPlayer()
 
     @ObservedObject var spotifyManager = SpotifyManager.shared
-    @State private var isDragging = false
-    @State public var sliderValue: Double = 0
-    @State private var trackposition : Double = 0
     
     var body: some View {
         VStack {

@@ -77,7 +77,6 @@ struct MusicNotchApp: App {
             DispatchQueue.main.async {
                 MusicNotch?.setContent { AnyView(closedPlayer()) }
             }
-            OpendPlayer.shared.stopTimer()
             notchState = "closed"
         } else {
             print("Hidden")

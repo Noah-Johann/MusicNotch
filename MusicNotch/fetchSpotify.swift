@@ -48,7 +48,6 @@ class SpotifyManager: ObservableObject {
         updatePlayIcon()
         updateShuffleIcon()
         self.fetchAlbumArt()
-        OpendPlayer.shared.updateTimerState(self.isPlaying)
         
         
         if self.isPlaying == false{
