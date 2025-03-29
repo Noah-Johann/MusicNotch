@@ -15,6 +15,53 @@ struct OpendPlayer: View {
     @State private var isDragging = false
     @State public var sliderValue: Double = 0
     @State private var trackposition : Double = 0
+    @State private var isTimerRunning = false
+    @State private var timer: Timer?
+    
+    // Function to start the timer that updates trackposition
+    public func startTimer() {
+        // Ensure we don't create duplicate timers
+        if timer != nil {
+            print("Timer already exists, not creating a new one")
+            return
+        }
+        
+        isTimerRunning = true
+        print("start timer")
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [self] _ in
+            if !isDragging && spotifyManager.isPlaying {
+                trackposition += 1.0
+                sliderValue = trackposition // Also update the slider value
+                print("plus 1")
+            }
+        }
+        // Make sure the timer is retained
+        RunLoop.current.add(timer!, forMode: .common)
+    }
+    
+    // Function to stop the timer
+    public func stopTimer() {
+        print("stop timer")
+        isTimerRunning = false
+        if let validTimer = timer {
+            validTimer.invalidate()
+            timer = nil
+        }
+    }
+    
+    // Function to handle timer based on playback state
+    public func updateTimerState(_ state: Bool) {
+        if state == true {
+            // Only create a timer if one doesn't exist
+            if timer == nil {
+                startTimer()
+                print("update start timer")
+            }
+        } else if state == false {
+            stopTimer()
+            print("update stop timer")
+        }
+    }
     
     var body: some View {
         VStack {
@@ -78,7 +125,6 @@ struct OpendPlayer: View {
                     .font(.system(size: 12))
                 
             }
-            
             //Controls
             HStack {
                 
@@ -163,9 +209,10 @@ struct OpendPlayer: View {
             
         }
         .onReceive(spotifyManager.$trackPosition) { newValue in
-            if !isDragging {
-                trackposition = Double(newValue)
-            }
+            trackposition = Double(newValue)
+        }
+        .onDisappear {
+            stopTimer()
         } .padding(.bottom, 15)
     }
     

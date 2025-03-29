@@ -97,6 +97,8 @@ struct customSlider: View {
     }
 }
 
+
+//Preview
 struct ControlCenterSlider_Previews: PreviewProvider {
     @State static var previewValue: Double = 30
     @State static var progressValue: Int = 30

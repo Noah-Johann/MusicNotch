@@ -24,20 +24,32 @@ class SpotifyManager: ObservableObject {
     @Published var shuffle: Bool = false
     @Published var albumArtURL: String = ""
     @Published var albumArtImage: NSImage? = nil
-    private var updateTimer: Timer?
     
     
-    private init() {}
+    private init() {
+        setupPlaybackObserver()
+    }
+    
+    private func setupPlaybackObserver() {
+        // Register for Spotify playback state changes via NSDistributedNotificationCenter
+        DistributedNotificationCenter.default().addObserver(self,
+                                selector: #selector(playbackStateChanged(_:)),
+                                name: NSNotification.Name("com.spotify.client.PlaybackStateChanged"),
+                                object: nil)
+    }
+
+    @objc private func playbackStateChanged(_ notification: Notification) {
+        self.updateInfo()
+    }
     
     public func updateInfo() {
+        print("update info")
         collectBasicInfo()
+        updatePlayIcon()
+        updateShuffleIcon()
+        self.fetchAlbumArt()
+        OpendPlayer.shared.updateTimerState(self.isPlaying)
         
-        if self.isPlaying == true {
-            
-            updatePlayIcon()
-            updateShuffleIcon()
-            self.fetchAlbumArt()
-        }
         
         if self.isPlaying == false{
             if notchState != "hide" {
@@ -281,19 +293,6 @@ class SpotifyManager: ObservableObject {
         }
         
         return nil
-    }
-    
-    // Funktion zum automatischen Abrufen der Spotify-Daten in regelmäßigen Abständen
-    public func startAutoUpdate(withInterval interval: TimeInterval = 60) {
-        updateTimer?.invalidate()
-        updateTimer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { [weak self] _ in
-            self?.updateInfo()
-        }
-    }
-    
-    public func stopAutoUpdate() {
-        updateTimer?.invalidate()
-        updateTimer = nil
     }
     
     func fetchAlbumArt() {

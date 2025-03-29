@@ -5,9 +5,6 @@
 //  Created by Noah Johann on 15.03.25.
 //
 
-import Foundation
-import CoreAudio
-
 public enum PlayState: String {
     case play
     case pause

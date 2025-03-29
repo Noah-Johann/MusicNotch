@@ -17,7 +17,6 @@ func spotifyPlayPause() {
         task.waitUntilExit()
         print("Spotify Play/Pause ausgeführt")
         SpotifyManager.shared.updateInfo()
-        updatePlayIcon()
     } catch {
         print("Fehler bei der Ausführung: \(error)")
     }

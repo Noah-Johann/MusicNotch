@@ -46,12 +46,11 @@ struct MusicNotchApp: App {
         guard let notchScreen = NSScreen.screens.first(where: { $0.safeAreaInsets.top > 0 }) else {
             print("No notch screen found")
             MusicNotch?.show(on: NSScreen.screens.first!)
-            NSApp.setActivationPolicy(.accessory)
             return
         }
         
-        DispatchQueue.main.async {
-            MusicNotch?.show(on: notchScreen) }
+    
+        MusicNotch?.show(on: notchScreen)
         NSApp.setActivationPolicy(.accessory)
 
     }
@@ -72,11 +71,13 @@ struct MusicNotchApp: App {
             DispatchQueue.main.async {
                 MusicNotch?.setContent { AnyView(OpendPlayer()) }
             }
+            SpotifyManager.shared.updateInfo()
             notchState = "open"
         } else if notchState == "open" {
             DispatchQueue.main.async {
                 MusicNotch?.setContent { AnyView(closedPlayer()) }
             }
+            OpendPlayer.shared.stopTimer()
             notchState = "closed"
         } else {
             print("Hidden")
@@ -96,11 +97,11 @@ struct MusicNotchApp: App {
     @State var fetchTimer: Double = 1
     func appSetup() {
         requestAllPermissions()
-        SpotifyManager.shared.startAutoUpdate(withInterval: 1)
         print(SpotifyManager.shared.trackName)
         getAudioOutputDevice()
         registerForAudioDeviceChanges()
         callNotchHeight()
+        SpotifyManager.shared.updateInfo()
     }
 }
 
