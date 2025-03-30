@@ -24,6 +24,8 @@ class SpotifyManager: ObservableObject {
     @Published var shuffle: Bool = false
     @Published var albumArtURL: String = ""
     @Published var albumArtImage: NSImage? = nil
+    private var hideTimer: Timer?
+    private var stopTime = 0
     
     
     private init() {
@@ -49,26 +51,28 @@ class SpotifyManager: ObservableObject {
         updateShuffleIcon()
         self.fetchAlbumArt()
         
+        if self.isPlaying == false {
+            stopTime = 0
+            if hideTimer == nil {
+                print("start timer")
+                hideTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+                    self.stopTime += 1
+                    print("plus1")
+                    if self.stopTime > hideNotchTime {
+                        self.hideTimer?.invalidate()
+                        print("hideNotch")
+                        MusicNotchApp.hideNotch()
+                    }
+                }
+            }
+        }
         
-        if self.isPlaying == false{
-            if notchState != "hide" {
-                timer = timer + 1
-            }
-            
-            if timer > hideNotchTime {
-                MusicNotchApp.hideNotch()
-                notchState = "hide"
-            }
-            
-        } else if self.isPlaying == true && timer >= 1{
-            if notchState == "hide" {
-                MusicNotchApp.showNotch()
-                notchState = "open"
-                MusicNotchApp.changeNotch()
-
-            }
-            
-            timer = 0
+        if self.isPlaying == true && hideTimer != nil {
+            print("timerdelete")
+            self.hideTimer?.invalidate()
+            self.hideTimer = nil
+            MusicNotchApp.showOnNotchScreen()
+            notchState = "closed"
         }
     }
     

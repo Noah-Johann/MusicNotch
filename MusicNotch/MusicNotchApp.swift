@@ -43,6 +43,9 @@ struct MusicNotchApp: App {
     }
     
     static func showOnNotchScreen() {
+        DispatchQueue.main.async {
+            MusicNotch?.setContent { AnyView(closedPlayer()) }
+        }
         guard let notchScreen = NSScreen.screens.first(where: { $0.safeAreaInsets.top > 0 }) else {
             print("No notch screen found")
             MusicNotch?.show(on: NSScreen.screens.first!)
@@ -92,8 +95,9 @@ struct MusicNotchApp: App {
     
     static func hideNotch() {
         MusicNotch?.hide()
+        notchState = "hide"
     }
-    @State var fetchTimer: Double = 1
+    
     func appSetup() {
         requestAllPermissions()
         print(SpotifyManager.shared.trackName)
