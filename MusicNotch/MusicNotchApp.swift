@@ -26,7 +26,7 @@ struct MusicNotchApp: App {
     }
     
     var body: some Scene {
-        MenuBarExtra("boring.notch", systemImage: "music.note.tv", isInserted: $showMenuBarIcon) {
+        MenuBarExtra("MusicNotch", image: "notchsquare", isInserted: $showMenuBarIcon) {
             Button("About MusicNotch") {
                 NSApp.orderFrontStandardAboutPanel()
             }
