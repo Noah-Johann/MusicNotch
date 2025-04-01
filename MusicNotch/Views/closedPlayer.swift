@@ -10,7 +10,7 @@ import AppKit
 
 
 struct closedPlayer: View {
-    static let shared = closedPlayer()
+    @State public var albumArtSizeClosed = 30.0
 
     @ObservedObject var spotifyManager = SpotifyManager.shared
     
@@ -22,10 +22,12 @@ struct closedPlayer: View {
                     Image(nsImage: albumArt)
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 30, height: 30)
+                        .frame(width: albumArtSizeClosed, height: albumArtSizeClosed)
                         .cornerRadius(6)
                         .padding(.leading, 3)
                         .padding(.trailing, 230)
+                        .animation(.easeInOut(duration: 0.3), value: albumArtSizeClosed)
+
                 }
                 AudioSpectrumView(isPlaying: spotifyManager.isPlaying)
                     .foregroundColor(.white)
@@ -33,6 +35,20 @@ struct closedPlayer: View {
                 
             } .frame(width: 284, height: notchHeight + notchSizeChange, alignment: .center)
             
+        }
+        .onChange(of: spotifyManager.isPlaying) {
+            changeArtSize(spotifyManager.isPlaying)
+        }
+    }
+    
+    func changeArtSize (_ playbackState: Bool) {
+        print("playstate: \(playbackState)")
+        if playbackState == true {
+            albumArtSizeClosed = 30.0
+            print(albumArtSizeClosed)
+        } else if playbackState == false {
+            albumArtSizeClosed = 25.0
+            print("small: \(albumArtSizeClosed)")
         }
     }
 }

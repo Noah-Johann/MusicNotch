@@ -9,7 +9,7 @@ import SwiftUI
 import DynamicNotchKit
 import KeyboardShortcuts
 
-var notchState: String = "hide"
+var notchState: String = "closed"
 
 @main
 struct MusicNotchApp: App {

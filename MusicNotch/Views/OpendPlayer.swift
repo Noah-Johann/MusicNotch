@@ -15,19 +15,25 @@ struct OpendPlayer: View {
     @State private var isDragging = false
     @State private var trackposition : Double = 0
     @State private var playbackTimer: Timer?
+    @State private var albumArtSizeOpen = 80.0
 
     var body: some View {
         VStack {
             HStack {
+                HStack {
+                    
+                    if let albumArt = spotifyManager.albumArtImage {
+                        Image(nsImage: albumArt)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: albumArtSizeOpen, height: albumArtSizeOpen)
+                            .cornerRadius(6)
+                            .padding(.vertical, 10)
+                            .animation(.easeInOut(duration: 0.3), value: albumArtSizeOpen)
+                        
+                    }
+                } .frame(width: 80, height: 80)
                 
-                if let albumArt = spotifyManager.albumArtImage {
-                    Image(nsImage: albumArt)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 80, height: 80)
-                        .cornerRadius(6)
-                        .padding(.vertical, 10)
-                }
                 
                 VStack {
                     Text(spotifyManager.trackName)
@@ -160,25 +166,28 @@ struct OpendPlayer: View {
                 
             }
             
-        }
-        .onReceive(spotifyManager.$trackPosition) { newValue in
-            trackposition = Double(newValue)
-        }
-        .onAppear {
-            if spotifyManager.isPlaying == true {
-                playbackTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
-                    if spotifyManager.isPlaying == true {
-                        trackposition += 1
+            }
+            .onReceive(spotifyManager.$trackPosition) { newValue in
+                trackposition = Double(newValue)
+            }
+            .onAppear {
+                if spotifyManager.isPlaying == true {
+                    playbackTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+                        if spotifyManager.isPlaying == true {
+                            trackposition += 1
+                        }
                     }
                 }
             }
-
+            .onDisappear {
+                playbackTimer?.invalidate()
+            }
+            .onChange(of: spotifyManager.isPlaying) {
+                changeArtSize(spotifyManager.isPlaying)
+            }
+            .padding(.bottom, 15)
+            
         }
-        .onDisappear {
-            playbackTimer?.invalidate()
-        }
-        .padding(.bottom, 15)
-    }
     
     private func progressChanged() {
         print("Neuer Wert: \(trackposition)")
@@ -194,6 +203,17 @@ struct OpendPlayer: View {
         
         if let error = errorDict {
             print("AppleScript Error: \(error)")
+        }
+    }
+    
+    func changeArtSize (_ playbackState: Bool) {
+        print("playstate: \(playbackState)")
+        if playbackState == true {
+            albumArtSizeOpen = 80
+            print(albumArtSizeOpen)
+        } else if playbackState == false {
+            albumArtSizeOpen = 70
+            print(albumArtSizeOpen)
         }
     }
 }

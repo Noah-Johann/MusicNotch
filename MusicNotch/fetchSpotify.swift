@@ -5,6 +5,9 @@ public var timer = 0
 class SpotifyManager: ObservableObject {
     static let shared = SpotifyManager()
     
+    // private var closedView = closedPlayer()
+    // private var opendView = OpendPlayer()
+    
     // Öffentliche Eigenschaften
     @Published var spotifyRunning: Bool = false
     @Published var isPlaying: Bool = false
@@ -60,19 +63,25 @@ class SpotifyManager: ObservableObject {
                     print("plus1")
                     if self.stopTime > hideNotchTime {
                         self.hideTimer?.invalidate()
+                        self.hideTimer = nil
                         print("hideNotch")
                         MusicNotchApp.hideNotch()
+                        
                     }
                 }
             }
+        }
+        
+        if self.isPlaying == true  && notchState == "hide" {
+            MusicNotchApp.showOnNotchScreen()
+            notchState = "closed"
         }
         
         if self.isPlaying == true && hideTimer != nil {
             print("timerdelete")
             self.hideTimer?.invalidate()
             self.hideTimer = nil
-            MusicNotchApp.showOnNotchScreen()
-            notchState = "closed"
+
         }
     }
     
