@@ -17,18 +17,21 @@ struct closedPlayer: View {
     var body: some View {
         VStack {
             HStack {
+                HStack {
+                    
+                    if let albumArt = spotifyManager.albumArtImage {
+                        Image(nsImage: albumArt)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: albumArtSizeClosed, height: albumArtSizeClosed)
+                            .cornerRadius(6)
+                            .animation(.easeInOut(duration: 0.3), value: albumArtSizeClosed)
+                        
+                    }
+                }   .frame(width: 30, height: 30)
+                    .padding(.leading, 3)
+                    .padding(.trailing, 230)
                 
-                if let albumArt = spotifyManager.albumArtImage {
-                    Image(nsImage: albumArt)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: albumArtSizeClosed, height: albumArtSizeClosed)
-                        .cornerRadius(6)
-                        .padding(.leading, 3)
-                        .padding(.trailing, 230)
-                        .animation(.easeInOut(duration: 0.3), value: albumArtSizeClosed)
-
-                }
                 AudioSpectrumView(isPlaying: spotifyManager.isPlaying)
                     .foregroundColor(.white)
                     .frame(width: 15, height: 15)

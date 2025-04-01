@@ -186,6 +186,7 @@ struct OpendPlayer: View {
                 changeArtSize(spotifyManager.isPlaying)
             }
             .padding(.bottom, 15)
+            .padding(.top, 10)
             
         }
     
