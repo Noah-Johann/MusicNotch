@@ -7,10 +7,12 @@
 import SwiftUI
 import DynamicNotchKit
 import AppKit
+import Defaults
 
 
 struct closedPlayer: View {
     @State public var albumArtSizeClosed = 30.0
+    @Default(.notchSizeChange) private var notchSizeChange
 
     @ObservedObject var spotifyManager = SpotifyManager.shared
     

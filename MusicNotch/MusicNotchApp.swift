@@ -8,6 +8,7 @@
 import SwiftUI
 import DynamicNotchKit
 import KeyboardShortcuts
+import LaunchAtLogin
 
 var notchState: String = "closed"
 

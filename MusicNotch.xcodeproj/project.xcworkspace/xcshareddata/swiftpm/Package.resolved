@@ -1,6 +1,15 @@
 {
-  "originHash" : "2647f6c27242370f664c0b7ed93fddc621987d7e35970dc636c49839627ce3a5",
+  "originHash" : "0b8da9b895bc638f4377b389a7c97f0011f3fdb53d430369e903e45c4bc21b8a",
   "pins" : [
+    {
+      "identity" : "defaults",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/sindresorhus/Defaults",
+      "state" : {
+        "branch" : "main",
+        "revision" : "00c82eff4550c87cf9c547d7e5493a6a97837061"
+      }
+    },
     {
       "identity" : "dynamicnotchkit",
       "kind" : "remoteSourceControl",
@@ -20,12 +29,30 @@
       }
     },
     {
+      "identity" : "launchatlogin-modern",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/sindresorhus/LaunchAtLogin-Modern",
+      "state" : {
+        "branch" : "main",
+        "revision" : "a04ec1c363be3627734f6dad757d82f5d4fa8fcc"
+      }
+    },
+    {
       "identity" : "luminare",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/MrKai77/Luminare",
       "state" : {
         "branch" : "main",
         "revision" : "a9c1d600e972c5523c27eb7cd84637f4f05beaaa"
+      }
+    },
+    {
+      "identity" : "swift-syntax",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swiftlang/swift-syntax",
+      "state" : {
+        "revision" : "f99ae8aa18f0cf0d53481901f88a0991dc3bd4a2",
+        "version" : "601.0.1"
       }
     }
   ],

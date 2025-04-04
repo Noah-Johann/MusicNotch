@@ -6,7 +6,16 @@
 //
 
 import Foundation
+import SwiftUI
+import Defaults
+import LaunchAtLogin
 
-public var hideNotchTime = 3
-public var notchSizeChange: CGFloat = 0
+extension Defaults.Keys {
+    static let viewedOnboarding = Key<Bool>("viewedOnboarding", default: false)
+    
+    static let launchAtLogin = Key<Bool>("LaunchAtLogin", default: LaunchAtLogin.isEnabled)
+    
+    static let hideNotchTime = Key<Int>("hideNotchTime", default: 3)
+    static let notchSizeChange = Key<CGFloat>("notchSizeChange", default: 0)
+}
 
