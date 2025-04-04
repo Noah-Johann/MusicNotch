@@ -6,7 +6,11 @@
 //
 
 import Foundation
+import Cocoa
 
-func copyInfo() {
-    print("Copy info here")
+func copyInfo(text: String) {
+    let pasteboard = NSPasteboard.general
+    pasteboard.clearContents()
+    pasteboard.setString(text, forType: .string)
+    print("Copied to clipboard: \(text)")
 }

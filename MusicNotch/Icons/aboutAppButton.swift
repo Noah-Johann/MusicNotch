@@ -11,7 +11,7 @@ import Luminare
 @ViewBuilder
 func aboutAppButton() -> some View {
     Button {
-        copyInfo()
+        copyInfo(text: "Version: \(Bundle.main.appVersion!) (\(Bundle.main.appBuild!))")
     } label: {
         HStack(spacing: 12) {
             Image("AboutIcon")
