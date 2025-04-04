@@ -2,16 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>ShowInDock</key>
-	<false/>
-	<key>LSBackgroundOnly</key>
-	<integer>1</integer>
-	<key>LSUIElement</key>
-	<true/>
 	<key>CFBundleName</key>
 	<string>MusicNotch</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.framer.n-johann.MusicNotch</string>
+	<string>com.NoahJohann.MusicNotch</string>
 	<key>CFBundleVersion</key>
 	<string>0.0.1</string>
 	<key>NSAppleEventsUsageDescription</key>

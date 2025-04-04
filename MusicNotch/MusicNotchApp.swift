@@ -9,6 +9,7 @@ import SwiftUI
 import DynamicNotchKit
 import KeyboardShortcuts
 import LaunchAtLogin
+import Luminare
 
 var notchState: String = "closed"
 
@@ -23,24 +24,31 @@ struct MusicNotchApp: App {
         timer = 0
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             MusicNotchApp.showNotch()
+
         }
     }
     
     var body: some Scene {
+        
         MenuBarExtra("MusicNotch", image: "notchsquare", isInserted: $showMenuBarIcon) {
             Button("About MusicNotch") {
                 NSApp.orderFrontStandardAboutPanel()
             }
-            SettingsLink(label: {
-                Text("Settings")
-            })
+            
+            Button("Settings") {
+                let settingsWindow = LuminareWindow(blurRadius: 40) {
+                    SettingsView()
+                        .frame(width: 500, height: 600)
+                }
+                
+                settingsWindow.show()
+            }
+
             Button("Quit", role: .destructive) {
                 NSApp.terminate(nil)
             }
         }
-        Settings {
-            SettingsView()
-        }
+        
     }
     
     static func showOnNotchScreen() {
@@ -55,7 +63,7 @@ struct MusicNotchApp: App {
         
     
         MusicNotch?.show(on: notchScreen)
-        NSApp.setActivationPolicy(.accessory)
+        NSApp.setActivationPolicy(.prohibited)
 
     }
 
@@ -118,3 +126,4 @@ final class AppState {
         }
     }
 }
+

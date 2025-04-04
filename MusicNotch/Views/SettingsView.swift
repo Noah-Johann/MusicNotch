@@ -19,39 +19,42 @@ struct SettingsView: View {
 
 
     var body: some View {
-        VStack {
-            LuminareSection("General") {
-                LuminareToggle(
-                    "Launch at login",
-                    isOn: Binding(
-                        get: { LaunchAtLogin.isEnabled },
-                        set: { value in LaunchAtLogin.isEnabled = value }
+        LuminarePane {}
+    content: {
+            VStack {
+                LuminareSection("General") {
+                    LuminareToggle(
+                        "Launch at login",
+                        isOn: Binding(
+                            get: { LaunchAtLogin.isEnabled },
+                            set: { value in LaunchAtLogin.isEnabled = value }
+                        )
                     )
-                )
-            } .padding(.bottom, 7)              
-            LuminareSection("Notch") {
-            } .padding(.bottom, 7)
-            LuminareSection("About") {
-                aboutAppButton()
-                    .frame(height: 75)
-            } .padding(.bottom, 7)
-            LuminareSection() {
-                aboutButton(name: "Noah Johann",
-                            role: "Development",
-                            link: URL(string: "https://github.com/Noah-Johann")!,
-                            image: Image("Credit")
-                ) .frame(height: 60)
-                aboutButton(name: "Github",
-                            role: "Contribute on Github",
-                            link: URL(string: "https://github.com/Noah-Johann/MusicNotch")!,
-                            image: Image("Github")
-                ) .frame( height: 60)
-            }
-            Text(Bundle.main.copyright)
-                .padding()
-                .font(.caption)
-                .foregroundStyle(.secondary)
-        } .padding(30)
+                } .padding(.bottom, 7)
+                LuminareSection("Notch") {
+                } .padding(.bottom, 7)
+                LuminareSection("About") {
+                    aboutAppButton()
+                        .frame(height: 75)
+                } .padding(.bottom, 7)
+                LuminareSection() {
+                    aboutButton(name: "Noah Johann",
+                                role: "Development",
+                                link: URL(string: "https://github.com/Noah-Johann")!,
+                                image: Image("Credit")
+                    ) .frame(height: 60)
+                    aboutButton(name: "Github",
+                                role: "Contribute on Github",
+                                link: URL(string: "https://github.com/Noah-Johann/MusicNotch")!,
+                                image: Image("Github")
+                    ) .frame( height: 60)
+                }
+                Text(Bundle.main.copyright)
+                    .padding()
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            } .padding(30)
+        }
     }
     
     @ViewBuilder
