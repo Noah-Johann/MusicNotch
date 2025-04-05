@@ -57,7 +57,7 @@ struct SettingsView: View {
                                 image: Image("Credit")
                     ) .frame(height: 60)
                     
-                    aboutButton(name: "Github",
+                    aboutButton(name: "GitHub",
                                 role: "Contribute on Github",
                                 link: URL(string: "https://github.com/Noah-Johann/MusicNotch")!,
                                 image: Image("Github")
