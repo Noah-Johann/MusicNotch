@@ -20,6 +20,7 @@ struct SettingsView: View {
     var body: some View {
         LuminarePane {}
         content: {
+            
             VStack {
                 LuminareSection("General") {
                     LuminareToggle(
@@ -100,7 +101,7 @@ struct SettingsView: View {
                     .padding()
                     .font(.caption)
                     .foregroundStyle(.secondary)
-            }
+            } .padding(.horizontal, 5)
         }
     }
     

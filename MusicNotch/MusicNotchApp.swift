@@ -23,6 +23,7 @@ struct MusicNotchApp: App {
         appSetup()
         timer = 0
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            print("shownotch")
             MusicNotchApp.showNotch()
 
         }
@@ -63,7 +64,7 @@ struct MusicNotchApp: App {
         
     
         MusicNotch?.show(on: notchScreen)
-        NSApp.setActivationPolicy(.prohibited)
+        NSApp.setActivationPolicy(.accessory)
 
     }
 
