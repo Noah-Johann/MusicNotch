@@ -15,6 +15,7 @@ struct SettingsView: View {
     
     @Default(.hideNotchTime) private var hideNotchTime
     @Default(.notchSizeChange) private var notchSizeChange
+    
 
 
     var body: some View {
@@ -43,9 +44,14 @@ struct SettingsView: View {
                 
                 
                 LuminareSection("Notch") {
+                    
+                    LuminareValueAdjuster("Notch Size Change", value: $notchSizeChange, sliderRange: 0...5.0, suffix:"px", step: 1.0)
+                    
+                    LuminareValueAdjuster("Hide Notch when nothing is playing", value: $hideNotchTime, sliderRange: 1...15, suffix:"s", step: 1)
                 } .padding(.bottom, 14)
                 
                 LuminareSection("About") {
+                    
                     aboutAppButton()
                         .frame(height: 75)
                 } .padding(.bottom, 7)
