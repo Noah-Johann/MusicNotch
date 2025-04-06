@@ -15,7 +15,6 @@ func spotifyNextTrack() {
     do {
         try task.run()
         task.waitUntilExit()
-        print("Spotify Play/Pause ausgeführt")
         SpotifyManager.shared.updateInfo()
         updatePlayIcon()
     } catch {

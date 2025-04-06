@@ -15,7 +15,6 @@ func spotifyShuffle() {
     do {
         try task.run()
         task.waitUntilExit()
-        print("Spotify Shuffle umgeschaltet")
         SpotifyManager.shared.updateInfo()
         updateShuffleIcon()
     } catch {
