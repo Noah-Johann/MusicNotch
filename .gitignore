@@ -1,10 +1,9 @@
-*.DS_Store
+
 .vscode
 MusicNotch/.DS_Store
 xcuserdata/
 MusicNotchUITests/
 MusicNotchTests/
 MusicNotch.xcodeproj/xcuserdata/
-MusicNotch.xcodeproj/project.xcworkspace/xcuserdata/noah.xcuserdatad/UserInterfaceState.xcuserstate
 Builds/
-
+*.DS_Store
