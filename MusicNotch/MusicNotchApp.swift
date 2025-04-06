@@ -42,23 +42,24 @@ struct MusicNotchApp: App {
                         .frame(width: 500, height: 600)
                 }
 
-                // Get the screen's frame
-                if let screen = NSScreen.main {
-                    let screenFrame = screen.frame
-                    let windowWidth: CGFloat = 500 // Width of the settings window
-                    let windowHeight: CGFloat = 600 // Height of the settings window
-                    
-                    // Calculate the origin to center the window
-                    let origin = CGPoint(
-                        x: (screenFrame.width - windowWidth) / 2,
-                        y: (screenFrame.height - windowHeight) / 2
-                    )
-
-                    // Set the frame to the calculated origin
-                    settingsWindow.setFrame(CGRect(origin: origin, size: CGSize(width: windowWidth, height: windowHeight)), display: true)
-                }
+//                // Get the screen's frame
+//                if let screen = NSScreen.main {
+//                    let screenFrame = screen.frame
+//                    let windowWidth: CGFloat = 500 // Width of the settings window
+//                    let windowHeight: CGFloat = 600 // Height of the settings window
+//                    
+//                    // Calculate the origin to center the window
+//                    let origin = CGPoint(
+//                        x: (screenFrame.width - windowWidth) / 2,
+//                        y: (screenFrame.height - windowHeight) / 2
+//                    )
+//
+//                    // Set the frame to the calculated origin
+//                    settingsWindow.setFrame(CGRect(origin: origin, size: CGSize(width: windowWidth, height: windowHeight)), display: true)
+//                }
 
                 settingsWindow.show()
+                settingsWindow.center()
             }
 
             Button("Quit", role: .destructive) {
