@@ -33,7 +33,13 @@ struct MusicNotchApp: App {
         
         MenuBarExtra("MusicNotch", image: "notchsquare", isInserted: $showMenuBarIcon) {
             Button("About MusicNotch") {
-                NSApp.orderFrontStandardAboutPanel()
+                let aboutWindow = LuminareWindow(blurRadius: 40) {
+                    aboutView()
+                        .frame(width: 300, height: 380)
+                }
+                
+                aboutWindow.center()
+                aboutWindow.show()
             }
             
             Button("Settings") {
@@ -42,8 +48,9 @@ struct MusicNotchApp: App {
                         .frame(width: 500, height: 600)
                 }
                 
-                settingsWindow.show()
                 settingsWindow.center()
+                settingsWindow.show()
+                
             }
 
             Button("Quit", role: .destructive) {
