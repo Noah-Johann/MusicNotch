@@ -14,7 +14,7 @@ func aboutAppButton() -> some View {
         copyInfo(text: "MusicNotch Version \(Bundle.main.appVersion!) (\(Bundle.main.appBuild!))")
     } label: {
         HStack(spacing: 12) {
-            Image("AboutIcon")
+            Image(nsImage: NSApp.applicationIconImage)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 60, height: 60)
@@ -34,3 +34,5 @@ func aboutAppButton() -> some View {
     }
     .buttonStyle(LuminareCosmeticButtonStyle(Image(systemName: "clipboard")))
 }
+
+
