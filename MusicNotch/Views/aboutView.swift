@@ -15,25 +15,21 @@ struct aboutView: View {
             VStack(spacing: 0) {
                 Image(nsImage: NSApp.applicationIconImage)
                     .resizable()
-                    .frame(width: 128, height: 128)
-                  //  .padding(.top, 6)
-                    .padding(.bottom, 14)
+                    .frame(width: 130, height: 130)
+                    .padding(.bottom, 13)
 
                 VStack(spacing: 0) {
-                    Text("MusicNotch")
+                    Text(Bundle.main.appName)
                         .blur(radius: 0)
                         .foregroundColor(.primary)
                         .font(.system(
-                            size: 26,
+                            size: 28,
                             weight: .bold
                         ))
                     Text("Version \(Bundle.main.appVersion!) (\(Bundle.main.appBuild!))")
-                        .textSelection(.enabled)
                         .foregroundColor(Color(.tertiaryLabelColor))
                         .font(.body)
-                        .padding(.top, 4)
-                        .blur(radius: 0)
-                        .opacity(1)
+                        .padding(.top, 5)
                 }
                 .padding(.horizontal)
                 .padding(.bottom, 30)
@@ -47,12 +43,9 @@ struct aboutView: View {
                 } .padding(.bottom, 20)
                 VStack {
                     Text(Bundle.main.copyright)
-                        .textSelection(.enabled)
                         .foregroundColor(Color(.tertiaryLabelColor))
                         .font(.body)
-                        .padding(.top, 4)
-                        .blur(radius: 0)
-                        .opacity(1)
+                        .padding(.top, 5)
                 }
             }
             .padding(.horizontal, 24)

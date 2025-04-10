@@ -130,7 +130,7 @@ struct MusicNotchApp: App {
 @Observable
 final class AppState {
     init() {
-        KeyboardShortcuts.onKeyUp(for: .toggleNotch) {
+        KeyboardShortcuts.onKeyDown(for: .toggleNotch) {
             MusicNotchApp.changeNotch()
         }
     }

@@ -10,6 +10,7 @@ import SwiftUI
 import Luminare
 import Defaults
 import LaunchAtLogin
+import KeyboardShortcuts
 
 struct SettingsView: View {
     
@@ -48,6 +49,11 @@ struct SettingsView: View {
                     LuminareValueAdjuster("Notch Size Change", value: $notchSizeChange, sliderRange: 0...5.0, suffix:"px", step: 1.0)
                     
                     LuminareValueAdjuster("Hide Notch when nothing is playing", value: $hideNotchTime, sliderRange: 1...15, suffix:"s", step: 1)
+                } .padding(.bottom, 14)
+                
+                LuminareSection("Keyboard shortcuts") {
+                        KeyboardShortcuts.Recorder("Toggle Notch", name: .toggleNotch)
+                    
                 } .padding(.bottom, 14)
                 
                 LuminareSection("About") {
