@@ -16,13 +16,13 @@ struct SettingsView: View {
     
     @Default(.hideNotchTime) private var hideNotchTime
     @Default(.notchSizeChange) private var notchSizeChange
-    
+    @State var showAcknowledgements = false
+
 
 
     var body: some View {
         LuminarePane {}
         content: {
-            
             VStack {
                 LuminareSection("General") {
                     LuminareToggle(
@@ -48,10 +48,10 @@ struct SettingsView: View {
                     
                     LuminareValueAdjuster("Notch Size Change", value: $notchSizeChange, sliderRange: 0...5.0, suffix:"px", step: 1.0)
                     
-                    LuminareValueAdjuster("Hide Notch when nothing is playing", value: $hideNotchTime, sliderRange: 1...15, suffix:"s", step: 1)
+                    LuminareValueAdjuster("Hide Notch Time", value: $hideNotchTime, sliderRange: 1...15, suffix:"s", step: 1)
                 } .padding(.bottom, 14)
                 
-                LuminareSection("Keyboard shortcuts") {
+                LuminareSection("Keyboard Shortcuts") {
                         KeyboardShortcuts.Recorder("Toggle Notch", name: .toggleNotch)
                     
                 } .padding(.bottom, 14)
@@ -77,38 +77,59 @@ struct SettingsView: View {
                 } .padding(.bottom, 14)
                 
                 LuminareSection("Acknowledgements") {
-                    aboutLicenseButton(name: "Luminare",
-                                       license: "BSD 3-Clause",
-                                       link: URL(string: "https://github.com/MrKai77/Luminare/tree/main")!,
-                                       image: "book"
-                    ) .frame( height: 40)
-                    aboutLicenseButton(name: "DynamicNotchKit",
-                                       license: "MIT",
-                                       link: URL(string: "https://github.com/MrKai77/DynamicNotchKit")!,
-                                       image: "book"
-                    ) .frame( height: 40)
-                    aboutLicenseButton(name: "KeyboardShortcuts",
-                                       license: "MIT",
-                                       link: URL(string: "https://github.com/sindresorhus/KeyboardShortcuts")!,
-                                       image: "book"
-                    ) .frame( height: 40)
-                    aboutLicenseButton(name: "LaunchAtLogin",
-                                       license: "MIT",
-                                       link: URL(string: "https://github.com/sindresorhus/LaunchAtLogin-Modern")!,
-                                       image: "book"
-                    ) .frame( height: 40)
-                    aboutLicenseButton(name: "Defaults",
-                                       license: "MIT",
-                                       link: URL(string: "https://github.com/sindresorhus/Defaults")!,
-                                       image: "book"
-                    ) .frame( height: 40)
-                    aboutLicenseButton(name: "Custom Slider Control",
-                                       license: "MIT",
-                                       link: URL(string: "https://github.com/pratikg29/Custom-Slider-Control")!,
-                                       image: "book"
-                    ) .frame( height: 40)
-                }
-                
+                    Button {
+                        showAcknowledgements = !showAcknowledgements
+                    } label: {
+                        if showAcknowledgements == true {
+                            HStack {
+                                Image(systemName: "arrow.uturn.up.circle")
+                                    .imageScale(.large)
+                                Text("Hide Acknowledgements")
+                            }
+                        } else if showAcknowledgements == false {
+                            HStack {
+                                Image(systemName: "arrow.uturn.down.circle")
+                                    .imageScale(.large)
+                                Text("Show Acknowledgements")
+                            }
+                        }
+                        
+                    } .buttonStyle(LuminareButtonStyle())
+                        .frame(height: 40)
+                    
+                    if showAcknowledgements == true {
+                        aboutLicenseButton(name: "Luminare",
+                                           license: "BSD 3-Clause",
+                                           link: URL(string: "https://github.com/MrKai77/Luminare/tree/main")!,
+                                           image: "book"
+                        ) .frame( height: 40)
+                        aboutLicenseButton(name: "DynamicNotchKit",
+                                           license: "MIT",
+                                           link: URL(string: "https://github.com/MrKai77/DynamicNotchKit")!,
+                                           image: "book"
+                        ) .frame( height: 40)
+                        aboutLicenseButton(name: "KeyboardShortcuts",
+                                           license: "MIT",
+                                           link: URL(string: "https://github.com/sindresorhus/KeyboardShortcuts")!,
+                                           image: "book"
+                        ) .frame( height: 40)
+                        aboutLicenseButton(name: "LaunchAtLogin",
+                                           license: "MIT",
+                                           link: URL(string: "https://github.com/sindresorhus/LaunchAtLogin-Modern")!,
+                                           image: "book"
+                        ) .frame( height: 40)
+                        aboutLicenseButton(name: "Defaults",
+                                           license: "MIT",
+                                           link: URL(string: "https://github.com/sindresorhus/Defaults")!,
+                                           image: "book"
+                        ) .frame( height: 40)
+                        aboutLicenseButton(name: "Custom Slider Control",
+                                           license: "MIT",
+                                           link: URL(string: "https://github.com/pratikg29/Custom-Slider-Control")!,
+                                           image: "book"
+                        ) .frame( height: 40)
+                    }
+                } //.withAnimation
                 Text(Bundle.main.copyright)
                     .padding()
                     .font(.caption)
