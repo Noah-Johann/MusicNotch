@@ -129,12 +129,13 @@ struct SettingsView: View {
                                            image: "book"
                         ) .frame( height: 40)
                     }
-                } //.withAnimation
+                }
                 Text(Bundle.main.copyright)
                     .padding()
                     .font(.caption)
                     .foregroundStyle(.secondary)
             } .padding(.horizontal, 5)
+            .animation(.easeInOut(duration: 0.3))
         }
     }
     
