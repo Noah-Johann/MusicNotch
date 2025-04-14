@@ -51,11 +51,11 @@ struct MusicNotchApp: App {
                 settingsWindow.center()
                 settingsWindow.show()
                 
-            }
+            } .keyboardShortcut(.init(",", modifiers: [.command]))
 
             Button("Quit", role: .destructive) {
                 NSApp.terminate(nil)
-            }
+            } .keyboardShortcut("Q", modifiers: .command)
         }
         
     }
