@@ -47,13 +47,10 @@ struct closedPlayer: View {
     }
     
     func changeArtSize (_ playbackState: Bool) {
-        print("playstate: \(playbackState)")
         if playbackState == true {
             albumArtSizeClosed = 30.0
-            print(albumArtSizeClosed)
         } else if playbackState == false {
             albumArtSizeClosed = 25.0
-            print("small: \(albumArtSizeClosed)")
         }
     }
 }

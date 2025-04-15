@@ -51,6 +51,7 @@ struct aboutView: View {
             .padding(.horizontal, 24)
             
         } .frame(width: 300, height: 380)
+            .scrollDisabled(true)
     }
 }
 

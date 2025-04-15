@@ -10,28 +10,47 @@ import DynamicNotchKit
 import KeyboardShortcuts
 import LaunchAtLogin
 import Luminare
+import Defaults
 
-var notchState: String = "closed"
+var notchState: String = "hide"
 
 @main
 struct MusicNotchApp: App {
-    static var MusicNotch: DynamicNotch<AnyView>? = nil // Make it a static property
-    @State private var appState = AppState()
+
+    static var MusicNotch: DynamicNotch<AnyView>? = nil
     @State private var showMenuBarIcon: Bool = true
     
-    init() {
-        appSetup()
-        timer = 0
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            print("shownotch")
-            MusicNotchApp.showNotch()
+    
+    
+    @Environment(\.openWindow) private var openWindow
+    @Environment(\.dismissWindow) private var dismissWindow
 
+    var onboardingPage = OnboardingView()
+    
+    init() {
+        
+        appSetup()
+        
+        NSApp.setActivationPolicy(.accessory)
+
+
+        
+        KeyboardShortcuts.onKeyDown(for: .toggleNotch) {
+            MusicNotchApp.changeNotch()
         }
+        
+        timer = 0
+//        DispatchQueue.main.async() {
+//            print("shownotch")
+//            MusicNotchApp.showNotch()
+//
+//        }
     }
     
     var body: some Scene {
         
-        MenuBarExtra("MusicNotch", image: "notchsquare", isInserted: $showMenuBarIcon) {
+        
+        MenuBarExtra("MusicNotch", image: "notch.square", isInserted: $showMenuBarIcon) {
             Button("About MusicNotch") {
                 let aboutWindow = LuminareWindow(blurRadius: 40) {
                     aboutView()
@@ -72,7 +91,6 @@ struct MusicNotchApp: App {
         
     
         MusicNotch?.show(on: notchScreen)
-        NSApp.setActivationPolicy(.accessory)
 
     }
 
@@ -116,9 +134,12 @@ struct MusicNotchApp: App {
         notchState = "hide"
     }
     
+    
+    
     func appSetup() {
-        requestAllPermissions()
-        print(SpotifyManager.shared.trackName)
+
+        onboardingPage.showOnboarding ()
+        
         getAudioOutputDevice()
         registerForAudioDeviceChanges()
         callNotchHeight()
@@ -126,13 +147,4 @@ struct MusicNotchApp: App {
     }
 }
 
-@MainActor
-@Observable
-final class AppState {
-    init() {
-        KeyboardShortcuts.onKeyDown(for: .toggleNotch) {
-            MusicNotchApp.changeNotch()
-        }
-    }
-}
 

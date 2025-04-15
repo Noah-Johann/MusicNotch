@@ -208,13 +208,10 @@ struct OpendPlayer: View {
     }
     
     func changeArtSize (_ playbackState: Bool) {
-        print("playstate: \(playbackState)")
         if playbackState == true {
             albumArtSizeOpen = 80
-            print(albumArtSizeOpen)
         } else if playbackState == false {
             albumArtSizeOpen = 70
-            print(albumArtSizeOpen)
         }
     }
 }

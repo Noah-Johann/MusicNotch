@@ -16,6 +16,7 @@ struct SettingsView: View {
     
     @Default(.hideNotchTime) private var hideNotchTime
     @Default(.notchSizeChange) private var notchSizeChange
+    @Default(.viewedOnboarding) private var viewedOnboarding
     @State var showAcknowledgements = false
 
 
@@ -32,6 +33,10 @@ struct SettingsView: View {
                             set: { value in LaunchAtLogin.isEnabled = value }
                         )
                     )
+                    #if DEBUG
+                    LuminareToggle("Viewed Onboarding", isOn: $viewedOnboarding)
+                    #endif
+                    
                     
                     Button {
                         NSApp.terminate(nil)
@@ -85,12 +90,14 @@ struct SettingsView: View {
                                 Image(systemName: "arrow.uturn.up.circle")
                                     .imageScale(.large)
                                 Text("Hide Acknowledgements")
+                                    .frame(width: 160)
                             }
                         } else if showAcknowledgements == false {
                             HStack {
                                 Image(systemName: "arrow.uturn.down.circle")
                                     .imageScale(.large)
                                 Text("Show Acknowledgements")
+                                    .frame(width: 160)
                             }
                         }
                         
@@ -135,7 +142,7 @@ struct SettingsView: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
             } .padding(.horizontal, 5)
-            .animation(.easeInOut(duration: 0.3))
+            .animation(.easeInOut(duration: 0.2))
         }
     }
     
