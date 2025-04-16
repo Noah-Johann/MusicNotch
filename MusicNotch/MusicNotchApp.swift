@@ -21,34 +21,22 @@ struct MusicNotchApp: App {
     @State private var showMenuBarIcon: Bool = true
     
     
-    
-    @Environment(\.openWindow) private var openWindow
-    @Environment(\.dismissWindow) private var dismissWindow
-
-    var onboardingPage = OnboardingView()
-    
     init() {
-        
         appSetup()
         
-        NSApp.setActivationPolicy(.accessory)
-
-
+        DispatchQueue.main.async {
+            NSApp.setActivationPolicy(.accessory)
+        }
+        showOnboarding()
         
         KeyboardShortcuts.onKeyDown(for: .toggleNotch) {
             MusicNotchApp.changeNotch()
         }
         
         timer = 0
-//        DispatchQueue.main.async() {
-//            print("shownotch")
-//            MusicNotchApp.showNotch()
-//
-//        }
     }
     
     var body: some Scene {
-        
         
         MenuBarExtra("MusicNotch", image: "notch.square", isInserted: $showMenuBarIcon) {
             Button("About MusicNotch") {
@@ -137,14 +125,9 @@ struct MusicNotchApp: App {
     
     
     func appSetup() {
-
-        onboardingPage.showOnboarding ()
-        
         getAudioOutputDevice()
         registerForAudioDeviceChanges()
         callNotchHeight()
         SpotifyManager.shared.updateInfo()
     }
 }
-
-

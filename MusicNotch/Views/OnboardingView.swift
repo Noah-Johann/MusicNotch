@@ -12,6 +12,27 @@ import Defaults
 
 var onboarding: LuminareWindow?
 
+func showOnboarding() {
+    let viewedOnboarding = Defaults[.viewedOnboarding]
+    
+    if viewedOnboarding == false {
+        guard onboarding == nil else { return }
+
+        DispatchQueue.main.async {
+            onboarding = LuminareWindow(blurRadius: 40) {
+                OnboardingView()
+                    .frame(width: 600, height: 350)
+            }
+            onboarding?.center()
+            onboarding?.level = .floating
+            onboarding?.show()
+        }
+    } else {
+        print("Already saw onboarding")
+        return
+    }
+}
+
 struct OnboardingView: View {
     
     @State private var OnboardingPage: Int = 1
@@ -21,20 +42,6 @@ struct OnboardingView: View {
     @State private var showAlert = false
     @State private var success = false
     
-    @Default(.viewedOnboarding) private var viewedOnboarding
-    
-    
-    //@Default(.viewedOnboarding) private var viewedOnboarding
-    
-    func showOnboarding() {
-        onboarding = LuminareWindow (blurRadius: 40) {
-            OnboardingView()
-                .frame(width:600, height: 350)
-        }
-        onboarding?.center()
-        onboarding?.level = .floating
-        onboarding?.show()
-    }
     
     func hideOnboarding () {
         onboarding?.close()
@@ -141,7 +148,7 @@ struct OnboardingView: View {
                         .buttonStyle(LuminareCompactButtonStyle())
                     } else if OnboardingPage == 3 {
                         Button("Finish") {
-                            viewedOnboarding = true
+                            Defaults[.viewedOnboarding] = true  // Update in Defaults
                             hideOnboarding()
                         } .buttonStyle(LuminareCompactButtonStyle())
                     }
