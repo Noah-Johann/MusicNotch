@@ -69,7 +69,7 @@ struct MusicNotchApp: App {
     
     static func showOnNotchScreen() {
         DispatchQueue.main.async {
-            MusicNotch?.setContent { AnyView(closedPlayer()) }
+            MusicNotch?.setContent { AnyView(Player(notchState: "closed")) }
         }
         guard let notchScreen = NSScreen.screens.first(where: { $0.safeAreaInsets.top > 0 }) else {
             print("No notch screen found")
@@ -85,8 +85,8 @@ struct MusicNotchApp: App {
     static func showNotch() {
         
         if MusicNotch == nil {
-            MusicNotch = DynamicNotch(style: .notch) {
-                AnyView(closedPlayer()) }
+            MusicNotch = DynamicNotch() {
+                AnyView(Player(notchState: "closed")) }
             notchState = "closed"
         }
         
@@ -96,13 +96,13 @@ struct MusicNotchApp: App {
     static func changeNotch() {
         if notchState == "closed" {
             DispatchQueue.main.async {
-                MusicNotch?.setContent { AnyView(OpendPlayer()) }
+                MusicNotch?.setContent { AnyView(Player(notchState: "open")) }
             }
             SpotifyManager.shared.updateInfo()
             notchState = "open"
         } else if notchState == "open" {
             DispatchQueue.main.async {
-                MusicNotch?.setContent { AnyView(closedPlayer()) }
+                MusicNotch?.setContent { AnyView(Player(notchState: "closed")) }
             }
             notchState = "closed"
         } else {
@@ -116,6 +116,25 @@ struct MusicNotchApp: App {
 //            showNotch()
 //        }
     }
+    
+    static func updateNotch() {
+        if notchState == "closed" {
+            DispatchQueue.main.async {
+                MusicNotch?.updateContent { AnyView(Player(notchState: "open")) }
+            }
+            SpotifyManager.shared.updateInfo()
+            notchState = "open"
+        } else if notchState == "open" {
+            DispatchQueue.main.async {
+                MusicNotch?.updateContent { AnyView(Player(notchState: "closed")) }
+            }
+            notchState = "closed"
+        } else {
+            print("Hidden")
+            return
+        }
+    }
+    
     
     static func hideNotch() {
         MusicNotch?.hide()
