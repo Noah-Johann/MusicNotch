@@ -12,11 +12,14 @@ struct OpendPlayer: View {
     static let shared = OpendPlayer()
 
     @ObservedObject var spotifyManager = SpotifyManager.shared
+    
     @State private var isDragging = false
     @State private var trackposition : Double = 0
     @State private var playbackTimer: Timer?
     @State private var albumArtSizeOpen = 80.0
 
+    @State private var notchState: String?
+    
     var body: some View {
         VStack {
             HStack {
@@ -166,29 +169,32 @@ struct OpendPlayer: View {
                 
             }
             
-            }
-            .onReceive(spotifyManager.$trackPosition) { newValue in
-                trackposition = Double(newValue)
-            }
-            .onAppear {
-                if spotifyManager.isPlaying == true {
-                    playbackTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
-                        if spotifyManager.isPlaying == true {
-                            trackposition += 1
-                        }
+        }
+        .onReceive(spotifyManager.$trackPosition) { newValue in
+            trackposition = Double(newValue)
+        }
+        .onAppear {
+            if spotifyManager.isPlaying == true {
+                playbackTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+                    if spotifyManager.isPlaying == true {
+                        trackposition += 1
                     }
                 }
             }
-            .onDisappear {
-                playbackTimer?.invalidate()
-            }
-            .onChange(of: spotifyManager.isPlaying) {
-                changeArtSize(spotifyManager.isPlaying)
-            }
-            .padding(.bottom, 15)
-            .padding(.top, 10)
-            
         }
+        .onDisappear {
+            playbackTimer?.invalidate()
+        }
+        .onChange(of: spotifyManager.isPlaying) {
+            changeArtSize(spotifyManager.isPlaying)
+        }
+        .onHover(perform: { _ in
+            print("hoverd")
+        })
+        .padding(.bottom, 15)
+        .padding(.top, 10)
+        
+    }
     
     private func progressChanged() {
         print("Neuer Wert: \(trackposition)")

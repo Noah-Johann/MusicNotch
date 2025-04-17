@@ -120,13 +120,13 @@ struct MusicNotchApp: App {
     static func updateNotch() {
         if notchState == "closed" {
             DispatchQueue.main.async {
-                MusicNotch?.updateContent { AnyView(Player(notchState: "open")) }
+                MusicNotch?.setContent { AnyView(Player(notchState: "open")) }
             }
             SpotifyManager.shared.updateInfo()
             notchState = "open"
         } else if notchState == "open" {
             DispatchQueue.main.async {
-                MusicNotch?.updateContent { AnyView(Player(notchState: "closed")) }
+                MusicNotch?.setContent { AnyView(Player(notchState: "closed")) }
             }
             notchState = "closed"
         } else {

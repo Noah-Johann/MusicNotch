@@ -20,7 +20,6 @@ struct closedPlayer: View {
         VStack {
             HStack {
                 HStack {
-                    
                     if let albumArt = spotifyManager.albumArtImage {
                         Image(nsImage: albumArt)
                             .resizable()
@@ -28,7 +27,6 @@ struct closedPlayer: View {
                             .frame(width: albumArtSizeClosed, height: albumArtSizeClosed)
                             .cornerRadius(6)
                             .animation(.easeInOut(duration: 0.3), value: albumArtSizeClosed)
-                        
                     }
                 }   .frame(width: 30, height: 30)
                     .padding(.leading, 3)
