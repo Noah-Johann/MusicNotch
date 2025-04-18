@@ -11,6 +11,7 @@ import Defaults
 
 struct Player: View {
     @Default(.notchSizeChange) private var notchSizeChange
+    @Default(.openNotchOnHover) private var openNotchOnHover
 
     
     @ObservedObject var spotifyManager = SpotifyManager.shared
@@ -71,7 +72,7 @@ struct Player: View {
                 
             }
 
-            .frame(width: 300)
+            .frame(width: notchState == "open" ? 300 : 284)
             
             if notchState == "open" {
                 //Progress Bar
@@ -207,10 +208,13 @@ struct Player: View {
         }
         .padding(.bottom, notchState == "open" ? 15 : 0)
         .padding(.top, notchState == "open" ? 10 : 0)
-//        .animation(.easeInOut)
+        .animation(.easeInOut)
         .onHover { hovering in
             isHovered = hovering
-            changeHoverState(hovering)
+            if openNotchOnHover == true {
+                changeHoverState(hovering)
+
+            }
         }
         
         

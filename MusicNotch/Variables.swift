@@ -15,6 +15,7 @@ extension Defaults.Keys {
     
     static let launchAtLogin = Key<Bool>("LaunchAtLogin", default: LaunchAtLogin.isEnabled)
     
+    static let openNotchOnHover = Key<Bool>("openNotchOnHover", default: true)
     static let hideNotchTime = Key<CGFloat>("hideNotchTime", default: 3)
     static let notchSizeChange = Key<CGFloat>("notchSizeChange", default: 0)
 }

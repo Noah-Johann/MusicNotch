@@ -17,6 +17,7 @@ struct SettingsView: View {
     @Default(.hideNotchTime) private var hideNotchTime
     @Default(.notchSizeChange) private var notchSizeChange
     @Default(.viewedOnboarding) private var viewedOnboarding
+    @Default(.openNotchOnHover) private var openNotchOnHover
     @State var showAcknowledgements = false
 
 
@@ -51,13 +52,16 @@ struct SettingsView: View {
                 
                 LuminareSection("Notch") {
                     
-                    LuminareValueAdjuster("Notch Size Change", value: $notchSizeChange, sliderRange: 0...5.0, suffix:"px", step: 1.0)
+                    LuminareToggle("Open Notch on Hover", isOn: $openNotchOnHover)
+                    
+                    LuminareValueAdjuster("Notch Size Change", value: $notchSizeChange, sliderRange: -5...5.0, suffix:"px", step: 1.0)
                     
                     LuminareValueAdjuster("Hide Notch Time", value: $hideNotchTime, sliderRange: 1...15, suffix:"s", step: 1)
                 } .padding(.bottom, 14)
                 
                 LuminareSection("Keyboard Shortcuts") {
                         KeyboardShortcuts.Recorder("Toggle Notch", name: .toggleNotch)
+                        .frame(height: 30)
                     
                 } .padding(.bottom, 14)
                 
