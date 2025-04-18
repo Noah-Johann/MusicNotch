@@ -83,29 +83,32 @@ struct SettingsView: View {
                     SettingsAboutView()
                 } .padding(.bottom, 14)
                 
-                LuminareSection("Acknowledgements") {
-                    Button {
-                        showAcknowledgements = !showAcknowledgements
-                    } label: {
-                        HStack (alignment: .center){
-                            Image(systemName: showAcknowledgements == true ? "arrow.uturn.up.circle" : "arrow.uturn.down.circle")
-                                .imageScale(.large)
-                            Text(showAcknowledgements == true ? "Hide Acknowledgements" : "Show Acknowledgements")
-                                .frame(width: 160, alignment: .center)
+                VStack {
+                    LuminareSection("Acknowledgements") {
+                        Button {
+                            showAcknowledgements = !showAcknowledgements
+                        } label: {
+                            HStack (alignment: .center){
+                                Image(systemName: showAcknowledgements == true ? "arrow.uturn.up.circle" : "arrow.uturn.down.circle")
+                                    .imageScale(.large)
+                                Text(showAcknowledgements == true ? "Hide Acknowledgements" : "Show Acknowledgements")
+                                    .frame(width: 160, alignment: .center)
+                            }
+                        } .buttonStyle(LuminareButtonStyle())
+                            .frame(height: 40)
+                        
+                        if showAcknowledgements == true {
+                            SettingsAcknowledgementsView()
                         }
-                    } .buttonStyle(LuminareButtonStyle())
-                      .frame(height: 40)
-                    
-                    if showAcknowledgements == true {
-                        SettingsAcknowledgementsView()
                     }
-                }
-                Text(Bundle.main.copyright)
-                    .padding()
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                    Text(Bundle.main.copyright)
+                        .padding()
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    
+                } .animation(.easeInOut(duration: 0.2))
+
             } .padding(.horizontal, 5)
-            .animation(.easeInOut(duration: 0.2))
         }
     }
     
