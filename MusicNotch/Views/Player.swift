@@ -53,11 +53,11 @@ struct Player: View {
                     VStack {
                         Text(spotifyManager.trackName)
                             .font(.system(size: 17, weight: .medium))
-                            .foregroundColor(.primary)
+                            .foregroundColor(.white)
                             .frame(width: 260, alignment: .leading)
                         Text(spotifyManager.artistName)
                             .font(.system(size: 14, weight: .regular))
-                            .foregroundColor(.secondary)
+                            .foregroundColor(.gray)
                             .frame(width: 260, alignment: .leading)
                     }
                     .padding(.horizontal, 10)
@@ -79,7 +79,7 @@ struct Player: View {
                 HStack {
                     Text(formatTime(Int(trackposition)))
                         .frame(minWidth: 50, maxWidth: 80, minHeight: 20, alignment: .center)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(.gray)
                         .fontWeight(.semibold)
                         .font(.system(size: 12))
                     
@@ -98,7 +98,7 @@ struct Player: View {
                     
                     Text("-\(formatTime(spotifyManager.trackDuration - Int(trackposition)))")
                         .frame(minWidth: 55, maxWidth: 80, minHeight: 20, alignment: .center)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(.gray)
                         .fontWeight(.semibold)
                         .font(.system(size: 12))
                 }
