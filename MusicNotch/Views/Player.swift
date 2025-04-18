@@ -208,7 +208,6 @@ struct Player: View {
         }
         .padding(.bottom, notchState == "open" ? 15 : 0)
         .padding(.top, notchState == "open" ? 10 : 0)
-        .animation(.easeInOut)
         .onHover { hovering in
             isHovered = hovering
             if openNotchOnHover == true {
