@@ -9,6 +9,8 @@ import SwiftUI
 import Luminare
 
 struct aboutView: View {
+    @Environment(\.openURL) var openURL
+    
     var body: some View {
         LuminarePane {}
         content: {
@@ -42,15 +44,25 @@ struct aboutView: View {
                     ) .frame(width: 250, height: 60)
                 } .padding(.bottom, 20)
                 VStack {
+                    Button {
+                        openURL(URL(string: "https://github.com/Noah-Johann/MusicNotch/blob/main/LICENSE")!)
+                    } label: {
+                        Text("GPL 3.0 License")
+                            .underline()
+                    } .buttonStyle(.plain)
+                        .foregroundStyle(.tertiary)
+                        .padding(.top, 5)
+
+                    
+                    
                     Text(Bundle.main.copyright)
                         .foregroundColor(Color(.tertiaryLabelColor))
                         .font(.body)
-                        .padding(.top, 5)
                 }
             }
             .padding(.horizontal, 24)
             
-        } .frame(width: 300, height: 380)
+        } .frame(width: 300, height: 400)
             .scrollDisabled(true)
     }
 }

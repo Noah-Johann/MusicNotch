@@ -54,91 +54,50 @@ struct SettingsView: View {
                     
                     LuminareToggle("Open Notch on Hover", isOn: $openNotchOnHover)
                     
-                    LuminareValueAdjuster("Notch Size Change", value: $notchSizeChange, sliderRange: -5...5.0, suffix:"px", step: 1.0)
+                    LuminareValueAdjuster("Notch Size Change",
+                                          value: $notchSizeChange,
+                                          sliderRange: -5...5.0,
+                                          suffix:"px",
+                                          step: 1.0)
                     
-                    LuminareValueAdjuster("Hide Notch Time", value: $hideNotchTime, sliderRange: 1...15, suffix:"s", step: 1)
+                    LuminareValueAdjuster("Hide Notch Time",
+                                          value: $hideNotchTime,
+                                          sliderRange: 1...15,
+                                          suffix:"s",
+                                          step: 1)
                 } .padding(.bottom, 14)
                 
                 LuminareSection("Keyboard Shortcuts") {
-                        KeyboardShortcuts.Recorder("Toggle Notch", name: .toggleNotch)
+                        KeyboardShortcuts.Recorder("Toggle Notch",
+                                                   name: .toggleNotch)
                         .frame(height: 30)
                     
                 } .padding(.bottom, 14)
                 
                 LuminareSection("About") {
-                    
                     aboutAppButton()
                         .frame(height: 75)
                 } .padding(.bottom, 7)
                 
                 LuminareSection() {
-                    aboutButton(name: "Noah Johann",
-                                role: "Development",
-                                link: URL(string: "https://github.com/Noah-Johann")!,
-                                image: Image("Credit")
-                    ) .frame(height: 60)
-                    
-                    aboutButton(name: "GitHub",
-                                role: "Contribute on Github",
-                                link: URL(string: "https://github.com/Noah-Johann/MusicNotch")!,
-                                image: Image("Github")
-                    ) .frame( height: 60)
+                    SettingsAboutView()
                 } .padding(.bottom, 14)
                 
                 LuminareSection("Acknowledgements") {
                     Button {
                         showAcknowledgements = !showAcknowledgements
                     } label: {
-                        if showAcknowledgements == true {
-                            HStack {
-                                Image(systemName: "arrow.uturn.up.circle")
-                                    .imageScale(.large)
-                                Text("Hide Acknowledgements")
-                                    .frame(width: 160)
-                            }
-                        } else if showAcknowledgements == false {
-                            HStack {
-                                Image(systemName: "arrow.uturn.down.circle")
-                                    .imageScale(.large)
-                                Text("Show Acknowledgements")
-                                    .frame(width: 160)
-                            }
+                        HStack (alignment: .center){
+                            Image(systemName: showAcknowledgements == true ? "arrow.uturn.up.circle" : "arrow.uturn.down.circle")
+                                .imageScale(.large)
+                            Text(showAcknowledgements == true ? "Hide Acknowledgements" : "Show Acknowledgements")
+                                .frame(width: 160, alignment: .center)
                         }
-                        
                     } .buttonStyle(LuminareButtonStyle())
-                        .frame(height: 40)
+                      .frame(height: 40)
                     
                     if showAcknowledgements == true {
-                        aboutLicenseButton(name: "Luminare",
-                                           license: "BSD 3-Clause",
-                                           link: URL(string: "https://github.com/MrKai77/Luminare/tree/main")!,
-                                           image: "book"
-                        ) .frame( height: 40)
-                        aboutLicenseButton(name: "DynamicNotchKit",
-                                           license: "MIT",
-                                           link: URL(string: "https://github.com/MrKai77/DynamicNotchKit")!,
-                                           image: "book"
-                        ) .frame( height: 40)
-                        aboutLicenseButton(name: "KeyboardShortcuts",
-                                           license: "MIT",
-                                           link: URL(string: "https://github.com/sindresorhus/KeyboardShortcuts")!,
-                                           image: "book"
-                        ) .frame( height: 40)
-                        aboutLicenseButton(name: "LaunchAtLogin",
-                                           license: "MIT",
-                                           link: URL(string: "https://github.com/sindresorhus/LaunchAtLogin-Modern")!,
-                                           image: "book"
-                        ) .frame( height: 40)
-                        aboutLicenseButton(name: "Defaults",
-                                           license: "MIT",
-                                           link: URL(string: "https://github.com/sindresorhus/Defaults")!,
-                                           image: "book"
-                        ) .frame( height: 40)
-                        aboutLicenseButton(name: "Custom Slider Control",
-                                           license: "MIT",
-                                           link: URL(string: "https://github.com/pratikg29/Custom-Slider-Control")!,
-                                           image: "book"
-                        ) .frame( height: 40)
+                        SettingsAcknowledgementsView()
                     }
                 }
                 Text(Bundle.main.copyright)
