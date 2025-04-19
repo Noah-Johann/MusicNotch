@@ -46,8 +46,9 @@ struct MusicNotchApp: App {
                 }
                 
                 aboutWindow.center()
+                aboutWindow.level = .floating
                 aboutWindow.show()
-            }
+            } .keyboardShortcut("I", modifiers: .command)
             
             Button("Settings") {
                 let settingsWindow = LuminareWindow(blurRadius: 40) {
@@ -85,7 +86,7 @@ struct MusicNotchApp: App {
     static func showNotch() {
         
         if MusicNotch == nil {
-            MusicNotch = DynamicNotch() {
+            MusicNotch = DynamicNotch(style: .notch) {
                 AnyView(Player(notchState: "closed")) }
             notchState = "closed"
         }
@@ -135,13 +136,10 @@ struct MusicNotchApp: App {
         }
     }
     
-    
     static func hideNotch() {
         MusicNotch?.hide()
         notchState = "hide"
     }
-    
-    
     
     func appSetup() {
         getAudioOutputDevice()

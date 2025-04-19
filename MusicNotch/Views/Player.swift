@@ -40,7 +40,7 @@ struct Player: View {
                             .frame(width: notchState == "open" ? albumArtSizeOpen : albumArtSizeClosed,
                                    height: notchState == "open" ? albumArtSizeOpen : albumArtSizeClosed)                            .cornerRadius(6)
                             .padding(.vertical, 10)
-                            .animation(.easeInOut(duration: 0.3), value: albumArtSizeOpen)
+                            .animation(.easeInOut(duration: 0.3))
                         
                     }
                 }
@@ -48,6 +48,7 @@ struct Player: View {
                        height: notchState == "open" ? 80 : 30)
                 .padding(.leading, notchState == "closed" ? 3 : 0)
                 .padding(.trailing, notchState == "closed" ? 230 : 0)
+                .animation(.easeInOut, value: 0.3)
                 
                 if notchState == "open" {
                     VStack {
@@ -237,18 +238,13 @@ struct Player: View {
     }
     
     func changeArtSize (_ playbackState: Bool) {
-        if notchState == "open" {
-            if playbackState == true {
-                albumArtSizeOpen = 80
-            } else if playbackState == false {
-                albumArtSizeOpen = 70
-            }
-        } else if notchState == "closed" {
-            if playbackState == true {
-                albumArtSizeClosed = 30.0
-            } else if playbackState == false {
-                albumArtSizeClosed = 25.0
-            }
+        if playbackState == true {
+            albumArtSizeOpen = 80
+            albumArtSizeClosed = 30.0
+
+        } else if playbackState == false {
+            albumArtSizeOpen = 70
+            albumArtSizeClosed = 25.0
         }
     }
     
