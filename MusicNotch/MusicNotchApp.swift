@@ -39,31 +39,60 @@ struct MusicNotchApp: App {
     var body: some Scene {
         
         MenuBarExtra("MusicNotch", image: "notch.square", isInserted: $showMenuBarIcon) {
-            Button("About MusicNotch") {
-                let aboutWindow = LuminareWindow(blurRadius: 40) {
-                    aboutView()
-                        .frame(width: 300, height: 380)
+            Section {
+                Button {
+                    spotifyPlayPause()
+                } label: {
+                    Image(systemName: "play.fill")
+                    Text("Play")
                 }
                 
-                aboutWindow.center()
-                aboutWindow.level = .floating
-                aboutWindow.show()
-            } .keyboardShortcut("I", modifiers: .command)
-            
-            Button("Settings") {
-                let settingsWindow = LuminareWindow(blurRadius: 40) {
-                    SettingsView()
-                        .frame(width: 500, height: 600)
+                Button {
+                    spotifyNextTrack()
+                } label: {
+                    Image(systemName: "forward.end.fill")
+                    Text("Next")
+                }
+                Button {
+                    spotifyLastTrack()
+                } label: {
+                    Image(systemName: "backward.end.fill")
+                    Text("Previous")
                 }
                 
-                settingsWindow.center()
-                settingsWindow.show()
+            }
+            Section {
+                Text("Version \(Bundle.main.appVersion!) (\(Bundle.main.appBuild!))")
+                    .foregroundStyle(.secondary)
                 
-            } .keyboardShortcut(.init(",", modifiers: [.command]))
-
-            Button("Quit", role: .destructive) {
-                NSApp.terminate(nil)
-            } .keyboardShortcut("Q", modifiers: .command)
+                Button("About") {
+                    let aboutWindow = LuminareWindow(blurRadius: 20) {
+                        aboutView()
+                            .frame(width: 300, height: 380)
+                    }
+                    
+                    aboutWindow.center()
+                    aboutWindow.level = .floating
+                    aboutWindow.show()
+                }
+                
+                Button("Settings") {
+                    let settingsWindow = LuminareWindow(blurRadius: 20) {
+                        SettingsView()
+                            .frame(width: 500, height: 600)
+                    }
+                    
+                    settingsWindow.center()
+                    settingsWindow.show()
+                    
+                } .keyboardShortcut(.init(",", modifiers: [.command]))
+            }
+            Section {
+                Button("Quit", role: .destructive) {
+                    NSApp.terminate(nil)
+                } .keyboardShortcut("Q", modifiers: .command)
+                
+            }
         }
         
     }

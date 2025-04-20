@@ -19,7 +19,7 @@ func showOnboarding() {
         guard onboarding == nil else { return }
 
         DispatchQueue.main.async {
-            onboarding = LuminareWindow(blurRadius: 40) {
+            onboarding = LuminareWindow(blurRadius: 20) {
                 OnboardingView()
                     .frame(width: 600, height: 350)
             }
