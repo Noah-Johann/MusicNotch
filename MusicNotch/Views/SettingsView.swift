@@ -18,6 +18,7 @@ struct SettingsView: View {
     @Default(.notchSizeChange) private var notchSizeChange
     @Default(.viewedOnboarding) private var viewedOnboarding
     @Default(.openNotchOnHover) private var openNotchOnHover
+    @Default(.hapticFeedback) private var hapticFeedback
     @State var showAcknowledgements = false
 
 
@@ -53,6 +54,8 @@ struct SettingsView: View {
                 LuminareSection("Notch") {
                     
                     LuminareToggle("Open Notch on Hover", isOn: $openNotchOnHover)
+                    
+                    LuminareToggle("Haptic Feedback", isOn: $hapticFeedback)
                     
                     LuminareValueAdjuster("Notch Size Change",
                                           value: $notchSizeChange,

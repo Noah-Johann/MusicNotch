@@ -12,6 +12,7 @@ import Defaults
 struct Player: View {
     @Default(.notchSizeChange) private var notchSizeChange
     @Default(.openNotchOnHover) private var openNotchOnHover
+    @Default(.hapticFeedback) private var hapticFeedback
 
     
     @ObservedObject var spotifyManager = SpotifyManager.shared
@@ -213,9 +214,14 @@ struct Player: View {
             isHovered = hovering
             if openNotchOnHover == true {
                 changeHoverState(hovering)
-
+            }
+            
+            if hapticFeedback == true {
+                let performer = NSHapticFeedbackManager.defaultPerformer
+                performer.perform(.alignment, performanceTime: .default)
             }
         }
+        
         
         
     }

@@ -115,7 +115,7 @@ struct MusicNotchApp: App {
     static func showNotch() {
         
         if MusicNotch == nil {
-            MusicNotch = DynamicNotch(style: .notch) {
+            MusicNotch = DynamicNotch(hoverBehavior: .increaseShadow, style: .notch) {
                 AnyView(Player(notchState: "closed")) }
             notchState = "closed"
         }
