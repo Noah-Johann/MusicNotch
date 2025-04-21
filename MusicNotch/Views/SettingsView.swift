@@ -18,7 +18,9 @@ struct SettingsView: View {
     @Default(.notchSizeChange) private var notchSizeChange
     @Default(.viewedOnboarding) private var viewedOnboarding
     @Default(.openNotchOnHover) private var openNotchOnHover
+    @Default(.openingDelay) private var openingDelay
     @Default(.hapticFeedback) private var hapticFeedback
+    
     @State var showAcknowledgements = false
 
 
@@ -57,23 +59,32 @@ struct SettingsView: View {
                     
                     LuminareToggle("Haptic Feedback", isOn: $hapticFeedback)
                     
+                    if openNotchOnHover == true {
+                        LuminareValueAdjuster("Opening delay",
+                                              value: $openingDelay,
+                                              sliderRange: 0...1,
+                                              suffix: "s",
+                                              step: 0.1,
+                                              decimalPlaces: 1)
+                    } 
+                                       
+                    LuminareValueAdjuster("Hide delay",
+                                          value: $hideNotchTime,
+                                          sliderRange: 1...15,
+                                          suffix:"s",
+                                          step: 1)
+                    
                     LuminareValueAdjuster("Notch Size Change",
                                           value: $notchSizeChange,
                                           sliderRange: -5...5.0,
                                           suffix:"px",
                                           step: 1.0)
-                    
-                    LuminareValueAdjuster("Hide Notch Time",
-                                          value: $hideNotchTime,
-                                          sliderRange: 1...15,
-                                          suffix:"s",
-                                          step: 1)
                 } .padding(.bottom, 14)
                 
                 LuminareSection("Keyboard Shortcuts") {
                         KeyboardShortcuts.Recorder("Toggle Notch",
                                                    name: .toggleNotch)
-                        .frame(height: 30)
+                        .frame(height: 40)
                     
                 } .padding(.bottom, 14)
                 

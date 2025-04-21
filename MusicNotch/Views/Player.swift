@@ -12,6 +12,7 @@ import Defaults
 struct Player: View {
     @Default(.notchSizeChange) private var notchSizeChange
     @Default(.openNotchOnHover) private var openNotchOnHover
+    @Default(.openingDelay) private var openingDelay
     @Default(.hapticFeedback) private var hapticFeedback
 
     
@@ -213,7 +214,9 @@ struct Player: View {
         .onHover { hovering in
             isHovered = hovering
             if openNotchOnHover == true {
-                changeHoverState(hovering)
+                DispatchQueue.main.asyncAfter(deadline: .now() + openingDelay) {
+                    changeHoverState(hovering)
+                }
             }
             
             if hapticFeedback == true {
