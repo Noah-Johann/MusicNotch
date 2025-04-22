@@ -23,8 +23,6 @@ struct SettingsView: View {
     
     @State var showAcknowledgements = false
 
-
-
     var body: some View {
         LuminarePane {}
         content: {
@@ -52,6 +50,11 @@ struct SettingsView: View {
                     } .buttonStyle(LuminareButtonStyle())
                 } .padding(.bottom, 14)
                 
+                LuminareSection("Display") {
+                    DisplayPickerView()
+                        .buttonStyle(LuminareButtonStyle())
+                        .frame(height: 80)
+                } .padding(.bottom, 14)
                 
                 LuminareSection("Notch") {
                     
@@ -70,7 +73,7 @@ struct SettingsView: View {
                                        
                     LuminareValueAdjuster("Hide delay",
                                           value: $hideNotchTime,
-                                          sliderRange: 1...15,
+                                          sliderRange: 0...15,
                                           suffix:"s",
                                           step: 1)
                     
@@ -85,7 +88,6 @@ struct SettingsView: View {
                         KeyboardShortcuts.Recorder("Toggle Notch",
                                                    name: .toggleNotch)
                         .frame(height: 40)
-                    
                 } .padding(.bottom, 14)
                 
                 LuminareSection("About") {

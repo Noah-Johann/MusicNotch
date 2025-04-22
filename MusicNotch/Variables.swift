@@ -15,6 +15,9 @@ extension Defaults.Keys {
     
     static let launchAtLogin = Key<Bool>("LaunchAtLogin", default: LaunchAtLogin.isEnabled)
     
+    static let notchDisplay = Key<Bool>("notchDisplay", default: true)
+    static let mainDisplay = Key<Bool>("mainDisplay", default: false)
+    
     static let openNotchOnHover = Key<Bool>("openNotchOnHover", default: true)
     static let openingDelay = Key<CGFloat>("openingDelay", default: 0.0)
     static let hapticFeedback = Key<Bool>("hapticFeedback", default: true)

@@ -47,16 +47,18 @@ struct MusicNotchApp: App {
     static func showOnNotchScreen() {
         DispatchQueue.main.async {
             MusicNotch?.setContent { AnyView(Player(notchState: "closed")) }
+            notchState = "closed"
         }
-        guard let notchScreen = NSScreen.screens.first(where: { $0.safeAreaInsets.top > 0 }) else {
-            print("No notch screen found")
+        if Defaults[.notchDisplay] == true {
+            guard let notchScreen = NSScreen.screens.first(where: { $0.safeAreaInsets.top > 0 }) else {
+                print("No notch screen found")
+                MusicNotch?.show(on: NSScreen.screens.first!)
+                return
+            }
+            MusicNotch?.show(on: notchScreen)
+        } else {
             MusicNotch?.show(on: NSScreen.screens.first!)
-            return
         }
-        
-    
-        MusicNotch?.show(on: notchScreen)
-
     }
 
     static func showNotch() {
@@ -64,7 +66,6 @@ struct MusicNotchApp: App {
         if MusicNotch == nil {
             MusicNotch = DynamicNotch(hoverBehavior: .increaseShadow, style: .notch) {
                 AnyView(Player(notchState: "closed")) }
-            notchState = "closed"
         }
         
         showOnNotchScreen()
