@@ -1,3 +1,11 @@
+//
+//  fetchSpotify.swift
+//  MusicNotch
+//
+//  Created by Noah Johann on 14.03.25.
+//
+
+
 import Foundation
 import AppKit
 import Defaults
@@ -259,14 +267,14 @@ class SpotifyManager: ObservableObject {
             } else {
                 self.spotifyRunning = false
                 //clearAllData()
-                print("Fehler beim Abrufen der Spotify-Daten oder Spotify ist nicht gestartet")
+                print("Error on getting information or spotify not running")
             }
         } else {
-            print("Fehler: Keine gültige Antwort von AppleScript erhalten.")
+            print("Fehler: Didn't get any result")
         }
         
         if !spotifyRunning {
-            print("Spotify läuft nicht.")
+            print("Spotify is not running.")
         }
     }
     
@@ -308,7 +316,7 @@ class SpotifyManager: ObservableObject {
                 return output
             }
         } catch {
-            print("AppleScript-Fehler: \(error)")
+            print("AppleScript-Error: \(error)")
         }
         
         return nil

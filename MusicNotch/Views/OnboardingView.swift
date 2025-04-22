@@ -42,6 +42,7 @@ struct OnboardingView: View {
     @State private var showAlert = false
     @State private var success = false
     
+    @Default(.launchAtLogin) private var launchAtLogin
     
     func hideOnboarding () {
         onboarding?.close()
@@ -95,11 +96,20 @@ struct OnboardingView: View {
                     }
                     
                     if OnboardingPage == 3 {
-                        Text("Start playing a song!")
-                            .font(.system(size: 17, weight: .medium))
-                            .lineSpacing(6)
-                            .multilineTextAlignment(.center)
-                            .frame(width: 250)
+                        VStack {
+                            Text("Start playing a song!")
+                                .font(.system(size: 17, weight: .medium))
+                                .lineSpacing(6)
+                                .multilineTextAlignment(.center)
+                                .frame(width: 250)
+                                .padding(.bottom, 20)
+                            
+                            LuminareSection() {
+                                LuminareToggle("Launch at login", isOn: $launchAtLogin)
+                            }
+                            .frame(width: 190)
+
+                        }
                     }
                 } .frame(height: 100)
                     .padding(.bottom, 30)

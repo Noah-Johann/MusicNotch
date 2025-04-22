@@ -18,6 +18,6 @@ func spotifyShuffle() {
         SpotifyManager.shared.updateInfo()
         updateShuffleIcon()
     } catch {
-        print("Fehler bei der Ausführung: \(error)")
+        print("Error while running: \(error)")
     }
 }

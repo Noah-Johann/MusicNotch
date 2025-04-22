@@ -17,7 +17,7 @@ func spotifyPlayPause() {
         task.waitUntilExit()
         SpotifyManager.shared.updateInfo()
     } catch {
-        print("Fehler bei der Ausführung: \(error)")
+        print("Error while running: \(error)")
     }
     
 }

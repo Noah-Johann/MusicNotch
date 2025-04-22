@@ -230,7 +230,7 @@ struct Player: View {
     }
     
     private func progressChanged() {
-        print("Neuer Wert: \(trackposition)")
+        print("new value: \(trackposition)")
         let script = """
         tell application "Spotify"
             set player position to \(trackposition)

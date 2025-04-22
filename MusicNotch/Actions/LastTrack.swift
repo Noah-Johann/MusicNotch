@@ -18,7 +18,7 @@ func spotifyLastTrack() {
         SpotifyManager.shared.updateInfo()
         updatePlayIcon()
     } catch {
-        print("Fehler bei der Ausführung: \(error)")
+        print("Error while running: \(error)")
     }
     
 }

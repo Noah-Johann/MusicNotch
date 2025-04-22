@@ -29,17 +29,17 @@ func getAudioOutputDevice() {
     )
     
     guard status == noErr else {
-        print("Fehler beim Ermitteln des Standardausgabegeräts: \(status)")
+        print("Error on getting output device: \(status)")
         return
     }
     
     guard defaultOutputDeviceID != 0 else {
-        print("Kein Standardausgabegerät gefunden")
+        print("No device found")
         return
     }
     
     // Gerätename abrufen
-    var deviceName = "Unbekannt"
+    var deviceName = "Unknown"
     propertyAddress.mSelector = kAudioDevicePropertyDeviceNameCFString
     propertyAddress.mScope = kAudioObjectPropertyScopeGlobal
     propSize = UInt32(MemoryLayout<CFString?>.size)
@@ -115,16 +115,16 @@ func getAudioOutputDevice() {
         deviceIcon = "headphones"
     }
     
-    print("Standard-Ausgabegerät:")
+    print("Output device:")
     print("  Name: \(deviceName)")
     print("  Modell: \(modelUID)")
-    print("  Verbindungstyp: \(transportString)")
+    print("  Connection type: \(transportString)")
     
     // Für bestimmte Gerätetypen zusätzliche Informationen abrufen
     if transportType == kAudioDeviceTransportTypeBluetooth || transportType == kAudioDeviceTransportTypeBluetoothLE {
         // Spezifische Bluetooth-Geräte-Eigenschaften abrufen
         // Diese können je nach Gerätetyp variieren
-        var bluetoothDeviceInfo = "Keine weiteren Informationen"
+        var bluetoothDeviceInfo = "No additional information"
         
         // Bei Bluetooth-Geräten können weitere Eigenschaften interessant sein
         propertyAddress.mSelector = kAudioDevicePropertyDeviceUID
@@ -146,24 +146,19 @@ func getAudioOutputDevice() {
             
             // AirPods oder ähnliche Geräte können oft anhand der UID oder des ModelUID erkannt werden
             if deviceName.contains("AirPods") || modelUID.contains("AirPods") || uid.contains("AirPods") {
-                print("  Gerät erkannt als: AirPods")
+                print("  Device recognized as AirPods")
                 deviceIcon = "airpods"
                 if deviceName.contains("Pro") || uid.contains("Pro") || modelUID.contains("Pro") {
-                    print("  Variante: Pro")
+                    print("  type: Pro")
                     deviceIcon = "airpods.pro"
                 } else if deviceName.contains("Max") || uid.contains("Max") || modelUID.contains("Max") {
-                    print("  Variante: Max")
+                    print("  type: Max")
                     deviceIcon = "airpods.max"
                 }
             }
-            
-            //print("  \(bluetoothDeviceInfo)")
         }
     }
-    
-    // Ausgabe der Gerät-ID für weitere Analysen
-    //print("  Gerät-ID: \(defaultOutputDeviceID)")
-    
+        
     if deviceName.contains("Externe Kopfhörer") || modelUID.contains("Codec Output") {
         print("Headphones")
         deviceIcon = "headphones"
@@ -182,7 +177,7 @@ func registerForAudioDeviceChanges() {
     let systemObjectID = AudioObjectID(kAudioObjectSystemObject)
     
     let callback: AudioObjectPropertyListenerProc = { _, _, _, _ in
-        print("Standard-Ausgabegerät hat sich geändert")
+        print("Output device has changed")
         getAudioOutputDevice()
         return noErr
     }
@@ -195,6 +190,6 @@ func registerForAudioDeviceChanges() {
     )
     
     if status == noErr {
-        print("Listener für Ausgabegerätänderungen registriert")
+        print("Listener für output device changes registert")
     }
 }

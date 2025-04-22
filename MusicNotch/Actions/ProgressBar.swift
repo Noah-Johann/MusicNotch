@@ -24,9 +24,7 @@ func formatTime(_ seconds: Int) -> String {
     }
 }
 
-func sendSetTime (_ time: Int) {
-    
-}
+
 
 
 

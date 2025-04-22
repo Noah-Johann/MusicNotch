@@ -9,6 +9,7 @@
 //  MusicVisualizer.swift
 //  boringNotch
 //
+//  https://github.com/TheBoredTeam/boring.notch
 //  Created by Harsh Vardhan  Goswami  on 02/08/24.
 //
 
