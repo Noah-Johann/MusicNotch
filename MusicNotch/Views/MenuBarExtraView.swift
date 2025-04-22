@@ -33,7 +33,7 @@ struct MenuBarExtraView: View {
             
         }
         Section {
-            Text("Version \(Bundle.main.appVersion!) (\(Bundle.main.appBuild!))")
+            Text("Version \(Bundle.main.appVersion!)")
                 .foregroundStyle(.secondary)
             
             Button("About") {
