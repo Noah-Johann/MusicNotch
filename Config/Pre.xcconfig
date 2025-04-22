@@ -1,0 +1,11 @@
+//
+//  Beta.xcconfig
+//  MusicNotch
+//
+//  Created by Noah Johann on 22.04.25
+//
+
+
+
+CE_APPICON_NAME = AppIcon-pre
+
