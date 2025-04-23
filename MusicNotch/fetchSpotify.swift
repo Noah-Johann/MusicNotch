@@ -9,6 +9,7 @@
 import Foundation
 import AppKit
 import Defaults
+import SwiftUICore
 
 public var timer = 0
 class SpotifyManager: ObservableObject {
@@ -64,7 +65,7 @@ class SpotifyManager: ObservableObject {
         updateShuffleIcon()
         fetchAlbumArt()
         
-        if self.isPlaying == false {
+        if self.isPlaying == false && notchState == "closed" {
             let hideNotchTime = Defaults[.hideNotchTime]
             stopTime = 0
             if hideTimer == nil {
@@ -76,7 +77,8 @@ class SpotifyManager: ObservableObject {
                             self.hideTimer?.invalidate()
                             self.hideTimer = nil
                             print("hideNotch")
-                            MusicNotchApp.hideNotch()
+                            NotchManager.shared.setNotchContent("hide", false)
+                            notchState = "hide"
                         }
                     }
                 }
@@ -84,13 +86,9 @@ class SpotifyManager: ObservableObject {
         }
         
         if self.isPlaying == true  && notchState == "hide" {
-            print("shownotch")
             DispatchQueue.main.async() {
-                print("shownotch")
-                MusicNotchApp.showNotch()
-
+                NotchManager.shared.setNotchContent("closed", false)
             }
-            notchState = "closed"
         }
         
         if self.isPlaying == true && hideTimer != nil {

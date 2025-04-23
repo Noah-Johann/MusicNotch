@@ -9,6 +9,7 @@ import Defaults
 import SwiftUI
 import Luminare
 
+@MainActor
 class DisplayConfigurationModel: ObservableObject {
     // MARK: Defaults
     
@@ -33,8 +34,7 @@ class DisplayConfigurationModel: ObservableObject {
 
     /// Called whenever the user changes the display selection.
     func selectionChanged(to newValue: NotchDisplay) {
-       // MusicNotchApp.hideNotch()
-       // MusicNotchApp.showOnNotchScreen()
+        NotchManager.shared.setNotchContent(notchState, true)
     }
 }
 
