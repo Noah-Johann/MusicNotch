@@ -73,7 +73,7 @@ class SpotifyManager: ObservableObject {
                 hideTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
                     DispatchQueue.main.async {
                         self.stopTime += 1
-                        if self.stopTime > Int(hideNotchTime) {
+                        if self.stopTime > Int(hideNotchTime) && notchState == "closed" {
                             self.hideTimer?.invalidate()
                             self.hideTimer = nil
                             print("hideNotch")

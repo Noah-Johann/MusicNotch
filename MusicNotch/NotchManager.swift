@@ -30,6 +30,13 @@ final class NotchManager {
                 AudioSpectView()
             }
         )
+        notch.onHoverChanged = { isHovering in
+            if isHovering {
+                NotchManager.shared.setNotchContent("open", false)
+            } else {
+                NotchManager.shared.setNotchContent("closed", false)
+            }
+        }
     }
     
     public func changeNotch() {
