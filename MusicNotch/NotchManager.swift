@@ -31,14 +31,17 @@ final class NotchManager {
             }
         )
         notch.onHoverChanged = { isHovering in
-            if isHovering {
-                NotchManager.shared.setNotchContent("open", false)
-            } else {
-                NotchManager.shared.setNotchContent("closed", false)
+            if Defaults[.openNotchOnHover] {
+                if isHovering {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + Defaults[.openingDelay]) {
+                        NotchManager.shared.setNotchContent("open", false)
+                    }
+                } else {
+                    NotchManager.shared.setNotchContent("closed", false)
+                }
             }
         }
     }
-    
     public func changeNotch() {
         Task {
             if notchState == "closed" {
