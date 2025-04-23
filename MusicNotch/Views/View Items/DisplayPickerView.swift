@@ -33,8 +33,8 @@ class DisplayConfigurationModel: ObservableObject {
 
     /// Called whenever the user changes the display selection.
     func selectionChanged(to newValue: NotchDisplay) {
-        MusicNotchApp.hideNotch()
-        MusicNotchApp.showOnNotchScreen()
+       // MusicNotchApp.hideNotch()
+       // MusicNotchApp.showOnNotchScreen()
     }
 }
 

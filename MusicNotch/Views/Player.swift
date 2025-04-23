@@ -22,173 +22,153 @@ struct Player: View {
     @State private var trackposition : Double = 0
     @State private var playbackTimer: Timer?
     
-    @State private var albumArtSizeOpen = 80.0
-    @State public var albumArtSizeClosed = 30.0
+    
 
     @State private var isHovered = false
     @State private var lastHoverState: Bool = false
     @State private var lastNotchState: String = ""
     
-    @State var notchState: String
+    //@State var notchStateS: String
     
     var body: some View {
         VStack {
             HStack {
-                HStack {
-                    if let albumArt = spotifyManager.albumArtImage {
-                        Image(nsImage: albumArt)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: notchState == "open" ? albumArtSizeOpen : albumArtSizeClosed,
-                                   height: notchState == "open" ? albumArtSizeOpen : albumArtSizeClosed)                            .cornerRadius(6)
-                            .padding(.vertical, 10)
-                            .animation(.easeInOut(duration: 0.3))
-                        
-                    }
-                }
-                .frame(width: notchState == "open" ? 80 : 30,
-                       height: notchState == "open" ? 80 : 30)
-                .padding(.leading, notchState == "closed" ? 3 : 0)
-                .padding(.trailing, notchState == "closed" ? 230 : 0)
-                .animation(.easeInOut, value: 0.3)
+                AlbumArtView(sizeState: "open")
                 
-                if notchState == "open" {
-                    VStack {
-                        Text(spotifyManager.trackName)
-                            .font(.system(size: 17, weight: .medium))
-                            .foregroundColor(.white)
-                            .frame(width: 260, alignment: .leading)
-                        Text(spotifyManager.artistName)
-                            .font(.system(size: 14, weight: .regular))
-                            .foregroundColor(.gray)
-                            .frame(width: 260, alignment: .leading)
-                    }
-                    .padding(.horizontal, 10)
-                    .padding(.top, 27)
+                VStack {
+                    Text(spotifyManager.trackName)
+                        .font(.system(size: 17, weight: .medium))
+                        .foregroundColor(.white)
+                        .frame(width: 260, alignment: .leading)
+                    Text(spotifyManager.artistName)
+                        .font(.system(size: 14, weight: .regular))
+                        .foregroundColor(.gray)
+                        .frame(width: 260, alignment: .leading)
                 }
+                .padding(.horizontal, 10)
+                .padding(.top, 27)
+                
                 
                 AudioSpectrumView(isPlaying: spotifyManager.isPlaying)
                     .foregroundColor(.white)
-                    .frame(width: notchState == "open" ? 20 : 15,
-                            height: notchState == "open" ? 20 : 15)
-                    .padding(.top, notchState == "open" ? 10 : 0)
+                    .frame(width: 20, height: 20)
+                    .padding(.top, 10)
                 
-            }
-
-            .frame(width: notchState == "open" ? 300 : 284)
+            } .frame(width: 300)
             
-            if notchState == "open" {
-                //Progress Bar
-                HStack {
-                    Text(formatTime(Int(trackposition)))
-                        .frame(minWidth: 50, maxWidth: 80, minHeight: 20, alignment: .center)
-                        .foregroundColor(.gray)
-                        .fontWeight(.semibold)
-                        .font(.system(size: 12))
-                    
-                    CustomSlider(value: $trackposition,
-                                 inRange: 0...Double(spotifyManager.trackDuration),
-                                 activeFillColor: .white,
-                                 fillColor: .white,
-                                 emptyColor: Color(NSColor.darkGray),
-                                 height: 8.0,
-                                 onEditingChanged: { isEditing in
-                        isDragging = isEditing
-                        if !isEditing {
-                            progressChanged()
-                        }
-                    }) .frame(width: 280, height: 10, alignment: .center)
-                    
-                    Text("-\(formatTime(spotifyManager.trackDuration - Int(trackposition)))")
-                        .frame(minWidth: 55, maxWidth: 80, minHeight: 20, alignment: .center)
-                        .foregroundColor(.gray)
-                        .fontWeight(.semibold)
-                        .font(.system(size: 12))
-                }
+            
+            
+            
+            //Progress Bar
+            HStack {
+                Text(formatTime(Int(trackposition)))
+                    .frame(minWidth: 50, maxWidth: 80, minHeight: 20, alignment: .center)
+                    .foregroundColor(.gray)
+                    .fontWeight(.semibold)
+                    .font(.system(size: 12))
+                
+                CustomSlider(value: $trackposition,
+                             inRange: 0...Double(spotifyManager.trackDuration),
+                             activeFillColor: .white,
+                             fillColor: .white,
+                             emptyColor: Color(NSColor.darkGray),
+                             height: 8.0,
+                             onEditingChanged: { isEditing in
+                    isDragging = isEditing
+                    if !isEditing {
+                        progressChanged()
+                    }
+                }) .frame(width: 280, height: 10, alignment: .center)
+                
+                Text("-\(formatTime(spotifyManager.trackDuration - Int(trackposition)))")
+                    .frame(minWidth: 55, maxWidth: 80, minHeight: 20, alignment: .center)
+                    .foregroundColor(.gray)
+                    .fontWeight(.semibold)
+                    .font(.system(size: 12))
             }
-            if notchState == "open" {
-                //Controls
-                HStack {
+            
+            //Controls
+            HStack {
+                
+                //Shuffle
+                Button(action: {
+                    spotifyShuffle()
+                })
+                {
                     
-                    //Shuffle
-                    Button(action: {
-                        spotifyShuffle()
-                    })
-                    {
-                        
-                        Image(systemName: ShuffleIcon)
-                            .imageScale(.large)
-                            .font(.system(size: 18))
-                            .foregroundStyle(.secondary)
-                            .frame(width: 30, height: 30)
-                        
-                    }
-                    .background(Color.clear)
-                    .buttonStyle(BorderlessButtonStyle())
-                    .padding(.horizontal, 17)
-                    
-                    
-                    
-                    
-                    //Skip backward
-                    Button(action: {
-                        spotifyLastTrack()
-                    }) {
-                        Image(systemName: "backward.fill")
-                            .imageScale(.large)
-                            .foregroundStyle(.primary)
-                            .font(.system(size: 17))
-                            .frame(width: 30, height: 30)
-                        
-                    }
-                    .background(Color.clear)
-                    .buttonStyle(BorderlessButtonStyle())
-                    .padding(.horizontal, 5)
-                    
-                    
-                    
-                    //Pause
-                    Button(action: {
-                        spotifyPlayPause()
-                    }) {
-                        Image(systemName: PlayIcon)
-                            .imageScale(.large)
-                            .foregroundStyle(.primary)
-                            .font(.system(size: 22, weight: .bold))
-                            .frame(width: 30, height: 30)
-                        
-                    }
-                    .background(Color.clear)
-                    .buttonStyle(BorderlessButtonStyle())
-                    .padding(.horizontal, 16)
-                    
-                    
-                    //Skip forward
-                    Button(action: {
-                        spotifyNextTrack()
-                    }) {
-                        Image(systemName: "forward.fill")
-                            .imageScale(.large)
-                            .foregroundStyle(.primary)
-                            .font(.system(size: 17))
-                            .frame(width: 30, height: 30)
-                        
-                    }
-                    .background(Color.clear)
-                    .buttonStyle(BorderlessButtonStyle())
-                    .padding(.horizontal, 5)
-                    
-                    
-                    //Speaker
-                    Image(systemName: deviceIcon)
+                    Image(systemName: ShuffleIcon)
                         .imageScale(.large)
+                        .font(.system(size: 18))
                         .foregroundStyle(.secondary)
+                        .frame(width: 30, height: 30)
+                    
+                }
+                .background(Color.clear)
+                .buttonStyle(BorderlessButtonStyle())
+                .padding(.horizontal, 17)
+                
+                
+                
+                
+                //Skip backward
+                Button(action: {
+                    spotifyLastTrack()
+                }) {
+                    Image(systemName: "backward.fill")
+                        .imageScale(.large)
+                        .foregroundStyle(.primary)
                         .font(.system(size: 17))
                         .frame(width: 30, height: 30)
-                        .padding(.horizontal, 17)
                     
                 }
+                .background(Color.clear)
+                .buttonStyle(BorderlessButtonStyle())
+                .padding(.horizontal, 5)
+                
+                
+                
+                //Pause
+                Button(action: {
+                    spotifyPlayPause()
+                }) {
+                    Image(systemName: PlayIcon)
+                        .imageScale(.large)
+                        .foregroundStyle(.primary)
+                        .font(.system(size: 22, weight: .bold))
+                        .frame(width: 30, height: 30)
+                    
+                }
+                .background(Color.clear)
+                .buttonStyle(BorderlessButtonStyle())
+                .padding(.horizontal, 16)
+                
+                
+                //Skip forward
+                Button(action: {
+                    spotifyNextTrack()
+                }) {
+                    Image(systemName: "forward.fill")
+                        .imageScale(.large)
+                        .foregroundStyle(.primary)
+                        .font(.system(size: 17))
+                        .frame(width: 30, height: 30)
+                    
+                }
+                .background(Color.clear)
+                .buttonStyle(BorderlessButtonStyle())
+                .padding(.horizontal, 5)
+                
+                
+                //Speaker
+                Image(systemName: deviceIcon)
+                    .imageScale(.large)
+                    .foregroundStyle(.secondary)
+                    .font(.system(size: 17))
+                    .frame(width: 30, height: 30)
+                    .padding(.horizontal, 17)
+                
             }
+            
         }
         .frame(minHeight: notchHeight + notchSizeChange)
         .onReceive(spotifyManager.$trackPosition) { newValue in
@@ -206,20 +186,26 @@ struct Player: View {
         .onDisappear {
             playbackTimer?.invalidate()
         }
-        .onChange(of: spotifyManager.isPlaying) {
-            changeArtSize(spotifyManager.isPlaying)
-        }
-        .padding(.bottom, notchState == "open" ? 15 : 0)
-        .padding(.top, notchState == "open" ? 10 : 0)
+
+        .padding(.bottom, 15)
+        .padding(.top, 10)
         .onHover { hovering in
             isHovered = hovering
-            if openNotchOnHover == true {
-                DispatchQueue.main.asyncAfter(deadline: .now() + openingDelay) {
-                    changeHoverState(hovering)
+
+            // Prevent redundant state changes
+            if hovering != lastHoverState {
+                lastHoverState = hovering
+
+                if openNotchOnHover {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + openingDelay) {
+                        if isHovered == lastHoverState {
+                           // changeHoverState(isHovered)
+                        }
+                    }
                 }
             }
-            
-            if hapticFeedback == true {
+
+            if hapticFeedback {
                 let performer = NSHapticFeedbackManager.defaultPerformer
                 performer.perform(.alignment, performanceTime: .default)
             }
@@ -246,26 +232,27 @@ struct Player: View {
         }
     }
     
-    func changeArtSize (_ playbackState: Bool) {
-        if playbackState == true {
-            albumArtSizeOpen = 80
-            albumArtSizeClosed = 30.0
-
-        } else if playbackState == false {
-            albumArtSizeOpen = 70
-            albumArtSizeClosed = 25.0
-        }
-    }
     
-    func changeHoverState(_ hovering: Bool) {
-        let desiredState = hovering ? "open" : "closed"
-        if desiredState != notchState && desiredState != lastNotchState {
-            lastNotchState = desiredState
-            MusicNotchApp.updateNotch()
-        }
-    }
+    
+//    func changeHoverState(_ hovering: Bool) {
+//        let desiredState = hovering ? "open" : "closed"
+//        if desiredState != notchStateS && desiredState != notchState && desiredState != lastNotchState {
+//            lastNotchState = desiredState
+//            //MusicNotchApp.updateNotch()
+//            print("-----------")
+//            print("Hoverstate\(hovering)")
+//            print("Notchstate before \(notchState)")
+//            DispatchQueue.main.async {
+//                MusicNotchApp.setNotchContent(desiredState)
+//            }
+//            print("Change hover notch")
+//
+//        }
+//    }
 }
 
 #Preview {
-    Player(notchState: "open")
+    Player()
 }
+
+    
