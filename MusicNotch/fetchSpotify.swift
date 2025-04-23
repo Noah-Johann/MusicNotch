@@ -37,6 +37,7 @@ class SpotifyManager: ObservableObject {
     @Published var shuffle: Bool = false
     @Published var albumArtURL: String = ""
     @Published var albumArtImage: NSImage? = nil
+    private var oldTrackName: String = ""
     private var hideTimer: Timer?
     private var stopTime = 0
     
@@ -63,7 +64,12 @@ class SpotifyManager: ObservableObject {
         collectBasicInfo()
         updatePlayIcon()
         updateShuffleIcon()
-        fetchAlbumArt()
+        
+        if self.trackName != oldTrackName {
+            oldTrackName = self.trackName
+
+            fetchAlbumArt()
+        }
         
         if self.isPlaying == false && notchState == "closed" {
             let hideNotchTime = Defaults[.hideNotchTime]
@@ -262,6 +268,7 @@ class SpotifyManager: ObservableObject {
                 self.popularity = Int(finalResult[14]) ?? 0
                 self.shuffle = finalResult[15] == "true"
                 self.albumArtURL = finalResult[16]
+                
             } else {
                 self.spotifyRunning = false
                 //clearAllData()
