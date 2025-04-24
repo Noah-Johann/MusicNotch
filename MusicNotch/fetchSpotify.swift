@@ -41,12 +41,15 @@ class SpotifyManager: ObservableObject {
     
     
     private init() {
-        // Initial setup
-        setupNotifications()
-        
-        // Check if Spotify is already running
-        if isSpotifyRunning() {
-            setupSpotifyObservers()
+        // Initial setup - do this on the main thread
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.setupNotifications()
+            
+            // Check if Spotify is already running
+            if self.isSpotifyRunning() {
+                self.setupSpotifyObservers()
+            }
         }
     }
     
@@ -121,27 +124,27 @@ class SpotifyManager: ObservableObject {
     
     private func setupSpotifyObservers() {
         // Don't set up observers if already observing
-        if isObserving {
-            return
-        }
+        guard !isObserving else { return }
         
         // Only set up if Spotify is actually running
-        if !isSpotifyRunning() {
-            return
-        }
+        guard isSpotifyRunning() else { return }
         
         print("Setting up Spotify observers")
         
-        // Register for Spotify playback state changes
-        DistributedNotificationCenter.default().addObserver(
-            self,
-            selector: #selector(playbackStateChanged(_:)),
-            name: NSNotification.Name("com.spotify.client.PlaybackStateChanged"),
-            object: nil
-        )
-        
-        isObserving = true
-        updateInfo()
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            
+            // Register for Spotify playback state changes
+            DistributedNotificationCenter.default().addObserver(
+                self,
+                selector: #selector(self.playbackStateChanged(_:)),
+                name: NSNotification.Name("com.spotify.client.PlaybackStateChanged"),
+                object: nil
+            )
+            
+            self.isObserving = true
+            self.updateInfo()
+        }
     }
 
     @objc private func playbackStateChanged(_ notification: Notification) {
@@ -193,7 +196,7 @@ class SpotifyManager: ObservableObject {
         
         let hideNotchTime = Defaults[.hideNotchTime]
         stopTime = 0
-        if hideTimer == nil {
+        if hideTimer == nil && self.isPlaying == false {
             print("start timer")
             hideTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
                 guard let self = self else { return }
