@@ -58,9 +58,9 @@ struct SettingsView: View {
                 
                 LuminareSection("Notch") {
                     
-                    LuminareToggle("Open Notch on Hover", isOn: $openNotchOnHover)
+                    LuminareToggle("Open Notch on hover", isOn: $openNotchOnHover)
                     
-                    LuminareToggle("Haptic Feedback", isOn: $hapticFeedback)
+                    LuminareToggle("Haptic feedback", isOn: $hapticFeedback)
                     
                     if openNotchOnHover == true {
                         LuminareValueAdjuster("Opening delay",
@@ -77,11 +77,11 @@ struct SettingsView: View {
                                           suffix:"s",
                                           step: 1)
                     
-                    LuminareValueAdjuster("Notch Size Change",
-                                          value: $notchSizeChange,
-                                          sliderRange: -5...5.0,
-                                          suffix:"px",
-                                          step: 1.0)
+//                    LuminareValueAdjuster("Notch Size Change",
+//                                          value: $notchSizeChange,
+//                                          sliderRange: -5...5.0,
+//                                          suffix:"px",
+//                                          step: 1.0)
                 } .padding(.bottom, 14)
                 
                 LuminareSection("Keyboard Shortcuts") {
@@ -107,7 +107,7 @@ struct SettingsView: View {
                             HStack (alignment: .center){
                                 Image(systemName: showAcknowledgements == true ? "arrow.uturn.up.circle" : "arrow.uturn.down.circle")
                                     .imageScale(.large)
-                                Text(showAcknowledgements == true ? "Hide Acknowledgements" : "Show Acknowledgements")
+                                Text(showAcknowledgements == true ? "Hide acknowledgements" : "Show acknowledgements")
                                     .frame(width: 160, alignment: .center)
                             }
                         } .buttonStyle(LuminareButtonStyle())
