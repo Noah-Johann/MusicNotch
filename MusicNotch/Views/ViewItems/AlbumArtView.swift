@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Defaults
 
 struct AlbumArtView: View {
     
@@ -14,7 +15,7 @@ struct AlbumArtView: View {
     @ObservedObject var spotifyManager = SpotifyManager.shared
     
     @State private var albumArtSizeOpen = 80.0
-    @State public var albumArtSizeClosed = 30.0
+    @State public var albumArtSizeClosed = Defaults[.notchDisplay] ? 30.0 : 20.0
     
     var body: some View {
         HStack {
@@ -24,7 +25,7 @@ struct AlbumArtView: View {
                     .scaledToFit()
                     .frame(width: sizeState == "open" ? albumArtSizeOpen : albumArtSizeClosed,
                            height: sizeState == "open" ? albumArtSizeOpen : albumArtSizeClosed)
-                    .cornerRadius(6)
+                    .cornerRadius(Defaults[.notchDisplay] ? 6 : 4)
                     .padding(.vertical, 10)
                     .animation(.easeInOut(duration: 0.3))
                 
@@ -37,18 +38,22 @@ struct AlbumArtView: View {
         .onChange(of: spotifyManager.isPlaying) {
             changeArtSize(spotifyManager.isPlaying)
         }
+        .onAppear() {
+            changeArtSize(spotifyManager.isPlaying)
+        }
     }
     
     func changeArtSize (_ playbackState: Bool) {
         if playbackState == true {
             albumArtSizeOpen = 80
-            albumArtSizeClosed = 30.0
+            albumArtSizeClosed = Defaults[.notchDisplay] ? 30.0 : 20.0
             
         } else if playbackState == false {
             albumArtSizeOpen = 70
-            albumArtSizeClosed = 25.0
+            albumArtSizeClosed = Defaults[.notchDisplay] ? 25 : 15
         }
     }
+
 }
 
 #Preview {
