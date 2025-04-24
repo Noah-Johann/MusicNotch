@@ -14,10 +14,7 @@ import SwiftUICore
 public var timer = 0
 class SpotifyManager: ObservableObject {
     static let shared = SpotifyManager()    
-    
-    // private var closedView = closedPlayer()
-    // private var opendView = OpendPlayer()
-    
+        
     // Öffentliche Eigenschaften
     @Published var spotifyRunning: Bool = false
     @Published var isPlaying: Bool = false
@@ -40,33 +37,157 @@ class SpotifyManager: ObservableObject {
     private var oldTrackName: String = ""
     private var hideTimer: Timer?
     private var stopTime = 0
+    private var isObserving: Bool = false
     
     
     private init() {
-        setupPlaybackObserver()
+        // Initial setup
+        setupNotifications()
+        
+        // Check if Spotify is already running
+        if isSpotifyRunning() {
+            setupSpotifyObservers()
+        }
     }
     
-    private func setupPlaybackObserver() {
-        // Register for Spotify playback state changes via NSDistributedNotificationCenter
-        DistributedNotificationCenter.default().addObserver(self,
-                                selector: #selector(playbackStateChanged(_:)),
-                                name: NSNotification.Name("com.spotify.client.PlaybackStateChanged"),
-                                object: nil)
+    deinit {
+        cleanup()
+    }
+    
+    private func setupNotifications() {
+        // Listen for application launched notifications
+        NSWorkspace.shared.notificationCenter.addObserver(
+            self,
+            selector: #selector(applicationLaunched(_:)),
+            name: NSWorkspace.didLaunchApplicationNotification,
+            object: nil
+        )
+        
+        // Listen for application terminated notifications
+        NSWorkspace.shared.notificationCenter.addObserver(
+            self,
+            selector: #selector(applicationTerminated(_:)),
+            name: NSWorkspace.didTerminateApplicationNotification,
+            object: nil
+        )
+    }
+    
+    @objc private func applicationLaunched(_ notification: Notification) {
+        // Check if the launched application is Spotify
+        if let app = notification.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication,
+           let appName = app.localizedName,
+           appName.contains("Spotify") {
+            print("Spotify launched")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+                guard let self = self else { return }
+                if !self.isObserving && self.isSpotifyRunning() {
+                    self.setupSpotifyObservers()
+                }
+            }
+        }
+    }
+    
+    @objc private func applicationTerminated(_ notification: Notification) {
+        // Check if the terminated application is Spotify
+        if let app = notification.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication,
+           let appName = app.localizedName,
+           appName.contains("Spotify") {
+            print("Spotify terminated")
+            self.stopObserving()
+            self.clearAllData()
+        }
+    }
+    
+    private func stopObserving() {
+        if isObserving {
+            print("Stopping Spotify observers")
+            DistributedNotificationCenter.default().removeObserver(self)
+            isObserving = false
+        }
+        
+        if hideTimer != nil {
+            hideTimer?.invalidate()
+            hideTimer = nil
+        }
+    }
+    
+    public func cleanup() {
+        stopObserving()
+        clearAllData()
+        
+        // Remove workspace notifications
+        NSWorkspace.shared.notificationCenter.removeObserver(self)
+    }
+    
+    private func setupSpotifyObservers() {
+        // Don't set up observers if already observing
+        if isObserving {
+            return
+        }
+        
+        // Only set up if Spotify is actually running
+        if !isSpotifyRunning() {
+            return
+        }
+        
+        print("Setting up Spotify observers")
+        
+        // Register for Spotify playback state changes
+        DistributedNotificationCenter.default().addObserver(
+            self,
+            selector: #selector(playbackStateChanged(_:)),
+            name: NSNotification.Name("com.spotify.client.PlaybackStateChanged"),
+            object: nil
+        )
+        
+        isObserving = true
+        updateInfo()
     }
 
     @objc private func playbackStateChanged(_ notification: Notification) {
-        self.updateInfo()
+        // Check Spotify is actually running before updating
+        if isSpotifyRunning() {
+            self.updateInfo()
+        } else {
+            stopObserving()
+            clearAllData()
+        }
     }
     
+    private func isSpotifyRunning() -> Bool {
+        let script = """
+        tell application "System Events"
+            set spotifyProcess to (exists process "Spotify")
+            if spotifyProcess then
+                return true
+            else
+                return false
+            end if
+        end tell
+        """
+        
+        if let result = executeAppleScript(script) as? String {
+            let isRunning = result.trimmingCharacters(in: .whitespacesAndNewlines) == "true"
+            self.spotifyRunning = isRunning
+            return isRunning
+        }
+        return false
+    }
     
     public func updateInfo() {
+        // If Spotify is not running, don't try to update
+        if !isSpotifyRunning() {
+            clearAllData()
+            stopObserving() 
+            return
+        }
+        
         collectBasicInfo()
         updatePlayIcon()
         updateShuffleIcon()
         
         if self.trackName != oldTrackName {
             oldTrackName = self.trackName
-
             fetchAlbumArt()
         }
         
@@ -74,7 +195,8 @@ class SpotifyManager: ObservableObject {
         stopTime = 0
         if hideTimer == nil {
             print("start timer")
-            hideTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+            hideTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+                guard let self = self else { return }
                 DispatchQueue.main.async {
                     self.stopTime += 1
                     if self.stopTime > Int(hideNotchTime) && notchState == "closed" {
@@ -88,8 +210,7 @@ class SpotifyManager: ObservableObject {
             }
         }
         
-        
-        if self.isPlaying == true  && notchState == "hide" {
+        if self.isPlaying == true && notchState == "hide" {
             DispatchQueue.main.async() {
                 NotchManager.shared.setNotchContent("closed", false)
             }
@@ -98,134 +219,142 @@ class SpotifyManager: ObservableObject {
         if self.isPlaying == true && hideTimer != nil {
             self.hideTimer?.invalidate()
             self.hideTimer = nil
-
         }
     }
     
     public func collectBasicInfo() {
+        // If Spotify is not running, don't try to collect info
+        if !isSpotifyRunning() {
+            stopObserving()
+            clearAllData()
+            return
+        }
+        
         let script = """
-        if application "Spotify" is running then
-            tell application "Spotify"
-                set results to {}
-                set end of results to true -- spotifyRunning
-                
-                try
-                    set isPlaying to player state as string
-                    set end of results to isPlaying
-                on error
-                    set end of results to "stopped"
-                end try
-                
-                try
-                    set trackName to name of current track
-                    set end of results to trackName
-                on error
-                    set end of results to ""
-                end try
-                
-                try
-                    set artistName to artist of current track
-                    set end of results to artistName
-                on error
-                    set end of results to ""
-                end try
-                
-                try
-                    set albumName to album of current track
-                    set end of results to albumName
-                on error
-                    set end of results to ""
-                end try
-                
-                try
-                    set trackDuration to duration of current track / 1000
-                    set end of results to trackDuration
-                on error
-                    set end of results to 0
-                end try
-                
-                try
-                    set trackPosition to player position
-                    set end of results to trackPosition
-                on error
-                    set end of results to 0
-                end try
-                
-                try
-                    set isLoved to loved of current track
-                    set end of results to isLoved
-                on error
-                    set end of results to false
-                end try
-                
-                try
-                    set trackId to id of current track
-                    set end of results to trackId
-                on error
-                    set end of results to ""
-                end try
-                
-                try
-                    set soundVolume to sound volume
-                    set end of results to soundVolume
-                on error
-                    set end of results to 0
-                end try
-                
-                try
-                    set trackURL to spotify url of current track
-                    set end of results to trackURL
-                on error
-                    set end of results to ""
-                end try
-                
-                try
-                    set releaseDate to year of current track
-                    set end of results to releaseDate as string
-                on error
-                    set end of results to ""
-                end try
-                
-                try
-                    set discNumber to disc number of current track
-                    set end of results to discNumber
-                on error
-                    set end of results to 0
-                end try
-                
-                try
-                    set trackNumber to track number of current track
-                    set end of results to trackNumber
-                on error
-                    set end of results to 0
-                end try
-                
-                try
-                    set popularity to popularity of current track
-                    set end of results to popularity
-                on error
-                    set end of results to 0
-                end try
-                
-                try
-                    set shuffle to shuffling
-                    set end of results to shuffle
-                on error
-                    set end of results to false
-                end try
-                
-                try
-                    set albumArt to artwork url of current track
-                    set end of results to albumArt
-                on error
-                    set end of results to ""
-                end try
-                
-                return results
-            end tell
-        else
-            return {false, "", "", "", 0, 0, false, "", 0, "", "", 0, 0, 0, false, ""}
-        end if
+        tell application "System Events"
+            if exists process "Spotify" then
+                tell application "Spotify"
+                    set results to {}
+                    set end of results to true -- spotifyRunning
+                    
+                    try
+                        set isPlaying to player state as string
+                        set end of results to isPlaying
+                    on error
+                        set end of results to "stopped"
+                    end try
+                    
+                    try
+                        set trackName to name of current track
+                        set end of results to trackName
+                    on error
+                        set end of results to ""
+                    end try
+                    
+                    try
+                        set artistName to artist of current track
+                        set end of results to artistName
+                    on error
+                        set end of results to ""
+                    end try
+                    
+                    try
+                        set albumName to album of current track
+                        set end of results to albumName
+                    on error
+                        set end of results to ""
+                    end try
+                    
+                    try
+                        set trackDuration to duration of current track / 1000
+                        set end of results to trackDuration
+                    on error
+                        set end of results to 0
+                    end try
+                    
+                    try
+                        set trackPosition to player position
+                        set end of results to trackPosition
+                    on error
+                        set end of results to 0
+                    end try
+                    
+                    try
+                        set isLoved to loved of current track
+                        set end of results to isLoved
+                    on error
+                        set end of results to false
+                    end try
+                    
+                    try
+                        set trackId to id of current track
+                        set end of results to trackId
+                    on error
+                        set end of results to ""
+                    end try
+                    
+                    try
+                        set soundVolume to sound volume
+                        set end of results to soundVolume
+                    on error
+                        set end of results to 0
+                    end try
+                    
+                    try
+                        set trackURL to spotify url of current track
+                        set end of results to trackURL
+                    on error
+                        set end of results to ""
+                    end try
+                    
+                    try
+                        set releaseDate to year of current track
+                        set end of results to releaseDate as string
+                    on error
+                        set end of results to ""
+                    end try
+                    
+                    try
+                        set discNumber to disc number of current track
+                        set end of results to discNumber
+                    on error
+                        set end of results to 0
+                    end try
+                    
+                    try
+                        set trackNumber to track number of current track
+                        set end of results to trackNumber
+                    on error
+                        set end of results to 0
+                    end try
+                    
+                    try
+                        set popularity to popularity of current track
+                        set end of results to popularity
+                    on error
+                        set end of results to 0
+                    end try
+                    
+                    try
+                        set shuffle to shuffling
+                        set end of results to shuffle
+                    on error
+                        set end of results to false
+                    end try
+                    
+                    try
+                        set albumArt to artwork url of current track
+                        set end of results to albumArt
+                    on error
+                        set end of results to ""
+                    end try
+                    
+                    return results
+                end tell
+            else
+                return {false, "", "", "", 0, 0, false, "", 0, "", "", 0, 0, 0, false, ""}
+            end if
+        end tell
         """
         
         let result = executeAppleScript(script)
@@ -244,9 +373,6 @@ class SpotifyManager: ObservableObject {
                 finalResult.removeLast()
             }
             
-
-
-                        
             // Sicherstellen, dass genügend Daten vorhanden sind
             if finalResult.count >= 17 {
                 self.spotifyRunning = finalResult[0] == "true"
@@ -269,15 +395,20 @@ class SpotifyManager: ObservableObject {
                 
             } else {
                 self.spotifyRunning = false
-                //clearAllData()
+                clearAllData()
                 print("Error on getting information or spotify not running")
+                stopObserving()
             }
         } else {
             print("Fehler: Didn't get any result")
+            self.spotifyRunning = false
+            clearAllData()
+            stopObserving()
         }
         
         if !spotifyRunning {
             print("Spotify is not running.")
+            stopObserving()
         }
     }
     
