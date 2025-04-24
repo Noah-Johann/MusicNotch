@@ -60,7 +60,6 @@ class SpotifyManager: ObservableObject {
     
     
     public func updateInfo() {
-        print("update info")
         collectBasicInfo()
         updatePlayIcon()
         updateShuffleIcon()
@@ -71,25 +70,24 @@ class SpotifyManager: ObservableObject {
             fetchAlbumArt()
         }
         
-        if self.isPlaying == false && notchState == "closed" {
-            let hideNotchTime = Defaults[.hideNotchTime]
-            stopTime = 0
-            if hideTimer == nil {
-                print("start timer")
-                hideTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
-                    DispatchQueue.main.async {
-                        self.stopTime += 1
-                        if self.stopTime > Int(hideNotchTime) && notchState == "closed" {
-                            self.hideTimer?.invalidate()
-                            self.hideTimer = nil
-                            print("hideNotch")
-                            NotchManager.shared.setNotchContent("hide", false)
-                            notchState = "hide"
-                        }
+        let hideNotchTime = Defaults[.hideNotchTime]
+        stopTime = 0
+        if hideTimer == nil {
+            print("start timer")
+            hideTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+                DispatchQueue.main.async {
+                    self.stopTime += 1
+                    if self.stopTime > Int(hideNotchTime) && notchState == "closed" {
+                        self.hideTimer?.invalidate()
+                        self.hideTimer = nil
+                        print("hideNotch")
+                        NotchManager.shared.setNotchContent("hide", false)
+                        notchState = "hide"
                     }
                 }
             }
         }
+        
         
         if self.isPlaying == true  && notchState == "hide" {
             DispatchQueue.main.async() {
