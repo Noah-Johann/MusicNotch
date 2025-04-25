@@ -42,9 +42,11 @@ final class NotchManager {
             }
         }
     }
+    
     public func changeNotch() {
         Task {
             if notchState == "closed" {
+                notchState = "open"
                 SpotifyManager.shared.updateInfo()
                 
                 if Defaults[.notchDisplay] == true {
@@ -59,8 +61,9 @@ final class NotchManager {
                     await NotchManager.shared.notch.expand(on: NSScreen.screens.first!)
                 }
                 
-                notchState = "open"
+            
             } else if notchState == "open" {
+                notchState = "closed"
                 SpotifyManager.shared.updateInfo()
                 
                 if Defaults[.notchDisplay] == true {
@@ -75,8 +78,9 @@ final class NotchManager {
                     await NotchManager.shared.notch.compact(on: NSScreen.screens.first!)
                 }
                 
-                notchState = "closed"
+              
             } else if notchState == "hide" {
+                notchState = "open"
                 SpotifyManager.shared.updateInfo()
                 
                 if Defaults[.notchDisplay] == true {
@@ -90,8 +94,6 @@ final class NotchManager {
                 } else {
                     await NotchManager.shared.notch.expand(on: NSScreen.screens.first!)
                 }
-                
-                notchState = "open"
             }
         }
     }
@@ -102,6 +104,9 @@ final class NotchManager {
                 await NotchManager.shared.notch.hide()
             }
             if content == "closed" {
+                notchState = "closed"
+                SpotifyManager.shared.updateInfo()
+                
                 if Defaults[.notchDisplay] == true {
                     guard let notchScreen = NSScreen.screens.first(where: { $0.safeAreaInsets.top > 0 }) else {
                         print("No notch screen found")
@@ -113,10 +118,11 @@ final class NotchManager {
                 } else {
                     await NotchManager.shared.notch.compact(on: NSScreen.screens.first!)
                 }
-                
-                SpotifyManager.shared.updateInfo()
-                notchState = "closed"
+               
             } else if content == "open" {
+                notchState = "open"
+                SpotifyManager.shared.updateInfo()
+
                 if Defaults[.notchDisplay] == true {
                     guard let notchScreen = NSScreen.screens.first(where: { $0.safeAreaInsets.top > 0 }) else {
                         print("No notch screen found")
@@ -129,8 +135,6 @@ final class NotchManager {
                     await NotchManager.shared.notch.expand(on: NSScreen.screens.first!)
                 }
                 
-                SpotifyManager.shared.updateInfo()
-                notchState = "open"
             } else if content == "hide" {
                 await NotchManager.shared.notch.hide()
             }
