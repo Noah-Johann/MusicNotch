@@ -30,11 +30,17 @@ final class NotchManager {
                 AudioSpectView()
             }
         )
+        var isStillHovering = false
+
         notch.onHoverChanged = { isHovering in
             if Defaults[.openNotchOnHover] {
+                isStillHovering = isHovering
+
                 if isHovering {
                     DispatchQueue.main.asyncAfter(deadline: .now() + Defaults[.openingDelay]) {
-                        NotchManager.shared.setNotchContent("open", false)
+                        if isStillHovering {
+                            NotchManager.shared.setNotchContent("open", false)
+                        }
                     }
                 } else {
                     NotchManager.shared.setNotchContent("closed", false)
