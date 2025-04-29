@@ -104,11 +104,7 @@ struct OnboardingView: View {
                                 .frame(width: 250)
                                 .padding(.bottom, 20)
                             
-                            LuminareSection() {
-                                LuminareToggle("Launch at login", isOn: $launchAtLogin)
-                            }
-                            .frame(width: 190)
-
+                           
                         }
                     }
                 } .frame(height: 100)
@@ -116,13 +112,13 @@ struct OnboardingView: View {
                 
                 
                 HStack {
-                    Button("Back") {
-                        OnboardingPage -= 1
-                    } .buttonStyle(LuminareCompactButtonStyle())
-                        .disabled(OnboardingPage == 1)
-                    
+                    if OnboardingPage == 3 {
+                        LuminareSection() {
+                            LuminareToggle("Launch at login", isOn: $launchAtLogin)
+                        }
+                    }
                     if OnboardingPage == 1 {
-                        Button("Next") {
+                        Button("Start setup") {
                             OnboardingPage += 1
                         } .buttonStyle(LuminareCompactButtonStyle())
                     } else if OnboardingPage == 2{
@@ -163,7 +159,7 @@ struct OnboardingView: View {
                         } .buttonStyle(LuminareCompactButtonStyle())
                     }
                     
-                } .frame(width: 300, height: 40)
+                } .frame(width: 350, height: 40)
                     .padding(.bottom, 80)
                 
             } .frame(width: 600, height: 380)
