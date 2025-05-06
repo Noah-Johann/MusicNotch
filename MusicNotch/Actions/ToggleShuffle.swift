@@ -16,7 +16,6 @@ func spotifyShuffle() {
         try task.run()
         task.waitUntilExit()
         SpotifyManager.shared.updateInfo()
-        updateShuffleIcon()
     } catch {
         print("Error while running: \(error)")
     }

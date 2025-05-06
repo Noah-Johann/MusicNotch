@@ -6,8 +6,10 @@
 //
 
 import SwiftUI
-
 struct ButtonView: View {
+    
+    @ObservedObject var spotifyManager = SpotifyManager.shared
+    
     var body: some View {
         //Controls
         HStack {
@@ -18,7 +20,7 @@ struct ButtonView: View {
             })
             {
                 
-                Image(systemName: ShuffleIcon)
+                Image(systemName: spotifyManager.shuffle ? "shuffle.circle.fill" : "shuffle.circle")
                     .imageScale(.large)
                     .font(.system(size: 18))
                     .foregroundStyle(.secondary)
@@ -53,12 +55,12 @@ struct ButtonView: View {
             Button(action: {
                 spotifyPlayPause()
             }) {
-                Image(systemName: PlayIcon)
+                Image(systemName: spotifyManager.isPlaying ? "pause.fill" : "play.fill")
                     .imageScale(.large)
                     .foregroundStyle(.primary)
                     .font(.system(size: 22, weight: .bold))
                     .frame(width: 30, height: 30)
-                
+                    .contentTransition(.symbolEffect(.replace))
             }
             .background(Color.clear)
             .buttonStyle(BorderlessButtonStyle())

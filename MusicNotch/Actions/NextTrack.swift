@@ -16,7 +16,6 @@ func spotifyNextTrack() {
         try task.run()
         task.waitUntilExit()
         SpotifyManager.shared.updateInfo()
-        updatePlayIcon()
     } catch {
         print("Error while running: \(error)")
     }

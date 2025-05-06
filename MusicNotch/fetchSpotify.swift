@@ -186,8 +186,6 @@ class SpotifyManager: ObservableObject {
         }
         
         collectBasicInfo()
-        updatePlayIcon()
-        updateShuffleIcon()
         
         if self.trackName != oldTrackName {
             oldTrackName = self.trackName
