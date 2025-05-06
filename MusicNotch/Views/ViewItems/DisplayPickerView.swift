@@ -34,7 +34,7 @@ class DisplayConfigurationModel: ObservableObject {
 
     /// Called whenever the user changes the display selection.
     func selectionChanged(to newValue: NotchDisplay) {
-        NotchManager.shared.setNotchContent(notchState, true)
+        NotchManager.shared.setNotchContent("closed", true)
     }
 }
 
@@ -64,22 +64,22 @@ struct DisplayPickerView: View {
     
     var body: some View {
         LuminarePicker(
-                elements: NotchDisplay.allCases,
-                selection: Binding(
-                    get: { model.displayOption },
-                    set: { model.displayOption = $0 }
-                )
-                .animation(LuminareConstants.animation),
-                columns: 2
-    ) { option in
-        VStack(spacing: 6) {
-            option.image
-                .scaledToFit()
-                .frame(width: 30, height: 40)
-            Text(option.text)
-                .font(.title3)
+            elements: NotchDisplay.allCases,
+            selection: Binding(
+                get: { model.displayOption },
+                set: { model.displayOption = $0 }
+            )
+            .animation(LuminareConstants.animation),
+            columns: 2
+        ) { option in
+            VStack(spacing: 6) {
+                option.image
+                    .scaledToFit()
+                    .frame(width: 30, height: 40)
+                Text(option.text)
+                    .font(.title3)
+            }
         }
-    }
     }
 }
 

@@ -20,6 +20,8 @@ struct SettingsView: View {
     @Default(.openNotchOnHover) private var openNotchOnHover
     @Default(.openingDelay) private var openingDelay
     @Default(.hapticFeedback) private var hapticFeedback
+    @Default(.mainDisplay) private var mainDisplay
+    @Default(.disableNotchOnHide) private var disableNotchOnHide
     
     @State var showAcknowledgements = false
 
@@ -54,6 +56,9 @@ struct SettingsView: View {
                     DisplayPickerView()
                         .buttonStyle(LuminareButtonStyle())
                         .frame(height: 80)
+                    if mainDisplay == true {
+                        LuminareToggle("Hide fake notch", isOn: $disableNotchOnHide)
+                    }
                 } .padding(.bottom, 14)
                 
                 LuminareSection("Notch") {

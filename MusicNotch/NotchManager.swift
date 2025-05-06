@@ -112,7 +112,11 @@ final class NotchManager {
                 }
                 
             } else if content == "hide" {
-                await NotchManager.shared.notch.close()
+                if Defaults[.mainDisplay] == true && Defaults[.disableNotchOnHide] == true {
+                    await NotchManager.shared.notch.hide()
+                } else {
+                    await NotchManager.shared.notch.close()
+                }
             }
         }
     }
