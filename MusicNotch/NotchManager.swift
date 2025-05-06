@@ -55,51 +55,21 @@ final class NotchManager {
                 notchState = "open"
                 SpotifyManager.shared.updateInfo()
                 
-                if Defaults[.notchDisplay] == true {
-                    guard let notchScreen = NSScreen.screens.first(where: { $0.safeAreaInsets.top > 0 }) else {
-                        print("No notch screen found")
-                        await NotchManager.shared.notch.expand(on: NSScreen.screens.first!)
-                        return
-                    }
-                    await NotchManager.shared.notch.expand(on: notchScreen)
-                    print("Show notch on: \(notchScreen)")
-                } else {
-                    await NotchManager.shared.notch.expand(on: NSScreen.screens.first!)
-                }
+                setNotchContent("open", false)
                 
             
             } else if notchState == "open" {
                 notchState = "closed"
                 SpotifyManager.shared.updateInfo()
                 
-                if Defaults[.notchDisplay] == true {
-                    guard let notchScreen = NSScreen.screens.first(where: { $0.safeAreaInsets.top > 0 }) else {
-                        print("No notch screen found")
-                        await NotchManager.shared.notch.compact(on: NSScreen.screens.first!)
-                        return
-                    }
-                    await NotchManager.shared.notch.compact(on: notchScreen)
-                    print("Show notch on: \(notchScreen)")
-                } else {
-                    await NotchManager.shared.notch.compact(on: NSScreen.screens.first!)
-                }
+                setNotchContent("closed", false)
                 
               
             } else if notchState == "hide" {
                 notchState = "open"
                 SpotifyManager.shared.updateInfo()
                 
-                if Defaults[.notchDisplay] == true {
-                    guard let notchScreen = NSScreen.screens.first(where: { $0.safeAreaInsets.top > 0 }) else {
-                        print("No notch screen found")
-                        await NotchManager.shared.notch.expand(on: NSScreen.screens.first!)
-                        return
-                    }
-                    await NotchManager.shared.notch.expand(on: notchScreen)
-                    print("Show notch on: \(notchScreen)")
-                } else {
-                    await NotchManager.shared.notch.expand(on: NSScreen.screens.first!)
-                }
+                setNotchContent("hide", false)
             }
         }
     }
