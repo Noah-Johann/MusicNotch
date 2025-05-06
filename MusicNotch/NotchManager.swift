@@ -112,7 +112,7 @@ final class NotchManager {
                 }
                 
             } else if content == "hide" {
-                await NotchManager.shared.notch.hide()
+                await NotchManager.shared.notch.close()
             }
         }
     }
