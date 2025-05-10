@@ -163,7 +163,7 @@ struct OnboardingView: View {
                     .padding(.bottom, 80)
                 
             } .frame(width: 600, height: 380)
-                .animation(.smooth)
+                .animation(.smooth, value: OnboardingPage)
         }.scrollDisabled(true)
     }
 }

@@ -27,7 +27,7 @@ struct AlbumArtView: View {
                            height: sizeState == "open" ? albumArtSizeOpen : albumArtSizeClosed)
                     .cornerRadius(Defaults[.notchDisplay] ? 6 : 4)
                     .padding(.vertical, 10)
-                    .animation(.easeInOut(duration: 0.3))
+                    .animation(.easeInOut(duration: 0.3), value: sizeState == "open" ? albumArtSizeOpen : albumArtSizeClosed)
                 
             }
         }
