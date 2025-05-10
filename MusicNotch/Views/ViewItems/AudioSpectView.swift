@@ -12,7 +12,7 @@ struct AudioSpectView: View {
     @ObservedObject var spotifyManager = SpotifyManager.shared
 
     var body: some View {
-        AudioSpectrumView(isPlaying: spotifyManager.isPlaying)
+        AudioSpectrumView(isPlaying: $spotifyManager.isPlaying)
                             .foregroundColor(.white)
                             .frame(width: 15, height: 15)
                             .padding(.horizontal, 10)

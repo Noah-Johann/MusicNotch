@@ -39,17 +39,17 @@ struct Player: View {
                     Text(spotifyManager.trackName)
                         .font(.system(size: 17, weight: .medium))
                         .foregroundColor(.white)
-                        .frame(width: 260, alignment: .leading)
+                        .frame(width: 240, alignment: .leading)
                     Text(spotifyManager.artistName)
                         .font(.system(size: 14, weight: .regular))
                         .foregroundColor(.gray)
-                        .frame(width: 260, alignment: .leading)
+                        .frame(width: 240, alignment: .leading)
                 }
                 .padding(.horizontal, 10)
                 .padding(.top, 27)
                 
                 
-                AudioSpectrumView(isPlaying: spotifyManager.isPlaying)
+                AudioSpectrumView(isPlaying: $spotifyManager.isPlaying)
                     .foregroundColor(.white)
                     .frame(width: 20, height: 20)
                     .padding(.top, 10)

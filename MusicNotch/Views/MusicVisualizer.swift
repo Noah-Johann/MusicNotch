@@ -1,18 +1,9 @@
 //
 //  MusicVisualizer.swift
-//  MusicNotch
-//
-//  Edited by Noah Johann
-//
-
-//
-//  MusicVisualizer.swift
 //  boringNotch
 //
-//  https://github.com/TheBoredTeam/boring.notch
 //  Created by Harsh Vardhan  Goswami  on 02/08/24.
 //
-
 import AppKit
 import Cocoa
 import SwiftUI
@@ -33,17 +24,16 @@ class AudioSpectrum: NSView {
         wantsLayer = true
         setupBars()
     }
-    
+
     private func setupBars() {
-        let barCount = 6  // Anzahl der Balken bleibt fest, kann aber angepasst werden
-        let barWidth = frame.width / CGFloat(barCount * 2)  // Balkenbreite relativ zur Gesamtbreite
-        let spacing = barWidth  // Spacing bleibt proportional zur Balkenbreite
-        let totalHeight = frame.height  // Balkenhöhe passt sich der View-Höhe an
+        let barWidth: CGFloat = notchState == "open" ? 2 : 1.75
+        let barCount = notchState == "open" ? 6 : 5
+        let spacing: CGFloat = barWidth
+        let totalWidth = CGFloat(barCount) * (barWidth + spacing)
+        let totalHeight: CGFloat = notchState == "open" ? 22 : 14
+        frame.size = CGSize(width: totalWidth, height: totalHeight)
 
-        barLayers.forEach { $0.removeFromSuperlayer() }  // Vorherige Balken entfernen
-        barLayers.removeAll()
-
-        for i in 0..<barCount {
+        for i in 0 ..< barCount {
             let xPosition = CGFloat(i) * (barWidth + spacing)
             let barLayer = CAShapeLayer()
             barLayer.frame = CGRect(x: xPosition, y: 0, width: barWidth, height: totalHeight)
@@ -58,11 +48,6 @@ class AudioSpectrum: NSView {
             barLayers.append(barLayer)
             layer?.addSublayer(barLayer)
         }
-    }
-    
-    override func layout() {
-        super.layout()
-        setupBars()  // Aktualisiert die Balken, wenn sich die Größe der View ändert
     }
     
     private func startAnimating() {
@@ -101,7 +86,7 @@ class AudioSpectrum: NSView {
     
     func setPlaying(_ playing: Bool) {
         isPlaying = playing
-        if isPlaying == true {
+        if isPlaying {
             startAnimating()
         } else {
             stopAnimating()
@@ -110,7 +95,7 @@ class AudioSpectrum: NSView {
 }
 
 struct AudioSpectrumView: NSViewRepresentable {
-    var isPlaying: Bool
+    @Binding var isPlaying: Bool
     
     func makeNSView(context: Context) -> AudioSpectrum {
         let spectrum = AudioSpectrum()
@@ -124,7 +109,7 @@ struct AudioSpectrumView: NSViewRepresentable {
 }
 
 #Preview {
-    AudioSpectrumView(isPlaying: true)
+    AudioSpectrumView(isPlaying: .constant(true))
         .frame(width: 16, height: 20)
         .padding()
 }
