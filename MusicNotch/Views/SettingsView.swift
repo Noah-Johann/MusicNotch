@@ -127,9 +127,12 @@ struct SettingsView: View {
                         .font(.caption)
                         .foregroundStyle(.secondary)
                     
-                } .animation(.easeInOut(duration: 0.2))
+                } .animation(.easeInOut(duration: 0.2), value: showAcknowledgements)
+
 
             } .padding(.horizontal, 5)
+              .animation(.easeInOut(duration: 0.2), value: mainDisplay)
+
         }
     }
     
