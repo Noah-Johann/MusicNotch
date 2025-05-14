@@ -4,13 +4,14 @@
 //
 //  Created by Noah Johann on 15.03.25.
 //
+
 import Foundation
 import CoreAudio
 
 public var deviceIcon: String = "headphones"
 
 func getAudioOutputDevice() {
-    // Aktuelles Standardausgabegerät ermitteln
+    // Get playback device
     var defaultOutputDeviceID: AudioDeviceID = 0
     var propertyAddress = AudioObjectPropertyAddress(
         mSelector: kAudioHardwarePropertyDefaultOutputDevice,
@@ -38,7 +39,7 @@ func getAudioOutputDevice() {
         return
     }
     
-    // Gerätename abrufen
+    // Get device name
     var deviceName = "Unknown"
     propertyAddress.mSelector = kAudioDevicePropertyDeviceNameCFString
     propertyAddress.mScope = kAudioObjectPropertyScopeGlobal
@@ -58,7 +59,7 @@ func getAudioOutputDevice() {
         deviceName = unwrappedRef.takeRetainedValue() as String
     }
     
-    // Modell-UID abrufen
+    // Get UUID
     var modelUID = "Nicht verfügbar"
     propertyAddress.mSelector = kAudioDevicePropertyModelUID
     propSize = UInt32(MemoryLayout<CFString?>.size)
@@ -77,7 +78,7 @@ func getAudioOutputDevice() {
         modelUID = unwrappedRef.takeRetainedValue() as String
     }
     
-    // Transporttyp abrufen (Bluetooth, USB, etc.)
+    // Get connection type
     var transportType: UInt32 = 0
     propertyAddress.mSelector = kAudioDevicePropertyTransportType
     propSize = UInt32(MemoryLayout<UInt32>.size)
@@ -120,13 +121,9 @@ func getAudioOutputDevice() {
     print("  Modell: \(modelUID)")
     print("  Connection type: \(transportString)")
     
-    // Für bestimmte Gerätetypen zusätzliche Informationen abrufen
+    // Get additional information
     if transportType == kAudioDeviceTransportTypeBluetooth || transportType == kAudioDeviceTransportTypeBluetoothLE {
-        // Spezifische Bluetooth-Geräte-Eigenschaften abrufen
-        // Diese können je nach Gerätetyp variieren
-        var bluetoothDeviceInfo = "No additional information"
         
-        // Bei Bluetooth-Geräten können weitere Eigenschaften interessant sein
         propertyAddress.mSelector = kAudioDevicePropertyDeviceUID
         propSize = UInt32(MemoryLayout<CFString?>.size)
         
@@ -142,9 +139,7 @@ func getAudioOutputDevice() {
         
         if status == noErr, let unwrappedRef = uidRef {
             let uid = unwrappedRef.takeRetainedValue() as String
-            bluetoothDeviceInfo = "Gerät-UID: \(uid)"
             
-            // AirPods oder ähnliche Geräte können oft anhand der UID oder des ModelUID erkannt werden
             if deviceName.contains("AirPods") || modelUID.contains("AirPods") || uid.contains("AirPods") {
                 print("  Device recognized as AirPods")
                 deviceIcon = "airpods"

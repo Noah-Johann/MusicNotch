@@ -15,7 +15,6 @@ public var timer = 0
 class SpotifyManager: ObservableObject {
     static let shared = SpotifyManager()    
         
-    // Öffentliche Eigenschaften
     @Published var spotifyRunning: Bool = false
     @Published var isPlaying: Bool = false
     @Published var trackName: String = ""
@@ -178,7 +177,6 @@ class SpotifyManager: ObservableObject {
     }
     
     public func updateInfo() {
-        // If Spotify is not running, don't try to update
         if !isSpotifyRunning() {
             clearAllData()
             stopObserving() 
@@ -224,7 +222,6 @@ class SpotifyManager: ObservableObject {
     }
     
     public func collectBasicInfo() {
-        // If Spotify is not running, don't try to collect info
         if !isSpotifyRunning() {
             stopObserving()
             clearAllData()
@@ -359,7 +356,6 @@ class SpotifyManager: ObservableObject {
         """
         
         let result = executeAppleScript(script)
-        // Umwandlung der String-Ausgabe in ein Array
         if let resultString = result as? String {
             
             let cleanedResult = resultString
@@ -368,13 +364,11 @@ class SpotifyManager: ObservableObject {
                 .split(separator: ",")
                 .map { $0.trimmingCharacters(in: .whitespacesAndNewlines).replacingOccurrences(of: "\"", with: "") }
             
-            // Falls das letzte Element leer ist, entfernen wir es
             var finalResult = cleanedResult
             if let last = finalResult.last, last.isEmpty {
                 finalResult.removeLast()
             }
             
-            // Sicherstellen, dass genügend Daten vorhanden sind
             if finalResult.count >= 17 {
                 self.spotifyRunning = finalResult[0] == "true"
                 self.isPlaying = finalResult[1] == "playing"
@@ -413,7 +407,6 @@ class SpotifyManager: ObservableObject {
         }
     }
     
-    // Hilfsfunktion zum Zurücksetzen aller Daten
     private func clearAllData() {
         isPlaying = false
         trackName = ""
@@ -432,7 +425,6 @@ class SpotifyManager: ObservableObject {
         albumArtURL = ""
     }
     
-    // Hilfsfunktion zur Ausführung eines AppleScript-Befehls
     private func executeAppleScript(_ script: String) -> Any? {
         let task = Process()
         task.launchPath = "/usr/bin/osascript"
