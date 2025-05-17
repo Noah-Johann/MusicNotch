@@ -125,6 +125,8 @@ struct Player: View {
                 let performer = NSHapticFeedbackManager.defaultPerformer
                 performer.perform(.alignment, performanceTime: .default)
             }
+        } .contextMenu {
+            ContextMenuView()
         }
         
         
