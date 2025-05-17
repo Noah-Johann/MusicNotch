@@ -95,7 +95,7 @@ func getAudioOutputDevice() {
     var transportString = "Unbekannt"
     switch transportType {
     case kAudioDeviceTransportTypeBuiltIn:
-        transportString = "Eingebaut"
+        transportString = "Build in"
         deviceIcon = "macbook.gen2"
     case kAudioDeviceTransportTypeBluetooth, kAudioDeviceTransportTypeBluetoothLE:
         transportString = "Bluetooth"
@@ -112,7 +112,7 @@ func getAudioOutputDevice() {
         transportString = "HDMI"
         deviceIcon = "display"
     default:
-        transportString = "Andere"
+        transportString = "Other"
         deviceIcon = "headphones"
     }
     

@@ -10,7 +10,7 @@ import Luminare
 
 
 @ViewBuilder
-func aboutButton(name: String, role: String, link: URL, image: Image) -> some View {
+func aboutButton(name: LocalizedStringKey, role: LocalizedStringKey, link: URL, image: Image) -> some View {
     @Environment(\.openURL) var openURL
 
     Button {

@@ -51,9 +51,9 @@ enum NotchDisplay: CaseIterable {
         }
     }
     
-    var text: String {
+    var text: LocalizedStringKey {
         switch self {
-        case .notchDisplay: "MacBook display"
+        case .notchDisplay: "Notch display"
         case .mainDisplay: "Main display"
         }
     }

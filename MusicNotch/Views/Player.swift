@@ -26,9 +26,7 @@ struct Player: View {
     @State private var isHovered = false
     @State private var lastHoverState: Bool = false
     @State private var lastNotchState: String = ""
-    
-    //@State var notchStateS: String
-    
+        
     var body: some View {
         VStack {
             HStack {

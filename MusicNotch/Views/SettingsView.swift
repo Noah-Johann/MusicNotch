@@ -102,11 +102,10 @@ struct SettingsView: View {
                         Button {
                             showAcknowledgements = !showAcknowledgements
                         } label: {
-                            HStack (alignment: .center){
+                            HStack {
                                 Image(systemName: showAcknowledgements == true ? "arrow.uturn.up.circle" : "arrow.uturn.down.circle")
                                     .imageScale(.large)
                                 Text(showAcknowledgements == true ? "Hide acknowledgements" : "Show acknowledgements")
-                                    .frame(width: 160, alignment: .center)
                             }
                         } .buttonStyle(LuminareButtonStyle())
                             .frame(height: 40)
