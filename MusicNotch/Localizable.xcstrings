@@ -374,6 +374,16 @@
         }
       }
     },
+    "Pause" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pause"
+          }
+        }
+      }
+    },
     "Permission denied" : {
       "localizations" : {
         "de" : {
@@ -470,6 +480,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Öffne Danksagungen"
+          }
+        }
+      }
+    },
+    "Show menubar item" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zeige Menubar Symbol"
           }
         }
       }

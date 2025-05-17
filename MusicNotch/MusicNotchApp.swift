@@ -7,17 +7,18 @@
 
 import SwiftUI
 import KeyboardShortcuts
+import Defaults
 
 var notchState: String = "hide"
 
 @main
 struct MusicNotchApp: App {
     
-   // static var MusicNotch: DynamicNotch<AnyView, AnyView, AnyView>? = nil
     @State private var showMenuBarIcon: Bool = true
     
     @ObservedObject var spotifyManager = SpotifyManager.shared
     
+    @Default(.showMenuBarItem) private var showMenuBarItem
     
     init() {
         appSetup()
@@ -36,8 +37,9 @@ struct MusicNotchApp: App {
     }
     
     var body: some Scene {
-                
-        MenuBarExtra("MusicNotch", image: "notch.square", isInserted: $showMenuBarIcon) {
+        MenuBarExtra("MusicNotch", image: "notch.square", isInserted: Binding(get: {
+            showMenuBarItem
+        }, set: { _ in })) {
             MenuBarExtraView()
         }
     }

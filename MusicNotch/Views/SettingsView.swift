@@ -21,6 +21,7 @@ struct SettingsView: View {
     @Default(.hapticFeedback) private var hapticFeedback
     @Default(.mainDisplay) private var mainDisplay
     @Default(.disableNotchOnHide) private var disableNotchOnHide
+    @Default(.showMenuBarItem) private var showMenuBarItem
     
     @State var showAcknowledgements = false
 
@@ -36,6 +37,7 @@ struct SettingsView: View {
                             set: { value in LaunchAtLogin.isEnabled = value }
                         )
                     )
+                    LuminareToggle("Show menubar item", isOn: $showMenuBarItem)
                     #if DEBUG
                     LuminareToggle("Viewed Onboarding", isOn: $viewedOnboarding)
                     #endif
