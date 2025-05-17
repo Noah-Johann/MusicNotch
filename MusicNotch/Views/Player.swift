@@ -38,11 +38,11 @@ struct Player: View {
                 VStack {
                     Text(spotifyManager.trackName)
                         .font(.system(size: 17, weight: .medium))
-                        .foregroundColor(.white)
+                        .foregroundStyle(.white)
                         .frame(width: 240, alignment: .leading)
                     Text(spotifyManager.artistName)
                         .font(.system(size: 14, weight: .regular))
-                        .foregroundColor(.gray)
+                        .foregroundStyle(.gray)
                         .frame(width: 240, alignment: .leading)
                 }
                 .padding(.horizontal, 10)
@@ -50,7 +50,7 @@ struct Player: View {
                 
                 
                 AudioSpectrumView(isPlaying: $spotifyManager.isPlaying)
-                    .foregroundColor(.white)
+                    .foregroundStyle(.white)
                     .frame(width: 20, height: 20)
                     .padding(.top, 10)
                 
@@ -63,7 +63,7 @@ struct Player: View {
             HStack {
                 Text(formatTime(Int(trackposition)))
                     .frame(minWidth: 50, maxWidth: 80, minHeight: 20, alignment: .center)
-                    .foregroundColor(.gray)
+                    .foregroundStyle(.gray)
                     .fontWeight(.semibold)
                     .font(.system(size: 12))
                 
@@ -82,10 +82,10 @@ struct Player: View {
                 
                 Text("-\(formatTime(spotifyManager.trackDuration - Int(trackposition)))")
                     .frame(minWidth: 55, maxWidth: 80, minHeight: 20, alignment: .center)
-                    .foregroundColor(.gray)
+                    .foregroundStyle(.gray)
                     .fontWeight(.semibold)
                     .font(.system(size: 12))
-            }
+            }.frame(height: 15)
             
             ButtonView()
             

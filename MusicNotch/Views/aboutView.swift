@@ -23,13 +23,13 @@ struct aboutView: View {
                 VStack(spacing: 0) {
                     Text(Bundle.main.appName)
                         .blur(radius: 0)
-                        .foregroundColor(.primary)
+                        .foregroundStyle(.primary)
                         .font(.system(
                             size: 28,
                             weight: .bold
                         ))
                     Text("Version \(Bundle.main.appVersion!) (\(Bundle.main.appBuild!))")
-                        .foregroundColor(Color(.tertiaryLabelColor))
+                        .foregroundStyle(Color(.tertiaryLabelColor))
                         .font(.body)
                         .padding(.top, 5)
                 }
@@ -56,7 +56,7 @@ struct aboutView: View {
                     
                     
                     Text(Bundle.main.copyright)
-                        .foregroundColor(Color(.tertiaryLabelColor))
+                        .foregroundStyle(Color(.tertiaryLabelColor))
                         .font(.body)
                 }
             }

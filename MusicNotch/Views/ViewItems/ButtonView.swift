@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+
+
 struct ButtonView: View {
     
     @ObservedObject var spotifyManager = SpotifyManager.shared
@@ -23,6 +25,7 @@ struct ButtonView: View {
                 Image(systemName: spotifyManager.shuffle ? "shuffle.circle.fill" : "shuffle.circle")
                     .imageScale(.large)
                     .font(.system(size: 18))
+                    .fontWeight(.semibold)
                     .foregroundStyle(.secondary)
                     .frame(width: 30, height: 30)
                 

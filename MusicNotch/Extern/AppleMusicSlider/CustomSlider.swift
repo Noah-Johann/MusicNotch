@@ -56,16 +56,16 @@ struct CustomSlider<T: BinaryFloatingPoint>: View {
                     localRealProgress = max(min(localRealProgress + localTempProgress, 1), 0)
                     localTempProgress = 0
                 })
-            .onChange(of: isActive) { newValue in
+            .onChange(of: isActive) {
                 value = max(min(getPrgValue(), inRange.upperBound), inRange.lowerBound)
-                onEditingChanged(newValue)
+                onEditingChanged(isActive)
             }
             .onAppear {
                 localRealProgress = getPrgPercentage(value)
             }
-            .onChange(of: value) { newValue in
+            .onChange(of: value) {
                 if !isActive {
-                    localRealProgress = getPrgPercentage(newValue)
+                    localRealProgress = getPrgPercentage(value)
                 }
             }
         }

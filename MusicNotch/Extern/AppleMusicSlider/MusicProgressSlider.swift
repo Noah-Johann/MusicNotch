@@ -65,10 +65,10 @@ struct MusicProgressSlider<T: BinaryFloatingPoint>: View {
                     }
                     .font(.system(.headline, design: .rounded))
                     .monospacedDigit()
-                    .foregroundColor(isActive ? fillColor : emptyColor)
+                    .foregroundStyle(isActive ? fillColor : emptyColor)
                 }
                 .frame(width: isActive ? bounds.size.width * 1.04 : bounds.size.width, alignment: .center)
-//                .shadow(color: .black.opacity(0.1), radius: isActive ? 20 : 0, x: 0, y: 0)
+                //                .shadow(color: .black.opacity(0.1), radius: isActive ? 20 : 0, x: 0, y: 0)
                 .animation(animation, value: isActive)
             }
             .frame(width: bounds.size.width, height: bounds.size.height, alignment: .center)
@@ -86,17 +86,17 @@ struct MusicProgressSlider<T: BinaryFloatingPoint>: View {
                     localTempProgress = 0
                     progressDuration = inRange.upperBound * localRealProgress
                 })
-            .onChange(of: isActive) { newValue in
+            .onChange(of: isActive) {
                 value = max(min(getPrgValue(), inRange.upperBound), inRange.lowerBound)
-                onEditingChanged(newValue)
+                onEditingChanged(isActive)
             }
             .onAppear {
                 localRealProgress = getPrgPercentage(value)
                 progressDuration = inRange.upperBound * localRealProgress
             }
-            .onChange(of: value) { newValue in
+            .onChange(of: value) {
                 if !isActive {
-                    localRealProgress = getPrgPercentage(newValue)
+                    localRealProgress = getPrgPercentage(value)
                 }
             }
         }

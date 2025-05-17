@@ -13,7 +13,7 @@ struct AudioSpectView: View {
 
     var body: some View {
         AudioSpectrumView(isPlaying: $spotifyManager.isPlaying)
-                            .foregroundColor(.white)
+                            .foregroundStyle(.white)
                             .frame(width: 15, height: 15)
                             .padding(.horizontal, 10)
     }
