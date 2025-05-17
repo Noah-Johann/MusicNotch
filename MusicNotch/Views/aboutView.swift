@@ -54,7 +54,6 @@ struct aboutView: View {
                         .padding(.top, 5)
 
                     
-                    
                     Text(Bundle.main.copyright)
                         .foregroundStyle(Color(.tertiaryLabelColor))
                         .font(.body)

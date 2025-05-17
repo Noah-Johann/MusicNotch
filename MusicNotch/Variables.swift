@@ -23,6 +23,5 @@ extension Defaults.Keys {
     static let openingDelay = Key<CGFloat>("openingDelay", default: 0.0)
     static let hapticFeedback = Key<Bool>("hapticFeedback", default: true)
     static let hideNotchTime = Key<CGFloat>("hideNotchTime", default: 3)
-    static let notchSizeChange = Key<CGFloat>("notchSizeChange", default: 0)
 }
 

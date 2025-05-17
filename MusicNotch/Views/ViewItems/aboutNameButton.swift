@@ -33,11 +33,8 @@ func aboutButton(name: String, role: String, link: URL, image: Image) -> some Vi
                 Text(role)
                     .font(.caption)
                     .foregroundStyle(.secondary)
-                
             }
-
             Spacer()
-
         }
         .padding(12)
     }

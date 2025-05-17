@@ -1,8 +1,12 @@
 //
-//  Helper.swift
-//  Tuneful
+//  PermissionHelper.swift
+//  MusicNotch
 //
 //  Created by Martin Fekete on 03/08/2023.
+//  https://www.tuneful.dev/
+//
+//
+//  Edited by Noah Johann
 //
 
 import Foundation

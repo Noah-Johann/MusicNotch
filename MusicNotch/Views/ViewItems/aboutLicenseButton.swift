@@ -21,18 +21,14 @@ func aboutLicenseButton(name: String, license: String, link: URL, image: String)
                 .aspectRatio(contentMode: .fit)
                 .frame(height: 20)
 
-
             VStack(alignment: .leading) {
                 Text(name)
 
                 Text(license)
                     .font(.caption)
                     .foregroundStyle(.secondary)
-                
             }
-
             Spacer()
-
         }
         .padding(12)
     }

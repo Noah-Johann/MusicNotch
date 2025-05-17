@@ -15,7 +15,6 @@ import KeyboardShortcuts
 struct SettingsView: View {
     
     @Default(.hideNotchTime) private var hideNotchTime
-    @Default(.notchSizeChange) private var notchSizeChange
     @Default(.viewedOnboarding) private var viewedOnboarding
     @Default(.openNotchOnHover) private var openNotchOnHover
     @Default(.openingDelay) private var openingDelay
@@ -81,12 +80,6 @@ struct SettingsView: View {
                                           sliderRange: 0...15,
                                           suffix:"s",
                                           step: 1)
-                    
-//                    LuminareValueAdjuster("Notch Size Change",
-//                                          value: $notchSizeChange,
-//                                          sliderRange: -5...5.0,
-//                                          suffix:"px",
-//                                          step: 1.0)
                 } .padding(.bottom, 14)
                 
                 LuminareSection("Keyboard Shortcuts") {

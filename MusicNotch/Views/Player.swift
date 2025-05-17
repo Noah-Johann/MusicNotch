@@ -10,7 +10,6 @@ import Defaults
 
 
 struct Player: View {
-    @Default(.notchSizeChange) private var notchSizeChange
     @Default(.openNotchOnHover) private var openNotchOnHover
     @Default(.openingDelay) private var openingDelay
     @Default(.hapticFeedback) private var hapticFeedback
@@ -90,7 +89,6 @@ struct Player: View {
             ButtonView()
             
         }
-        .frame(minHeight: notchHeight + notchSizeChange)
         .onReceive(spotifyManager.$trackPosition) { newValue in
             trackposition = Double(newValue)
         }
