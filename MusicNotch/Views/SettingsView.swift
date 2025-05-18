@@ -37,7 +37,11 @@ struct SettingsView: View {
                             set: { value in LaunchAtLogin.isEnabled = value }
                         )
                     )
-                    LuminareToggle("Show menubar item", isOn: $showMenuBarItem)
+                    LuminareToggle("Show menubar item",
+                                   info: LuminareInfoView (
+                                    "If hidden, settings can be accesed via right click on the player"
+                                   ),
+                                   isOn: $showMenuBarItem)
                     #if DEBUG
                     LuminareToggle("Viewed Onboarding", isOn: $viewedOnboarding)
                     #endif
@@ -78,10 +82,14 @@ struct SettingsView: View {
                     } 
                                        
                     LuminareValueAdjuster("Hide delay",
+                                          info: LuminareInfoView(
+                                            "The time it takes for the notch to hide if the playback is stopped."
+                                          ),
                                           value: $hideNotchTime,
                                           sliderRange: 0...15,
                                           suffix:"s",
-                                          step: 1)
+                                          step: 1,
+                    )
                 } .padding(.bottom, 14)
                 
                 LuminareSection("Keyboard Shortcuts") {

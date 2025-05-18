@@ -204,6 +204,16 @@
         }
       }
     },
+    "If hidden, settings can be accesed via right click on the player" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wenn deaktiviert, können die Einstellungen mit Rechts-Klick auf den Player geöffnet werden."
+          }
+        }
+      }
+    },
     "Keyboard Shortcuts" : {
       "localizations" : {
         "de" : {
@@ -520,6 +530,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Setup starten"
+          }
+        }
+      }
+    },
+    "The time it takes for the notch to hide if the playback is stopped." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Zeit, bis die Notch versteckt wird, wenn die Wiedergabe gestoppt wird."
           }
         }
       }
