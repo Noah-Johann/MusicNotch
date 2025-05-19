@@ -32,5 +32,5 @@ func aboutLicenseButton(name: LocalizedStringKey, license: LocalizedStringKey, l
         }
         .padding(12)
     }
-    .buttonStyle(LuminareCosmeticButtonStyle(Image(systemName: "arrow.up.right")))
+    .buttonStyle(LuminareCosmeticButtonStyle(icon: Image(systemName: "arrow.up.right")))
 }

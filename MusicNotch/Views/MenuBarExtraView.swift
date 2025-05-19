@@ -40,24 +40,24 @@ struct MenuBarExtraView: View {
                 .foregroundStyle(.secondary)
             
             Button("About") {
-                let aboutWindow = LuminareWindow(blurRadius: 20) {
+                let aboutWindow = LuminareWindow() {
                     aboutView()
                         .frame(width: 300, height: 380)
                 }
                 
                 aboutWindow.center()
                 aboutWindow.level = .floating
-                aboutWindow.show()
+                aboutWindow.makeKeyAndOrderFront(nil)
             }
             
             Button("Settings") {
-                let settingsWindow = LuminareWindow(blurRadius: 20) {
+                let settingsWindow = LuminareWindow() {
                     SettingsView()
                         .frame(width: 500, height: 600)
                 }
                 
                 settingsWindow.center()
-                settingsWindow.show()
+                settingsWindow.makeKeyAndOrderFront(nil)
                 
             } .keyboardShortcut(.init(",", modifiers: [.command]))
         }

@@ -19,13 +19,13 @@ func showOnboarding() {
         guard onboarding == nil else { return }
 
         DispatchQueue.main.async {
-            onboarding = LuminareWindow(blurRadius: 20) {
+            onboarding = LuminareWindow() {
                 OnboardingView()
                     .frame(width: 600, height: 350)
             }
             onboarding?.center()
             onboarding?.level = .floating
-            onboarding?.show()
+            onboarding?.makeKeyAndOrderFront(nil)
         }
     } else {
         print("Already saw onboarding")
@@ -50,8 +50,7 @@ struct OnboardingView: View {
     }
     
     var body: some View {
-        LuminarePane {}
-        content: {
+        LuminarePane () {
             VStack (alignment: .center){
                 HStack {
                     Image(nsImage: NSApp.applicationIconImage)

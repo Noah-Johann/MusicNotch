@@ -68,8 +68,8 @@ struct DisplayPickerView: View {
             selection: Binding(
                 get: { model.displayOption },
                 set: { model.displayOption = $0 }
-            )
-            .animation(LuminareConstants.animation),
+            ),
+           // .animation(LuminareConstants.animation),
             columns: 2
         ) { option in
             VStack(spacing: 6) {

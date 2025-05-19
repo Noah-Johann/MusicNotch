@@ -12,8 +12,7 @@ struct aboutView: View {
     @Environment(\.openURL) var openURL
     
     var body: some View {
-        LuminarePane {}
-        content: {
+        LuminarePane () {
             VStack(spacing: 0) {
                 Image(nsImage: NSApp.applicationIconImage)
                     .resizable()

@@ -24,10 +24,9 @@ struct SettingsView: View {
     @Default(.showMenuBarItem) private var showMenuBarItem
     
     @State var showAcknowledgements = false
-
+    
     var body: some View {
-        LuminarePane {}
-        content: {
+        LuminarePane("MusicNotch") {
             VStack {
                 LuminareSection("General") {
                     LuminareToggle(
@@ -37,15 +36,18 @@ struct SettingsView: View {
                             set: { value in LaunchAtLogin.isEnabled = value }
                         )
                     )
-                    LuminareToggle("Show menubar item",
-                                   info: LuminareInfoView (
-                                    "If hidden, settings can be accesed via right click on the player",
-                                        .accentColor
-                                   ),
-                                   isOn: $showMenuBarItem)
-                    #if DEBUG
+                    LuminareToggle(isOn: $showMenuBarItem) {
+                        Text("Show menubar item")
+                            .luminarePopover(attachedTo: .topTrailing) {
+                                Text("If hidden, settings can be accesed via right click on the player")
+                                    .padding()
+                            }
+                            .tint(.accentColor)
+                    }
+                    
+#if DEBUG
                     LuminareToggle("Viewed Onboarding", isOn: $viewedOnboarding)
-                    #endif
+#endif
                     
                     
                     Button {
@@ -63,12 +65,14 @@ struct SettingsView: View {
                         .buttonStyle(LuminareButtonStyle())
                         .frame(height: 80)
                     if mainDisplay == true {
-                        LuminareToggle("Hide fake notch",
-                                       info: LuminareInfoView (
-                                        "If active, the notch can't be opened when nothing is playing",
-                                        .accentColor
-                                       ),
-                                       isOn: $disableNotchOnHide)
+                        LuminareToggle(isOn: $disableNotchOnHide) {
+                            Text("Hide fake notch")
+                                .luminarePopover(attachedTo: .topTrailing) {
+                                    Text("If active, the notch can't be opened when nothing is playing")
+                                        .padding()
+                                }
+                                .tint(.accentColor)
+                        }
                     }
                 } .padding(.bottom, 14)
                 
@@ -78,31 +82,38 @@ struct SettingsView: View {
                     
                     LuminareToggle("Haptic feedback", isOn: $hapticFeedback)
                     
-                    if openNotchOnHover == true {
-                        LuminareValueAdjuster("Opening delay",
-                                              value: $openingDelay,
-                                              sliderRange: 0...1,
-                                              suffix: "s",
-                                              step: 0.1,
-                                              decimalPlaces: 1)
-                    } 
-                                       
-                    LuminareValueAdjuster("Hide delay",
-                                          info: LuminareInfoView(
-                                            "The time it takes for the notch to hide if the playback is stopped.",
-                                            .accentColor,
-                                          ),
-                                          value: $hideNotchTime,
-                                          sliderRange: 0...15,
-                                          suffix:"s",
-                                          step: 1,
-                    )
+                    if openNotchOnHover == true {                        
+                        LuminareSlider(
+                            value: $openingDelay,
+                            in: 0...1,
+                            format: .number.precision(.fractionLength(0...1)),
+                            suffix: Text("s")
+                            
+                        ) {
+                            Text("Opening delay")
+                        }
+                    }
+                    
+                    LuminareSlider(
+                        value: $hideNotchTime,
+                        in: 0...15,
+                        format: .number.precision(.fractionLength(0)),
+                        suffix: Text("s")
+                        
+                    ) {
+                        Text("Hide delay")
+                            .luminarePopover(attachedTo: .topTrailing) {
+                                Text("The time it takes for the notch to hide if the playback is stopped.")
+                                    .padding()
+                            }
+                        
+                    }
                 } .padding(.bottom, 14)
                 
                 LuminareSection("Keyboard Shortcuts") {
-                        KeyboardShortcuts.Recorder("Toggle Notch",
-                                                   name: .toggleNotch)
-                        .frame(height: 40)
+                    KeyboardShortcuts.Recorder("Toggle Notch",
+                                               name: .toggleNotch)
+                    .frame(height: 40)
                 } .padding(.bottom, 14)
                 
                 LuminareSection("About") {
@@ -137,17 +148,13 @@ struct SettingsView: View {
                         .foregroundStyle(.secondary)
                     
                 } .animation(.easeInOut(duration: 0.2), value: showAcknowledgements)
-
-
+                
+                
             } .padding(.horizontal, 5)
-              .animation(.easeInOut(duration: 0.2), value: mainDisplay)
-
+                .animation(.easeInOut(duration: 0.2), value: mainDisplay)
+            
         }
     }
-    
-
-    
-    
 }
 #Preview {
     SettingsView()
