@@ -52,10 +52,7 @@ struct Player: View {
                     .padding(.top, 10)
                 
             } .frame(width: 300)
-            
-            
-            
-            
+        
             //Progress Bar
             HStack {
                 Text(formatTime(Int(trackposition)))
@@ -87,15 +84,14 @@ struct Player: View {
             ButtonView()
             
         }
+        .background(.black)
         .onReceive(spotifyManager.$trackPosition) { newValue in
             trackposition = Double(newValue)
         }
         .onAppear {
-            if spotifyManager.isPlaying == true {
-                playbackTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
-                    if spotifyManager.isPlaying == true {
-                        trackposition += 1
-                    }
+            playbackTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+                if spotifyManager.isPlaying == true {
+                    trackposition += 1
                 }
             }
         }
@@ -108,9 +104,6 @@ struct Player: View {
         .contextMenu {
             ContextMenuView()
         }
-        
-        
-        
     }
     
     private func progressChanged() {
@@ -129,24 +122,6 @@ struct Player: View {
             print("AppleScript Error: \(error)")
         }
     }
-    
-    
-    
-//    func changeHoverState(_ hovering: Bool) {
-//        let desiredState = hovering ? "open" : "closed"
-//        if desiredState != notchStateS && desiredState != notchState && desiredState != lastNotchState {
-//            lastNotchState = desiredState
-//            //MusicNotchApp.updateNotch()
-//            print("-----------")
-//            print("Hoverstate\(hovering)")
-//            print("Notchstate before \(notchState)")
-//            DispatchQueue.main.async {
-//                MusicNotchApp.setNotchContent(desiredState)
-//            }
-//            print("Change hover notch")
-//
-//        }
-//    }
 }
 
 #Preview {
