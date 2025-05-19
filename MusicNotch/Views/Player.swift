@@ -8,25 +8,13 @@ import SwiftUI
 import DynamicNotchKit
 import Defaults
 
-
 struct Player: View {
-    @Default(.openNotchOnHover) private var openNotchOnHover
-    @Default(.openingDelay) private var openingDelay
-    @Default(.hapticFeedback) private var hapticFeedback
-
-    
     @ObservedObject var spotifyManager = SpotifyManager.shared
     
     @State private var isDragging = false
     @State private var trackposition : Double = 0
     @State private var playbackTimer: Timer?
     
-    
-
-    @State private var isHovered = false
-    @State private var lastHoverState: Bool = false
-    @State private var lastNotchState: String = ""
-        
     var body: some View {
         VStack {
             HStack {
