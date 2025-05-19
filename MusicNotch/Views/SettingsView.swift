@@ -39,6 +39,7 @@ struct SettingsView: View {
                     )
                     LuminareToggle(isOn: $showMenuBarItem) {
                         Text("Show menubar item")
+                            .padding(.trailing, 5)
                             .luminarePopover(attachedTo: .topTrailing) {
                                 Text("If hidden, settings can be accesed via right click on the player")
                                     .padding()
@@ -68,6 +69,7 @@ struct SettingsView: View {
                     if mainDisplay == true {
                         LuminareToggle(isOn: $disableNotchOnHide) {
                             Text("Hide fake notch")
+                                .padding(.trailing, 5)
                                 .luminarePopover(attachedTo: .topTrailing) {
                                     Text("If active, the notch can't be opened when nothing is playing")
                                         .padding()
@@ -83,7 +85,7 @@ struct SettingsView: View {
                     
                     LuminareToggle("Haptic feedback", isOn: $hapticFeedback)
                     
-                    if openNotchOnHover == true {                        
+                    if openNotchOnHover == true {
                         LuminareSlider(
                             value: $openingDelay,
                             in: 0...1,
@@ -93,6 +95,7 @@ struct SettingsView: View {
                         ) {
                             Text("Opening delay")
                         }
+                        .luminareSliderLayout(.regular)
                     }
                     
                     LuminareSlider(
@@ -103,12 +106,14 @@ struct SettingsView: View {
                         
                     ) {
                         Text("Hide delay")
+                            .padding(.trailing, 5)
                             .luminarePopover(attachedTo: .topTrailing) {
                                 Text("The time it takes for the notch to hide if the playback is stopped.")
                                     .padding()
                             }
                         
                     }
+                    .luminareSliderLayout(.regular)
                 } .padding(.bottom, 14)
                 
                 LuminareSection("Keyboard Shortcuts") {
