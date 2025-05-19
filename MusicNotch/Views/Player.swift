@@ -105,27 +105,7 @@ struct Player: View {
 
         .padding(.bottom, 15)
         .padding(.top, 10)
-        .onHover { hovering in
-            isHovered = hovering
-
-            // Prevent redundant state changes
-            if hovering != lastHoverState {
-                lastHoverState = hovering
-
-                if openNotchOnHover {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + openingDelay) {
-                        if isHovered == lastHoverState {
-                           // changeHoverState(isHovered)
-                        }
-                    }
-                }
-            }
-
-            if hapticFeedback {
-                let performer = NSHapticFeedbackManager.defaultPerformer
-                performer.perform(.alignment, performanceTime: .default)
-            }
-        } .contextMenu {
+        .contextMenu {
             ContextMenuView()
         }
         

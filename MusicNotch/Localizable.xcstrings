@@ -204,6 +204,16 @@
         }
       }
     },
+    "If active, the notch can't be opened when nothing is playing" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wenn aktiv kann die Notch nicht geöffnet werden, wenn kein Playback aktiv ist."
+          }
+        }
+      }
+    },
     "If hidden, settings can be accesed via right click on the player" : {
       "localizations" : {
         "de" : {

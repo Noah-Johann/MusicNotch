@@ -36,14 +36,25 @@ final class NotchManager {
             if Defaults[.openNotchOnHover] {
                 isStillHovering = isHovering
 
-                if isHovering {
+                if isHovering == true{
                     DispatchQueue.main.asyncAfter(deadline: .now() + Defaults[.openingDelay]) {
                         if isStillHovering {
                             NotchManager.shared.setNotchContent("open", false)
+                            if Defaults[.hapticFeedback] && Defaults[.openingDelay] != 0 {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                                    let performer = NSHapticFeedbackManager.defaultPerformer
+                                    performer.perform(.alignment, performanceTime: .default)
+                                }
+                            }
                         }
                     }
-                } else {
+                } else if isHovering == false && notchState != "hide"{
                     NotchManager.shared.setNotchContent("closed", false)
+                }
+                
+                if Defaults[.hapticFeedback] {
+                    let performer = NSHapticFeedbackManager.defaultPerformer
+                    performer.perform(.alignment, performanceTime: .default)
                 }
             }
         }
@@ -90,7 +101,6 @@ final class NotchManager {
                         return
                     }
                     await NotchManager.shared.notch.compact(on: notchScreen)
-                    print("Show notch on: \(notchScreen)")
                 } else {
                     await NotchManager.shared.notch.compact(on: NSScreen.screens.first!)
                 }
@@ -106,7 +116,6 @@ final class NotchManager {
                         return
                     }
                     await NotchManager.shared.notch.expand(on: notchScreen)
-                    print("Show notch on: \(notchScreen)")
                 } else {
                     await NotchManager.shared.notch.expand(on: NSScreen.screens.first!)
                 }

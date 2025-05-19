@@ -39,7 +39,8 @@ struct SettingsView: View {
                     )
                     LuminareToggle("Show menubar item",
                                    info: LuminareInfoView (
-                                    "If hidden, settings can be accesed via right click on the player"
+                                    "If hidden, settings can be accesed via right click on the player",
+                                        .accentColor
                                    ),
                                    isOn: $showMenuBarItem)
                     #if DEBUG
@@ -62,7 +63,12 @@ struct SettingsView: View {
                         .buttonStyle(LuminareButtonStyle())
                         .frame(height: 80)
                     if mainDisplay == true {
-                        LuminareToggle("Hide fake notch", isOn: $disableNotchOnHide)
+                        LuminareToggle("Hide fake notch",
+                                       info: LuminareInfoView (
+                                        "If active, the notch can't be opened when nothing is playing",
+                                        .accentColor
+                                       ),
+                                       isOn: $disableNotchOnHide)
                     }
                 } .padding(.bottom, 14)
                 
@@ -83,7 +89,8 @@ struct SettingsView: View {
                                        
                     LuminareValueAdjuster("Hide delay",
                                           info: LuminareInfoView(
-                                            "The time it takes for the notch to hide if the playback is stopped."
+                                            "The time it takes for the notch to hide if the playback is stopped.",
+                                            .accentColor,
                                           ),
                                           value: $hideNotchTime,
                                           sliderRange: 0...15,
