@@ -16,24 +16,11 @@ func ContextMenuView() -> some View {
         .foregroundStyle(.secondary)
     
     Button("About") {
-        let aboutWindow = LuminareWindow() {
-            aboutView()
-                .frame(width: 300, height: 380)
-        }
-        
-        aboutWindow.center()
-        aboutWindow.level = .floating
-        aboutWindow.makeKeyAndOrderFront(nil)
+        AppDelegateHolder.shared?.showAboutWindow()
     }
     
     Button("Settings") {
-        let settingsWindow = LuminareWindow() {
-            SettingsView()
-                .frame(width: 500, height: 600)
-        }
-        
-        settingsWindow.center()
-        settingsWindow.makeKeyAndOrderFront(nil)
+        AppDelegateHolder.shared?.showSettingsWindow()
         
     } .keyboardShortcut(.init(",", modifiers: [.command]))
     

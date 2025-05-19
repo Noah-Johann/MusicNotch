@@ -12,6 +12,7 @@ import Defaults
 import LaunchAtLogin
 import KeyboardShortcuts
 
+
 struct SettingsView: View {
     
     @Default(.hideNotchTime) private var hideNotchTime
@@ -26,7 +27,7 @@ struct SettingsView: View {
     @State var showAcknowledgements = false
     
     var body: some View {
-        LuminarePane("MusicNotch") {
+        LuminarePane() {
             VStack {
                 LuminareSection("General") {
                     LuminareToggle(

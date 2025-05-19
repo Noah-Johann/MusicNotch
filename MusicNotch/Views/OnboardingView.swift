@@ -10,28 +10,8 @@ import Luminare
 import ScriptingBridge
 import Defaults
 
-var onboarding: LuminareWindow?
 
-func showOnboarding() {
-    let viewedOnboarding = Defaults[.viewedOnboarding]
-    
-    if viewedOnboarding == false {
-        guard onboarding == nil else { return }
 
-        DispatchQueue.main.async {
-            onboarding = LuminareWindow() {
-                OnboardingView()
-                    .frame(width: 600, height: 350)
-            }
-            onboarding?.center()
-            onboarding?.level = .floating
-            onboarding?.makeKeyAndOrderFront(nil)
-        }
-    } else {
-        print("Already saw onboarding")
-        return
-    }
-}
 
 struct OnboardingView: View {
     
@@ -44,10 +24,7 @@ struct OnboardingView: View {
     
     @Default(.launchAtLogin) private var launchAtLogin
     
-    func hideOnboarding () {
-        onboarding?.close()
-        
-    }
+
     
     var body: some View {
         LuminarePane () {
@@ -154,7 +131,9 @@ struct OnboardingView: View {
                     } else if OnboardingPage == 3 {
                         Button("Finish") {
                             Defaults[.viewedOnboarding] = true  // Update in Defaults
-                            hideOnboarding()
+                            if let delegate = NSApp.delegate as? AppDelegate {
+                                delegate.hideOnboarding()
+                            }
                         } .buttonStyle(LuminareCompactButtonStyle())
                     }
                     

@@ -9,6 +9,7 @@ import SwiftUI
 import Luminare
 
 struct MenuBarExtraView: View {
+    let appDelegate: AppDelegate
     
     @ObservedObject var spotifyManager = SpotifyManager.shared
     
@@ -40,25 +41,17 @@ struct MenuBarExtraView: View {
                 .foregroundStyle(.secondary)
             
             Button("About") {
-                let aboutWindow = LuminareWindow() {
-                    aboutView()
-                        .frame(width: 300, height: 380)
+                DispatchQueue.main.async() {
+                    NotchManager.shared.setNotchContent("closed", false)
                 }
-                
-                aboutWindow.center()
-                aboutWindow.level = .floating
-                aboutWindow.makeKeyAndOrderFront(nil)
+                appDelegate.showAboutWindow()
             }
             
             Button("Settings") {
-                let settingsWindow = LuminareWindow() {
-                    SettingsView()
-                        .frame(width: 500, height: 600)
+                DispatchQueue.main.async() {
+                    NotchManager.shared.setNotchContent("closed", false)
                 }
-                
-                settingsWindow.center()
-                settingsWindow.makeKeyAndOrderFront(nil)
-                
+                appDelegate.showSettingsWindow()
             } .keyboardShortcut(.init(",", modifiers: [.command]))
         }
         Section {
@@ -70,6 +63,6 @@ struct MenuBarExtraView: View {
     }
 }
 
-#Preview {
-    MenuBarExtraView()
-}
+//#Preview {
+//    MenuBarExtraView()
+//}

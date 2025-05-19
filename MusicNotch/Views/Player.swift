@@ -94,6 +94,10 @@ struct Player: View {
         }
     }
     
+    func getAppDelegate() -> AppDelegate? {
+        return NSApp.delegate as? AppDelegate
+    }
+    
     private func progressChanged() {
         print("new value: \(trackposition)")
         let script = """
