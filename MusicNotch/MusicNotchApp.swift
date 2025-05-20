@@ -25,9 +25,9 @@ struct MusicNotchApp: App {
     init() {
         appSetup()
                 
-        DispatchQueue.main.async {
-            NSApp.setActivationPolicy(.accessory)
-        }
+//        DispatchQueue.main.async {
+//            NSApp.setActivationPolicy(.accessory)
+//        }
         
         KeyboardShortcuts.onKeyDown(for: .toggleNotch) {
             NotchManager.shared.changeNotch()
@@ -52,11 +52,21 @@ struct MusicNotchApp: App {
 }
 
 class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
+    let aboutMenuHandler = AboutMenuHandler()
     
     func applicationDidFinishLaunching(_ notification: Notification) {
+        if Defaults[.viewedOnboarding] == false {
+            WindowManager.openOnboarding()
+        } else {
+            WindowManager.openSettings()
+        }
         
-        
-        WindowManager.openOnboarding()
+        if let mainMenu = NSApp.mainMenu,
+           let appMenu = mainMenu.items.first?.submenu,
+           let aboutItem = appMenu.items.first(where: { $0.action == #selector(NSApplication.orderFrontStandardAboutPanel(_:)) }) {
+            aboutItem.target = aboutMenuHandler
+            aboutItem.action = #selector(AboutMenuHandler.showAboutMenu)
+        }
     }
     
     func applicationShouldTerminateAfterLastWindowClosed(_: NSApplication) -> Bool {

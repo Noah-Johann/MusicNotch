@@ -8,6 +8,7 @@
 import Defaults
 import SwiftUI
 import Luminare
+import AppKit
 
 class WindowManager {
     static var onboardingWindow: LuminareWindow?
@@ -38,7 +39,7 @@ class WindowManager {
         settingsWindow = nil
     }
     
-    static func openAbout() {
+    @objc static func openAbout() {
         if aboutWindow == nil {
             aboutWindow = LuminareWindow{
                 aboutView()
@@ -97,4 +98,10 @@ class WindowManager {
         closeOnboarding()
     }
     
+}
+
+class AboutMenuHandler: NSObject {
+    @objc func showAboutMenu() {
+        WindowManager.openAbout()
+    }
 }

@@ -15,7 +15,7 @@ import Defaults
 
 struct OnboardingView: View {
     
-    @State private var OnboardingPage: Int = 1
+    @State private var OnboardingPage: Int = 3
     
     @State private var alertTitle = Text("Title")
     @State private var alertMessage = Text("Message")
@@ -133,7 +133,7 @@ struct OnboardingView: View {
                                 Defaults[.viewedOnboarding] = true  // Update in Defaults
                                 WindowManager.closeOnboarding()
                                 WindowManager.openSettings()
-                            } .buttonStyle(LuminareButtonStyle())
+                            } .buttonStyle(LuminareProminentButtonStyle())
                         }
                     }
                     
@@ -141,7 +141,8 @@ struct OnboardingView: View {
                     .padding(.bottom, 80)
                 
             } .frame(width: 600, height: 380)
-                .animation(.smooth, value: OnboardingPage)
+              .animation(.smooth, value: OnboardingPage)
+            
         }.scrollDisabled(true)
     }
 }
