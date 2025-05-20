@@ -25,7 +25,6 @@
       }
     },
     "Acknowledgements" : {
-      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -96,7 +95,6 @@
       }
     },
     "Display" : {
-      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -127,7 +125,6 @@
       }
     },
     "General" : {
-      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -168,7 +165,6 @@
       }
     },
     "Haptic feedback" : {
-      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -228,12 +224,32 @@
         }
       }
     },
+    "Keyboard shortcuts" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kurzbefehle"
+          }
+        }
+      }
+    },
     "KeyboardShortcuts" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "KeyboardShortcuts"
+          }
+        }
+      }
+    },
+    "Launch at login" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beim Anmelden öffnen"
           }
         }
       }
@@ -329,7 +345,6 @@
       }
     },
     "Notch" : {
-      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -350,7 +365,6 @@
       }
     },
     "Open Notch on hover" : {
-      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -495,7 +509,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zeige Menubar Symbol"
+            "value" : "Zeige Menuleisten-Symbol"
           }
         }
       }

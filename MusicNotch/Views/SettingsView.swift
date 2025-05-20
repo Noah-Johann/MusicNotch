@@ -29,14 +29,15 @@ struct SettingsView: View {
     var body: some View {
         LuminarePane() {
             VStack {
-                LuminareSection("General") {
+                LuminareSection {
                     LuminareToggle(
-                        "Launch at login",
                         isOn: Binding(
                             get: { LaunchAtLogin.isEnabled },
                             set: { value in LaunchAtLogin.isEnabled = value }
                         )
-                    )
+                    ) {
+                        Text("Launch at login")
+                    }
                     LuminareToggle(isOn: $showMenuBarItem) {
                         Text("Show menubar item")
                             .padding(.trailing, 5)
@@ -47,9 +48,9 @@ struct SettingsView: View {
                             .tint(.accentColor)
                     }
                     
-#if DEBUG
+                    #if DEBUG
                     LuminareToggle("Viewed Onboarding", isOn: $viewedOnboarding)
-#endif
+                    #endif
                     
                     
                     Button {
@@ -60,9 +61,12 @@ struct SettingsView: View {
                             Text("Quit")
                         }
                     } .buttonStyle(LuminareButtonStyle())
-                } .padding(.bottom, 14)
+                } header: {
+                    Text("General")
+                }
+                .padding(.bottom, 14)
                 
-                LuminareSection("Display") {
+                LuminareSection {
                     DisplayPickerView()
                         .buttonStyle(LuminareButtonStyle())
                         .frame(height: 80)
@@ -77,13 +81,20 @@ struct SettingsView: View {
                                 .tint(.accentColor)
                         }
                     }
-                } .padding(.bottom, 14)
+                } header: {
+                    Text("Display")
+                }
+                .padding(.bottom, 14)
                 
-                LuminareSection("Notch") {
+                LuminareSection {
                     
-                    LuminareToggle("Open Notch on hover", isOn: $openNotchOnHover)
+                    LuminareToggle(isOn: $openNotchOnHover) {
+                        Text("Open Notch on hover")
+                    }
                     
-                    LuminareToggle("Haptic feedback", isOn: $hapticFeedback)
+                    LuminareToggle(isOn: $hapticFeedback) {
+                        Text("Haptic feedback")
+                    }
                     
                     if openNotchOnHover == true {
                         LuminareSlider(
@@ -114,25 +125,36 @@ struct SettingsView: View {
                         
                     }
                     .luminareSliderLayout(.regular)
-                } .padding(.bottom, 14)
+                } header: {
+                    Text("Notch")
+                }
+                .padding(.bottom, 14)
                 
-                LuminareSection("Keyboard Shortcuts") {
+                LuminareSection {
                     KeyboardShortcuts.Recorder("Toggle Notch",
                                                name: .toggleNotch)
                     .frame(height: 40)
-                } .padding(.bottom, 14)
+                } header: {
+                    Text("Keyboard shortcuts")
+                }
+                .padding(.bottom, 14)
                 
-                LuminareSection("About") {
+                
+                LuminareSection {
                     aboutAppButton()
                         .frame(height: 75)
-                } .padding(.bottom, 7)
+                } header: {
+                    Text("About")
+                }.padding(.bottom, 7)
                 
-                LuminareSection() {
+                LuminareSection {
                     SettingsAboutView()
-                } .padding(.bottom, 14)
+                }
+                .padding(.bottom, 14)
+                
                 
                 VStack {
-                    LuminareSection("Acknowledgements") {
+                    LuminareSection {
                         Button {
                             showAcknowledgements = !showAcknowledgements
                         } label: {
@@ -147,6 +169,8 @@ struct SettingsView: View {
                         if showAcknowledgements == true {
                             SettingsAcknowledgementsView()
                         }
+                    } header: {
+                        Text ("Acknowledgements")
                     }
                     Text(Bundle.main.copyright)
                         .padding()
