@@ -24,7 +24,7 @@ struct OnboardingView: View {
     
     @Default(.launchAtLogin) private var launchAtLogin
     
-
+    
     
     var body: some View {
         LuminarePane () {
@@ -80,7 +80,7 @@ struct OnboardingView: View {
                                 .frame(width: 250)
                                 .padding(.bottom, 20)
                             
-                           
+                            
                         }
                     }
                 } .frame(height: 100)
@@ -131,9 +131,7 @@ struct OnboardingView: View {
                     } else if OnboardingPage == 3 {
                         Button("Finish") {
                             Defaults[.viewedOnboarding] = true  // Update in Defaults
-                            if let delegate = NSApp.delegate as? AppDelegate {
-                                delegate.hideOnboarding()
-                            }
+                            WindowManager.closeOnboarding()
                         } .buttonStyle(LuminareCompactButtonStyle())
                     }
                     

@@ -8,9 +8,7 @@
 import SwiftUI
 import Luminare
 
-struct MenuBarExtraView: View {
-    let appDelegate: AppDelegate
-    
+struct MenuBarExtraView: View {    
     @ObservedObject var spotifyManager = SpotifyManager.shared
     
     var body: some View {
@@ -44,14 +42,14 @@ struct MenuBarExtraView: View {
                 DispatchQueue.main.async() {
                     NotchManager.shared.setNotchContent("closed", false)
                 }
-                appDelegate.showAboutWindow()
+                WindowManager.openAbout()
             }
             
             Button("Settings") {
                 DispatchQueue.main.async() {
                     NotchManager.shared.setNotchContent("closed", false)
                 }
-                appDelegate.showSettingsWindow()
+                WindowManager.openSettings()
             } .keyboardShortcut(.init(",", modifiers: [.command]))
         }
         Section {

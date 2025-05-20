@@ -16,11 +16,11 @@ func ContextMenuView() -> some View {
         .foregroundStyle(.secondary)
     
     Button("About") {
-        AppDelegateHolder.shared?.showAboutWindow()
+        WindowManager.openAbout()
     }
     
     Button("Settings") {
-        AppDelegateHolder.shared?.showSettingsWindow()
+        WindowManager.openSettings()
         
     } .keyboardShortcut(.init(",", modifiers: [.command]))
     

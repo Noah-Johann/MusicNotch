@@ -40,7 +40,7 @@ struct MusicNotchApp: App {
         MenuBarExtra("MusicNotch", image: "notch.square", isInserted: Binding(get: {
             showMenuBarItem
         }, set: { _ in })) {
-            MenuBarExtraView(appDelegate: appDelegate)
+            MenuBarExtraView()
         }
     }
 
@@ -52,71 +52,21 @@ struct MusicNotchApp: App {
 }
 
 class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
-    var onboarding: LuminareWindow?
-    var settingsWindow: LuminareWindow?
-    var aboutWindow: LuminareWindow?
-
     
     func applicationDidFinishLaunching(_ notification: Notification) {
-        AppDelegateHolder.shared = self
-        print("finish")
-        self.onboarding = LuminareWindow {
-            OnboardingView()
-                .frame(width: 600, height: 350)
-        }
-        self.onboarding?.styleMask.remove(.resizable)
         
-        self.settingsWindow = LuminareWindow {
-            SettingsView()
-                .frame(width: 500, height: 600)
-        }
-        self.settingsWindow?.styleMask.remove(.resizable)
         
-        self.aboutWindow = LuminareWindow {
-            aboutView()
-                .frame(width: 300, height: 380)
-        }
-        self.aboutWindow?.styleMask.remove(.resizable)
-        
-        showOnboarding()
+        WindowManager.openOnboarding()
     }
     
-    func showOnboarding() {
-        let viewedOnboarding = Defaults[.viewedOnboarding]
-        
-        if viewedOnboarding == false {
-            self.onboarding?.center()
-            self.onboarding?.level = .floating
-            self.onboarding?.makeKeyAndOrderFront(nil)
-            
-        } else {
-            print("Already saw onboarding")
-            return
-        }
+    func applicationShouldTerminateAfterLastWindowClosed(_: NSApplication) -> Bool {
+        WindowManager.closeAll()
+        return false
     }
     
-    func hideOnboarding () {
-        onboarding?.close()
-        
+    func applicationShouldHandleReopen(_: NSApplication, hasVisibleWindows _: Bool) -> Bool {
+        WindowManager.openSettings()
+        return true
     }
-    
-    func showAboutWindow() {
-        NSApp.activate(ignoringOtherApps: true)
-        self.aboutWindow?.center()
-        self.aboutWindow?.level = .floating
-        self.aboutWindow?.makeKeyAndOrderFront(nil)
-    }
-    
-    func showSettingsWindow() {
-
-        NSApp.activate(ignoringOtherApps: true)
-        self.settingsWindow?.center()
-        self.settingsWindow?.level = .floating
-        self.settingsWindow?.makeKeyAndOrderFront(nil)
-    }
-
 }
 
-class AppDelegateHolder {
-    static var shared: AppDelegate?
-}
