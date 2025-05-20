@@ -132,6 +132,7 @@ struct OnboardingView: View {
                         Button("Finish") {
                             Defaults[.viewedOnboarding] = true  // Update in Defaults
                             WindowManager.closeOnboarding()
+                            WindowManager.openSettings()
                         } .buttonStyle(LuminareCompactButtonStyle())
                     }
                     
