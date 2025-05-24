@@ -129,5 +129,4 @@ final class NotchManager {
             }
         }
     }
-    
 }

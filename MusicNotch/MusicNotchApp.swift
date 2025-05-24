@@ -24,10 +24,6 @@ struct MusicNotchApp: App {
     
     init() {
         appSetup()
-                
-//        DispatchQueue.main.async {
-//            NSApp.setActivationPolicy(.accessory)
-//        }
         
         KeyboardShortcuts.onKeyDown(for: .toggleNotch) {
             NotchManager.shared.changeNotch()

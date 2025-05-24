@@ -10,12 +10,9 @@ import Luminare
 import ScriptingBridge
 import Defaults
 
-
-
-
 struct OnboardingView: View {
     
-    @State private var OnboardingPage: Int = 3
+    @State private var OnboardingPage: Int = 1
     
     @State private var alertTitle = Text("Title")
     @State private var alertMessage = Text("Message")
@@ -130,7 +127,7 @@ struct OnboardingView: View {
                             .buttonStyle(LuminareButtonStyle())
                         } else if OnboardingPage == 3 {
                             Button("Finish") {
-                                Defaults[.viewedOnboarding] = true  // Update in Defaults
+                                Defaults[.viewedOnboarding] = true
                                 WindowManager.closeOnboarding()
                                 WindowManager.openSettings()
                             } .buttonStyle(LuminareProminentButtonStyle())
