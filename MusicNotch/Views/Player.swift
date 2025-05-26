@@ -15,6 +15,8 @@ struct Player: View {
     @State private var trackposition : Double = 0
     @State private var playbackTimer: Timer?
     
+    @Default(.coloredSpect) private var coloredSpect
+    
     var body: some View {
         VStack {
             HStack {
@@ -34,7 +36,7 @@ struct Player: View {
                 .padding(.top, 27)
                 
                 Rectangle()
-                    .fill(Color(nsColor: spotifyManager.aveColor ?? .white).gradient)
+                    .fill(coloredSpect ? Color(nsColor: spotifyManager.aveColor ?? .white).gradient : Color.white.gradient)
                     .frame(width: 35, alignment: .center)
                     .mask {
                         AudioSpectrumView(isPlaying: $spotifyManager.isPlaying)

@@ -6,14 +6,17 @@
 //
 
 import SwiftUI
+import Defaults
 
 struct AudioSpectView: View {
     
     @ObservedObject var spotifyManager = SpotifyManager.shared
     
+    @Default(.coloredSpect) private var coloredSpect
+    
     var body: some View {
         Rectangle()
-            .fill(Color(nsColor: spotifyManager.aveColor ?? .white).gradient)
+            .fill(coloredSpect ? Color(nsColor: spotifyManager.aveColor ?? .white).gradient : Color.white.gradient)
             .frame(width: 35, alignment: .center)
             .mask {
                 AudioSpectrumView(isPlaying: $spotifyManager.isPlaying)

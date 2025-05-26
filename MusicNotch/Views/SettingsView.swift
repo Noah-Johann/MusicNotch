@@ -23,6 +23,7 @@ struct SettingsView: View {
     @Default(.mainDisplay) private var mainDisplay
     @Default(.disableNotchOnHide) private var disableNotchOnHide
     @Default(.showMenuBarItem) private var showMenuBarItem
+    @Default(.coloredSpect) private var coloredSpect
     
     @State var showAcknowledgements = false
     
@@ -127,6 +128,16 @@ struct SettingsView: View {
                     .luminareSliderLayout(.regular)
                 } header: {
                     Text("Notch")
+                }
+                .padding(.bottom, 14)
+                
+                LuminareSection {
+                    LuminareToggle(isOn: $coloredSpect) {
+                        Text("Colored spectogram")
+                    }
+                    
+                } header: {
+                    Text("Apearance")
                 }
                 .padding(.bottom, 14)
                 
