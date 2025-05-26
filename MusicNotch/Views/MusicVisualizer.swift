@@ -1,8 +1,10 @@
 //
 //  MusicVisualizer.swift
-//  boringNotch
+//  MusicNotch
 //
+//  Source: https://github.com/TheBoredTeam/boring.notch
 //  Created by Harsh Vardhan  Goswami  on 02/08/24.
+//  Modified by Noah Johann
 //
 import AppKit
 import Cocoa

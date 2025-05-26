@@ -33,11 +33,14 @@ struct Player: View {
                 .padding(.horizontal, 10)
                 .padding(.top, 27)
                 
+                Rectangle()
+                    .fill(Color(nsColor: spotifyManager.aveColor ?? .white).gradient)
+                    .frame(width: 35, alignment: .center)
+                    .mask {
+                        AudioSpectrumView(isPlaying: $spotifyManager.isPlaying)
+                            .frame(width: 20, height: 20)
+                    }
                 
-                AudioSpectrumView(isPlaying: $spotifyManager.isPlaying)
-                    .foregroundStyle(.white)
-                    .frame(width: 20, height: 20)
-                    .padding(.top, 10)
                 
             } .frame(width: 300)
         
