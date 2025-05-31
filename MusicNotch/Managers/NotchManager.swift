@@ -152,7 +152,7 @@ final class NotchManager {
             if changeDisplay == true {
                 await NotchManager.shared.notch.hide()
             }
-            if content == "closed" {
+            if content == .closed {
                 notchState = "closed"
                 SpotifyManager.shared.updateInfo()
                 
@@ -167,7 +167,7 @@ final class NotchManager {
                     await NotchManager.shared.notch.compact(on: NSScreen.screens.first!)
                 }
                
-            } else if content == "open" {
+            } else if content == .open {
                 notchState = "open"
                 SpotifyManager.shared.updateInfo()
 
@@ -196,7 +196,7 @@ final class NotchManager {
                     self.expandTask = nil
                 }
                 
-            } else if content == "hide" {
+            } else if content == .hidden {
                 if Defaults[.mainDisplay] == true && Defaults[.disableNotchOnHide] == true {
                     await NotchManager.shared.notch.hide()
                 } else {
