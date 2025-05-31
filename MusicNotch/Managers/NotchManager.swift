@@ -15,6 +15,9 @@ final class NotchManager {
     static let shared = NotchManager()
 
     let notch: DynamicNotch<Player, AlbumArtView, AudioSpectView>
+    private var openingTask: Task<Void, Never>?
+    private var hapticTask: Task<Void, Never>?
+    private var isCurrentlyHovering = false
 
     private init() {
         notch = DynamicNotch(
@@ -30,37 +33,84 @@ final class NotchManager {
                 AudioSpectView()
             }
         )
-        var isStillHovering = false
 
-        notch.onHoverChanged = { isHovering in
-            if Defaults[.openNotchOnHover] {
-                isStillHovering = isHovering
-
-                if isHovering == true{
-                    DispatchQueue.main.asyncAfter(deadline: .now() + Defaults[.openingDelay]) {
-                        if isStillHovering {
-                            NotchManager.shared.setNotchContent("open", false)
-                            if Defaults[.hapticFeedback] && Defaults[.openingDelay] != 0 {
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-                                    let performer = NSHapticFeedbackManager.defaultPerformer
-                                    performer.perform(.alignment, performanceTime: .default)
-                                }
-                            }
-                        }
-                    }
-                } else if isHovering == false && notchState != "hide"{
-                    NotchManager.shared.setNotchContent("closed", false)
-                }
-                
-                if Defaults[.hapticFeedback] {
-                    let performer = NSHapticFeedbackManager.defaultPerformer
-                    performer.perform(.alignment, performanceTime: .default)
-                }
+        notch.onHoverChanged = { [weak self] isHovering in
+            guard let self = self else { return }
+            
+            Task { @MainActor in
+                self.handleHoverChange(isHovering)
             }
         }
     }
     
+    private func handleHoverChange(_ isHovering: Bool) {
+        guard Defaults[.openNotchOnHover] else { return }
+        
+        self.isCurrentlyHovering = isHovering
+        
+        if isHovering {
+            // Cancel any existing tasks
+            self.openingTask?.cancel()
+            self.hapticTask?.cancel()
+            
+            // Start new opening task
+            self.openingTask = Task { @MainActor in
+                // Wait for the opening delay
+                do {
+                    try await Task.sleep(nanoseconds: UInt64(Defaults[.openingDelay] * 1_000_000_000))
+                } catch {
+                    // Task was cancelled
+                    return
+                }
+                
+                // Double-check we're still hovering after the delay
+                guard self.isCurrentlyHovering && !Task.isCancelled else {
+                    return
+                }
+                
+                // Open the notch
+                self.setNotchContent("open", false)
+                
+                // Handle haptic feedback
+                if Defaults[.hapticFeedback] && Defaults[.openingDelay] != 0 {
+                    self.hapticTask = Task { @MainActor in
+                        do {
+                            try await Task.sleep(nanoseconds: 400_000_000) // 0.4 seconds
+                        } catch {
+                            return
+                        }
+                        
+                        guard !Task.isCancelled else { return }
+                        
+                        let performer = NSHapticFeedbackManager.defaultPerformer
+                        performer.perform(.alignment, performanceTime: .default)
+                    }
+                }
+            }
+        } else {
+            // User stopped hovering
+            // Cancel any pending opening operations
+            self.openingTask?.cancel()
+            self.hapticTask?.cancel()
+            
+            // If notch is not hidden, close it
+            if notchState != "hide" {
+                self.setNotchContent("closed", false)
+            }
+        }
+        
+        // Immediate haptic feedback for hover state change
+        if Defaults[.hapticFeedback] {
+            let performer = NSHapticFeedbackManager.defaultPerformer
+            performer.perform(.alignment, performanceTime: .default)
+        }
+    }
+    
     public func changeNotch() {
+        // Cancel any pending opening tasks when manually changing notch
+        openingTask?.cancel()
+        hapticTask?.cancel()
+        
         Task {
             if notchState == "closed" {
                 notchState = "open"
@@ -106,6 +156,13 @@ final class NotchManager {
                 }
                
             } else if content == "open" {
+                // Double-check we should still open (in case user stopped hovering)
+                guard self.isCurrentlyHovering || notchState == "open" else {
+                    // User stopped hovering, force compact instead
+                    self.setNotchContent("closed", false)
+                    return
+                }
+                
                 notchState = "open"
                 SpotifyManager.shared.updateInfo()
 
