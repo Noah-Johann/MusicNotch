@@ -204,7 +204,7 @@ class SpotifyManager: ObservableObject {
                         self.hideTimer?.invalidate()
                         self.hideTimer = nil
                         print("hideNotch")
-                        NotchManager.shared.setNotchContent("hide", false)
+                        NotchManager.shared.setNotchContent(.hidden, false)
                         notchState = "hide"
                     }
                 }
@@ -213,7 +213,7 @@ class SpotifyManager: ObservableObject {
         
         if self.isPlaying == true && notchState == "hide" {
             DispatchQueue.main.async() {
-                NotchManager.shared.setNotchContent("closed", false)
+                NotchManager.shared.setNotchContent(.closed, false)
             }
         }
         

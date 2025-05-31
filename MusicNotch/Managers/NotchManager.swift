@@ -12,11 +12,18 @@ import Defaults
 
 @MainActor
 final class NotchManager {
+    enum NotchState {
+        case open
+        case closed
+        case hidden
+    }
+    
     static let shared = NotchManager()
 
     let notch: DynamicNotch<Player, AlbumArtView, AudioSpectView>
     private var openingTask: Task<Void, Never>?
     private var hapticTask: Task<Void, Never>?
+    private var expandTask: Task<Void, Never>?
     private var isCurrentlyHovering = false
 
     private init() {
@@ -59,17 +66,18 @@ final class NotchManager {
                 do {
                     try await Task.sleep(nanoseconds: UInt64(Defaults[.openingDelay] * 1_000_000_000))
                 } catch {
-                    // Task was cancelled
+                    // Task was cancelled - don't do anything, just return
                     return
                 }
                 
                 // Double-check we're still hovering after the delay
                 guard self.isCurrentlyHovering && !Task.isCancelled else {
+                    // User stopped hovering during delay - ensure notch stays closed
                     return
                 }
                 
                 // Open the notch
-                self.setNotchContent("open", false)
+                self.setNotchContent(.open, false)
                 
                 // Handle haptic feedback
                 if Defaults[.hapticFeedback] && Defaults[.openingDelay] != 0 {
@@ -89,14 +97,17 @@ final class NotchManager {
             }
         } else {
             // User stopped hovering
-            // Cancel any pending opening operations
+            // Cancel any pending opening operations immediately
             self.openingTask?.cancel()
             self.hapticTask?.cancel()
+            self.expandTask?.cancel()
             
-            // If notch is not hidden, close it
-            if notchState != "hide" {
-                self.setNotchContent("closed", false)
+            // If notch is currently expanding or open, go to compact mode
+            if notchState == "open" || self.expandTask != nil {
+                // Force compact to interrupt any ongoing expansion
+                self.setNotchContent(.closed, false)
             }
+            // If notch was still in delay phase, cancelling the task is enough
         }
         
         // Immediate haptic feedback for hover state change
@@ -110,32 +121,33 @@ final class NotchManager {
         // Cancel any pending opening tasks when manually changing notch
         openingTask?.cancel()
         hapticTask?.cancel()
+        expandTask?.cancel()
         
         Task {
             if notchState == "closed" {
                 notchState = "open"
                 SpotifyManager.shared.updateInfo()
                 
-                setNotchContent("open", false)
+                setNotchContent(.open, false)
                 
             
             } else if notchState == "open" {
                 notchState = "closed"
                 SpotifyManager.shared.updateInfo()
                 
-                setNotchContent("closed", false)
+                setNotchContent(.closed, false)
                 
               
             } else if notchState == "hide" {
                 notchState = "open"
                 SpotifyManager.shared.updateInfo()
                 
-                setNotchContent("hide", false)
+                setNotchContent(.hidden, false)
             }
         }
     }
     
-    public func setNotchContent(_ content: String, _ changeDisplay: Bool) {
+    public func setNotchContent(_ content: NotchState, _ changeDisplay: Bool) {
         Task {
             if changeDisplay == true {
                 await NotchManager.shared.notch.hide()
@@ -156,25 +168,32 @@ final class NotchManager {
                 }
                
             } else if content == "open" {
-                // Double-check we should still open (in case user stopped hovering)
-                guard self.isCurrentlyHovering || notchState == "open" else {
-                    // User stopped hovering, force compact instead
-                    self.setNotchContent("closed", false)
-                    return
-                }
-                
                 notchState = "open"
                 SpotifyManager.shared.updateInfo()
 
-                if Defaults[.notchDisplay] == true {
-                    guard let notchScreen = NSScreen.screens.first(where: { $0.safeAreaInsets.top > 0 }) else {
-                        print("No notch screen found")
-                        await NotchManager.shared.notch.expand(on: NSScreen.screens.first!)
+                // Track the expand operation so we can cancel it if needed
+                self.expandTask = Task {
+                    // Check one more time if we should still expand
+                    guard self.isCurrentlyHovering && !Task.isCancelled else {
+                        // User stopped hovering, go to compact instead
+                        await self.setNotchContent(.closed, false)
+                        self.expandTask = nil
                         return
                     }
-                    await NotchManager.shared.notch.expand(on: notchScreen)
-                } else {
-                    await NotchManager.shared.notch.expand(on: NSScreen.screens.first!)
+                    
+                    if Defaults[.notchDisplay] == true {
+                        guard let notchScreen = NSScreen.screens.first(where: { $0.safeAreaInsets.top > 0 }) else {
+                            print("No notch screen found")
+                            await NotchManager.shared.notch.expand(on: NSScreen.screens.first!)
+                            return
+                        }
+                        await NotchManager.shared.notch.expand(on: notchScreen)
+                    } else {
+                        await NotchManager.shared.notch.expand(on: NSScreen.screens.first!)
+                    }
+                    
+                    // Clear the task reference when completed
+                    self.expandTask = nil
                 }
                 
             } else if content == "hide" {
