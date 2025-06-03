@@ -60,26 +60,20 @@ final class NotchManager {
             self.openingTask?.cancel()
             self.hapticTask?.cancel()
             
-            // Start new opening task
             self.openingTask = Task { @MainActor in
                 // Wait for the opening delay
                 do {
                     try await Task.sleep(nanoseconds: UInt64(Defaults[.openingDelay] * 1_000_000_000))
                 } catch {
-                    // Task was cancelled - don't do anything, just return
                     return
                 }
                 
-                // Double-check we're still hovering after the delay
                 guard self.isCurrentlyHovering && !Task.isCancelled else {
-                    // User stopped hovering during delay - ensure notch stays closed
                     return
                 }
                 
-                // Open the notch
                 self.setNotchContent(.open, false)
                 
-                // Handle haptic feedback
                 if Defaults[.hapticFeedback] && Defaults[.openingDelay] != 0 {
                     self.hapticTask = Task { @MainActor in
                         do {
@@ -96,21 +90,15 @@ final class NotchManager {
                 }
             }
         } else {
-            // User stopped hovering
-            // Cancel any pending opening operations immediately
             self.openingTask?.cancel()
             self.hapticTask?.cancel()
             self.expandTask?.cancel()
             
-            // If notch is currently expanding or open, go to compact mode
             if notchState == "open" || self.expandTask != nil {
-                // Force compact to interrupt any ongoing expansion
                 self.setNotchContent(.closed, false)
             }
-            // If notch was still in delay phase, cancelling the task is enough
         }
         
-        // Immediate haptic feedback for hover state change
         if Defaults[.hapticFeedback] {
             let performer = NSHapticFeedbackManager.defaultPerformer
             performer.perform(.alignment, performanceTime: .default)
@@ -118,7 +106,6 @@ final class NotchManager {
     }
     
     public func changeNotch() {
-        // Cancel any pending opening tasks when manually changing notch
         openingTask?.cancel()
         hapticTask?.cancel()
         expandTask?.cancel()
@@ -150,7 +137,7 @@ final class NotchManager {
     public func setNotchContent(_ content: NotchState, _ changeDisplay: Bool) {
         Task {
             if changeDisplay == true {
-                await NotchManager.shared.notch.hide()
+                await self.notch.hide()
             }
             if content == .closed {
                 notchState = "closed"
@@ -159,12 +146,12 @@ final class NotchManager {
                 if Defaults[.notchDisplay] == true {
                     guard let notchScreen = NSScreen.screens.first(where: { $0.safeAreaInsets.top > 0 }) else {
                         print("No notch screen found")
-                        await NotchManager.shared.notch.compact(on: NSScreen.screens.first!)
+                        await self.notch.compact(on: NSScreen.screens.first!)
                         return
                     }
-                    await NotchManager.shared.notch.compact(on: notchScreen)
+                    await self.notch.compact(on: notchScreen)
                 } else {
-                    await NotchManager.shared.notch.compact(on: NSScreen.screens.first!)
+                    await self.notch.compact(on: NSScreen.screens.first!)
                 }
                
             } else if content == .open {
@@ -176,7 +163,7 @@ final class NotchManager {
                     // Check one more time if we should still expand
                     guard self.isCurrentlyHovering && !Task.isCancelled else {
                         // User stopped hovering, go to compact instead
-                        await self.setNotchContent(.closed, false)
+                        self.setNotchContent(.closed, false)
                         self.expandTask = nil
                         return
                     }
@@ -184,12 +171,12 @@ final class NotchManager {
                     if Defaults[.notchDisplay] == true {
                         guard let notchScreen = NSScreen.screens.first(where: { $0.safeAreaInsets.top > 0 }) else {
                             print("No notch screen found")
-                            await NotchManager.shared.notch.expand(on: NSScreen.screens.first!)
+                            await self.notch.expand(on: NSScreen.screens.first!)
                             return
                         }
-                        await NotchManager.shared.notch.expand(on: notchScreen)
+                        await self.notch.expand(on: notchScreen)
                     } else {
-                        await NotchManager.shared.notch.expand(on: NSScreen.screens.first!)
+                        await self.notch.expand(on: NSScreen.screens.first!)
                     }
                     
                     // Clear the task reference when completed
@@ -198,9 +185,9 @@ final class NotchManager {
                 
             } else if content == .hidden {
                 if Defaults[.mainDisplay] == true && Defaults[.disableNotchOnHide] == true {
-                    await NotchManager.shared.notch.hide()
+                    await self.notch.hide()
                 } else {
-                    await NotchManager.shared.notch.close()
+                    await self.notch.close()
                 }
             }
         }
