@@ -96,25 +96,29 @@ struct OnboardingView: View {
                             } .buttonStyle(LuminareButtonStyle())
                         } else if OnboardingPage == 2 {
                             Button("Request permission") {
-                                let consent = PermissionHelper.promptUserForConsent(for: "com.spotify.client")
-                                switch consent {
-                                case .granted:
-                                    alertTitle = Text("You are all set up!")
-                                    alertMessage = Text("Start playing a song!")
-                                    success = true
-                                    showAlert = true
-                                case .closed:
-                                    alertTitle = Text("Spotify is not opened")
-                                    alertMessage = Text("Open Spotify to request permissions")
-                                    showAlert = true
-                                    success = false
-                                case .denied:
-                                    alertTitle = Text("Permission denied")
-                                    alertMessage = Text("Please go to System Settings > Privacy & Security > Automation, and toggle Spotify under MusicNotch")
-                                    showAlert = true
-                                    success = false
-                                case .notPrompted:
-                                    return
+                                PermissionHelper.promptUserForConsent(for: "com.spotify.client") { consent in
+                                    DispatchQueue.main.async {
+                                        print("Constent \(consent)")
+                                        switch consent {
+                                        case .granted:
+                                            alertTitle = Text("You are all set up!")
+                                            alertMessage = Text("Start playing a song!")
+                                            success = true
+                                            showAlert = true
+                                        case .closed:
+                                            alertTitle = Text("Spotify is not opened")
+                                            alertMessage = Text("Open Spotify to request permissions")
+                                            showAlert = true
+                                            success = false
+                                        case .denied:
+                                            alertTitle = Text("Permission denied")
+                                            alertMessage = Text("Please go to System Settings > Privacy & Security > Automation, and toggle Spotify under MusicNotch")
+                                            showAlert = true
+                                            success = false
+                                        case .notPrompted:
+                                            return
+                                        }
+                                    }
                                 }
                             }
                             .alert(isPresented: $showAlert) {

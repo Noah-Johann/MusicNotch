@@ -2,38 +2,56 @@
 //  PermissionHelper.swift
 //  MusicNotch
 //
-//  Created by Martin Fekete on 03/08/2023.
-//  https://www.tuneful.dev/
-//
-//
-//  Edited by Noah Johann
+//  Created by Noah Johann
 //
 
 import Foundation
+import ApplicationServices
+import Carbon
 
 class PermissionHelper {
     enum PermissionStatus {
         case closed, granted, notPrompted, denied
     }
     
-    static func promptUserForConsent(for appBundleID: String) -> PermissionStatus {
-        
-        let target = NSAppleEventDescriptor(bundleIdentifier: appBundleID)
-        let status = AEDeterminePermissionToAutomateTarget(target.aeDesc, typeWildCard, typeWildCard, true)
-        
-        switch status {
-        case -600:
-            print("The application with BundleID: \(appBundleID) is not open.")
-            return .closed
-        case -0:
-            print("Permissions granted for the application with BundleID: \(appBundleID).")
-            return .granted
-        case -1744:
-            print("User consent required but not prompted for the application with BundleID: \(appBundleID).")
-            return .notPrompted
-        default:
-            print("The user has declined permission for the application with BundleID: \(appBundleID).")
-            return .denied
+    static func promptUserForConsent(for appBundleID: String, completion: @escaping (PermissionStatus) -> Void) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            let script = """
+            tell application "Spotify"
+                player state
+            end tell
+            """
+
+            if let appleScript = NSAppleScript(source: script) {
+                var error: NSDictionary?
+                let result = appleScript.executeAndReturnError(&error)
+
+                if let error = error {
+                    print("AppleScript error: \(error)")
+                    let errorCode = error["NSAppleScriptErrorNumber"] as? Int ?? 0
+
+                    if errorCode == -1743 {
+                        DispatchQueue.main.async {
+                            completion(.denied)
+                        }
+                        return
+                    } else {
+                        DispatchQueue.main.async {
+                            completion(.closed)
+                        }
+                        return
+                    }
+                }
+
+                print("AppleScript result: \(result.stringValue ?? "nil")")
+                DispatchQueue.main.async {
+                    completion(.granted)
+                }
+            } else {
+                DispatchQueue.main.async {
+                    completion(.closed)
+                }
+            }
         }
     }
 }
