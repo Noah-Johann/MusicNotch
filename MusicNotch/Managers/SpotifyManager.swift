@@ -9,7 +9,7 @@
 import Foundation
 import AppKit
 import Defaults
-import SwiftUICore
+import SwiftUI
 
 public var timer = 0
 class SpotifyManager: ObservableObject {
