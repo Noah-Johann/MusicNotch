@@ -39,16 +39,10 @@ struct MenuBarExtraView: View {
                 .foregroundStyle(.secondary)
             
             Button("About") {
-                DispatchQueue.main.async() {
-                    NotchManager.shared.setNotchContent(.closed, false)
-                }
                 WindowManager.openAbout()
             }
             
             Button("Settings") {
-                DispatchQueue.main.async() {
-                    NotchManager.shared.setNotchContent(.closed, false)
-                }
                 WindowManager.openSettings()
             } .keyboardShortcut(.init(",", modifiers: [.command]))
         }
