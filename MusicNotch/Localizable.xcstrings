@@ -619,6 +619,9 @@
       },
       "shouldTranslate" : false
     },
+    "Viewed Onboarding" : {
+      "shouldTranslate" : false
+    },
     "Welcome" : {
       "localizations" : {
         "de" : {

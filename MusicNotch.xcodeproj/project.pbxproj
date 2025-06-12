@@ -38,6 +38,7 @@
 
 /* Begin PBXFileReference section */
 		4F67B5F72D849896001FF27A /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
+		4F9BC36E2DE62E9B00175262 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		4FA87FC02D847DD700725978 /* MusicNotch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MusicNotch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FA87FD12D847DD800725978 /* MusicNotchTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MusicNotchTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FA87FDB2D847DD800725978 /* MusicNotchUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MusicNotchUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -109,6 +110,7 @@
 		4F67B5F62D849896001FF27A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4F9BC36E2DE62E9B00175262 /* Carbon.framework */,
 				4F67B5F72D849896001FF27A /* ScriptingBridge.framework */,
 			);
 			name = Frameworks;
