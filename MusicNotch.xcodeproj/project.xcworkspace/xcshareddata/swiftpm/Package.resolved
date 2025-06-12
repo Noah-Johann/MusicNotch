@@ -34,7 +34,7 @@
       "location" : "https://github.com/MrKai77/Luminare",
       "state" : {
         "branch" : "main",
-        "revision" : "a9c1d600e972c5523c27eb7cd84637f4f05beaaa"
+        "revision" : "2e4fe9c87297e3a460c88a299a557df576073afb"
       }
     },
     {
@@ -44,6 +44,24 @@
       "state" : {
         "revision" : "f99ae8aa18f0cf0d53481901f88a0991dc3bd4a2",
         "version" : "601.0.1"
+      }
+    },
+    {
+      "identity" : "swiftui-introspect",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/siteline/swiftui-introspect",
+      "state" : {
+        "revision" : "807f73ce09a9b9723f12385e592b4e0aaebd3336",
+        "version" : "1.3.0"
+      }
+    },
+    {
+      "identity" : "swiftui-variadic-views",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/lorenzofiamingo/swiftui-variadic-views",
+      "state" : {
+        "revision" : "af67d0e85bd2b499fbfb4cda834117e7c52b12b0",
+        "version" : "1.0.0"
       }
     }
   ],

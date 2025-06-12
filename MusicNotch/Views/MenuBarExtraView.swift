@@ -8,8 +8,7 @@
 import SwiftUI
 import Luminare
 
-struct MenuBarExtraView: View {
-    
+struct MenuBarExtraView: View {    
     @ObservedObject var spotifyManager = SpotifyManager.shared
     
     var body: some View {
@@ -40,25 +39,11 @@ struct MenuBarExtraView: View {
                 .foregroundStyle(.secondary)
             
             Button("About") {
-                let aboutWindow = LuminareWindow(blurRadius: 20) {
-                    aboutView()
-                        .frame(width: 300, height: 380)
-                }
-                
-                aboutWindow.center()
-                aboutWindow.level = .floating
-                aboutWindow.show()
+                WindowManager.openAbout()
             }
             
             Button("Settings") {
-                let settingsWindow = LuminareWindow(blurRadius: 20) {
-                    SettingsView()
-                        .frame(width: 500, height: 600)
-                }
-                
-                settingsWindow.center()
-                settingsWindow.show()
-                
+                WindowManager.openSettings()
             } .keyboardShortcut(.init(",", modifiers: [.command]))
         }
         Section {
@@ -70,6 +55,6 @@ struct MenuBarExtraView: View {
     }
 }
 
-#Preview {
-    MenuBarExtraView()
-}
+//#Preview {
+//    MenuBarExtraView()
+//}

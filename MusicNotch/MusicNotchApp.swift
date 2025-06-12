@@ -8,12 +8,14 @@
 import SwiftUI
 import KeyboardShortcuts
 import Defaults
+import Luminare
 
 var notchState: String = "hide"
 
 @main
 struct MusicNotchApp: App {
-    
+    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+
     @State private var showMenuBarIcon: Bool = true
     
     @ObservedObject var spotifyManager = SpotifyManager.shared
@@ -22,12 +24,6 @@ struct MusicNotchApp: App {
     
     init() {
         appSetup()
-                
-        DispatchQueue.main.async {
-            NSApp.setActivationPolicy(.accessory)
-        }
-        
-        showOnboarding()
         
         KeyboardShortcuts.onKeyDown(for: .toggleNotch) {
             NotchManager.shared.changeNotch()
@@ -50,3 +46,33 @@ struct MusicNotchApp: App {
         SpotifyManager.shared.updateInfo()
     }
 }
+
+class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
+    let aboutMenuHandler = AboutMenuHandler()
+    
+    func applicationDidFinishLaunching(_ notification: Notification) {
+        if Defaults[.viewedOnboarding] == false {
+            WindowManager.openOnboarding()
+        } else {
+            WindowManager.openSettings()
+        }
+        
+        if let mainMenu = NSApp.mainMenu,
+           let appMenu = mainMenu.items.first?.submenu,
+           let aboutItem = appMenu.items.first(where: { $0.action == #selector(NSApplication.orderFrontStandardAboutPanel(_:)) }) {
+            aboutItem.target = aboutMenuHandler
+            aboutItem.action = #selector(AboutMenuHandler.showAboutMenu)
+        }
+    }
+    
+    func applicationShouldTerminateAfterLastWindowClosed(_: NSApplication) -> Bool {
+        WindowManager.closeAll()
+        return false
+    }
+    
+    func applicationShouldHandleReopen(_: NSApplication, hasVisibleWindows _: Bool) -> Bool {
+        WindowManager.openSettings()
+        return true
+    }
+}
+

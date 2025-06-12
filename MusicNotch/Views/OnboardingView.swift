@@ -10,29 +10,6 @@ import Luminare
 import ScriptingBridge
 import Defaults
 
-var onboarding: LuminareWindow?
-
-func showOnboarding() {
-    let viewedOnboarding = Defaults[.viewedOnboarding]
-    
-    if viewedOnboarding == false {
-        guard onboarding == nil else { return }
-
-        DispatchQueue.main.async {
-            onboarding = LuminareWindow(blurRadius: 20) {
-                OnboardingView()
-                    .frame(width: 600, height: 350)
-            }
-            onboarding?.center()
-            onboarding?.level = .floating
-            onboarding?.show()
-        }
-    } else {
-        print("Already saw onboarding")
-        return
-    }
-}
-
 struct OnboardingView: View {
     
     @State private var OnboardingPage: Int = 1
@@ -44,14 +21,10 @@ struct OnboardingView: View {
     
     @Default(.launchAtLogin) private var launchAtLogin
     
-    func hideOnboarding () {
-        onboarding?.close()
-        
-    }
+    
     
     var body: some View {
-        LuminarePane {}
-        content: {
+        LuminarePane () {
             VStack (alignment: .center){
                 HStack {
                     Image(nsImage: NSApp.applicationIconImage)
@@ -104,7 +77,7 @@ struct OnboardingView: View {
                                 .frame(width: 250)
                                 .padding(.bottom, 20)
                             
-                           
+                            
                         }
                     }
                 } .frame(height: 100)
@@ -112,58 +85,65 @@ struct OnboardingView: View {
                 
                 
                 HStack {
-                    if OnboardingPage == 3 {
-                        LuminareSection() {
+                    LuminareSection {
+                        if OnboardingPage == 3 {
                             LuminareToggle("Launch at login", isOn: $launchAtLogin)
+                            
                         }
-                    }
-                    if OnboardingPage == 1 {
-                        Button("Start setup") {
-                            OnboardingPage += 1
-                        } .buttonStyle(LuminareCompactButtonStyle())
-                    } else if OnboardingPage == 2{
-                        Button("Request permission") {
-                            let consent = PermissionHelper.promptUserForConsent(for: "com.spotify.client")
-                            switch consent {
-                            case .granted:
-                                alertTitle = Text("You are all set up!")
-                                alertMessage = Text("Start playing a song!")
-                                success = true
-                                showAlert = true
-                            case .closed:
-                                alertTitle = Text("Spotify is not opened")
-                                alertMessage = Text("Open Spotify to request permissions")
-                                showAlert = true
-                                success = false
-                            case .denied:
-                                alertTitle = Text("Permission denied")
-                                alertMessage = Text("Please go to System Settings > Privacy & Security > Automation, and toggle Spotify under MusicNotch")
-                                showAlert = true
-                                success = false
-                            case .notPrompted:
-                                return
-                            }
-                        }
-                        .alert(isPresented: $showAlert) {
-                            Alert(title: alertTitle, message: alertMessage, dismissButton: .default(Text("Got it!")) {
-                                if success {
-                                    OnboardingPage = 3
+                        if OnboardingPage == 1 {
+                            Button("Start setup") {
+                                OnboardingPage += 1
+                            } .buttonStyle(LuminareButtonStyle())
+                        } else if OnboardingPage == 2 {
+                            Button("Request permission") {
+                                PermissionHelper.promptUserForConsent(for: "com.spotify.client") { consent in
+                                    DispatchQueue.main.async {
+                                        print("Constent \(consent)")
+                                        switch consent {
+                                        case .granted:
+                                            alertTitle = Text("You are all set up!")
+                                            alertMessage = Text("Start playing a song!")
+                                            success = true
+                                            showAlert = true
+                                        case .closed:
+                                            alertTitle = Text("Spotify is not opened")
+                                            alertMessage = Text("Open Spotify to request permissions")
+                                            showAlert = true
+                                            success = false
+                                        case .denied:
+                                            alertTitle = Text("Permission denied")
+                                            alertMessage = Text("Please go to System Settings > Privacy & Security > Automation, and toggle Spotify under MusicNotch")
+                                            showAlert = true
+                                            success = false
+                                        case .notPrompted:
+                                            return
+                                        }
+                                    }
                                 }
-                            })
+                            }
+                            .alert(isPresented: $showAlert) {
+                                Alert(title: alertTitle, message: alertMessage, dismissButton: .default(Text("Got it!")) {
+                                    if success {
+                                        OnboardingPage = 3
+                                    }
+                                })
+                            }
+                            .buttonStyle(LuminareButtonStyle())
+                        } else if OnboardingPage == 3 {
+                            Button("Finish") {
+                                Defaults[.viewedOnboarding] = true
+                                WindowManager.closeOnboarding()
+                                WindowManager.openSettings()
+                            } .buttonStyle(LuminareProminentButtonStyle())
                         }
-                        .buttonStyle(LuminareCompactButtonStyle())
-                    } else if OnboardingPage == 3 {
-                        Button("Finish") {
-                            Defaults[.viewedOnboarding] = true  // Update in Defaults
-                            hideOnboarding()
-                        } .buttonStyle(LuminareCompactButtonStyle())
                     }
                     
                 } .frame(width: 350, height: 40)
                     .padding(.bottom, 80)
                 
             } .frame(width: 600, height: 380)
-                .animation(.smooth, value: OnboardingPage)
+              .animation(.smooth, value: OnboardingPage)
+            
         }.scrollDisabled(true)
     }
 }

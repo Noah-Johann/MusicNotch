@@ -32,7 +32,7 @@ func aboutAppButton() -> some View {
         }
         .padding(4)
     }
-    .buttonStyle(LuminareCosmeticButtonStyle(Image(systemName: "clipboard")))
+    .buttonStyle(LuminareCosmeticButtonStyle(icon: Image(systemName: "clipboard")))
 }
 
 

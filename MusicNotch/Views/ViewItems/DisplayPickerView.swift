@@ -34,7 +34,7 @@ class DisplayConfigurationModel: ObservableObject {
 
     /// Called whenever the user changes the display selection.
     func selectionChanged(to newValue: NotchDisplay) {
-        NotchManager.shared.setNotchContent("closed", true)
+        NotchManager.shared.setNotchContent(.closed, true)
     }
 }
 
@@ -68,8 +68,8 @@ struct DisplayPickerView: View {
             selection: Binding(
                 get: { model.displayOption },
                 set: { model.displayOption = $0 }
-            )
-            .animation(LuminareConstants.animation),
+            ),
+           // .animation(LuminareConstants.animation),
             columns: 2
         ) { option in
             VStack(spacing: 6) {

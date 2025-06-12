@@ -20,9 +20,11 @@ extension Defaults.Keys {
     static let mainDisplay = Key<Bool>("mainDisplay", default: false)
     static let disableNotchOnHide = Key<Bool>("disableNotchOnHide", default: false)
     
+    static let coloredSpect = Key<Bool>("coloredSpect", default: true)
+    
     static let openNotchOnHover = Key<Bool>("openNotchOnHover", default: true)
-    static let openingDelay = Key<CGFloat>("openingDelay", default: 0.0)
+    static let openingDelay = Key<Double>("openingDelay", default: 0.0)
     static let hapticFeedback = Key<Bool>("hapticFeedback", default: true)
-    static let hideNotchTime = Key<CGFloat>("hideNotchTime", default: 3)
+    static let hideNotchTime = Key<Double>("hideNotchTime", default: 3)
 }
 

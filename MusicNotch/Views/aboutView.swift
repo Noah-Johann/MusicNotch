@@ -12,8 +12,7 @@ struct aboutView: View {
     @Environment(\.openURL) var openURL
     
     var body: some View {
-        LuminarePane {}
-        content: {
+        LuminarePane () {
             VStack(spacing: 0) {
                 Image(nsImage: NSApp.applicationIconImage)
                     .resizable()
@@ -59,7 +58,7 @@ struct aboutView: View {
                         .font(.body)
                 }
             }
-            .padding(.horizontal, 24)
+            .padding(.bottom, 5)
             
         } .frame(width: 300, height: 400)
             .scrollDisabled(true)

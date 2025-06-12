@@ -9,7 +9,7 @@
 import Foundation
 import AppKit
 import Defaults
-import SwiftUICore
+import SwiftUI
 
 public var timer = 0
 class SpotifyManager: ObservableObject {
@@ -33,6 +33,8 @@ class SpotifyManager: ObservableObject {
     @Published var shuffle: Bool = false
     @Published var albumArtURL: String = ""
     @Published var albumArtImage: NSImage? = nil
+    @Published var aveColor: NSColor? = nil
+    
     private var oldTrackName: String = ""
     private var hideTimer: Timer?
     private var stopTime = 0
@@ -202,7 +204,7 @@ class SpotifyManager: ObservableObject {
                         self.hideTimer?.invalidate()
                         self.hideTimer = nil
                         print("hideNotch")
-                        NotchManager.shared.setNotchContent("hide", false)
+                        NotchManager.shared.setNotchContent(.hidden, false)
                         notchState = "hide"
                     }
                 }
@@ -211,7 +213,7 @@ class SpotifyManager: ObservableObject {
         
         if self.isPlaying == true && notchState == "hide" {
             DispatchQueue.main.async() {
-                NotchManager.shared.setNotchContent("closed", false)
+                NotchManager.shared.setNotchContent(.closed, false)
             }
         }
         
@@ -388,6 +390,7 @@ class SpotifyManager: ObservableObject {
                 self.shuffle = finalResult[15] == "true"
                 self.albumArtURL = finalResult[16]
                 
+                
             } else {
                 self.spotifyRunning = false
                 clearAllData()
@@ -455,7 +458,21 @@ class SpotifyManager: ObservableObject {
             guard let data = data, let image = NSImage(data: data) else { return }
             DispatchQueue.main.async {
                 self.albumArtImage = image
+                self.getAverageColor()
             }
         }.resume()
+    }
+    
+    func getAverageColor() {
+        if let image = self.albumArtImage {
+            image.averageColor { color in
+                if let color = color {
+                    print("Average color: \(color)")
+                    self.aveColor = color
+                } else {
+                    print("Failed to get average color")
+                }
+            }
+        }
     }
 }

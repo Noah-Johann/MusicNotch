@@ -38,5 +38,5 @@ func aboutButton(name: LocalizedStringKey, role: LocalizedStringKey, link: URL, 
         }
         .padding(12)
     }
-    .buttonStyle(LuminareCosmeticButtonStyle(Image(systemName: "arrow.up.right")))
+    .buttonStyle(LuminareCosmeticButtonStyle(icon: Image(systemName: "arrow.up.right")))
 }

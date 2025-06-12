@@ -44,12 +44,32 @@
         }
       }
     },
+    "Apearance" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aussehen"
+          }
+        }
+      }
+    },
     "BSD 3-Clause" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "BSD 3-Clause"
+          }
+        }
+      }
+    },
+    "Colored spectogram" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eingefärbtes Spektrogramm"
           }
         }
       }
@@ -224,7 +244,7 @@
         }
       }
     },
-    "Keyboard Shortcuts" : {
+    "Keyboard shortcuts" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -249,7 +269,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bei Anmeldung öffnen"
+            "value" : "Beim Anmelden öffnen"
           }
         }
       }
@@ -509,7 +529,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zeige Menubar Symbol"
+            "value" : "Zeige Menuleisten-Symbol"
           }
         }
       }
@@ -607,7 +627,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wilkommen"
+            "value" : "Willkommen"
           }
         }
       }
