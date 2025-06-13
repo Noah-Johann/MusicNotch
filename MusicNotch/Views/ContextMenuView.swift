@@ -16,10 +16,12 @@ func ContextMenuView() -> some View {
         .foregroundStyle(.secondary)
     
     Button("About") {
+        NotchManager.shared.setNotchContent(.closed, false)
         WindowManager.openAbout()
     }
     
     Button("Settings") {
+        NotchManager.shared.setNotchContent(.closed, false)
         WindowManager.openSettings()
         
     } .keyboardShortcut(.init(",", modifiers: [.command]))
