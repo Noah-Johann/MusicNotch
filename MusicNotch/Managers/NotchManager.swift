@@ -19,13 +19,13 @@ final class NotchManager {
     }
     
     static let shared = NotchManager()
-
+    
     let notch: DynamicNotch<Player, AlbumArtView, AudioSpectView>
     private var openingTask: Task<Void, Never>?
     private var hapticTask: Task<Void, Never>?
     private var expandTask: Task<Void, Never>?
     private var isCurrentlyHovering = false
-
+    
     private init() {
         notch = DynamicNotch(
             hoverBehavior: .increaseShadow,
@@ -40,7 +40,7 @@ final class NotchManager {
                 AudioSpectView()
             }
         )
-
+        
         notch.onHoverChanged = { [weak self] isHovering in
             guard let self = self else { return }
             
@@ -117,14 +117,14 @@ final class NotchManager {
                 
                 setNotchContent(.open, false)
                 
-            
+                
             } else if notchState == "open" {
                 notchState = "closed"
                 SpotifyManager.shared.updateInfo()
                 
                 setNotchContent(.closed, false)
                 
-              
+                
             } else if notchState == "hide" {
                 notchState = "open"
                 SpotifyManager.shared.updateInfo()
@@ -157,11 +157,11 @@ final class NotchManager {
                 } else {
                     await self.notch.compact(on: NSScreen.screens.first!)
                 }
-               
+                
             } else if content == .open {
                 notchState = "open"
                 SpotifyManager.shared.updateInfo()
-
+                
                 // Track the expand operation so we can cancel it if needed
                 self.expandTask = Task {
                     // Check one more time if we should still expand
@@ -194,10 +194,23 @@ final class NotchManager {
             } else if content == .hidden {
                 if Defaults[.mainDisplay] == true && Defaults[.disableNotchOnHide] == true {
                     await self.notch.hide()
-                } else if Defaults[.notchDisplay] == true && Defaults[.noNotchScreenHide] == true{
-                    await self.notch.hide()
-                } else {
+                } else if Defaults[.mainDisplay] == true && Defaults[.disableNotchOnHide] == false {
+                    await self.notch.compact(on: NSScreen.screens.first!)
+                }
+                
+                if Defaults[.notchDisplay] == true {
+                    guard NSScreen.screens.first(where: { $0.safeAreaInsets.top > 0 }) != nil else {
+                        print("No notch screen found")
+                        if Defaults[.noNotchScreenHide] {
+                            await self.notch.hide()
+                        } else {
+                            await self.notch.close()
+                        }
+                        return
+                    }
+                    
                     await self.notch.close()
+
                 }
             }
         }
