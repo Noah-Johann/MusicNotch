@@ -63,6 +63,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
             aboutItem.target = aboutMenuHandler
             aboutItem.action = #selector(AboutMenuHandler.showAboutMenu)
         }
+        
+        CGDisplayRegisterReconfigurationCallback(displayCallback, UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque()))
     }
     
     func applicationShouldTerminateAfterLastWindowClosed(_: NSApplication) -> Bool {
@@ -74,5 +76,29 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         WindowManager.openSettings()
         return true
     }
+    
+    func applicationWillTerminate(_ aNotification: Notification) {
+        CGDisplayRemoveReconfigurationCallback(displayCallback, UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque()))
+    }
 }
 
+private func displayCallback(
+    _ display: CGDirectDisplayID,
+    _ flags: CGDisplayChangeSummaryFlags,
+    _ userInfo: UnsafeMutableRawPointer?
+) {
+    guard let userInfo = userInfo else { return }
+
+    let appDelegate = Unmanaged<AppDelegate>.fromOpaque(userInfo).takeUnretainedValue()
+
+    if flags.contains(.addFlag) || flags.contains(.removeFlag) {
+        print("Display connected or disconnected")
+        DispatchQueue.main.async {
+            NotchManager.shared.setNotchContent(.hidden, true)
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+            NotchManager.shared.setNotchContent(.closed, true)
+        })
+    }
+}
