@@ -114,6 +114,12 @@
         }
       }
     },
+    "Disable Notch on external Screens" : {
+
+    },
+    "Disable notch when there is no Notch Display" : {
+
+    },
     "Display" : {
       "localizations" : {
         "de" : {

@@ -129,7 +129,7 @@ final class NotchManager {
                 notchState = "open"
                 SpotifyManager.shared.updateInfo()
                 
-                setNotchContent(.hidden, false)
+                setNotchContent(.open, false)
             }
         }
     }
@@ -146,7 +146,11 @@ final class NotchManager {
                 if Defaults[.notchDisplay] == true {
                     guard let notchScreen = NSScreen.screens.first(where: { $0.safeAreaInsets.top > 0 }) else {
                         print("No notch screen found")
-                        await self.notch.compact(on: NSScreen.screens.first!)
+                        if Defaults[.noNotchScreenHide] && Defaults[.notchDisplay] {
+                            await self.notch.hide()
+                        } else {
+                            await self.notch.compact(on: NSScreen.screens.first!)
+                        }
                         return
                     }
                     await self.notch.compact(on: notchScreen)
@@ -171,7 +175,11 @@ final class NotchManager {
                     if Defaults[.notchDisplay] == true {
                         guard let notchScreen = NSScreen.screens.first(where: { $0.safeAreaInsets.top > 0 }) else {
                             print("No notch screen found")
-                            await self.notch.expand(on: NSScreen.screens.first!)
+                            if Defaults[.noNotchScreenHide] {
+                                await self.notch.hide()
+                            } else {
+                                await self.notch.expand(on: NSScreen.screens.first!)
+                            }
                             return
                         }
                         await self.notch.expand(on: notchScreen)
@@ -185,6 +193,8 @@ final class NotchManager {
                 
             } else if content == .hidden {
                 if Defaults[.mainDisplay] == true && Defaults[.disableNotchOnHide] == true {
+                    await self.notch.hide()
+                } else if Defaults[.notchDisplay] == true && Defaults[.noNotchScreenHide] == true{
                     await self.notch.hide()
                 } else {
                     await self.notch.close()

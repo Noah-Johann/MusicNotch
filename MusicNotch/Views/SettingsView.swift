@@ -22,6 +22,7 @@ struct SettingsView: View {
     @Default(.hapticFeedback) private var hapticFeedback
     @Default(.mainDisplay) private var mainDisplay
     @Default(.disableNotchOnHide) private var disableNotchOnHide
+    @Default(.noNotchScreenHide) private var noNotchScreenHide
     @Default(.showMenuBarItem) private var showMenuBarItem
     @Default(.coloredSpect) private var coloredSpect
     
@@ -77,6 +78,16 @@ struct SettingsView: View {
                                 .padding(.trailing, 5)
                                 .luminarePopover(attachedTo: .topTrailing) {
                                     Text("If active, the notch can't be opened when nothing is playing")
+                                        .padding()
+                                }
+                                .tint(.accentColor)
+                        }
+                    } else {
+                        LuminareToggle(isOn: $noNotchScreenHide) {
+                            Text("Disable Notch on external Screens")
+                                .padding(.trailing, 5)
+                                .luminarePopover(attachedTo: .topTrailing) {
+                                    Text("Disable notch when there is no Notch Display")
                                         .padding()
                                 }
                                 .tint(.accentColor)

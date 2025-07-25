@@ -42,7 +42,6 @@ class SpotifyManager: ObservableObject {
     
     
     private init() {
-        // Initial setup - do this on the main thread
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             self.setupNotifications()
