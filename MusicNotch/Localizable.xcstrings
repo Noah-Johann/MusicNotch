@@ -115,10 +115,24 @@
       }
     },
     "Disable Notch on external Screens" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deaktiviere Notch auf externen Displays"
+          }
+        }
+      }
     },
     "Disable notch when there is no Notch Display" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deaktiviere die Notch, wenn es kein Display mit Notch gibt."
+          }
+        }
+      }
     },
     "Display" : {
       "localizations" : {

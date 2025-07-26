@@ -87,9 +87,7 @@ private func displayCallback(
     _ flags: CGDisplayChangeSummaryFlags,
     _ userInfo: UnsafeMutableRawPointer?
 ) {
-    guard let userInfo = userInfo else { return }
-
-    let appDelegate = Unmanaged<AppDelegate>.fromOpaque(userInfo).takeUnretainedValue()
+    guard userInfo != nil else { return }
 
     if flags.contains(.addFlag) || flags.contains(.removeFlag) {
         print("Display connected or disconnected")
