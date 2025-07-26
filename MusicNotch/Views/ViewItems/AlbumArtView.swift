@@ -16,7 +16,7 @@ struct AlbumArtView: View {
     
     
     @State private var albumArtSizeOpen = 80.0
-    @State public var albumArtSizeClosed = Defaults[.notchDisplay] || (NSScreen.main?.hasNotch == true) ? 30.0 : 20.0
+    @State public var albumArtSizeClosed = Defaults[.notchDisplay] && NSScreen.screens.first(where: { $0.safeAreaInsets.top > 0 }) != nil ? 30.0 : 20.0
     
     var body: some View {
         HStack {

@@ -19,7 +19,6 @@ final class NotchManager {
         case hidden
     }
     
-    
     static let shared = NotchManager()
     
     let notch: DynamicNotch<Player, AlbumArtView, AudioSpectView>
@@ -208,24 +207,22 @@ final class NotchManager {
                 }
             case .hidden:
                 if Defaults[.mainDisplay] == true && Defaults[.disableNotchOnHide] == true {
-                       await self.notch.hide()
-                   } else if Defaults[.mainDisplay] == true && Defaults[.disableNotchOnHide] == false {
-                       await self.notch.compact(on: NSScreen.screens.first!)
-                   }
-                   
-                   if Defaults[.notchDisplay] == true {
-                       guard NSScreen.screens.first(where: { $0.safeAreaInsets.top > 0 }) != nil else {
-                           if Defaults[.noNotchScreenHide] {
-                               await self.notch.hide()
-                           } else {
-                               await self.notch.close()
-                           }
-                           return
-                       }
-                       
-                       await self.notch.close()
-
-                   }
+                    await self.notch.hide()
+                } else if Defaults[.mainDisplay] == true && Defaults[.disableNotchOnHide] == false {
+                    await self.notch.compact(on: NSScreen.screens.first!)
+                }
+                
+                if Defaults[.notchDisplay] == true {
+                    guard NSScreen.screens.first(where: { $0.safeAreaInsets.top > 0 }) != nil else {
+                        if Defaults[.noNotchScreenHide] {
+                            await self.notch.hide()
+                        } else {
+                            await self.notch.close()
+                        }
+                        return
+                    }
+                    await self.notch.close()
+                }
             }
         }
     }
