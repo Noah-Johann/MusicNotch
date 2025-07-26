@@ -26,6 +26,7 @@ struct MusicNotchApp: App {
         appSetup()
         
         KeyboardShortcuts.onKeyDown(for: .toggleNotch) {
+            timer = 3
             NotchManager.shared.changeNotch()
         }
         

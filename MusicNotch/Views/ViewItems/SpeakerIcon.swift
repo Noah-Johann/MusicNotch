@@ -116,11 +116,11 @@ func getAudioOutputDevice() {
         deviceIcon = "headphones"
     }
     
-    print("Output device:")
-    print("  Name: \(deviceName)")
-    print("  Modell: \(modelUID)")
-    print("  Connection type: \(transportString)")
-    
+//    print("Output device:")
+//    print("  Name: \(deviceName)")
+//    print("  Modell: \(modelUID)")
+//    print("  Connection type: \(transportString)")
+//    
     // Get additional information
     if transportType == kAudioDeviceTransportTypeBluetooth || transportType == kAudioDeviceTransportTypeBluetoothLE {
         
@@ -141,13 +141,13 @@ func getAudioOutputDevice() {
             let uid = unwrappedRef.takeRetainedValue() as String
             
             if deviceName.contains("AirPods") || modelUID.contains("AirPods") || uid.contains("AirPods") {
-                print("  Device recognized as AirPods")
+                //print("  Device recognized as AirPods")
                 deviceIcon = "airpods"
                 if deviceName.contains("Pro") || uid.contains("Pro") || modelUID.contains("Pro") {
-                    print("  type: Pro")
+                    //print("  type: Pro")
                     deviceIcon = "airpods.pro"
                 } else if deviceName.contains("Max") || uid.contains("Max") || modelUID.contains("Max") {
-                    print("  type: Max")
+                    //print("  type: Max")
                     deviceIcon = "airpods.max"
                 }
             }
@@ -155,7 +155,7 @@ func getAudioOutputDevice() {
     }
         
     if deviceName.contains("Externe Kopfhörer") || modelUID.contains("Codec Output") {
-        print("Headphones")
+        //print("Headphones")
         deviceIcon = "headphones"
     }
 }
@@ -172,7 +172,7 @@ func registerForAudioDeviceChanges() {
     let systemObjectID = AudioObjectID(kAudioObjectSystemObject)
     
     let callback: AudioObjectPropertyListenerProc = { _, _, _, _ in
-        print("Output device has changed")
+        //print("Output device has changed")
         getAudioOutputDevice()
         return noErr
     }
@@ -185,6 +185,6 @@ func registerForAudioDeviceChanges() {
     )
     
     if status == noErr {
-        print("Listener für output device changes registert")
+        //print("Listener für output device changes registert")
     }
 }
