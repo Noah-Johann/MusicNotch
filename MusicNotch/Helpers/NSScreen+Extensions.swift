@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Defaults
 
 extension NSScreen {
     static var screenWithMouse: NSScreen? {
@@ -62,6 +63,22 @@ extension NSScreen {
             )
 
             return arbitraryNotchFrame
+        }
+    }
+    
+    var isOnNotchScreen: Bool {
+        if Defaults[.notchDisplay] {
+            if NSScreen.screens.first(where: { $0.safeAreaInsets.top > 0 }) != nil {
+                return true
+            } else {
+                return false
+            }
+        } else {
+            if NSScreen.screens.first! != NSScreen.screens.first(where: { $0.safeAreaInsets.top > 0 } ) {
+                return false
+            } else {
+                return true
+            }
         }
     }
 }

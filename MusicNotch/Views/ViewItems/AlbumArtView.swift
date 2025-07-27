@@ -14,10 +14,8 @@ struct AlbumArtView: View {
     
     @ObservedObject var spotifyManager = SpotifyManager.shared
     
-    
     @State private var albumArtSizeOpen = 80.0
-    @State public var albumArtSizeClosed = Defaults[.notchDisplay] && NSScreen.screens.first(where: { $0.safeAreaInsets.top > 0 }) != nil ? 30.0 : 20.0
-    
+    @State public var albumArtSizeClosed = (NSScreen.main?.isOnNotchScreen ?? false) ? 30.0 : 20.0
     var body: some View {
         HStack {
             if let albumArt = spotifyManager.albumArtImage {
@@ -26,7 +24,7 @@ struct AlbumArtView: View {
                     .scaledToFit()
                     .frame(width: sizeState == "open" ? albumArtSizeOpen : albumArtSizeClosed,
                            height: sizeState == "open" ? albumArtSizeOpen : albumArtSizeClosed)
-                    .cornerRadius(Defaults[.notchDisplay] || (NSScreen.main?.hasNotch == true) ? 6 : 4)
+                    .cornerRadius((NSScreen.main?.isOnNotchScreen ?? false) ? 6 : 4)
                     .padding(.vertical, 10)
                     .animation(.easeInOut(duration: 0.3), value: sizeState == "open" ? albumArtSizeOpen : albumArtSizeClosed)
                 
@@ -47,11 +45,13 @@ struct AlbumArtView: View {
     func changeArtSize (_ playbackState: Bool) {
         if playbackState == true {
             albumArtSizeOpen = 80
-            albumArtSizeClosed = Defaults[.notchDisplay] || (NSScreen.main?.hasNotch == true) ? 30.0 : 20.0
+            albumArtSizeClosed = (NSScreen.main?.isOnNotchScreen ?? false) ? 30.0 : 20.0
+            print(albumArtSizeClosed)
             
         } else if playbackState == false {
             albumArtSizeOpen = 70
-            albumArtSizeClosed = Defaults[.notchDisplay] || (NSScreen.main?.hasNotch == true) ? 25 : 15
+            albumArtSizeClosed = (NSScreen.main?.isOnNotchScreen ?? false) ? 25 : 15
+            print(albumArtSizeClosed)
         }
     }
 
