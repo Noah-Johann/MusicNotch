@@ -8,6 +8,7 @@
 import SwiftUI
 import Defaults
 
+@MainActor
 struct AlbumArtView: View {
     
     var sizeState: String
@@ -46,12 +47,10 @@ struct AlbumArtView: View {
         if playbackState == true {
             albumArtSizeOpen = 80
             albumArtSizeClosed = (NSScreen.main?.isOnNotchScreen ?? false) ? 30.0 : 20.0
-            print(albumArtSizeClosed)
             
         } else if playbackState == false {
             albumArtSizeOpen = 70
             albumArtSizeClosed = (NSScreen.main?.isOnNotchScreen ?? false) ? 25 : 15
-            print(albumArtSizeClosed)
         }
     }
 

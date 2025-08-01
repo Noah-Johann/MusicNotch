@@ -10,6 +10,7 @@ import AppKit
 import Cocoa
 import SwiftUI
 
+@MainActor
 class AudioSpectrum: NSView {
     private var barLayers: [CAShapeLayer] = []
     private var isPlaying: Bool = true
@@ -28,11 +29,11 @@ class AudioSpectrum: NSView {
     }
 
     private func setupBars() {
-        let barWidth: CGFloat = notchState == "open" ? 2 : 1.75
-        let barCount = notchState == "open" ? 6 : 5
+        let barWidth: CGFloat = NotchManager.shared.notchState == "open" ? 2 : 1.75
+        let barCount = NotchManager.shared.notchState == "open" ? 6 : 5
         let spacing: CGFloat = barWidth
         let totalWidth = CGFloat(barCount) * (barWidth + spacing)
-        let totalHeight: CGFloat = notchState == "open" ? 22 : 14
+        let totalHeight: CGFloat = NotchManager.shared.notchState == "open" ? 22 : 14
         frame.size = CGSize(width: totalWidth, height: totalHeight)
 
         for i in 0 ..< barCount {
@@ -55,7 +56,9 @@ class AudioSpectrum: NSView {
     private func startAnimating() {
         guard animationTimer == nil else { return }
         animationTimer = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: true) { [weak self] _ in
-            self?.updateBars()
+            Task { @MainActor in
+                self?.updateBars()
+            }
         }
     }
     
@@ -96,6 +99,7 @@ class AudioSpectrum: NSView {
     }
 }
 
+@MainActor
 struct AudioSpectrumView: NSViewRepresentable {
     @Binding var isPlaying: Bool
     

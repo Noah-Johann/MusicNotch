@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@MainActor
 struct SettingsAcknowledgementsView: View {
     var body: some View {
         aboutLicenseButton(name: "Luminare",

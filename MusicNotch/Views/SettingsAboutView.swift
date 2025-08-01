@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@MainActor
 struct SettingsAboutView: View {
     var body: some View {
         aboutButton(name: "Noah Johann",

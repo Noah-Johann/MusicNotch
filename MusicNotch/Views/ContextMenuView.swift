@@ -9,7 +9,7 @@ import SwiftUI
 import Luminare
 
 
-@ViewBuilder
+@MainActor @ViewBuilder
 func ContextMenuView() -> some View {
     
     Text("Version \(Bundle.main.appVersion!)")

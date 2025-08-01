@@ -8,7 +8,7 @@
 import SwiftUI
 import Luminare
 
-@ViewBuilder
+@MainActor @ViewBuilder
 func aboutAppButton() -> some View {
     Button {
         copyInfo(text: "MusicNotch Version \(Bundle.main.appVersion!) (\(Bundle.main.appBuild!))")

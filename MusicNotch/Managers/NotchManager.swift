@@ -11,7 +11,7 @@ import SwiftUI
 import Defaults
 
 @MainActor
-final class NotchManager {
+class NotchManager: ObservableObject {
     enum NotchState {
         case open
         case openWithoutHover
@@ -26,6 +26,8 @@ final class NotchManager {
     private var hapticTask: Task<Void, Never>?
     private var expandTask: Task<Void, Never>?
     private var isCurrentlyHovering = false
+    
+    @Published var notchState: String = "hide"
     
     private init() {
         notch = DynamicNotch(

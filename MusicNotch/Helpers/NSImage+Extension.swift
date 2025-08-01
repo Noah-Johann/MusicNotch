@@ -15,8 +15,7 @@ import CoreGraphics
 import CoreImage.CIFilterBuiltins
 
 extension NSImage {
-
-    func averageColor(completion: @escaping (NSColor?) -> Void) {
+    func averageColor(completion: @Sendable @escaping (NSColor?) -> Void) {
         DispatchQueue.global(qos: .userInitiated).async {
             guard let cgImage = self.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
                 DispatchQueue.main.async {

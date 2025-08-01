@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 func spotifyPlayPause() {
     let task = Process()
     task.launchPath = "/usr/bin/osascript"

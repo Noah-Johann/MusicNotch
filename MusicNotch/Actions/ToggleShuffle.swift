@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 func spotifyShuffle() {
     let task = Process()
     task.launchPath = "/usr/bin/osascript"

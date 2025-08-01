@@ -10,6 +10,7 @@ import SwiftUI
 import Luminare
 import AppKit
 
+@MainActor
 class WindowManager {
     static var onboardingWindow: LuminareWindow?
     static var settingsWindow: LuminareWindow?
@@ -23,7 +24,6 @@ class WindowManager {
             }
             
             settingsWindow?.center()
-            settingsWindow?.level = .floating
             settingsWindow?.styleMask.remove(.resizable)
         }
         
@@ -101,7 +101,7 @@ class WindowManager {
 }
 
 class AboutMenuHandler: NSObject {
-    @objc func showAboutMenu() {
+    @MainActor @objc func showAboutMenu() {
         WindowManager.openAbout()
     }
 }

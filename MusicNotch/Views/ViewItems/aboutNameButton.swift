@@ -9,7 +9,7 @@ import SwiftUI
 import Luminare
 
 
-@ViewBuilder
+@MainActor @ViewBuilder
 func aboutButton(name: LocalizedStringKey, role: LocalizedStringKey, link: URL, image: Image) -> some View {
     @Environment(\.openURL) var openURL
 

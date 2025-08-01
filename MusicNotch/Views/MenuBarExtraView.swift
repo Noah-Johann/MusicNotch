@@ -8,7 +8,8 @@
 import SwiftUI
 import Luminare
 
-struct MenuBarExtraView: View {    
+@MainActor
+struct MenuBarExtraView: View {
     @ObservedObject var spotifyManager = SpotifyManager.shared
     
     var body: some View {

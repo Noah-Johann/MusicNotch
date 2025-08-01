@@ -10,27 +10,19 @@ import KeyboardShortcuts
 import Defaults
 import Luminare
 
-var notchState: String = "hide"
-
 @main
 struct MusicNotchApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-
-    @State private var showMenuBarIcon: Bool = true
-    
-    @ObservedObject var spotifyManager = SpotifyManager.shared
-    
+        
     @Default(.showMenuBarItem) private var showMenuBarItem
     
     init() {
-        appSetup()
-        
-        KeyboardShortcuts.onKeyDown(for: .toggleNotch) {
-            timer = 3
-            NotchManager.shared.changeNotch()
-        }
-        
-        timer = 0
+//        KeyboardShortcuts.onKeyDown(for: .toggleNotch) {
+//            Task { @MainActor in
+//                SpotifyManager.shared.timer = 3
+//                NotchManager.shared.changeNotch()
+//            }
+//        }
     }
     
     var body: some Scene {
@@ -40,14 +32,9 @@ struct MusicNotchApp: App {
             MenuBarExtraView()
         }
     }
-
-    func appSetup() {
-        getAudioOutputDevice()
-        registerForAudioDeviceChanges()
-        SpotifyManager.shared.updateInfo()
-    }
 }
 
+@MainActor
 class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     let aboutMenuHandler = AboutMenuHandler()
     
@@ -65,7 +52,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
             aboutItem.action = #selector(AboutMenuHandler.showAboutMenu)
         }
         
+        AudioDeviceManager.shared.getAudioOutputDevice()
+        AudioDeviceManager.shared.registerForAudioDeviceChanges()
+        SpotifyManager.shared.updateInfo()
+        
         CGDisplayRegisterReconfigurationCallback(displayCallback, UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque()))
+        
+        SpotifyManager.shared.timer = 0
     }
     
     func applicationShouldTerminateAfterLastWindowClosed(_: NSApplication) -> Bool {

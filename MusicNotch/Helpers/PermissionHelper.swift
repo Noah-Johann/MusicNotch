@@ -14,7 +14,7 @@ class PermissionHelper {
         case closed, granted, notPrompted, denied
     }
     
-    static func promptUserForConsent(for appBundleID: String, completion: @escaping (PermissionStatus) -> Void) {
+    static func promptUserForConsent(for appBundleID: String, completion: @Sendable @escaping (PermissionStatus) -> Void) {
         DispatchQueue.global(qos: .userInitiated).async {
             let script = """
             tell application "Spotify"

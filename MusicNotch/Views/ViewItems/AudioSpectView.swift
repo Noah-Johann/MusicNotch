@@ -8,6 +8,7 @@
 import SwiftUI
 import Defaults
 
+@MainActor
 struct AudioSpectView: View {
     
     @ObservedObject var spotifyManager = SpotifyManager.shared

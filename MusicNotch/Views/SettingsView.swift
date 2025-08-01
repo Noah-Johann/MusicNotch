@@ -72,7 +72,7 @@ struct SettingsView: View {
                     DisplayPickerView()
                         .buttonStyle(LuminareButtonStyle())
                         .frame(height: 80)
-                        .padding(3)
+                        .padding(2)
                     if mainDisplay == true {
                         LuminareToggle(isOn: $disableNotchOnHide) {
                             Text("Hide fake notch")

@@ -8,6 +8,7 @@
 import SwiftUI
 import Luminare
 
+@MainActor
 struct aboutView: View {
     @Environment(\.openURL) var openURL
     

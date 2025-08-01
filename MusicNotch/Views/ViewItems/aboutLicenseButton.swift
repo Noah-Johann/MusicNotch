@@ -8,7 +8,7 @@
 import SwiftUI
 import Luminare
 
-@ViewBuilder
+@MainActor @ViewBuilder
 func aboutLicenseButton(name: LocalizedStringKey, license: LocalizedStringKey, link: URL, image: String) -> some View {
     @Environment(\.openURL) var openURL
 

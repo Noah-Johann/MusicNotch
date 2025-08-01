@@ -83,8 +83,10 @@ struct Player: View {
         }
         .onAppear {
             playbackTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
-                if spotifyManager.isPlaying == true {
-                    trackposition += 1
+                Task { @MainActor in
+                    if spotifyManager.isPlaying {
+                        trackposition += 1
+                    }
                 }
             }
         }

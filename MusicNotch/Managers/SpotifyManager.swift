@@ -1,5 +1,5 @@
 //
-//  fetchSpotify.swift
+//  SpotifyManager.swift
 //  MusicNotch
 //
 //  Created by Noah Johann on 14.03.25.
@@ -11,7 +11,8 @@ import AppKit
 import Defaults
 import SwiftUI
 
-public var timer = 0
+//public var timer = 0
+@MainActor
 class SpotifyManager: ObservableObject {
     static let shared = SpotifyManager()    
         
@@ -23,17 +24,14 @@ class SpotifyManager: ObservableObject {
     @Published var trackDuration: Int = 30 // in Sekunden
     @Published var trackPosition: Int = 5 // in Sekunden
     @Published var isLoved: Bool = false
-    @Published var trackId: String = ""
     @Published var volume: Int = 0 // 0-100
     @Published var trackURL: String = ""
-    @Published var releaseDate: String = ""
-    @Published var discNumber: Int = 0
-    @Published var trackNumber: Int = 0
-    @Published var popularity: Int = 0
     @Published var shuffle: Bool = false
     @Published var albumArtURL: String = ""
     @Published var albumArtImage: NSImage? = nil
     @Published var aveColor: NSColor? = nil
+    
+    @Published var timer = 0
     
     private var oldTrackName: String = ""
     private var hideTimer: Timer?
@@ -53,7 +51,9 @@ class SpotifyManager: ObservableObject {
     }
     
     deinit {
-        cleanup()
+        Task { [weak self] in
+            await self?.cleanup()
+        }
     }
     
     private func setupNotifications() {
@@ -78,7 +78,7 @@ class SpotifyManager: ObservableObject {
         // Check if the launched application is Spotify
         if let app = notification.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication,
            let appName = app.localizedName,
-           appName.contains("Spotify") {
+           appName.localizedCaseInsensitiveContains("Spotify") {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
                 guard let self = self else { return }
                 if !self.isObserving && self.isSpotifyRunning() {
@@ -92,7 +92,7 @@ class SpotifyManager: ObservableObject {
         // Check if the terminated application is Spotify
         if let app = notification.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication,
            let appName = app.localizedName,
-           appName.contains("Spotify") {
+           appName.localizedCaseInsensitiveContains("Spotify") {
             self.stopObserving()
         }
     }
@@ -178,7 +178,25 @@ class SpotifyManager: ObservableObject {
         
         if self.trackName != oldTrackName {
             oldTrackName = self.trackName
-            fetchAlbumArt()
+            fetchAlbumArt(artURL: self.albumArtURL) { image in
+                if let image = image {
+                    Task { @MainActor in
+                        self.albumArtImage = image
+                        
+                        getAverageColor(image: image) { color in
+                            if let color = color {
+                                Task { @MainActor in
+                                    self.aveColor = color
+                                }
+                            } else {
+                                print("Error getting album art color")
+                            }
+                        }
+                    }
+                } else {
+                    print("Error getting album art")
+                }
+            }
         }
         
         let hideNotchTime = Defaults[.hideNotchTime]
@@ -188,17 +206,17 @@ class SpotifyManager: ObservableObject {
                 guard let self = self else { return }
                 DispatchQueue.main.async {
                     self.stopTime += 1
-                    if self.stopTime > Int(hideNotchTime) && notchState == "closed" {
+                    if self.stopTime > Int(hideNotchTime) && NotchManager.shared.notchState == "closed" {
                         self.hideTimer?.invalidate()
                         self.hideTimer = nil
                         NotchManager.shared.setNotchContent(.hidden, false)
-                        notchState = "hide"
+                        NotchManager.shared.notchState = "hide"
                     }
                 }
             }
         }
         
-        if self.isPlaying == true && notchState == "hide" {
+        if self.isPlaying == true && NotchManager.shared.notchState == "hide" {
             DispatchQueue.main.async() {
                 NotchManager.shared.setNotchContent(.closed, false)
             }
@@ -274,13 +292,6 @@ class SpotifyManager: ObservableObject {
                     end try
                     
                     try
-                        set trackId to id of current track
-                        set end of results to trackId
-                    on error
-                        set end of results to ""
-                    end try
-                    
-                    try
                         set soundVolume to sound volume
                         set end of results to soundVolume
                     on error
@@ -293,35 +304,7 @@ class SpotifyManager: ObservableObject {
                     on error
                         set end of results to ""
                     end try
-                    
-                    try
-                        set releaseDate to year of current track
-                        set end of results to releaseDate as string
-                    on error
-                        set end of results to ""
-                    end try
-                    
-                    try
-                        set discNumber to disc number of current track
-                        set end of results to discNumber
-                    on error
-                        set end of results to 0
-                    end try
-                    
-                    try
-                        set trackNumber to track number of current track
-                        set end of results to trackNumber
-                    on error
-                        set end of results to 0
-                    end try
-                    
-                    try
-                        set popularity to popularity of current track
-                        set end of results to popularity
-                    on error
-                        set end of results to 0
-                    end try
-                    
+
                     try
                         set shuffle to shuffling
                         set end of results to shuffle
@@ -358,7 +341,7 @@ class SpotifyManager: ObservableObject {
                 finalResult.removeLast()
             }
             
-            if finalResult.count >= 17 {
+            if finalResult.count >= 12 {
                 self.spotifyRunning = finalResult[0] == "true"
                 self.isPlaying = finalResult[1] == "playing"
                 self.trackName = finalResult[2]
@@ -367,15 +350,10 @@ class SpotifyManager: ObservableObject {
                 self.trackDuration = Int(Double(finalResult[5]) ?? 0)
                 self.trackPosition = Int(Double(finalResult[6]) ?? 0)
                 self.isLoved = finalResult[7] == "true"
-                self.trackId = finalResult[8]
-                self.volume = Int(finalResult[9]) ?? 0
-                self.trackURL = finalResult[10]
-                self.releaseDate = finalResult[11]
-                self.discNumber = Int(finalResult[12]) ?? 0
-                self.trackNumber = Int(finalResult[13]) ?? 0
-                self.popularity = Int(finalResult[14]) ?? 0
-                self.shuffle = finalResult[15] == "true"
-                self.albumArtURL = finalResult[16]
+                self.volume = Int(finalResult[8]) ?? 0
+                self.trackURL = finalResult[9]
+                self.shuffle = finalResult[10] == "true"
+                self.albumArtURL = finalResult[11]
                 
                 
             } else {
@@ -384,6 +362,7 @@ class SpotifyManager: ObservableObject {
                 print("Error on getting information or spotify not running")
                 stopObserving()
             }
+            
         } else {
             print("Fehler: Didn't get any result")
             self.spotifyRunning = false
@@ -398,21 +377,19 @@ class SpotifyManager: ObservableObject {
     }
     
     private func clearAllData() {
-        isPlaying = false
-        trackName = ""
-        artistName = ""
-        albumName = ""
-        trackDuration = 0
-        trackPosition = 0
-        isLoved = false
-        trackId = ""
-        volume = 0
-        trackURL = ""
-        releaseDate = ""
-        discNumber = 0
-        trackNumber = 0
-        popularity = 0
-        albumArtURL = ""
+//        isPlaying = false
+//        trackName = "Nothing playing"
+//        artistName = ""
+//        albumName = ""
+//        trackDuration = 0
+//        trackPosition = 0
+//        isLoved = false
+//        volume = 0
+//        trackURL = ""
+//        albumArtURL = ""
+//        albumArtImage = nil
+//        aveColor = nil
+        oldTrackName = ""
     }
     
     private func executeAppleScript(_ script: String) -> Any? {
@@ -437,29 +414,5 @@ class SpotifyManager: ObservableObject {
         }
         
         return nil
-    }
-    
-    func fetchAlbumArt() {
-        guard let url = URL(string: albumArtURL) else { return }
-        URLSession.shared.dataTask(with: url) { data, _, _ in
-            guard let data = data, let image = NSImage(data: data) else { return }
-            DispatchQueue.main.async {
-                self.albumArtImage = image
-                self.getAverageColor()
-            }
-        }.resume()
-    }
-    
-    func getAverageColor() {
-        if let image = self.albumArtImage {
-            image.averageColor { color in
-                if let color = color {
-                    //print("Average color: \(color)")
-                    self.aveColor = color
-                } else {
-                    print("Failed to get average color")
-                }
-            }
-        }
     }
 }

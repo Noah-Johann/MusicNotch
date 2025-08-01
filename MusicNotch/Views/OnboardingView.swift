@@ -96,8 +96,8 @@ struct OnboardingView: View {
                             } .buttonStyle(LuminareButtonStyle())
                         } else if OnboardingPage == 2 {
                             Button("Request permission") {
-                                PermissionHelper.promptUserForConsent(for: "com.spotify.client") { consent in
-                                    DispatchQueue.main.async {
+                                PermissionHelper.promptUserForConsent(for: "com.spotify.client") { @Sendable consent in
+                                    Task { @MainActor in
                                         print("Constent \(consent)")
                                         switch consent {
                                         case .granted:

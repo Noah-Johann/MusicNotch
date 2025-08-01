@@ -59,6 +59,7 @@ enum NotchDisplay: CaseIterable {
     }
 }
 
+@MainActor
 struct DisplayPickerView: View {
     @StateObject private var model = DisplayConfigurationModel()
     
