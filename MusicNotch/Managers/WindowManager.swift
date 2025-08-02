@@ -33,8 +33,9 @@ class WindowManager {
     }
     
     static func closeSettings() {
-        NSApp.setActivationPolicy(.accessory)
-
+        if !Defaults[.showDockItem] {
+            NSApp.setActivationPolicy(.accessory)
+        }
         settingsWindow?.close()
         settingsWindow = nil
     }
@@ -59,8 +60,9 @@ class WindowManager {
     }
     
     static func closeAbout() {
-        NSApp.setActivationPolicy(.accessory)
-
+        if !Defaults[.showDockItem] {
+            NSApp.setActivationPolicy(.accessory)
+        }
         aboutWindow?.close()
         aboutWindow = nil
     }
@@ -86,8 +88,9 @@ class WindowManager {
     }
     
     static func closeOnboarding() {
-        NSApp.setActivationPolicy(.accessory)
-        
+        if !Defaults[.showDockItem] {
+            NSApp.setActivationPolicy(.accessory)
+        }
         onboardingWindow?.close()
         onboardingWindow = nil
     }

@@ -17,6 +17,7 @@ struct SettingsView: View {
     
     @Default(.hideNotchTime) private var hideNotchTime
     @Default(.viewedOnboarding) private var viewedOnboarding
+    @Default(.showDockItem) private var showDockItem
     @Default(.openNotchOnHover) private var openNotchOnHover
     @Default(.openingDelay) private var openingDelay
     @Default(.hapticFeedback) private var hapticFeedback
@@ -48,6 +49,10 @@ struct SettingsView: View {
                                     .padding()
                             }
                             .tint(.accentColor)
+                    }
+                    
+                    LuminareToggle(isOn: $showDockItem) {
+                        Text("Show dock icon")
                     }
                     
                     #if DEBUG
