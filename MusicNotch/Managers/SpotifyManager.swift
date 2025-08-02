@@ -11,7 +11,6 @@ import AppKit
 import Defaults
 import SwiftUI
 
-//xpublic var timer = 0
 class SpotifyManager: ObservableObject {
     static let shared = SpotifyManager()    
         
@@ -24,12 +23,7 @@ class SpotifyManager: ObservableObject {
     @Published var trackPosition: Int = 5 // in Sekunden
     @Published var isLoved: Bool = false
     @Published var trackId: String = ""
-    @Published var volume: Int = 0 // 0-100
     @Published var trackURL: String = ""
-    @Published var releaseDate: String = ""
-    @Published var discNumber: Int = 0
-    @Published var trackNumber: Int = 0
-    @Published var popularity: Int = 0
     @Published var shuffle: Bool = false
     @Published var albumArtURL: String = ""
     @Published var albumArtImage: NSImage? = nil
@@ -63,9 +57,6 @@ class SpotifyManager: ObservableObject {
             hideTimer?.invalidate()
             hideTimer = nil
         }
-        
-        clearAllData()
-        
     }
     
     private func setupSpotifyObservers() {
@@ -205,41 +196,6 @@ class SpotifyManager: ObservableObject {
                     end try
                     
                     try
-                        set trackURL to spotify url of current track
-                        set end of results to trackURL
-                    on error
-                        set end of results to ""
-                    end try
-                    
-                    try
-                        set releaseDate to year of current track
-                        set end of results to releaseDate as string
-                    on error
-                        set end of results to ""
-                    end try
-                    
-                    try
-                        set discNumber to disc number of current track
-                        set end of results to discNumber
-                    on error
-                        set end of results to 0
-                    end try
-                    
-                    try
-                        set trackNumber to track number of current track
-                        set end of results to trackNumber
-                    on error
-                        set end of results to 0
-                    end try
-                    
-                    try
-                        set popularity to popularity of current track
-                        set end of results to popularity
-                    on error
-                        set end of results to 0
-                    end try
-                    
-                    try
                         set shuffle to shuffling
                         set end of results to shuffle
                     on error
@@ -271,7 +227,7 @@ class SpotifyManager: ObservableObject {
                 finalResult.removeLast()
             }
             
-            if finalResult.count >= 17 {
+            if finalResult.count >= 12 {
                 self.spotifyRunning = finalResult[0] == "true"
                 self.isPlaying = finalResult[1] == "playing"
                 self.trackName = finalResult[2]
@@ -281,14 +237,9 @@ class SpotifyManager: ObservableObject {
                 self.trackPosition = Int(Double(finalResult[6]) ?? 0)
                 self.isLoved = finalResult[7] == "true"
                 self.trackId = finalResult[8]
-                self.volume = Int(finalResult[9]) ?? 0
-                self.trackURL = finalResult[10]
-                self.releaseDate = finalResult[11]
-                self.discNumber = Int(finalResult[12]) ?? 0
-                self.trackNumber = Int(finalResult[13]) ?? 0
-                self.popularity = Int(finalResult[14]) ?? 0
-                self.shuffle = finalResult[15] == "true"
-                self.albumArtURL = finalResult[16]
+                self.trackURL = finalResult[9]
+                self.shuffle = finalResult[10] == "true"
+                self.albumArtURL = finalResult[11]
                 
                 
             } else {
@@ -303,24 +254,6 @@ class SpotifyManager: ObservableObject {
         if !spotifyRunning {
             print("Spotify is not running.")
         }
-    }
-    
-    private func clearAllData() {
-        isPlaying = false
-        trackName = ""
-        artistName = ""
-        albumName = ""
-        trackDuration = 0
-        trackPosition = 0
-        isLoved = false
-        trackId = ""
-        volume = 0
-        trackURL = ""
-        releaseDate = ""
-        discNumber = 0
-        trackNumber = 0
-        popularity = 0
-        albumArtURL = ""
     }
     
     private func executeAppleScript(_ script: String) -> Any? {
@@ -362,7 +295,6 @@ class SpotifyManager: ObservableObject {
         if let image = self.albumArtImage {
             image.averageColor { color in
                 if let color = color {
-                    //print("Average color: \(color)")
                     self.aveColor = color
                 } else {
                     print("Failed to get average color")
