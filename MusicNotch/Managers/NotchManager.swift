@@ -19,6 +19,8 @@ final class NotchManager {
         case hidden
     }
     
+    @Published var notchState: NotchState = .hidden
+    
     static let shared = NotchManager()
     
     let notch: DynamicNotch<Player, AlbumArtView, AudioSpectView>
@@ -95,7 +97,7 @@ final class NotchManager {
             self.hapticTask?.cancel()
             self.expandTask?.cancel()
             
-            if notchState == "open" || self.expandTask != nil {
+            if notchState == .open || self.expandTask != nil {
                 self.setNotchContent(.closed, false)
             }
         }
@@ -112,13 +114,13 @@ final class NotchManager {
         expandTask?.cancel()
         
         Task {
-            if notchState == "closed" {
+            if notchState == .closed {
                 setNotchContent(.openWithoutHover, false)
                 
-            } else if notchState == "open" {
+            } else if notchState == .open {
                 setNotchContent(.closed, false)
                 
-            } else if notchState == "hide" {
+            } else if notchState == .hidden {
                 setNotchContent(.openWithoutHover, false)
             }
         }
@@ -134,7 +136,7 @@ final class NotchManager {
             
             switch content {
             case .open:
-                notchState = "open"
+                notchState = .open
                 SpotifyManager.shared.updateInfo()
                 
                 // Track the expand operation so we can cancel it if needed
@@ -165,7 +167,7 @@ final class NotchManager {
                     self.expandTask = nil
                 }
             case .openWithoutHover:
-                notchState = "open"
+                notchState = .open
                 SpotifyManager.shared.updateInfo()
                 
                 // Track the expand operation so we can cancel it if needed
@@ -189,7 +191,7 @@ final class NotchManager {
                     self.expandTask = nil
                 }
             case .closed:
-                notchState = "closed"
+                notchState = .closed
                 SpotifyManager.shared.updateInfo()
                 
                 if Defaults[.notchDisplay] == true {
@@ -206,6 +208,7 @@ final class NotchManager {
                     await self.notch.compact(on: NSScreen.screens.first!)
                 }
             case .hidden:
+                notchState = .hidden
                 if Defaults[.mainDisplay] == true && Defaults[.disableNotchOnHide] == true {
                     await self.notch.hide()
                 } else if Defaults[.mainDisplay] == true && Defaults[.disableNotchOnHide] == false {

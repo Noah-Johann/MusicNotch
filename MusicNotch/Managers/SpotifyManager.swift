@@ -11,7 +11,7 @@ import AppKit
 import Defaults
 import SwiftUI
 
-public var timer = 0
+//xpublic var timer = 0
 class SpotifyManager: ObservableObject {
     static let shared = SpotifyManager()    
         
@@ -35,144 +35,63 @@ class SpotifyManager: ObservableObject {
     @Published var albumArtImage: NSImage? = nil
     @Published var aveColor: NSColor? = nil
     
+    @Published var timer: Int = 0
+    
     private var oldTrackName: String = ""
     private var hideTimer: Timer?
     private var stopTime = 0
-    private var isObserving: Bool = false
     
     
     private init() {
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            self.setupNotifications()
-            
-            if self.isSpotifyRunning() {
-                self.setupSpotifyObservers()
-            }
+        setupSpotifyObservers()
+        
+        if isSpotifyRunning() {
+            updateInfo()
         }
+        
+        updateInfo()
     }
     
     deinit {
         cleanup()
     }
-    
-    private func setupNotifications() {
-        // Listen for application launched notifications
-        NSWorkspace.shared.notificationCenter.addObserver(
-            self,
-            selector: #selector(applicationLaunched(_:)),
-            name: NSWorkspace.didLaunchApplicationNotification,
-            object: nil
-        )
-        
-        // Listen for application terminated notifications
-        NSWorkspace.shared.notificationCenter.addObserver(
-            self,
-            selector: #selector(applicationTerminated(_:)),
-            name: NSWorkspace.didTerminateApplicationNotification,
-            object: nil
-        )
-    }
-    
-    @objc private func applicationLaunched(_ notification: Notification) {
-        // Check if the launched application is Spotify
-        if let app = notification.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication,
-           let appName = app.localizedName,
-           appName.contains("Spotify") {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-                guard let self = self else { return }
-                if !self.isObserving && self.isSpotifyRunning() {
-                    self.setupSpotifyObservers()
-                }
-            }
-        }
-    }
-    
-    @objc private func applicationTerminated(_ notification: Notification) {
-        // Check if the terminated application is Spotify
-        if let app = notification.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication,
-           let appName = app.localizedName,
-           appName.contains("Spotify") {
-            self.stopObserving()
-        }
-    }
-    
-    private func stopObserving() {
-        if isObserving {
-            DistributedNotificationCenter.default().removeObserver(self)
-            isObserving = false
-        }
+
+    public func cleanup() {
+        DistributedNotificationCenter.default().removeObserver(self)
         
         if hideTimer != nil {
             hideTimer?.invalidate()
             hideTimer = nil
         }
-    }
-    
-    public func cleanup() {
-        stopObserving()
+        
         clearAllData()
         
-        NSWorkspace.shared.notificationCenter.removeObserver(self)
     }
     
     private func setupSpotifyObservers() {
-        // Don't set up observers if already observing
-        guard !isObserving else { return }
-        
-        // Only set up if Spotify is actually running
-        guard isSpotifyRunning() else { return }
                 
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             
             DistributedNotificationCenter.default().addObserver(
                 self,
-                selector: #selector(self.playbackStateChanged(_:)),
+                selector: #selector(updateInfo),
                 name: NSNotification.Name("com.spotify.client.PlaybackStateChanged"),
                 object: nil
             )
-            
-            self.isObserving = true
-            self.updateInfo()
-        }
-    }
-
-    @objc private func playbackStateChanged(_ notification: Notification) {
-        if isSpotifyRunning() {
-            self.updateInfo()
-        } else {
-            stopObserving()
-            clearAllData()
         }
     }
     
     private func isSpotifyRunning() -> Bool {
-        let script = """
-        tell application "System Events"
-            set spotifyProcess to (exists process "Spotify")
-            if spotifyProcess then
-                return true
-            else
-                return false
-            end if
-        end tell
-        """
-        
-        if let result = executeAppleScript(script) as? String {
-            let isRunning = result.trimmingCharacters(in: .whitespacesAndNewlines) == "true"
-            self.spotifyRunning = isRunning
-            return isRunning
-        }
-        return false
+        let runningApps = NSWorkspace.shared.runningApplications
+        return runningApps.contains { $0.bundleIdentifier == "com.spotify.client" }
     }
     
-    public func updateInfo() {
-        if !isSpotifyRunning() {
-            clearAllData()
-            stopObserving() 
-            return
-        }
+    @objc public func updateInfo() {
+        
+        print("update info")
+        
+        guard isSpotifyRunning() else { return }
         
         collectBasicInfo()
         
@@ -188,38 +107,36 @@ class SpotifyManager: ObservableObject {
                 guard let self = self else { return }
                 DispatchQueue.main.async {
                     self.stopTime += 1
-                    if self.stopTime > Int(hideNotchTime) && notchState == "closed" {
+                    if self.stopTime > Int(hideNotchTime) && NotchManager.shared.notchState == .closed {
                         self.hideTimer?.invalidate()
                         self.hideTimer = nil
                         NotchManager.shared.setNotchContent(.hidden, false)
-                        notchState = "hide"
                     }
                 }
             }
         }
         
-        if self.isPlaying == true && notchState == "hide" {
-            DispatchQueue.main.async() {
+        // Open notch when playback starts
+        Task { @MainActor in
+            if self.isPlaying == true && NotchManager.shared.notchState == .hidden {
                 NotchManager.shared.setNotchContent(.closed, false)
             }
         }
         
+        // Remove Nothing-Playing-Timer
         if self.isPlaying == true && hideTimer != nil {
             self.hideTimer?.invalidate()
             self.hideTimer = nil
         }
     }
     
-    public func collectBasicInfo() {
-        if !isSpotifyRunning() {
-            stopObserving()
-            clearAllData()
-            return
-        }
+    private func collectBasicInfo() {
+
+        guard isSpotifyRunning() else { return }
+        
+        print("execute apple script")
         
         let script = """
-        tell application "System Events"
-            if exists process "Spotify" then
                 tell application "Spotify"
                     set results to {}
                     set end of results to true -- spotifyRunning
@@ -338,10 +255,6 @@ class SpotifyManager: ObservableObject {
                     
                     return results
                 end tell
-            else
-                return {false, "", "", "", 0, 0, false, "", 0, "", "", 0, 0, 0, false, ""}
-            end if
-        end tell
         """
         
         let result = executeAppleScript(script)
@@ -380,20 +293,15 @@ class SpotifyManager: ObservableObject {
                 
             } else {
                 self.spotifyRunning = false
-                clearAllData()
                 print("Error on getting information or spotify not running")
-                stopObserving()
             }
         } else {
             print("Fehler: Didn't get any result")
             self.spotifyRunning = false
-            clearAllData()
-            stopObserving()
         }
         
         if !spotifyRunning {
             print("Spotify is not running.")
-            stopObserving()
         }
     }
     
@@ -439,7 +347,7 @@ class SpotifyManager: ObservableObject {
         return nil
     }
     
-    func fetchAlbumArt() {
+    private func fetchAlbumArt() {
         guard let url = URL(string: albumArtURL) else { return }
         URLSession.shared.dataTask(with: url) { data, _, _ in
             guard let data = data, let image = NSImage(data: data) else { return }
@@ -450,7 +358,7 @@ class SpotifyManager: ObservableObject {
         }.resume()
     }
     
-    func getAverageColor() {
+    private func getAverageColor() {
         if let image = self.albumArtImage {
             image.averageColor { color in
                 if let color = color {

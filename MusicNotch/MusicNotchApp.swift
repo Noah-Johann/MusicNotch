@@ -10,7 +10,7 @@ import KeyboardShortcuts
 import Defaults
 import Luminare
 
-var notchState: String = "hide"
+//var notchState: String = "hide"
 
 @main
 struct MusicNotchApp: App {
@@ -26,11 +26,11 @@ struct MusicNotchApp: App {
         appSetup()
         
         KeyboardShortcuts.onKeyDown(for: .toggleNotch) {
-            timer = 3
+            SpotifyManager.shared.timer = 3
             NotchManager.shared.changeNotch()
         }
         
-        timer = 0
+        SpotifyManager.shared.timer = 0
     }
     
     var body: some Scene {
