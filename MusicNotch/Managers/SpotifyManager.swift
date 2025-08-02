@@ -11,7 +11,6 @@ import AppKit
 import Defaults
 import SwiftUI
 
-//public var timer = 0
 @MainActor
 class SpotifyManager: ObservableObject {
     static let shared = SpotifyManager()    

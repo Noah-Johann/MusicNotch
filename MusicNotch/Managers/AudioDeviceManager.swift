@@ -1,5 +1,5 @@
 //
-//  SpeakerIcon.swift
+//  AudioDeviceManager.swift
 //  MusicNotch
 //
 //  Created by Noah Johann on 15.03.25.

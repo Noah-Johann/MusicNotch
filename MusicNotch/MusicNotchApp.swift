@@ -17,12 +17,12 @@ struct MusicNotchApp: App {
     @Default(.showMenuBarItem) private var showMenuBarItem
     
     init() {
-//        KeyboardShortcuts.onKeyDown(for: .toggleNotch) {
-//            Task { @MainActor in
-//                SpotifyManager.shared.timer = 3
-//                NotchManager.shared.changeNotch()
-//            }
-//        }
+        KeyboardShortcuts.onKeyDown(for: .toggleNotch) {
+            Task { @MainActor in
+                SpotifyManager.shared.timer = 3
+                NotchManager.shared.changeNotch()
+            }
+        }
     }
     
     var body: some Scene {
