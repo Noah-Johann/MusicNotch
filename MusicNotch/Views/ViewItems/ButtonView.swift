@@ -87,7 +87,7 @@ struct ButtonView: View {
             
             
             //Speaker
-            Image(systemName: deviceIcon)
+            Image(systemName: AudioDeviceManager.shared.deviceIcon)
                 .imageScale(.large)
                 .foregroundStyle(.secondary)
                 .font(.system(size: 17))

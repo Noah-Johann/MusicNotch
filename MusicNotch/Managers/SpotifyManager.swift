@@ -42,14 +42,12 @@ class SpotifyManager: ObservableObject {
         if isSpotifyRunning() {
             updateInfo()
         }
-        
-        updateInfo()
     }
     
     deinit {
         cleanup()
     }
-
+    
     public func cleanup() {
         DistributedNotificationCenter.default().removeObserver(self)
         
@@ -60,7 +58,6 @@ class SpotifyManager: ObservableObject {
     }
     
     private func setupSpotifyObservers() {
-                
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             
@@ -122,7 +119,7 @@ class SpotifyManager: ObservableObject {
     }
     
     private func collectBasicInfo() {
-
+        
         guard isSpotifyRunning() else { return }
         
         print("execute apple script")
@@ -248,7 +245,6 @@ class SpotifyManager: ObservableObject {
             }
         } else {
             print("Fehler: Didn't get any result")
-            self.spotifyRunning = false
         }
         
         if !spotifyRunning {
@@ -292,13 +288,12 @@ class SpotifyManager: ObservableObject {
     }
     
     private func getAverageColor() {
-        if let image = self.albumArtImage {
-            image.averageColor { color in
-                if let color = color {
-                    self.aveColor = color
-                } else {
-                    print("Failed to get average color")
-                }
+        guard let image = self.albumArtImage else { return }
+        image.averageColor { color in
+            if let color = color {
+                self.aveColor = color
+            } else {
+                print("Failed to get average color")
             }
         }
     }

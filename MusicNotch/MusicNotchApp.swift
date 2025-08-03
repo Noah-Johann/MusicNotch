@@ -10,7 +10,6 @@ import KeyboardShortcuts
 import Defaults
 import Luminare
 
-//var notchState: String = "hide"
 
 @main
 struct MusicNotchApp: App {
@@ -23,14 +22,10 @@ struct MusicNotchApp: App {
     @Default(.showMenuBarItem) private var showMenuBarItem
     
     init() {
-        appSetup()
-        
         KeyboardShortcuts.onKeyDown(for: .toggleNotch) {
             SpotifyManager.shared.timer = 3
             NotchManager.shared.changeNotch()
         }
-        
-        SpotifyManager.shared.timer = 0
     }
     
     var body: some Scene {
@@ -40,13 +35,8 @@ struct MusicNotchApp: App {
             MenuBarExtraView()
         }
     }
-
-    func appSetup() {
-        getAudioOutputDevice()
-        registerForAudioDeviceChanges()
-        SpotifyManager.shared.updateInfo()
-    }
 }
+
 
 class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     let aboutMenuHandler = AboutMenuHandler()
@@ -64,7 +54,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
             aboutItem.target = aboutMenuHandler
             aboutItem.action = #selector(AboutMenuHandler.showAboutMenu)
         }
-        
+                
         CGDisplayRegisterReconfigurationCallback(displayCallback, UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque()))
     }
     
