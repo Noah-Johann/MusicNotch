@@ -8,6 +8,7 @@
 import Foundation
 import IOKit.ps
 import SwiftUI
+import Defaults
 
 class BatteryManager {
     static let shared = BatteryManager()
@@ -72,6 +73,8 @@ class BatteryManager {
     }
     
     func updateBatteryInfo() {
+        guard Defaults[.batteryExtension] == true else { return }
+        
         Task {
             do {
                 try await Task.sleep(nanoseconds: 400_000_000) // 0.4 seconds
