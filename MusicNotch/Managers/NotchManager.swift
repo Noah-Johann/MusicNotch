@@ -24,6 +24,8 @@ final class NotchManager {
     static let shared = NotchManager()
     
     let notch: DynamicNotch<Player, AlbumArtView, AudioSpectView>
+    var extensionNotch: DynamicNotch<AnyView, ExtensionViewLeading, ExtensionViewTrailing>?
+    
     private var openingTask: Task<Void, Never>?
     private var hapticTask: Task<Void, Never>?
     private var expandTask: Task<Void, Never>?
@@ -43,6 +45,8 @@ final class NotchManager {
                 AudioSpectView()
             }
         )
+        
+
         
         notch.onHoverChanged = { [weak self] isHovering in
             guard let self = self else { return }
@@ -135,6 +139,7 @@ final class NotchManager {
             }
             
             switch content {
+                
             case .open:
                 notchState = .open
                 SpotifyManager.shared.updateInfo()
@@ -166,6 +171,7 @@ final class NotchManager {
                     // Clear the task reference when completed
                     self.expandTask = nil
                 }
+                
             case .openWithoutHover:
                 notchState = .open
                 SpotifyManager.shared.updateInfo()
@@ -190,9 +196,9 @@ final class NotchManager {
                     // Clear the task reference when completed
                     self.expandTask = nil
                 }
+                
             case .closed:
                 notchState = .closed
-                SpotifyManager.shared.updateInfo()
                 
                 if Defaults[.notchDisplay] == true {
                     guard let notchScreen = NSScreen.screens.first(where: { $0.safeAreaInsets.top > 0 }) else {
@@ -207,6 +213,7 @@ final class NotchManager {
                 } else {
                     await self.notch.compact(on: NSScreen.screens.first!)
                 }
+                
             case .hidden:
                 notchState = .hidden
                 if Defaults[.mainDisplay] == true && Defaults[.disableNotchOnHide] == true {
@@ -227,6 +234,47 @@ final class NotchManager {
                     await self.notch.close()
                 }
             }
+        }
+    }
+    
+    public func showExtensionNotch(type: ExtensionType) {
+        Task {
+            print("show extensionNotch")
+            
+            let lastNotchState = notchState
+            
+            let screen = NSScreen.main?.displayToUse
+            
+            guard screen != nil else { return }
+            
+            
+            extensionNotch = DynamicNotch(style: .notch,
+                                          expanded: { AnyView(EmptyView()) },
+                                          compactLeading: { ExtensionViewLeading(extensionType: type) },
+                                          compactTrailing: { ExtensionViewTrailing(extensionType: type) }
+            )
+            
+            await self.notch.hide()
+            
+            await self.extensionNotch!.compact(on: screen!)
+            
+            do {
+                try await Task.sleep(nanoseconds: 3 * 1000000000)
+            } catch {
+                print("Error sleeping")
+            }
+            
+            await self.extensionNotch!.close()
+            
+            await self.extensionNotch!.hide()
+            
+            if lastNotchState == .hidden {
+                setNotchContent(.hidden, false)
+            } else {
+                setNotchContent(.closed, false)
+            }
+            
+            extensionNotch = nil
         }
     }
 }

@@ -81,4 +81,24 @@ extension NSScreen {
             }
         }
     }
+    
+    var displayToUse : NSScreen?{
+        if Defaults[.notchDisplay] == true {
+            let notchScreen = NSScreen.screens.first(where: { $0.safeAreaInsets.top > 0 })
+            
+            if notchScreen != nil {
+                return notchScreen!
+                
+            } else {
+                if Defaults[.noNotchScreenHide] {
+                    return nil
+                } else {
+                    return NSScreen.screens.first!
+                }
+            }
+        } else if Defaults[.mainDisplay] == true {
+            return NSScreen.screens.first!
+        }
+        return NSScreen.screens.first!
+    }
 }

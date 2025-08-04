@@ -14,7 +14,7 @@ struct SettingsExtensionView: View {
         LuminareSection {
             
         } header: {
-            Text("Extensions (beta)")
+            Text("Extensions (BETA)")
         }
         .padding(.bottom, 14)    }
 }
