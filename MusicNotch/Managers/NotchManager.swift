@@ -240,7 +240,12 @@ final class NotchManager {
     public func showExtensionNotch(type: ExtensionType) {
         Task {
             print("show extensionNotch")
-            
+            if self.extensionNotch != nil {
+                await self.extensionNotch?.hide()
+                
+                self.extensionNotch = nil
+            }
+ 
             let lastNotchState = notchState
             
             let screen = NSScreen.main?.displayToUse
@@ -264,9 +269,9 @@ final class NotchManager {
                 print("Error sleeping")
             }
             
-            await self.extensionNotch!.close()
+            await self.extensionNotch?.close()
             
-            await self.extensionNotch!.hide()
+            await self.extensionNotch?.hide()
             
             if lastNotchState == .hidden {
                 setNotchContent(.hidden, false)

@@ -7,167 +7,176 @@
 
 import Foundation
 import IOKit.ps
-import Combine
+import SwiftUI
 
 class BatteryManager {
     static let shared = BatteryManager()
     
-    @Published var batteryPercentage: Double = 0.0
     @Published var isCharging: Bool = false
-    @Published var currentCapacity: Int = 0
-    @Published var maxCapacity: Int = 0
-    @Published var cycleCount: Int = 0
-    @Published var health: String = "Unknown"
     @Published var isLowPowerMode: Bool = false
+    @Published var currentCapacity: Double = 0
     
-    private var powerObserver: NSObjectProtocol?
-    private var lowPowerModeObserver: NSObjectProtocol?
-    private var timer: Timer?
+    @Published var BatteryIconColor: Color = .white
+    @Published var BatteryIconName: String = "battery.100percent"
     
-    private var runLoopSource: Unmanaged<CFRunLoopSource>?
-    private var powerSourceMonitor: PowerSourceMonitor?
+    private var batterySource: CFRunLoopSource?
+    
+    // Use when no battery information is available
+    private let errorBatteryInfo = BatteryInfo(
+        isPluggedIn: false,
+        isCharging: false,
+        currentCapacity: 1,
+        maxCapacity: 100,
+        isInLowPowerMode: false,
+        timeToFullCharge: 1
+    )
+    
+    enum BatteryError: Error {
+        case powerSourceUnavailable
+        case batteryInfoUnavailable(String)
+        case batteryParameterMissing(String)
+    }
     
     init() {
-        startPowerObservers()
+        setupObservers()
+        startMonitoring()
+    }
+//    deinit {
+//        
+//    }
+    
+    private func setupObservers() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(lowPowerModeChanged),
+            name: NSNotification.Name.NSProcessInfoPowerStateDidChange,
+            object: nil
+        )
     }
     
-    deinit {
-        stopPowerObservers()
+    private func startMonitoring() {
+        guard let powerSource = IOPSNotificationCreateRunLoopSource({ context in
+            guard let context = context else { return }
+            let manager = Unmanaged<BatteryManager>.fromOpaque(context).takeUnretainedValue()
+            manager.updateBatteryInfo()
+        }, Unmanaged.passUnretained(self).toOpaque())?.takeRetainedValue() else {
+            return
+        }
+        batterySource = powerSource
+        CFRunLoopAddSource(CFRunLoopGetCurrent(), powerSource, .defaultMode)
     }
     
-    private func updateBatteryInfo() {
-        guard let info = getBatteryInfo() else { return }
+    @objc private func lowPowerModeChanged() {
+        print("low power mode notification")
+        updateBatteryInfo()
+    }
+    
+    func updateBatteryInfo() {
+        Task {
+            do {
+                try await Task.sleep(nanoseconds: 400_000_000) // 0.4 seconds
+            } catch {
+                return
+            }
+        }
         
-        DispatchQueue.main.async {
-            self.batteryPercentage = info.batteryPercentage
-            self.isCharging = info.isCharging
-            self.currentCapacity = info.currentCapacity
-            self.maxCapacity = info.maxCapacity
-            self.cycleCount = info.cycleCount
-            self.health = info.health
-            self.isLowPowerMode = ProcessInfo.processInfo.isLowPowerModeEnabled
+        let info = getBatteryInfo()
+        
+        self.currentCapacity = Double(info.currentCapacity)
+        
+        if info.isPluggedIn == true && info.isInLowPowerMode == true {
+            self.BatteryIconName = "battery.100percent.bolt"
+            self.BatteryIconColor = .yellow
+        } else if info.isPluggedIn == true && info.isInLowPowerMode == false {
+            self.BatteryIconName = "battery.100percent.bolt"
+            self.BatteryIconColor = .green
+        } else if info.isPluggedIn == false && info.isInLowPowerMode == true {
+            self.BatteryIconName = "battery.100percent"
+            self.BatteryIconColor = .yellow
+        } else {
+            self.BatteryIconName = "battery.100percent"
+            self.BatteryIconColor = .white
         }
         
         Task { @MainActor in
             NotchManager.shared.showExtensionNotch(type: .battery)
         }
-    }
-    
-    private func startPowerObservers() {
-        // Observe Low Power Mode changes
-        lowPowerModeObserver = NotificationCenter.default.addObserver(
-            forName: .NSProcessInfoPowerStateDidChange,
-            object: nil,
-            queue: .main
-        ) { [weak self] _ in
-            self?.updateBatteryInfo()
-            print("low power noti")
-        }
         
-        powerSourceMonitor = PowerSourceMonitor()
-
-        NotificationCenter.default.addObserver(
-            forName: .powerSourceDidChange,
-            object: nil,
-            queue: .main
-        ) { notification in
-            if let powerSource = notification.object as? String {
-                if powerSource == "AC Power" {
-                    self.isCharging = true
-                }
-            }
-            print("new noti")
-            self.updateBatteryInfo()
-        }
-    }
-
-    
-    @objc private func batteryStateChanged() {
-        updateBatteryInfo()
-        print("battery state changed")
     }
     
-    private func stopPowerObservers() {
-        if let observer = powerObserver {
-            NotificationCenter.default.removeObserver(observer)
-        }
-        if let observer = lowPowerModeObserver {
-            NotificationCenter.default.removeObserver(observer)
-        }
-        NotificationCenter.default.removeObserver(self)
-    }
-    
-    private func getBatteryInfo() -> (batteryPercentage: Double, isCharging: Bool, currentCapacity: Int, maxCapacity: Int, cycleCount: Int, health: String)? {
-        print("getBatteryInfo")
-        guard let powerSourcesInfo = IOPSCopyPowerSourcesInfo()?.takeRetainedValue(),
-              let powerSourcesList = IOPSCopyPowerSourcesList(powerSourcesInfo)?.takeRetainedValue() as? [CFTypeRef] else {
-            return nil
-        }
-        
-        for powerSource in powerSourcesList {
-            guard let dict = IOPSGetPowerSourceDescription(powerSourcesInfo, powerSource)?.takeUnretainedValue() as? [String: Any],
-                  let transportType = dict[kIOPSTransportTypeKey] as? String,
-                  transportType == kIOPSInternalType else {
-                continue
+    private func getBatteryInfo() -> BatteryInfo {
+        do {
+            // Get power source information
+            guard let snapshot = IOPSCopyPowerSourcesInfo()?.takeRetainedValue() else {
+                throw BatteryError.powerSourceUnavailable
             }
             
-            let currentCapacity = dict[kIOPSCurrentCapacityKey] as? Int ?? 0
-            let maxCapacity = dict[kIOPSMaxCapacityKey] as? Int ?? 0
-            let isCharging = dict[kIOPSIsChargingKey] as? Bool ?? false
-            let cycleCount = dict["CycleCount"] as? Int ?? 0
-            let health = dict["BatteryHealth"] as? String ?? "Unknown"
-            
-            let percentage = maxCapacity > 0 ? Double(currentCapacity) / Double(maxCapacity) * 100 : 0.0
-            
-            return (percentage, isCharging, currentCapacity, maxCapacity, cycleCount, health)
-        }
-        
-        return nil
-    }
-}
-
-class PowerSourceMonitor {
-    private var runLoopSource: Unmanaged<CFRunLoopSource>?
-    private var lastPowerSource: String?
-
-    init() {
-        let callback: IOPowerSourceCallbackType = { context in
-            let psInfo = IOPSCopyPowerSourcesInfo().takeRetainedValue()
-            let psList = IOPSCopyPowerSourcesList(psInfo).takeRetainedValue() as Array
-
-            var currentPowerSource: String?
-
-            for ps in psList {
-                if let description = IOPSGetPowerSourceDescription(psInfo, ps).takeUnretainedValue() as? [String: Any],
-                   let powerSource = description[kIOPSPowerSourceStateKey] as? String {
-                    currentPowerSource = powerSource
-                    break  // Only check the first valid power source
-                }
+            guard let sources = IOPSCopyPowerSourcesList(snapshot)?.takeRetainedValue() as? [CFTypeRef],
+                !sources.isEmpty else {
+                throw BatteryError.batteryInfoUnavailable("No power sources available")
             }
-
-            if let powerSource = currentPowerSource {
-                let monitor = Unmanaged<PowerSourceMonitor>.fromOpaque(context!).takeUnretainedValue()
-                if monitor.lastPowerSource != powerSource {
-                    monitor.lastPowerSource = powerSource
-                    print("Power source changed: \(powerSource)")
-                    NotificationCenter.default.post(name: .powerSourceDidChange, object: powerSource)
-                }
+            
+            let source = sources.first!
+            
+            guard let description = IOPSGetPowerSourceDescription(snapshot, source)?.takeUnretainedValue() as? [String: Any] else {
+                throw BatteryError.batteryInfoUnavailable("Could not get power source description")
             }
-        }
-
-        runLoopSource = IOPSNotificationCreateRunLoopSource(callback, Unmanaged.passUnretained(self).toOpaque())
-        if let source = runLoopSource?.takeRetainedValue() {
-            CFRunLoopAddSource(CFRunLoopGetCurrent(), source, .defaultMode)
-        }
-    }
-
-    deinit {
-        if let source = runLoopSource?.takeUnretainedValue() {
-            CFRunLoopRemoveSource(CFRunLoopGetCurrent(), source, .defaultMode)
+            
+            // Extract required battery parameters with error handling
+            guard let currentCapacity = description[kIOPSCurrentCapacityKey] as? Float else {
+                throw BatteryError.batteryParameterMissing("Current capacity")
+            }
+            
+            guard let maxCapacity = description[kIOPSMaxCapacityKey] as? Float else {
+                throw BatteryError.batteryParameterMissing("Max capacity")
+            }
+            
+            guard let isCharging = description["Is Charging"] as? Bool else {
+                throw BatteryError.batteryParameterMissing("Charging state")
+            }
+            
+            guard let powerSource = description[kIOPSPowerSourceStateKey] as? String else {
+                throw BatteryError.batteryParameterMissing("Power source state")
+            }
+            
+            // Create battery info with the extracted parameters
+            var batteryInfo = BatteryInfo(
+                isPluggedIn: powerSource == kIOPSACPowerValue,
+                isCharging: isCharging,
+                currentCapacity: currentCapacity,
+                maxCapacity: maxCapacity,
+                isInLowPowerMode: ProcessInfo.processInfo.isLowPowerModeEnabled,
+                timeToFullCharge: 0
+            )
+            
+            // Optional parameters
+            if let timeToFullCharge = description[kIOPSTimeToFullChargeKey] as? Int {
+                batteryInfo.timeToFullCharge = timeToFullCharge
+            }
+            
+            return batteryInfo
+            
+        } catch BatteryError.powerSourceUnavailable {
+            print("Error: Power source information unavailable")
+            return errorBatteryInfo
+        } catch BatteryError.batteryInfoUnavailable(let reason) {
+            print("Error: Battery information unavailable - \(reason)")
+            return errorBatteryInfo
+        } catch BatteryError.batteryParameterMissing(let parameter) {
+            print("Error: Battery parameter missing - \(parameter)")
+            return errorBatteryInfo
+        } catch {
+            print("Error: Unexpected error getting battery info - \(error.localizedDescription)")
+            return errorBatteryInfo
         }
     }
 }
 
-extension Notification.Name {
-    static let powerSourceDidChange = Notification.Name("PowerSourceDidChangeNotification")
+struct BatteryInfo {
+    var isPluggedIn: Bool
+    var isCharging: Bool
+    var currentCapacity: Float
+    var maxCapacity: Float
+    var isInLowPowerMode: Bool
+    var timeToFullCharge: Int
 }

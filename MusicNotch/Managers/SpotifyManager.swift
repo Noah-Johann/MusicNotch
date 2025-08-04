@@ -76,9 +76,7 @@ class SpotifyManager: ObservableObject {
     }
     
     @objc public func updateInfo() {
-        
-        print("update info")
-        
+                
         guard isSpotifyRunning() else { return }
         
         collectBasicInfo()
@@ -121,9 +119,7 @@ class SpotifyManager: ObservableObject {
     private func collectBasicInfo() {
         
         guard isSpotifyRunning() else { return }
-        
-        print("execute apple script")
-        
+                
         let script = """
                 tell application "Spotify"
                     set results to {}
