@@ -16,8 +16,8 @@ struct aboutView: View {
             VStack(spacing: 0) {
                 Image(nsImage: NSApp.applicationIconImage)
                     .resizable()
-                    .frame(width: 130, height: 130)
-                    .padding(.bottom, 13)
+                    .frame(width: 150, height: 150)
+                    .padding(.bottom, 7)
 
                 VStack(spacing: 0) {
                     Text(Bundle.main.appName)
@@ -33,14 +33,14 @@ struct aboutView: View {
                         .padding(.top, 5)
                 }
                 .padding(.horizontal)
-                .padding(.bottom, 30)
+                .padding(.bottom, 20)
                 
                 LuminareSection {
                     aboutButton(name: "GitHub",
                                 role: "Contribute on Github",
                                 link: URL(string: "https://github.com/Noah-Johann/MusicNotch")!,
                                 image: Image("Github")
-                    ) .frame(width: 250, height: 60)
+                    ) .frame(width: 270, height: 60)
                 } .padding(.bottom, 20)
                 VStack {
                     Button {
@@ -60,7 +60,7 @@ struct aboutView: View {
             }
             .padding(.bottom, 5)
             
-        } .frame(width: 300, height: 400)
+        } .frame(width: 320, height: 400)
             .scrollDisabled(true)
     }
 }
