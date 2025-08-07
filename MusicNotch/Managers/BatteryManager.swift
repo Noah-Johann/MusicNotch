@@ -13,23 +13,23 @@ import Defaults
 class BatteryManager {
     static let shared = BatteryManager()
     
-    @Published var isCharging: Bool = false
-    @Published var isLowPowerMode: Bool = false
     @Published var currentCapacity: Double = 0
     
     @Published var BatteryIconColor: Color = .white
     @Published var BatteryIconName: String = "battery.100percent"
     
+    private var previousBattery = BatteryManager.errorBatteryInfo
+    
     private var batterySource: CFRunLoopSource?
     
-    // Use when no battery information is available
-    private let errorBatteryInfo = BatteryInfo(
+    static let errorBatteryInfo = BatteryInfo(
         isPluggedIn: false,
         isCharging: false,
         currentCapacity: 1,
         maxCapacity: 100,
         isInLowPowerMode: false,
-        timeToFullCharge: 1
+        timeToFullCharge: 1,
+        showLowPower: false
     )
     
     enum BatteryError: Error {
@@ -39,12 +39,11 @@ class BatteryManager {
     }
     
     init() {
+        previousBattery = getBatteryInfo()
+        
         setupObservers()
         startMonitoring()
     }
-//    deinit {
-//        
-//    }
     
     private func setupObservers() {
         NotificationCenter.default.addObserver(
@@ -85,26 +84,46 @@ class BatteryManager {
         
         let info = getBatteryInfo()
         
+        
         self.currentCapacity = Double(info.currentCapacity)
         
-        if info.isPluggedIn == true && info.isInLowPowerMode == true {
+        
+        if info.isPluggedIn == true {
             self.BatteryIconName = "battery.100percent.bolt"
-            self.BatteryIconColor = .yellow
-        } else if info.isPluggedIn == true && info.isInLowPowerMode == false {
-            self.BatteryIconName = "battery.100percent.bolt"
-            self.BatteryIconColor = .green
-        } else if info.isPluggedIn == false && info.isInLowPowerMode == true {
-            self.BatteryIconName = "battery.100percent"
-            self.BatteryIconColor = .yellow
         } else {
             self.BatteryIconName = "battery.100percent"
+        }
+        
+        if info.showLowPower == true {
+            self.BatteryIconColor = .red
+        } else if info.isInLowPowerMode == true {
+            self.BatteryIconColor = .yellow
+        } else if info.isPluggedIn == true {
+            self.BatteryIconColor = .green
+        } else {
             self.BatteryIconColor = .white
         }
         
-        Task { @MainActor in
-            NotchManager.shared.showExtensionNotch(type: .battery)
-        }
         
+        if previousBattery.isInLowPowerMode != info.isInLowPowerMode {
+            Task { @MainActor in
+                NotchManager.shared.showExtensionNotch(type: .battery)
+            }
+            
+        } else if previousBattery.isPluggedIn != info.isPluggedIn {
+            Task { @MainActor in
+                NotchManager.shared.showExtensionNotch(type: .battery)
+            }
+            
+        } else if previousBattery.showLowPower != info.showLowPower {
+            guard info.isPluggedIn == false else { return }
+            guard info.showLowPower == true else { return }
+            
+            Task { @MainActor in
+                NotchManager.shared.showExtensionNotch(type: .battery)
+            }
+        }
+        previousBattery = info
     }
     
     private func getBatteryInfo() -> BatteryInfo {
@@ -142,6 +161,13 @@ class BatteryManager {
                 throw BatteryError.batteryParameterMissing("Power source state")
             }
             
+            let showLowPower: Bool
+            if currentCapacity == 10 {
+                showLowPower = true
+            } else {
+                showLowPower = false
+            }
+            
             // Create battery info with the extracted parameters
             var batteryInfo = BatteryInfo(
                 isPluggedIn: powerSource == kIOPSACPowerValue,
@@ -149,7 +175,8 @@ class BatteryManager {
                 currentCapacity: currentCapacity,
                 maxCapacity: maxCapacity,
                 isInLowPowerMode: ProcessInfo.processInfo.isLowPowerModeEnabled,
-                timeToFullCharge: 0
+                timeToFullCharge: 0,
+                showLowPower: showLowPower
             )
             
             // Optional parameters
@@ -161,16 +188,16 @@ class BatteryManager {
             
         } catch BatteryError.powerSourceUnavailable {
             print("Error: Power source information unavailable")
-            return errorBatteryInfo
+            return BatteryManager.errorBatteryInfo
         } catch BatteryError.batteryInfoUnavailable(let reason) {
             print("Error: Battery information unavailable - \(reason)")
-            return errorBatteryInfo
+            return BatteryManager.errorBatteryInfo
         } catch BatteryError.batteryParameterMissing(let parameter) {
             print("Error: Battery parameter missing - \(parameter)")
-            return errorBatteryInfo
+            return BatteryManager.errorBatteryInfo
         } catch {
             print("Error: Unexpected error getting battery info - \(error.localizedDescription)")
-            return errorBatteryInfo
+            return BatteryManager.errorBatteryInfo
         }
     }
 }
@@ -182,4 +209,5 @@ struct BatteryInfo {
     var maxCapacity: Float
     var isInLowPowerMode: Bool
     var timeToFullCharge: Int
+    var showLowPower: Bool
 }

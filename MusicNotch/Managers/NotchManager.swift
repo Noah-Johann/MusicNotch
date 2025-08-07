@@ -258,10 +258,10 @@ final class NotchManager {
                                           compactLeading: { ExtensionViewLeading(extensionType: type) },
                                           compactTrailing: { ExtensionViewTrailing(extensionType: type) }
             )
+                        
+            await self.extensionNotch!.compact(on: screen!)
             
             await self.notch.hide()
-            
-            await self.extensionNotch!.compact(on: screen!)
             
             do {
                 try await Task.sleep(nanoseconds: 3 * 1000000000)
@@ -271,13 +271,16 @@ final class NotchManager {
             
             await self.extensionNotch?.close()
             
-            await self.extensionNotch?.hide()
             
             if lastNotchState == .hidden {
                 setNotchContent(.hidden, false)
             } else {
                 setNotchContent(.closed, false)
             }
+            
+            await self.extensionNotch?.close()
+            
+            await self.extensionNotch?.hide()
             
             extensionNotch = nil
         }

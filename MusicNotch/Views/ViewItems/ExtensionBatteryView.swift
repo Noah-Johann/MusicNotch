@@ -59,6 +59,7 @@ struct ExtensionBatteryViewLeading: View {
             .scaledToFit()
             .foregroundColor(BatteryManager.shared.BatteryIconColor)
             .frame(width: 30, height: 30)
+            .opacity(0.8)
     }
 }
     
@@ -68,6 +69,7 @@ struct ExtensionBatteryViewTrailing: View {
             .foregroundColor(BatteryManager.shared.BatteryIconColor)
             .fontWeight(.bold)
             .frame(height: 30)
+            .opacity(0.8)
     }
 }
 
