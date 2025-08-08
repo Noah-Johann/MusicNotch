@@ -8,22 +8,20 @@
 import SwiftUI
     
 struct ExtensionBatteryViewLeading: View {
-    @ObservedObject var batteryManager = BatteryManager.shared
     var body: some View {
-        Image(systemName: batteryManager.batteryIconName)
+        Image(systemName: BatteryManager.shared.batteryIconName)
             .resizable()
             .scaledToFit()
-            .foregroundColor(batteryManager.batteryIconColor)
+            .foregroundColor(BatteryManager.shared.batteryIconColor)
             .frame(width: 30, height: 30)
             .opacity(0.8)
     }
 }
     
 struct ExtensionBatteryViewTrailing: View {
-    @ObservedObject var batteryManager = BatteryManager.shared
     var body: some View {
-        Text("\(Int(batteryManager.currentCapacity)) %")
-            .foregroundColor(batteryManager.batteryIconColor)
+        Text("\(Int(BatteryManager.shared.currentCapacity)) %")
+            .foregroundColor(BatteryManager.shared.batteryIconColor)
             .fontWeight(.bold)
             .frame(height: 30)
             .opacity(0.8)

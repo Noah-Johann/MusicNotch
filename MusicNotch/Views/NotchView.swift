@@ -12,11 +12,11 @@ struct notchViewLeading: View {
     
     var body: some View {
         ZStack {
-            if notchContentManager.notchContent == .musicPlayer {
+            if notchContentManager.notchContent == .music {
                 AlbumArtView(sizeState: "closed")
                     .transition(.blurReplace)
-            } else if notchContentManager.notchContent == .extensionView {
-                ExtensionViewLeading(extensionType: .battery)
+            } else if notchContentManager.notchContent == .battery{
+                ExtensionBatteryViewLeading()
                     .transition(.blurReplace)
             }
         }
@@ -28,11 +28,11 @@ struct notchViewTrailing: View {
     
     var body: some View {
         ZStack {
-            if notchContentManager.notchContent == .musicPlayer {
+            if notchContentManager.notchContent == .music {
                 AudioSpectView()
                     .transition(.blurReplace)
-            } else if notchContentManager.notchContent == .extensionView {
-                ExtensionViewTrailing(extensionType: .battery)
+            } else if notchContentManager.notchContent == .battery {
+                ExtensionBatteryViewTrailing()
                     .transition(.blurReplace)
             }
         }
@@ -46,12 +46,8 @@ struct notchViewTrailing: View {
 class notchContentState: ObservableObject {
     static let shared = notchContentState()
     
-    @Published var notchContent: NotchContentType = .musicPlayer
+    @Published var notchContent: NotchContent = .music
     
-    enum NotchContentType {
-        case musicPlayer
-        case extensionView
-    }
 }
 
 

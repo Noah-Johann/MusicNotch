@@ -47,12 +47,12 @@
         }
       }
     },
-    "Apearance" : {
+    "Appearance" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aussehen"
+            "value" : "Erscheinungsbild"
           }
         }
       }
@@ -263,12 +263,12 @@
         }
       }
     },
-    "If hidden, settings can be accesed via right click on the player" : {
+    "If hidden, settings can be accessed via right click on the player" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wenn deaktiviert, können die Einstellungen mit Rechts-Klick auf den Player geöffnet werden."
+            "value" : "Wenn deaktiviert können die Einstellungen mit Rechts-Klick auf die Notch geöffnet werden"
           }
         }
       }

@@ -12,12 +12,6 @@ import Defaults
 
 @MainActor
 final class NotchManager {
-    enum NotchState {
-        case open
-        case openWithoutHover
-        case closed
-        case hidden
-    }
     
     @Published var notchState: NotchState = .hidden
     
@@ -230,13 +224,14 @@ final class NotchManager {
         }
     }
     
-    public func showExtensionNotch(type: ExtensionType) {
+    public func showExtensionNotch(type: NotchContent) {
         Task {
-            
             switch type {
+            case .music:
+                return
             case .battery:
-                withAnimation(.snappy(duration: 0.4)) {
-                    notchContentState.shared.notchContent = .extensionView
+                withAnimation(.bouncy(duration: 0.6)) {
+                    notchContentState.shared.notchContent = .battery
                 }
             }
             
@@ -256,10 +251,22 @@ final class NotchManager {
             if prevNotchState == .hidden {
                 setNotchContent(.hidden, false)
             }
-            withAnimation(.snappy(duration: 0.4)) {
-                notchContentState.shared.notchContent = .musicPlayer
+            withAnimation(.bouncy(duration: 0.6)) {
+                notchContentState.shared.notchContent = .music
             }
         }
     }
+}
+
+enum NotchState {
+    case open
+    case openWithoutHover
+    case closed
+    case hidden
+}
+
+enum NotchContent {
+    case music
+    case battery
 }
 

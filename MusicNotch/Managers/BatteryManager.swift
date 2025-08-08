@@ -10,7 +10,7 @@ import IOKit.ps
 import SwiftUI
 import Defaults
 
-class BatteryManager: ObservableObject {
+class BatteryManager {
     static let shared = BatteryManager()
     
     @Published var currentCapacity: Double = 0
@@ -66,7 +66,7 @@ class BatteryManager: ObservableObject {
             guard let context = context else { return }
             let manager = Unmanaged<BatteryManager>.fromOpaque(context).takeUnretainedValue()
             Task {
-                await manager.updateBatteryInfo()
+                manager.updateBatteryInfo()
             }
         }, Unmanaged.passUnretained(self).toOpaque())?.takeRetainedValue() else {
             return
@@ -75,19 +75,13 @@ class BatteryManager: ObservableObject {
         CFRunLoopAddSource(CFRunLoopGetCurrent(), powerSource, .defaultMode)
     }
     
-    @objc private func lowPowerModeChanged() async {
+    @objc private func lowPowerModeChanged() {
         print("low power mode notification")
-        await updateBatteryInfo()
+        updateBatteryInfo()
     }
     
-    func updateBatteryInfo() async {
+    func updateBatteryInfo() {
         guard Defaults[.batteryExtension] == true else { return }
-        
-        do {
-            try await Task.sleep(nanoseconds: 400_000_000) // 0.4 seconds
-        } catch {
-            return
-        }
         
         let info = getBatteryInfo()
         
