@@ -10,13 +10,13 @@ import IOKit.ps
 import SwiftUI
 import Defaults
 
-class BatteryManager {
+class BatteryManager: ObservableObject {
     static let shared = BatteryManager()
     
     @Published var currentCapacity: Double = 0
     
-    @Published var BatteryIconColor: Color = .white
-    @Published var BatteryIconName: String = "battery.100percent"
+    @Published var batteryIconColor: Color = .white
+    @Published var batteryIconName: String = "battery.100percent"
     
     private var previousBattery = BatteryManager.errorBatteryInfo
     
@@ -45,6 +45,13 @@ class BatteryManager {
         startMonitoring()
     }
     
+    deinit {
+        if let source = batterySource {
+            CFRunLoopRemoveSource(CFRunLoopGetCurrent(), source, .defaultMode)
+        }
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     private func setupObservers() {
         NotificationCenter.default.addObserver(
             self,
@@ -58,7 +65,9 @@ class BatteryManager {
         guard let powerSource = IOPSNotificationCreateRunLoopSource({ context in
             guard let context = context else { return }
             let manager = Unmanaged<BatteryManager>.fromOpaque(context).takeUnretainedValue()
-            manager.updateBatteryInfo()
+            Task {
+                await manager.updateBatteryInfo()
+            }
         }, Unmanaged.passUnretained(self).toOpaque())?.takeRetainedValue() else {
             return
         }
@@ -66,20 +75,18 @@ class BatteryManager {
         CFRunLoopAddSource(CFRunLoopGetCurrent(), powerSource, .defaultMode)
     }
     
-    @objc private func lowPowerModeChanged() {
+    @objc private func lowPowerModeChanged() async {
         print("low power mode notification")
-        updateBatteryInfo()
+        await updateBatteryInfo()
     }
     
-    func updateBatteryInfo() {
+    func updateBatteryInfo() async {
         guard Defaults[.batteryExtension] == true else { return }
         
-        Task {
-            do {
-                try await Task.sleep(nanoseconds: 400_000_000) // 0.4 seconds
-            } catch {
-                return
-            }
+        do {
+            try await Task.sleep(nanoseconds: 400_000_000) // 0.4 seconds
+        } catch {
+            return
         }
         
         let info = getBatteryInfo()
@@ -89,19 +96,19 @@ class BatteryManager {
         
         
         if info.isPluggedIn == true {
-            self.BatteryIconName = "battery.100percent.bolt"
+            self.batteryIconName = "battery.100percent.bolt"
         } else {
-            self.BatteryIconName = "battery.100percent"
+            self.batteryIconName = "battery.100percent"
         }
         
         if info.showLowPower == true {
-            self.BatteryIconColor = .red
+            self.batteryIconColor = .red
         } else if info.isInLowPowerMode == true {
-            self.BatteryIconColor = .yellow
+            self.batteryIconColor = .yellow
         } else if info.isPluggedIn == true {
-            self.BatteryIconColor = .green
+            self.batteryIconColor = .green
         } else {
-            self.BatteryIconColor = .white
+            self.batteryIconColor = .white
         }
         
         

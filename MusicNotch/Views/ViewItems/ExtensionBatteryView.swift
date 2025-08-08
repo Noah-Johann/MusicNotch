@@ -6,67 +6,24 @@
 //
 
 import SwiftUI
-
-//enum BatteryColorStatus {
-//    case lowPowerMode
-//    case lowPowerCharging
-//    case charging
-//    case empty
-//    case normal
-//}
-//    
-//var BatteryStatus: BatteryColorStatus {
-//    if BatteryManager.shared.isLowPowerMode == true && BatteryManager.shared.isCharging == false {
-//        return .lowPowerMode
-//    } else if BatteryManager.shared.isCharging == true && BatteryManager.shared.isLowPowerMode == false {
-//        return .charging
-//    } else if BatteryManager.shared.isLowPowerMode == true && BatteryManager.shared.isCharging == true {
-//        return .lowPowerCharging
-//    } else if BatteryManager.shared.batteryPercentage < 10 {
-//        return .empty
-//    } else {
-//        return .normal
-//    }
-//}
-//
-//var BatteryIconName: String = "battery.100percent"
-//    
-//    
-//var BatteryIconColor: Color {
-//    switch BatteryStatus {
-//    case .lowPowerMode:
-//        BatteryIconName = "battery.100percent"
-//        return .yellow
-//    case .charging:
-//        BatteryIconName = "battery.100percent.bolt"
-//        return .green
-//    case .lowPowerCharging:
-//        BatteryIconName = "battery.100percent.bolt"
-//        return .yellow
-//    case .empty:
-//        BatteryIconName = "battery.0percent"
-//        return .red
-//    case .normal:
-//        BatteryIconName = "battery.100percent"
-//        return .white
-//    }
-//}
     
 struct ExtensionBatteryViewLeading: View {
+    @ObservedObject var batteryManager = BatteryManager.shared
     var body: some View {
-        Image(systemName: BatteryManager.shared.BatteryIconName)
+        Image(systemName: batteryManager.batteryIconName)
             .resizable()
             .scaledToFit()
-            .foregroundColor(BatteryManager.shared.BatteryIconColor)
+            .foregroundColor(batteryManager.batteryIconColor)
             .frame(width: 30, height: 30)
             .opacity(0.8)
     }
 }
     
 struct ExtensionBatteryViewTrailing: View {
+    @ObservedObject var batteryManager = BatteryManager.shared
     var body: some View {
-        Text("\(Int(BatteryManager.shared.currentCapacity)) %")
-            .foregroundColor(BatteryManager.shared.BatteryIconColor)
+        Text("\(Int(batteryManager.currentCapacity)) %")
+            .foregroundColor(batteryManager.batteryIconColor)
             .fontWeight(.bold)
             .frame(height: 30)
             .opacity(0.8)

@@ -21,7 +21,8 @@ struct SettingsExtensionView: View {
         } header: {
             Text("Extensions (BETA)")
         }
-        .padding(.bottom, 14)    }
+        .padding(.bottom, 14)
+    }
 }
 
 #Preview {

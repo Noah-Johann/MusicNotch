@@ -51,7 +51,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
             WindowManager.openSettings()
         }
         
-        //Aboutmenu handler
+        // Aboutmenu handler
         if let mainMenu = NSApp.mainMenu,
            let appMenu = mainMenu.items.first?.submenu,
            let aboutItem = appMenu.items.first(where: { $0.action == #selector(NSApplication.orderFrontStandardAboutPanel(_:)) }) {
