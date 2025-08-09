@@ -15,7 +15,7 @@
       "shouldTranslate" : false
     },
     "%lld %%" : {
-
+      "shouldTranslate" : false
     },
     "About" : {
       "localizations" : {
@@ -148,7 +148,14 @@
       }
     },
     "Display duration" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anzeigedauer"
+          }
+        }
+      }
     },
     "DynamicNotchKit" : {
       "localizations" : {
@@ -161,10 +168,24 @@
       }
     },
     "Enable Battery Extension" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktiviere Batterie-Erweiterung"
+          }
+        }
+      }
     },
     "Extensions (BETA)" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erweiterungen (BETA)"
+          }
+        }
+      }
     },
     "Finish" : {
       "localizations" : {

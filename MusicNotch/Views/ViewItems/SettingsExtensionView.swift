@@ -18,7 +18,7 @@ struct SettingsExtensionView: View {
             LuminareSlider(
                 value: $displayDuration,
                 in: 1...10,
-                format: .number.precision(.fractionLength(0...1)),
+                format: .number.precision(.fractionLength(0)),
                 suffix: Text("s")
                 
             ) {
