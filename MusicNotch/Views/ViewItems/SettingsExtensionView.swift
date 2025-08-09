@@ -11,9 +11,21 @@ import Defaults
 
 struct SettingsExtensionView: View {
     @Default(.batteryExtension) private var batteryExtension
+    @Default(.displayDuration) private var displayDuration
     
     var body: some View {
         LuminareSection {
+            LuminareSlider(
+                value: $displayDuration,
+                in: 1...10,
+                format: .number.precision(.fractionLength(0...1)),
+                suffix: Text("s")
+                
+            ) {
+                Text("Display duration")
+            }
+            .luminareSliderLayout(.regular)
+            
             LuminareToggle(isOn: $batteryExtension) {
                 Text("Enable Battery Extension")
             }

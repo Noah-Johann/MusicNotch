@@ -34,6 +34,7 @@ extension Defaults.Keys {
     static let hideNotchTime = Key<Double>("hideNotchTime", default: 3)
     
     // Extensions
+    static let displayDuration = Key <Double>("displayDuration", default: 3.0)
     static let batteryExtension = Key<Bool>("batteryExtension", default: true)
 }
 

@@ -70,11 +70,6 @@ final class NotchManager {
                 
                 if Defaults[.hapticFeedback] && Defaults[.openingDelay] != 0 {
                     self.hapticTask = Task { @MainActor in
-                        do {
-                            try await Task.sleep(nanoseconds: 400_000_000) // 0.4 seconds
-                        } catch {
-                            return
-                        }
                         
                         guard !Task.isCancelled else { return }
                         
@@ -243,7 +238,7 @@ final class NotchManager {
             
 
             do {
-                try await Task.sleep(nanoseconds: 3 * 1000000000)
+                try await Task.sleep(nanoseconds: UInt64(Defaults[.displayDuration] * 1000000000))
             } catch {
                 print("Error sleeping")
             }
