@@ -42,6 +42,7 @@ struct SettingsNotchView: View {
             LuminareSlider(
                 value: $hideNotchTime,
                 in: 0...15,
+                step: 1,
                 format: .number.precision(.fractionLength(0)),
                 suffix: Text("s")
                 

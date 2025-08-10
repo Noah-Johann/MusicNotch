@@ -17,7 +17,7 @@ final class NotchManager {
     
     static let shared = NotchManager()
     
-    let notch: DynamicNotch<Player, notchViewLeading, notchViewTrailing>
+    let notch: DynamicNotch<Player, NotchViewLeading, NotchViewTrailing>
     
     private var openingTask: Task<Void, Never>?
     private var hapticTask: Task<Void, Never>?
@@ -31,8 +31,8 @@ final class NotchManager {
            expanded: {
                Player()
            },
-           compactLeading: { notchViewLeading() },
-           compactTrailing: { notchViewTrailing() }
+           compactLeading: { NotchViewLeading() },
+           compactTrailing: { NotchViewTrailing() }
        )
         notch.onHoverChanged = { [weak self] isHovering in
             guard let self = self else { return }
@@ -226,7 +226,7 @@ final class NotchManager {
                 return
             case .battery:
                 withAnimation(.bouncy(duration: 0.6)) {
-                    notchContentState.shared.notchContent = .battery
+                    NotchContentState.shared.notchContent = .battery
                 }
             }
             
@@ -247,7 +247,7 @@ final class NotchManager {
                 setNotchContent(.hidden, false)
             }
             withAnimation(.bouncy(duration: 0.6)) {
-                notchContentState.shared.notchContent = .music
+                NotchContentState.shared.notchContent = .music
             }
         }
     }

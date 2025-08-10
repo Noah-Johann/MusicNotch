@@ -10,7 +10,7 @@ import IOKit.ps
 import SwiftUI
 import Defaults
 
-class BatteryManager {
+class BatteryManager: ObservableObject {
     static let shared = BatteryManager()
     
     @Published var currentCapacity: Double = 0
@@ -65,7 +65,7 @@ class BatteryManager {
         guard let powerSource = IOPSNotificationCreateRunLoopSource({ context in
             guard let context = context else { return }
             let manager = Unmanaged<BatteryManager>.fromOpaque(context).takeUnretainedValue()
-            Task {
+            Task { @MainActor in
                 manager.updateBatteryInfo()
             }
         }, Unmanaged.passUnretained(self).toOpaque())?.takeRetainedValue() else {
@@ -77,9 +77,12 @@ class BatteryManager {
     
     @objc private func lowPowerModeChanged() {
         print("low power mode notification")
-        updateBatteryInfo()
+        Task { @MainActor in
+            updateBatteryInfo()
+        }
     }
     
+    @MainActor
     func updateBatteryInfo() {
         guard Defaults[.batteryExtension] == true else { return }
         
@@ -146,15 +149,15 @@ class BatteryManager {
             }
             
             // Extract required battery parameters with error handling
-            guard let currentCapacity = description[kIOPSCurrentCapacityKey] as? Float else {
+            guard let currentCapacity = description[kIOPSCurrentCapacityKey] as? Int else {
                 throw BatteryError.batteryParameterMissing("Current capacity")
             }
             
-            guard let maxCapacity = description[kIOPSMaxCapacityKey] as? Float else {
+            guard let maxCapacity = description[kIOPSMaxCapacityKey] as? Int else {
                 throw BatteryError.batteryParameterMissing("Max capacity")
             }
             
-            guard let isCharging = description["Is Charging"] as? Bool else {
+            guard let isCharging = description[kIOPSIsChargingKey] as? Bool else {
                 throw BatteryError.batteryParameterMissing("Charging state")
             }
             
@@ -173,8 +176,8 @@ class BatteryManager {
             var batteryInfo = BatteryInfo(
                 isPluggedIn: powerSource == kIOPSACPowerValue,
                 isCharging: isCharging,
-                currentCapacity: currentCapacity,
-                maxCapacity: maxCapacity,
+                currentCapacity: Float(currentCapacity),
+                maxCapacity: Float(maxCapacity),
                 isInLowPowerMode: ProcessInfo.processInfo.isLowPowerModeEnabled,
                 timeToFullCharge: 0,
                 showLowPower: showLowPower

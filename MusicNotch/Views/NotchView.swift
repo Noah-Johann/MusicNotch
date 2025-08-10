@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct notchViewLeading: View {
-    @ObservedObject var notchContentManager = notchContentState.shared
+struct NotchViewLeading: View {
+    @ObservedObject var notchContentManager = NotchContentState.shared
     
     var body: some View {
         ZStack {
@@ -23,8 +23,8 @@ struct notchViewLeading: View {
     }
 }
 
-struct notchViewTrailing: View {
-    @ObservedObject var notchContentManager = notchContentState.shared
+struct NotchViewTrailing: View {
+    @ObservedObject var notchContentManager = NotchContentState.shared
     
     var body: some View {
         ZStack {
@@ -39,12 +39,9 @@ struct notchViewTrailing: View {
     }
 }
 
-//#Preview {
-//    notchViewLeading()
-//}
 
-class notchContentState: ObservableObject {
-    static let shared = notchContentState()
+class NotchContentState: ObservableObject {
+    static let shared = NotchContentState()
     
     @Published var notchContent: NotchContent = .music
     
