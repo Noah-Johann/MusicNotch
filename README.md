@@ -1,5 +1,5 @@
 <div align="center">
-  <a href="https://github.com/NoahJohann/MusicNotch/releases/latest/download/MusicNotch.dmg">
+  <a href="https://github.com/Noah-Johann/MusicNotch/releases/latest/download/MusicNotch.dmg">
     <img src="assets/MusicNotch_AppIcon.png" width="300" alt="MusicNotch AppIcon">
   </a>
 
@@ -38,7 +38,7 @@ See [Releases](https://github.com/Noah-Johann/MusicNotch/releases) for the lates
 To download the app using [Homebrew](https://brew.sh), run the following command in your terminal:
 
 ```bash
-brew install --cask NoahJohann/MusicNotch/MusicNotch --no-quarantine
+brew install --cask Noah-Johann/MusicNotch/MusicNotch --no-quarantine
 ```
 
 ### System Requirements
