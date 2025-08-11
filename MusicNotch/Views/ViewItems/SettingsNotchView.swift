@@ -37,6 +37,7 @@ struct SettingsNotchView: View {
                     Text("Opening delay")
                 }
                 .luminareSliderLayout(.regular)
+                .padding(.bottom, 3)
             }
             
             LuminareSlider(
@@ -56,6 +57,7 @@ struct SettingsNotchView: View {
                 
             }
             .luminareSliderLayout(.regular)
+            .padding(.bottom, 5)
         } header: {
             Text("Notch")
         }

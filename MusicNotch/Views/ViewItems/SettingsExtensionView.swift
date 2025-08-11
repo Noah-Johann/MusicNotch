@@ -26,6 +26,7 @@ struct SettingsExtensionView: View {
                 Text("Display duration")
             }
             .luminareSliderLayout(.regular)
+            .padding(.bottom, 3)
             
             LuminareToggle(isOn: $batteryExtension) {
                 Text("Enable Battery Extension")
