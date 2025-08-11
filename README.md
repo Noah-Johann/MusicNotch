@@ -13,16 +13,16 @@
 *   [Download](#download)
 *   [Localization](#localization)
 *   [License](#license)
-*   [Acknowledgmentes](#acknowledgementes)
+*   [Acknowledgments](#acknowledgements)
 
 ## Download
 
 > [!WARNING]
-> Since i dont have an Apple Developer Account, the app will show a popup on the first launch saying that the app couldn't be verified. To launch the app:
+> Since I dont have an Apple Developer Account, the app will show a popup on the first launch saying that the app couldn't be verified. To launch the app:
 > 
 > 1.  Click **OK** to close the popup
 > 2.  Open **Settings** -> **Privacy & Security**
-> 3.  Scroll down untill you see **MusicNotch**
+> 3.  Scroll down until you see **MusicNotch**
 > 4.  Click **Run anyway**
 > 
 > You only have to do this on the first launch of the App
@@ -35,7 +35,7 @@ See [Releases](https://github.com/Noah-Johann/MusicNotch/releases) for the lates
 
 ### Download via Homebrew
 
-To download the app using [Homebrew](brew.sh), run the following command in your terminal:
+To download the app using [Homebrew](https://brew.sh), run the following command in your terminal:
 
 ```bash
 brew install --cask NoahJohann/MusicNotch/MusicNotch --no-quarantine
@@ -55,5 +55,5 @@ MusicNotch is currently localized in the following languages:
 ## License
 MusicNotch is licensed under the GNU General Public License v3.0. See [`License.md`](/LICENSE) for more details.
 
-## Acknowledgmentes
+## Acknowledgments
 To view acknowledgments, see [`Acknowledgments.md`](/Acknowledgments.md).
