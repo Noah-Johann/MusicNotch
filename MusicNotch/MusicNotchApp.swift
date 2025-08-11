@@ -41,6 +41,9 @@ struct MusicNotchApp: App {
 class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     let aboutMenuHandler = AboutMenuHandler()
     
+    private let batteryManager = BatteryManager.shared
+
+    
     func applicationDidFinishLaunching(_ notification: Notification) {
         if Defaults[.viewedOnboarding] == false {
             WindowManager.openOnboarding()
@@ -48,6 +51,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
             WindowManager.openSettings()
         }
         
+        // Aboutmenu handler
         if let mainMenu = NSApp.mainMenu,
            let appMenu = mainMenu.items.first?.submenu {
             if let aboutItem = appMenu.items.first(where: { $0.action == #selector(NSApplication.orderFrontStandardAboutPanel(_:)) }) {

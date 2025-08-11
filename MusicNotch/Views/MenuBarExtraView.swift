@@ -55,6 +55,3 @@ struct MenuBarExtraView: View {
     }
 }
 
-//#Preview {
-//    MenuBarExtraView()
-//}

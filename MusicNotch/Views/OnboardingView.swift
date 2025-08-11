@@ -87,7 +87,9 @@ struct OnboardingView: View {
                 HStack {
                     LuminareSection {
                         if OnboardingPage == 3 {
-                            LuminareToggle("Launch at login", isOn: $launchAtLogin)
+                            LuminareToggle(isOn: $launchAtLogin) {
+                                Text("Launch at login")
+                            }
                             
                         }
                         if OnboardingPage == 1 {

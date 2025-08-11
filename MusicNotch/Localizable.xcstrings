@@ -14,6 +14,9 @@
     "-%@" : {
       "shouldTranslate" : false
     },
+    "%lld %%" : {
+      "shouldTranslate" : false
+    },
     "About" : {
       "localizations" : {
         "de" : {
@@ -44,12 +47,12 @@
         }
       }
     },
-    "Apearance" : {
+    "Appearance" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aussehen"
+            "value" : "Erscheinungsbild"
           }
         }
       }
@@ -144,12 +147,42 @@
         }
       }
     },
+    "Display duration" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anzeigedauer"
+          }
+        }
+      }
+    },
     "DynamicNotchKit" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "DynamicNotchKit"
+          }
+        }
+      }
+    },
+    "Enable Battery Extension" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktiviere Batterie-Erweiterung"
+          }
+        }
+      }
+    },
+    "Extensions (BETA)" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erweiterungen (BETA)"
           }
         }
       }
@@ -254,12 +287,12 @@
         }
       }
     },
-    "If hidden, settings can be accesed via right click on the player" : {
+    "If hidden, settings can be accessed via right click on the player" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wenn deaktiviert, können die Einstellungen mit Rechts-Klick auf den Player geöffnet werden."
+            "value" : "Wenn deaktiviert können die Einstellungen mit Rechts-Klick auf die Notch geöffnet werden"
           }
         }
       }
