@@ -7,13 +7,17 @@
   <p align="center">Make your notch do so many things</p>
 </div>
 
+> [!NOTE]
+> MusicNotch currently only works with the official Spotify client. This will be expanded in the future.
+
+<br/>
 
 ## Table of Contents
 
 *   [Download](#download)
 *   [Localization](#localization)
 *   [License](#license)
-*   [Acknowledgments](#acknowledgements)
+*   [Acknowledgments](#acknowledgments)
 
 ## Download
 
