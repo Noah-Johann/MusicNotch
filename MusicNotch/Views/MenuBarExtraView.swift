@@ -46,6 +46,13 @@ struct MenuBarExtraView: View {
                 WindowManager.openSettings()
             } .keyboardShortcut(.init(",", modifiers: [.command]))
         }
+        
+        Section {
+            Button("Check for updates") {
+                UpdaterWrapper.shared.updaterController.checkForUpdates(nil)
+            }
+        }
+        
         Section {
             Button("Quit", role: .destructive) {
                 NSApp.terminate(nil)

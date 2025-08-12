@@ -1,5 +1,5 @@
 //
-//  SettingsApearanceView.swift
+//  SettingsAppearanceView.swift
 //  MusicNotch
 //
 //  Created by Noah Johann on 03.08.25.
@@ -9,7 +9,7 @@ import SwiftUI
 import Luminare
 import Defaults
 
-struct SettingsApearanceView: View {
+struct SettingsAppearanceView: View {
     @Default(.coloredSpect) private var coloredSpect
     
     var body: some View {
@@ -19,11 +19,11 @@ struct SettingsApearanceView: View {
             }
             
         } header: {
-            Text("Apearance")
+            Text("Appearance")
         }
         .padding(.bottom, 14)    }
 }
 
 #Preview {
-    SettingsApearanceView()
+    SettingsAppearanceView()
 }

@@ -25,9 +25,9 @@ struct SettingsView: View {
                 
                 SettingsNotchView()
                 
-                SettingsApearanceView()
+                SettingsAppearanceView()
                 
-                SettingsExtensionView()
+                //SettingsExtensionView()
                 
                 SettingsShortcutsView()
 

@@ -44,12 +44,12 @@
         }
       }
     },
-    "Apearance" : {
+    "Appearance" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aussehen"
+            "value" : "Erscheinungsbild"
           }
         }
       }
@@ -60,6 +60,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "BSD 3-Clause"
+          }
+        }
+      }
+    },
+    "Check for updates" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nach Updates suchen"
           }
         }
       }
@@ -150,6 +160,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "DynamicNotchKit"
+          }
+        }
+      }
+    },
+    "Extensions (beta)" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erweiterungen (BETA)"
           }
         }
       }

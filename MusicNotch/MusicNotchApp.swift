@@ -9,6 +9,7 @@ import SwiftUI
 import KeyboardShortcuts
 import Defaults
 import Luminare
+import Sparkle
 
 
 @main

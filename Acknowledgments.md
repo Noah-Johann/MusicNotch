@@ -8,6 +8,7 @@
 * [Luminare](https://github.com/MrKai77/Luminare), licensed under BSD 3-Clause License
 * [DynamicNotchKit](https://github.com/MrKai77/DynamicNotchKit), licensed under MIT License
 * [Custom-Slider-Control](https://github.com/pratikg29/Custom-Slider-Control), licensed under MIT License
+* [Sparkle](https://github.com/sparkle-project/Sparkle?), see [License](https://github.com/sparkle-project/Sparkle/blob/master/LICENSE)
 
 ### Additional code and inspiration were taken from: 
 

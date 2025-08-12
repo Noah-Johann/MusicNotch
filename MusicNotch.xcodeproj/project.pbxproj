@@ -13,6 +13,7 @@
 		4F4DCDD92DB137F800067056 /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F4DCDD82DB137F800067056 /* DynamicNotchKit */; };
 		4F4DCDE22DB13C3100067056 /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F4DCDE12DB13C3000067056 /* DynamicNotchKit */; };
 		4F59E1452E4A9834005E4B75 /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F59E1442E4A9834005E4B75 /* DynamicNotchKit */; };
+		4F59E1482E4A9949005E4B75 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 4F59E1472E4A9949005E4B75 /* Sparkle */; };
 		4F67B5F82D849896001FF27A /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F67B5F72D849896001FF27A /* ScriptingBridge.framework */; };
 		4F8405652DB6DAE100BC97E2 /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F8405642DB6DAE100BC97E2 /* DynamicNotchKit */; };
 		4F8405682DB6DB5100BC97E2 /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F8405672DB6DB5100BC97E2 /* DynamicNotchKit */; };
@@ -68,6 +69,7 @@
 				4F8405682DB6DB5100BC97E2 /* DynamicNotchKit in Frameworks */,
 				4F33DF842D9EE522008F0182 /* Defaults in Frameworks */,
 				4F67B5F82D849896001FF27A /* ScriptingBridge.framework in Frameworks */,
+				4F59E1482E4A9949005E4B75 /* Sparkle in Frameworks */,
 				4F33DF812D9EDF9A008F0182 /* LaunchAtLogin in Frameworks */,
 				4FABD4852D9704BB00F8CFEA /* KeyboardShortcuts in Frameworks */,
 			);
@@ -134,6 +136,7 @@
 				4F2905DD2DB8E196004C1DA1 /* DynamicNotchKit */,
 				4FB90C3A2E339FE7005048EC /* Luminare */,
 				4F59E1442E4A9834005E4B75 /* DynamicNotchKit */,
+				4F59E1472E4A9949005E4B75 /* Sparkle */,
 			);
 			productName = MusicNotch;
 			productReference = 4FA87FC02D847DD700725978 /* MusicNotch.app */;
@@ -171,6 +174,7 @@
 				4F33DF822D9EE522008F0182 /* XCRemoteSwiftPackageReference "Defaults" */,
 				4FB90C392E339FE7005048EC /* XCRemoteSwiftPackageReference "Luminare" */,
 				4F59E1432E4A9834005E4B75 /* XCRemoteSwiftPackageReference "DynamicNotchKit" */,
+				4F59E1462E4A9949005E4B75 /* XCRemoteSwiftPackageReference "Sparkle" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 4FA87FC12D847DD700725978 /* Products */;
@@ -351,12 +355,18 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 29;
+				CURRENT_PROJECT_VERSION = 30;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"MusicNotch/Preview Content\"";
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PHOTO_LIBRARY = NO;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = MusicNotch;
@@ -366,11 +376,17 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = "0.1.0-rc.1";
 				PRODUCT_BUNDLE_IDENTIFIER = com.NoahJohann.MusicNotch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				RUNTIME_EXCEPTION_ALLOW_DYLD_ENVIRONMENT_VARIABLES = NO;
+				RUNTIME_EXCEPTION_ALLOW_JIT = NO;
+				RUNTIME_EXCEPTION_ALLOW_UNSIGNED_EXECUTABLE_MEMORY = NO;
+				RUNTIME_EXCEPTION_DEBUGGING_TOOL = NO;
+				RUNTIME_EXCEPTION_DISABLE_EXECUTABLE_PAGE_PROTECTION = NO;
+				RUNTIME_EXCEPTION_DISABLE_LIBRARY_VALIDATION = YES;
 				SUPPORTED_PLATFORMS = macosx;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -395,12 +411,18 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 29;
+				CURRENT_PROJECT_VERSION = 30;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"MusicNotch/Preview Content\"";
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PHOTO_LIBRARY = NO;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = MusicNotch;
@@ -410,11 +432,17 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = "0.1.0-rc.1";
 				PRODUCT_BUNDLE_IDENTIFIER = com.NoahJohann.MusicNotch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				RUNTIME_EXCEPTION_ALLOW_DYLD_ENVIRONMENT_VARIABLES = NO;
+				RUNTIME_EXCEPTION_ALLOW_JIT = NO;
+				RUNTIME_EXCEPTION_ALLOW_UNSIGNED_EXECUTABLE_MEMORY = NO;
+				RUNTIME_EXCEPTION_DEBUGGING_TOOL = NO;
+				RUNTIME_EXCEPTION_DISABLE_EXECUTABLE_PAGE_PROTECTION = NO;
+				RUNTIME_EXCEPTION_DISABLE_LIBRARY_VALIDATION = YES;
 				SUPPORTED_PLATFORMS = macosx;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -470,6 +498,14 @@
 				kind = branch;
 			};
 		};
+		4F59E1462E4A9949005E4B75 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparkle-project/Sparkle";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.7.1;
+			};
+		};
 		4FABD4832D9704BB00F8CFEA /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sindresorhus/KeyboardShortcuts";
@@ -515,6 +551,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4F59E1432E4A9834005E4B75 /* XCRemoteSwiftPackageReference "DynamicNotchKit" */;
 			productName = DynamicNotchKit;
+		};
+		4F59E1472E4A9949005E4B75 /* Sparkle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F59E1462E4A9949005E4B75 /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = Sparkle;
 		};
 		4F8405642DB6DAE100BC97E2 /* DynamicNotchKit */ = {
 			isa = XCSwiftPackageProductDependency;
