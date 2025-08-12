@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>SUFeedURL</key>
-	<string>https://github.com/Noah-Johann/MusicNotch/blob/main/appcast.xml</string>
+	<string>https://raw.githubusercontent.com/Noah-Johann/MusicNotch/main/appcast.xml</string>
 	<key>SUEnableInstallerLauncherService</key>
 	<true/>
 	<key>SUPublicEDKey</key>
