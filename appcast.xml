@@ -4,11 +4,12 @@
         <title>MusicNotch</title>
         <item>
             <title>0.1.0-rc.1</title>
-            <pubDate>Tue, 12 Aug 2025 18:44:25 +0200</pubDate>
+            <pubDate>Tue, 12 Aug 2025 20:27:04 +0200</pubDate>
             <sparkle:version>30</sparkle:version>
             <sparkle:shortVersionString>0.1.0-rc.1</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-            <enclosure url="MusicNotch.dmg" length="14257543" type="application/octet-stream"/>
+            <enclosure url="https://github.com/Noah-Johann/MusicNotch/releases/latest/download/MusicNotch.dmg" length="14257632" type="application/octet-stream"
+            sparkle:edSignature="0I5HCYyfUgFobw31UGZ48wYBb0L9ye5PEeqrAmBgb8xoDltpRCQYab4jgVeeWxiIHckRZaNTilbDbrglZUcIAw=="/>
         </item>
     </channel>
 </rss>

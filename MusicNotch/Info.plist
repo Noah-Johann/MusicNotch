@@ -3,11 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>SUFeedURL</key>
-	<string>https://github.com/Noah-Johann/MusicNotch/appcast.xml</string>
+	<string>https://github.com/Noah-Johann/MusicNotch/blob/main/appcast.xml</string>
 	<key>SUEnableInstallerLauncherService</key>
 	<true/>
 	<key>SUPublicEDKey</key>
-	<string>1DZLq5bqmD2em/nmVglrNLrFfeOnqLptGso1SobUgYI=</string>
+	<string>g/bDPhBvh6LcogxY3sYbKPmwmX+ps+p70XDySUJA7gM=</string>
 	<key>NSAppleEventsUsageDescription</key>
 	<string>Diese App benötigt Zugriff auf Spotify, um Wiedergabeinformationen anzuzeigen und Spotify zu steuern.</string>
 </dict>
