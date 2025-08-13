@@ -165,12 +165,9 @@ class BatteryManager: ObservableObject {
                 throw BatteryError.batteryParameterMissing("Power source state")
             }
             
-            let showLowPower: Bool
-            if currentCapacity == 10 {
-                showLowPower = true
-            } else {
-                showLowPower = false
-            }
+            let warningLevel = IOPSGetBatteryWarningLevel()
+                       
+            let showLowPower = (warningLevel == kIOPSLowBatteryWarningEarly || warningLevel == kIOPSLowBatteryWarningFinal)
             
             // Create battery info with the extracted parameters
             var batteryInfo = BatteryInfo(
