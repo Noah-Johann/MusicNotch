@@ -12,6 +12,7 @@
 		4F33DF842D9EE522008F0182 /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 4F33DF832D9EE522008F0182 /* Defaults */; };
 		4F4DCDD92DB137F800067056 /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F4DCDD82DB137F800067056 /* DynamicNotchKit */; };
 		4F4DCDE22DB13C3100067056 /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F4DCDE12DB13C3000067056 /* DynamicNotchKit */; };
+		4F5E88062E4CF8E2007F914F /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F5E88052E4CF8E2007F914F /* DynamicNotchKit */; };
 		4F67B5F82D849896001FF27A /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F67B5F72D849896001FF27A /* ScriptingBridge.framework */; };
 		4F8405652DB6DAE100BC97E2 /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F8405642DB6DAE100BC97E2 /* DynamicNotchKit */; };
 		4F8405682DB6DB5100BC97E2 /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F8405672DB6DB5100BC97E2 /* DynamicNotchKit */; };
@@ -41,6 +42,7 @@
 				4F8405652DB6DAE100BC97E2 /* DynamicNotchKit in Frameworks */,
 				4F4DCDD92DB137F800067056 /* DynamicNotchKit in Frameworks */,
 				4F2905DE2DB8E196004C1DA1 /* DynamicNotchKit in Frameworks */,
+				4F5E88062E4CF8E2007F914F /* DynamicNotchKit in Frameworks */,
 				4FB90C3B2E339FE7005048EC /* Luminare in Frameworks */,
 				4F4DCDE22DB13C3100067056 /* DynamicNotchKit in Frameworks */,
 				4F8405682DB6DB5100BC97E2 /* DynamicNotchKit in Frameworks */,
@@ -109,6 +111,7 @@
 				4F8405672DB6DB5100BC97E2 /* DynamicNotchKit */,
 				4F2905DD2DB8E196004C1DA1 /* DynamicNotchKit */,
 				4FB90C3A2E339FE7005048EC /* Luminare */,
+				4F5E88052E4CF8E2007F914F /* DynamicNotchKit */,
 			);
 			productName = MusicNotch;
 			productReference = 4FA87FC02D847DD700725978 /* MusicNotch.app */;
@@ -144,8 +147,8 @@
 				4FABD4832D9704BB00F8CFEA /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
 				4F33DF7F2D9EDF9A008F0182 /* XCRemoteSwiftPackageReference "LaunchAtLogin-Modern" */,
 				4F33DF822D9EE522008F0182 /* XCRemoteSwiftPackageReference "Defaults" */,
-				4F2905DC2DB8E196004C1DA1 /* XCLocalSwiftPackageReference "../DynamicNotchKit" */,
 				4FB90C392E339FE7005048EC /* XCRemoteSwiftPackageReference "Luminare" */,
+				4F5E88042E4CF8E2007F914F /* XCRemoteSwiftPackageReference "DynamicNotchKit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 4FA87FC12D847DD700725978 /* Products */;
@@ -320,7 +323,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 28;
+				CURRENT_PROJECT_VERSION = 31;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"MusicNotch/Preview Content\"";
 				ENABLE_APP_SANDBOX = NO;
@@ -362,7 +365,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 28;
+				CURRENT_PROJECT_VERSION = 31;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"MusicNotch/Preview Content\"";
 				ENABLE_APP_SANDBOX = NO;
@@ -412,13 +415,6 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		4F2905DC2DB8E196004C1DA1 /* XCLocalSwiftPackageReference "../DynamicNotchKit" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../DynamicNotchKit;
-		};
-/* End XCLocalSwiftPackageReference section */
-
 /* Begin XCRemoteSwiftPackageReference section */
 		4F33DF7F2D9EDF9A008F0182 /* XCRemoteSwiftPackageReference "LaunchAtLogin-Modern" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -431,6 +427,14 @@
 		4F33DF822D9EE522008F0182 /* XCRemoteSwiftPackageReference "Defaults" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sindresorhus/Defaults";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+		4F5E88042E4CF8E2007F914F /* XCRemoteSwiftPackageReference "DynamicNotchKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Noah-Johann/DynamicNotchKit/";
 			requirement = {
 				branch = main;
 				kind = branch;
@@ -475,6 +479,11 @@
 		};
 		4F4DCDE12DB13C3000067056 /* DynamicNotchKit */ = {
 			isa = XCSwiftPackageProductDependency;
+			productName = DynamicNotchKit;
+		};
+		4F5E88052E4CF8E2007F914F /* DynamicNotchKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F5E88042E4CF8E2007F914F /* XCRemoteSwiftPackageReference "DynamicNotchKit" */;
 			productName = DynamicNotchKit;
 		};
 		4F8405642DB6DAE100BC97E2 /* DynamicNotchKit */ = {

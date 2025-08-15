@@ -28,9 +28,7 @@ final class NotchManager {
         notch = DynamicNotch(
            hoverBehavior: .increaseShadow,
            style: .notch,
-           expanded: {
-               Player()
-           },
+           expanded: { Player() },
            compactLeading: { NotchViewLeading() },
            compactTrailing: { NotchViewTrailing() }
        )
@@ -66,7 +64,7 @@ final class NotchManager {
                     return
                 }
                 
-                self.setNotchContent(.open, false)
+                await self.setNotchContent(.open, false)
                 
                 if Defaults[.hapticFeedback] && Defaults[.openingDelay] != 0 {
                     self.hapticTask = Task { @MainActor in
@@ -84,7 +82,9 @@ final class NotchManager {
             self.expandTask?.cancel()
             
             if notchState == .open || self.expandTask != nil {
-                self.setNotchContent(.closed, false)
+                Task {
+                    await self.setNotchContent(.closed, false)
+                }
             }
         }
         
@@ -101,18 +101,18 @@ final class NotchManager {
         
         Task {
             if notchState == .closed {
-                setNotchContent(.openWithoutHover, false)
+                await setNotchContent(.openWithoutHover, false)
                 
             } else if notchState == .open {
-                setNotchContent(.closed, false)
+                await setNotchContent(.closed, false)
                 
             } else if notchState == .hidden {
-                setNotchContent(.openWithoutHover, false)
+                await setNotchContent(.openWithoutHover, false)
             }
         }
     }
     
-    public func setNotchContent(_ content: NotchState, _ changeDisplay: Bool) {
+    public func setNotchContent(_ content: NotchState, _ changeDisplay: Bool) async {
         Task {
             SpotifyManager.shared.updateInfo()
             
@@ -131,7 +131,7 @@ final class NotchManager {
                     // Check one more time if we should still expand
                     guard self.isCurrentlyHovering && !Task.isCancelled else {
                         // User stopped hovering, go to compact instead
-                        self.setNotchContent(.closed, false)
+                        await self.setNotchContent(.closed, false)
                         self.expandTask = nil
                         return
                     }
@@ -233,7 +233,7 @@ final class NotchManager {
             let prevNotchState = notchState
             
             if prevNotchState == .hidden || prevNotchState == .open {
-                setNotchContent(.closed, false)
+                await setNotchContent(.closed, false)
             }
             
 
@@ -244,10 +244,17 @@ final class NotchManager {
             }
             
             if prevNotchState == .hidden {
-                setNotchContent(.hidden, false)
-            }
-            withAnimation(.bouncy(duration: 0.6)) {
+                print ("Set back hidden")
+                await setNotchContent(.hidden, false)
+                
+                // wait for notch animation to close
+                try? await Task.sleep(for: .seconds(0.5))
+
                 NotchContentState.shared.notchContent = .music
+            } else {
+                withAnimation(.bouncy(duration: 0.6)) {
+                    NotchContentState.shared.notchContent = .music
+                }
             }
         }
     }

@@ -1,5 +1,5 @@
 {
-  "originHash" : "91f5a9dd039be9e1fd3cd1ec7ee72ccdc08d0abf200334f9d4ca4c510acfdca2",
+  "originHash" : "892fc17b9255f9bab4d19584dcc00325b9a3f7054f1dc330f4c499f99a41050c",
   "pins" : [
     {
       "identity" : "defaults",
@@ -8,6 +8,15 @@
       "state" : {
         "branch" : "main",
         "revision" : "00c82eff4550c87cf9c547d7e5493a6a97837061"
+      }
+    },
+    {
+      "identity" : "dynamicnotchkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Noah-Johann/DynamicNotchKit/",
+      "state" : {
+        "branch" : "main",
+        "revision" : "a7eb228b2e56b4a16dc3c15c66158af32040065c"
       }
     },
     {
