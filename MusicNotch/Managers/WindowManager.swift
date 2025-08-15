@@ -23,7 +23,6 @@ class WindowManager {
             }
             
             settingsWindow?.center()
-            settingsWindow?.level = .floating
             settingsWindow?.styleMask.remove(.resizable)
         }
         

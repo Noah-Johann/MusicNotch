@@ -45,6 +45,7 @@ struct Player: View {
                 
                 
             } .frame(width: 300)
+                .padding(.bottom, 8)
         
             //Progress Bar
             HStack {
@@ -73,6 +74,7 @@ struct Player: View {
                     .fontWeight(.semibold)
                     .font(.system(size: 12))
             }.frame(height: 15)
+                .padding(.bottom, 6)
             
             ButtonView()
             

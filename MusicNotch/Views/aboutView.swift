@@ -58,10 +58,10 @@ struct aboutView: View {
                         .font(.body)
                 }
             }
-            .padding(.bottom, 5)
-            
-        } .frame(width: 320, height: 400)
-            .scrollDisabled(true)
+        }
+        .frame(width: 320, height: 400)
+        .padding(.bottom, 20)
+        .scrollDisabled(true)
     }
 }
 
