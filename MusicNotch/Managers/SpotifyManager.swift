@@ -14,7 +14,7 @@ import SwiftUI
 class SpotifyManager: ObservableObject {
     static let shared = SpotifyManager()    
         
-    @Published var spotifyRunning: Bool = false
+    //@Published var spotifyRunning: Bool = false
     @Published var isPlaying: Bool = false
     @Published var trackName: String = ""
     @Published var artistName: String = ""
@@ -97,6 +97,9 @@ class SpotifyManager: ObservableObject {
     }
     
     public func updateInfo() {
+        // checkIfSpotifyIsRunning checks if a process called spotify exist. This is usefull if the function is called outside of the NotificationObserver
+        // isSpotifyRunning gets set by the content of the notification and only gets changed when the function gets called from the NotificationObserver
+        
         guard checkIfSpotifyIsRunning() && isSpotifyRunning else { return }
         
         collectBasicInfo()
@@ -142,7 +145,6 @@ class SpotifyManager: ObservableObject {
         let script = """
                 tell application "Spotify"
                     set results to {}
-                    set end of results to true -- spotifyRunning
                     
                     try
                         set isPlaying to player state as string
@@ -232,30 +234,24 @@ class SpotifyManager: ObservableObject {
                 finalResult.removeLast()
             }
             
-            if finalResult.count >= 11 {
-                self.spotifyRunning = finalResult[0] == "true"
-                self.isPlaying = finalResult[1] == "playing"
-                self.trackName = finalResult[2]
-                self.artistName = finalResult[3]
-                self.albumName = finalResult[4]
-                self.trackDuration = Int(Double(finalResult[5]) ?? 0)
-                self.trackPosition = Int(Double(finalResult[6]) ?? 0)
-                self.isLoved = finalResult[7] == "true"
-                self.trackId = finalResult[8]
-                self.shuffle = finalResult[9] == "true"
-                self.albumArtURL = finalResult[10]
+            if finalResult.count >= 10 {
+                self.isPlaying = finalResult[0] == "playing"
+                self.trackName = finalResult[1]
+                self.artistName = finalResult[2]
+                self.albumName = finalResult[3]
+                self.trackDuration = Int(Double(finalResult[4]) ?? 0)
+                self.trackPosition = Int(Double(finalResult[5]) ?? 0)
+                self.isLoved = finalResult[6] == "true"
+                self.trackId = finalResult[7]
+                self.shuffle = finalResult[8] == "true"
+                self.albumArtURL = finalResult[9]
                 
                 
             } else {
-                self.spotifyRunning = false
                 print("Error on getting information or spotify not running")
             }
         } else {
             print("Fehler: Didn't get any result")
-        }
-        
-        if !spotifyRunning {
-            print("Spotify is not running.")
         }
     }
     
