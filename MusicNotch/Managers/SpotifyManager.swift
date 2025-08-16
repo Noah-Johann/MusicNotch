@@ -42,6 +42,7 @@ class SpotifyManager: ObservableObject {
         setupSpotifyObservers()
         
         if checkIfSpotifyIsRunning() {
+            isSpotifyRunning = true
             updateInfo()
         }
     }
@@ -198,14 +199,7 @@ class SpotifyManager: ObservableObject {
                     on error
                         set end of results to ""
                     end try
-                    
-                    try
-                        set soundVolume to sound volume
-                        set end of results to soundVolume
-                    on error
-                        set end of results to 0
-                    end try
-                    
+
                     try
                         set shuffle to shuffling
                         set end of results to shuffle
@@ -238,7 +232,7 @@ class SpotifyManager: ObservableObject {
                 finalResult.removeLast()
             }
             
-            if finalResult.count >= 12 {
+            if finalResult.count >= 11 {
                 self.spotifyRunning = finalResult[0] == "true"
                 self.isPlaying = finalResult[1] == "playing"
                 self.trackName = finalResult[2]
@@ -248,9 +242,8 @@ class SpotifyManager: ObservableObject {
                 self.trackPosition = Int(Double(finalResult[6]) ?? 0)
                 self.isLoved = finalResult[7] == "true"
                 self.trackId = finalResult[8]
-                self.trackURL = finalResult[9]
-                self.shuffle = finalResult[10] == "true"
-                self.albumArtURL = finalResult[11]
+                self.shuffle = finalResult[9] == "true"
+                self.albumArtURL = finalResult[10]
                 
                 
             } else {
