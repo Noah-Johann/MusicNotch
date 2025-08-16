@@ -19,7 +19,7 @@ struct AlbumArtView: View {
     var body: some View {
         HStack {
             if let albumArt = spotifyManager.albumArtImage {
-                Image(nsImage: albumArt)
+                Image(nsImage: spotifyManager.isSpotifyRunning ? albumArt : NSApp.applicationIconImage)
                     .resizable()
                     .scaledToFit()
                     .frame(width: sizeState == "open" ? albumArtSizeOpen : albumArtSizeClosed,

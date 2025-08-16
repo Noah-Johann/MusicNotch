@@ -31,6 +31,8 @@ class SpotifyManager: ObservableObject {
     
     @Published var timer: Int = 0
     
+    @Published var isSpotifyRunning: Bool = false
+    
     private var oldTrackName: String = ""
     private var hideTimer: Timer?
     private var stopTime = 0
@@ -39,16 +41,12 @@ class SpotifyManager: ObservableObject {
     private init() {
         setupSpotifyObservers()
         
-        if isSpotifyRunning() {
+        if checkIfSpotifyIsRunning() {
             updateInfo()
         }
     }
     
     deinit {
-        cleanup()
-    }
-    
-    public func cleanup() {
         DistributedNotificationCenter.default().removeObserver(self)
         
         if hideTimer != nil {
@@ -56,30 +54,49 @@ class SpotifyManager: ObservableObject {
             hideTimer = nil
         }
     }
-    
+
     private func setupSpotifyObservers() {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             
             DistributedNotificationCenter.default().addObserver(
                 self,
-                selector: #selector(updateInfo),
+                selector: #selector(notificationUpdate),
                 name: NSNotification.Name("com.spotify.client.PlaybackStateChanged"),
-                object: nil
+                object: nil,
+                suspensionBehavior: .deliverImmediately
+
             )
         }
     }
     
-    private func isSpotifyRunning() -> Bool {
+    private func checkIfSpotifyIsRunning() -> Bool {
         let runningApps = NSWorkspace.shared.runningApplications
         return runningApps.contains { $0.bundleIdentifier == "com.spotify.client" }
     }
     
-    @objc public func updateInfo() {
+    @objc private func notificationUpdate (_ sender: NSNotification?) {
+        let musicAppKilled = sender?.userInfo?["Player State"] as? String == "Stopped"
         
-        print("update info")
+        if musicAppKilled {
+            isSpotifyRunning = false
+            
+            Task { @MainActor in
+                NotchManager.shared.setNotchContent(.hidden, false)
+            }
+            
+            self.isPlaying = false
+            
+            return
+        }
         
-        guard isSpotifyRunning() else { return }
+        isSpotifyRunning = true
+        
+        updateInfo()
+    }
+    
+    public func updateInfo() {
+        guard checkIfSpotifyIsRunning() && isSpotifyRunning else { return }
         
         collectBasicInfo()
         
@@ -119,11 +136,8 @@ class SpotifyManager: ObservableObject {
     }
     
     private func collectBasicInfo() {
-        
-        guard isSpotifyRunning() else { return }
-        
-        print("execute apple script")
-        
+        guard checkIfSpotifyIsRunning() else { return }
+                
         let script = """
                 tell application "Spotify"
                     set results to {}
