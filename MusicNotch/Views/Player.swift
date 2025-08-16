@@ -23,11 +23,11 @@ struct Player: View {
                 AlbumArtView(sizeState: "open")
                 
                 VStack {
-                    Text(spotifyManager.trackName)
+                    Text(spotifyManager.isSpotifyRunning ? spotifyManager.trackName : "Nothing playing")
                         .font(.system(size: 17, weight: .medium))
                         .foregroundStyle(.white)
                         .frame(width: 240, alignment: .leading)
-                    Text(spotifyManager.artistName)
+                    Text(spotifyManager.isSpotifyRunning ? spotifyManager.artistName : "Start a song on Spotify")
                         .font(.system(size: 14, weight: .regular))
                         .foregroundStyle(.gray)
                         .frame(width: 240, alignment: .leading)
