@@ -88,18 +88,19 @@ class BatteryManager: ObservableObject {
         
         let info = getBatteryInfo()
         
-        
         self.currentCapacity = Double(info.currentCapacity)
-        
         
         if info.isPluggedIn == true {
             self.batteryIconName = "battery.100percent.bolt"
+        } else if info.showLowPower == true {
+            self.batteryIconName = "battery.0percent"
         } else {
             self.batteryIconName = "battery.100percent"
         }
         
-        if info.showLowPower == true {
+        if info.showLowPower == true || Int(info.currentCapacity) <= 10 {
             self.batteryIconColor = .red
+            self.batteryIconName = "battery.0percent"
         } else if info.isInLowPowerMode == true {
             self.batteryIconColor = .yellow
         } else if info.isPluggedIn == true {
@@ -120,7 +121,6 @@ class BatteryManager: ObservableObject {
             }
             
         } else if previousBattery.showLowPower != info.showLowPower {
-            guard info.isPluggedIn == false else { return }
             guard info.showLowPower == true else { return }
             
             Task { @MainActor in

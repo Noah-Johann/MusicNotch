@@ -244,7 +244,6 @@ final class NotchManager {
             }
             
             if prevNotchState == .hidden {
-                print ("Set back hidden")
                 await setNotchContent(.hidden, false)
                 
                 // wait for notch animation to close
