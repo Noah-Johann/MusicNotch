@@ -27,9 +27,22 @@
 		4FA87FC02D847DD700725978 /* MusicNotch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MusicNotch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		4F2B06572E53772900F7AEEE /* Exceptions for "MusicNotch" folder in "MusicNotch" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 4FA87FBF2D847DD700725978 /* MusicNotch */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		4FA87FC22D847DD700725978 /* MusicNotch */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				4F2B06572E53772900F7AEEE /* Exceptions for "MusicNotch" folder in "MusicNotch" target */,
+			);
 			path = MusicNotch;
 			sourceTree = "<group>";
 		};
@@ -350,7 +363,6 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = "0.1.0-rc.1";
 				PRODUCT_BUNDLE_IDENTIFIER = com.NoahJohann.MusicNotch;
@@ -465,7 +477,6 @@
 				kind = branch;
 			};
 		};
-
 		4F59E1432E4A9834005E4B75 /* XCRemoteSwiftPackageReference "DynamicNotchKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Noah-Johann/DynamicNotchKit/";

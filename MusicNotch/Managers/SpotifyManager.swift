@@ -83,7 +83,7 @@ class SpotifyManager: ObservableObject {
             isSpotifyRunning = false
             
             Task { @MainActor in
-                NotchManager.shared.setNotchContent(.hidden, false)
+                await NotchManager.shared.setNotchContent(.hidden, false)
             }
             
             self.isPlaying = false
