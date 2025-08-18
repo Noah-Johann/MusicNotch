@@ -23,7 +23,6 @@ class WindowManager {
             }
             
             settingsWindow?.center()
-            settingsWindow?.level = .floating
             settingsWindow?.styleMask.remove(.resizable)
         }
         
@@ -44,7 +43,7 @@ class WindowManager {
         if aboutWindow == nil {
             aboutWindow = LuminareWindow{
                 aboutView()
-                    .frame(width: 300, height: 380)
+                    .frame(width: 320, height: 405)
             }
             
             aboutWindow?.center()

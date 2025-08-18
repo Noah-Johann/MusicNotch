@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>SUFeedURL</key>
+	<string>https://raw.githubusercontent.com/Noah-Johann/MusicNotch/main/appcast.xml</string>
+	<key>SUEnableInstallerLauncherService</key>
+	<true/>
+	<key>SUPublicEDKey</key>
+	<string>g/bDPhBvh6LcogxY3sYbKPmwmX+ps+p70XDySUJA7gM=</string>
+	<key>NSAppleEventsUsageDescription</key>
+	<string>Diese App benötigt Zugriff auf Spotify, um Wiedergabeinformationen anzuzeigen und Spotify zu steuern.</string>
+</dict>
+</plist>

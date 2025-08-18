@@ -9,6 +9,7 @@ import SwiftUI
 import KeyboardShortcuts
 import Defaults
 import Luminare
+import Sparkle
 
 
 @main
@@ -53,10 +54,17 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         
         // Aboutmenu handler
         if let mainMenu = NSApp.mainMenu,
-           let appMenu = mainMenu.items.first?.submenu,
-           let aboutItem = appMenu.items.first(where: { $0.action == #selector(NSApplication.orderFrontStandardAboutPanel(_:)) }) {
-            aboutItem.target = aboutMenuHandler
-            aboutItem.action = #selector(AboutMenuHandler.showAboutMenu)
+           let appMenu = mainMenu.items.first?.submenu {
+            if let aboutItem = appMenu.items.first(where: { $0.action == #selector(NSApplication.orderFrontStandardAboutPanel(_:)) }) {
+                appMenu.removeItem(aboutItem)
+            }
+            // Add your custom About menu item
+            let customAboutItem = NSMenuItem(
+                title: "About MusicNotch",
+                action: #selector(AboutMenuHandler.showAboutMenu),
+                keyEquivalent: "")
+            customAboutItem.target = aboutMenuHandler
+            appMenu.insertItem(customAboutItem, at: 0)
         }
                 
         CGDisplayRegisterReconfigurationCallback(displayCallback, UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque()))

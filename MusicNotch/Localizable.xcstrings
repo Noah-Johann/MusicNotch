@@ -67,6 +67,16 @@
         }
       }
     },
+    "Check for updates" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nach Updates suchen"
+          }
+        }
+      }
+    },
     "Colored spectogram" : {
       "localizations" : {
         "de" : {

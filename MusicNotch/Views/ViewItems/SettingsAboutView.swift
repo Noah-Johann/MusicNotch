@@ -9,10 +9,18 @@ import SwiftUI
 import Luminare
 
 struct SettingsAboutView: View {
+
     var body: some View {
         LuminareSection {
             aboutAppButton()
                 .frame(height: 75)
+            
+            Button {
+                UpdaterWrapper.shared.updaterController.checkForUpdates(nil)
+            } label: {
+                Text("Check for updates")
+            } .buttonStyle(LuminareButtonStyle())
+            
         } header: {
             Text("About")
         }.padding(.bottom, 7)

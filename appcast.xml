@@ -1,0 +1,15 @@
+<?xml version="1.0" standalone="yes"?>
+<rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
+    <channel>
+        <title>MusicNotch</title>
+        <item>
+            <title>0.1.0-rc.1</title>
+            <pubDate>Tue, 12 Aug 2025 20:27:04 +0200</pubDate>
+            <sparkle:version>30</sparkle:version>
+            <sparkle:shortVersionString>0.1.0-rc.1</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+            <enclosure url="https://github.com/Noah-Johann/MusicNotch/releases/latest/download/MusicNotch.dmg" length="14257802" type="application/octet-stream"
+            sparkle:edSignature="yaS19Ol+pAyjTnOujB6iiCFjFvv8Z32Kafwi2F2LAhNBhfQD5YErP7LtTiTU1/c8VbkYZ/q0JCRJhOZGKgaiAg=="/>
+        </item>
+    </channel>
+</rss>
