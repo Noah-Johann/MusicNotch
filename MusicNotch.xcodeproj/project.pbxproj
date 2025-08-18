@@ -28,12 +28,10 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		4F9CABBF2DD8C511008EAB2C /* Exceptions for "Config" folder in "MusicNotch" target */ = {
+		4F2B06572E53772900F7AEEE /* Exceptions for "MusicNotch" folder in "MusicNotch" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Beta.xcconfig,
-				Pre.xcconfig,
-				Release.xcconfig,
+				Info.plist,
 			);
 			target = 4FA87FBF2D847DD700725978 /* MusicNotch */;
 		};
@@ -42,15 +40,10 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		4FA87FC22D847DD700725978 /* MusicNotch */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = MusicNotch;
-			sourceTree = "<group>";
-		};
-		4FC65B3C2DA6E9C700C074CB /* Config */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				4F9CABBF2DD8C511008EAB2C /* Exceptions for "Config" folder in "MusicNotch" target */,
+				4F2B06572E53772900F7AEEE /* Exceptions for "MusicNotch" folder in "MusicNotch" target */,
 			);
-			path = Config;
+			path = MusicNotch;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -90,7 +83,6 @@
 		4FA87FB72D847DD700725978 = {
 			isa = PBXGroup;
 			children = (
-				4FC65B3C2DA6E9C700C074CB /* Config */,
 				4FA87FC22D847DD700725978 /* MusicNotch */,
 				4F67B5F62D849896001FF27A /* Frameworks */,
 				4FA87FC12D847DD700725978 /* Products */,
@@ -122,7 +114,6 @@
 			);
 			fileSystemSynchronizedGroups = (
 				4FA87FC22D847DD700725978 /* MusicNotch */,
-				4FC65B3C2DA6E9C700C074CB /* Config */,
 			);
 			name = MusicNotch;
 			packageProductDependencies = (
@@ -209,8 +200,6 @@
 /* Begin XCBuildConfiguration section */
 		4FA87FE32D847DD800725978 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReferenceAnchor = 4FC65B3C2DA6E9C700C074CB /* Config */;
-			baseConfigurationReferenceRelativePath = Release.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -279,8 +268,6 @@
 		};
 		4FA87FE42D847DD800725978 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReferenceAnchor = 4FC65B3C2DA6E9C700C074CB /* Config */;
-			baseConfigurationReferenceRelativePath = Release.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -341,8 +328,6 @@
 		};
 		4FA87FE62D847DD800725978 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReferenceAnchor = 4FC65B3C2DA6E9C700C074CB /* Config */;
-			baseConfigurationReferenceRelativePath = Release.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = MusicNotch;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -399,8 +384,6 @@
 		};
 		4FA87FE72D847DD800725978 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReferenceAnchor = 4FC65B3C2DA6E9C700C074CB /* Config */;
-			baseConfigurationReferenceRelativePath = Release.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = MusicNotch;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
