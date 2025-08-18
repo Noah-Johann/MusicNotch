@@ -46,7 +46,7 @@ brew install --cask Noah-Johann/MusicNotch/MusicNotch --no-quarantine
 ```
 
 ### System Requirements
-- **macOS 15 or later**
+- **macOS 14 Sonoma or later**
 - MusicNotch works on Macs with and without a notch
 
 
