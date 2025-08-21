@@ -8,8 +8,8 @@
             <sparkle:version>30</sparkle:version>
             <sparkle:shortVersionString>0.1.0-rc.1</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-            <enclosure url="https://github.com/Noah-Johann/MusicNotch/releases/latest/download/MusicNotch.dmg" length="14257802" type="application/octet-stream"
-            sparkle:edSignature="yaS19Ol+pAyjTnOujB6iiCFjFvv8Z32Kafwi2F2LAhNBhfQD5YErP7LtTiTU1/c8VbkYZ/q0JCRJhOZGKgaiAg=="/>
+            <enclosure url="https://github.com/Noah-Johann/MusicNotch/releases/latest/download/MusicNotch.dmg" length="14267410" type="application/octet-stream"
+            sparkle:edSignature="Q0k5GrZD+F75LrwhuJ4HtjcHAU7WY1NeUGQPEc/YOdjRe6jy4KB3Z8OPVJnAcopBLAIGEnFwfRhs8UuX1fzzCw=="/>
         </item>
     </channel>
 </rss>
