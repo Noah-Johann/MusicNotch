@@ -8,15 +8,9 @@
 import Foundation
 
 func spotifyPlayPause() {
-    let task = Process()
-    task.launchPath = "/usr/bin/osascript"
-    task.arguments = ["-e", "tell application \"Spotify\" to playpause"]
-    
-    do {
-        try task.run()
-    } catch {
-        print("Error while running: \(error)")
+    Task {
+        try await AppleScriptHelper.run("tell application \"Spotify\" to playpause")
     }
-    
 }
+
 

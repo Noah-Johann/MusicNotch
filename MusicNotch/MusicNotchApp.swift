@@ -28,20 +28,14 @@ struct MusicNotchApp: App {
             NotchManager.shared.changeNotch()
         }
         
-        KeyboardShortcuts.onKeyDown(for: .nextTrack) {
-            spotifyNextTrack()
-        }
-        
-        KeyboardShortcuts.onKeyDown(for: .previousTrack) {
-            spotifyLastTrack()
-        }
-        
-        KeyboardShortcuts.onKeyDown(for: .toggleShuffle) {
-            spotifyShuffle()
-        }
-        
-        KeyboardShortcuts.onKeyDown(for: .playPause) {
-            spotifyPlayPause()
+        let handlers: [(KeyboardShortcuts.Name, () -> Void)] = [
+            (.nextTrack, spotifyNextTrack),
+            (.previousTrack, spotifyLastTrack),
+            (.toggleShuffle, spotifyShuffle),
+            (.playPause, spotifyPlayPause),
+        ]
+        handlers.forEach { name, action in
+            KeyboardShortcuts.onKeyDown(for: name, action: action)
         }
     }
     
