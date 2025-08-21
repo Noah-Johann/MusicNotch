@@ -14,7 +14,7 @@ import SwiftUI
 class SpotifyManager: ObservableObject {
     static let shared = SpotifyManager()    
         
-    @Published var spotifyRunning: Bool = false
+    //@Published var spotifyRunning: Bool = false
     @Published var isPlaying: Bool = false
     @Published var trackName: String = ""
     @Published var artistName: String = ""
@@ -31,6 +31,8 @@ class SpotifyManager: ObservableObject {
     
     @Published var timer: Int = 0
     
+    @Published var isSpotifyRunning: Bool = false
+    
     private var oldTrackName: String = ""
     private var hideTimer: Timer?
     private var stopTime = 0
@@ -39,16 +41,13 @@ class SpotifyManager: ObservableObject {
     private init() {
         setupSpotifyObservers()
         
-        if isSpotifyRunning() {
+        if checkIfSpotifyIsRunning() {
+            isSpotifyRunning = true
             updateInfo()
         }
     }
     
     deinit {
-        cleanup()
-    }
-    
-    public func cleanup() {
         DistributedNotificationCenter.default().removeObserver(self)
         
         if hideTimer != nil {
@@ -56,30 +55,52 @@ class SpotifyManager: ObservableObject {
             hideTimer = nil
         }
     }
-    
+
     private func setupSpotifyObservers() {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             
             DistributedNotificationCenter.default().addObserver(
                 self,
-                selector: #selector(updateInfo),
+                selector: #selector(notificationUpdate),
                 name: NSNotification.Name("com.spotify.client.PlaybackStateChanged"),
-                object: nil
+                object: nil,
+                suspensionBehavior: .deliverImmediately
+
             )
         }
     }
     
-    private func isSpotifyRunning() -> Bool {
+    private func checkIfSpotifyIsRunning() -> Bool {
         let runningApps = NSWorkspace.shared.runningApplications
         return runningApps.contains { $0.bundleIdentifier == "com.spotify.client" }
     }
     
-    @objc public func updateInfo() {
+    @objc private func notificationUpdate (_ sender: NSNotification?) {
+        let musicAppKilled = sender?.userInfo?["Player State"] as? String == "Stopped"
         
-        print("update info")
+        if musicAppKilled {
+            isSpotifyRunning = false
+            
+            Task { @MainActor in
+                NotchManager.shared.setNotchContent(.hidden, false)
+            }
+            
+            self.isPlaying = false
+            
+            return
+        }
         
-        guard isSpotifyRunning() else { return }
+        isSpotifyRunning = true
+        
+        updateInfo()
+    }
+    
+    public func updateInfo() {
+        // checkIfSpotifyIsRunning checks if a process called spotify exist. This is usefull if the function is called outside of the NotificationObserver
+        // isSpotifyRunning gets set by the content of the notification and only gets changed when the function gets called from the NotificationObserver
+        
+        guard checkIfSpotifyIsRunning() && isSpotifyRunning else { return }
         
         collectBasicInfo()
         
@@ -119,15 +140,11 @@ class SpotifyManager: ObservableObject {
     }
     
     private func collectBasicInfo() {
-        
-        guard isSpotifyRunning() else { return }
-        
-        print("execute apple script")
-        
+        guard checkIfSpotifyIsRunning() else { return }
+                
         let script = """
                 tell application "Spotify"
                     set results to {}
-                    set end of results to true -- spotifyRunning
                     
                     try
                         set isPlaying to player state as string
@@ -184,14 +201,7 @@ class SpotifyManager: ObservableObject {
                     on error
                         set end of results to ""
                     end try
-                    
-                    try
-                        set soundVolume to sound volume
-                        set end of results to soundVolume
-                    on error
-                        set end of results to 0
-                    end try
-                    
+
                     try
                         set shuffle to shuffling
                         set end of results to shuffle
@@ -224,31 +234,24 @@ class SpotifyManager: ObservableObject {
                 finalResult.removeLast()
             }
             
-            if finalResult.count >= 12 {
-                self.spotifyRunning = finalResult[0] == "true"
-                self.isPlaying = finalResult[1] == "playing"
-                self.trackName = finalResult[2]
-                self.artistName = finalResult[3]
-                self.albumName = finalResult[4]
-                self.trackDuration = Int(Double(finalResult[5]) ?? 0)
-                self.trackPosition = Int(Double(finalResult[6]) ?? 0)
-                self.isLoved = finalResult[7] == "true"
-                self.trackId = finalResult[8]
-                self.trackURL = finalResult[9]
-                self.shuffle = finalResult[10] == "true"
-                self.albumArtURL = finalResult[11]
+            if finalResult.count >= 10 {
+                self.isPlaying = finalResult[0] == "playing"
+                self.trackName = finalResult[1]
+                self.artistName = finalResult[2]
+                self.albumName = finalResult[3]
+                self.trackDuration = Int(Double(finalResult[4]) ?? 0)
+                self.trackPosition = Int(Double(finalResult[5]) ?? 0)
+                self.isLoved = finalResult[6] == "true"
+                self.trackId = finalResult[7]
+                self.shuffle = finalResult[8] == "true"
+                self.albumArtURL = finalResult[9]
                 
                 
             } else {
-                self.spotifyRunning = false
                 print("Error on getting information or spotify not running")
             }
         } else {
             print("Fehler: Didn't get any result")
-        }
-        
-        if !spotifyRunning {
-            print("Spotify is not running.")
         }
     }
     

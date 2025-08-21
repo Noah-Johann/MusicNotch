@@ -28,6 +28,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		4F4A22B02E568A49003F8CDF /* Exceptions for "MusicNotch" folder in "MusicNotch" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 4FA87FBF2D847DD700725978 /* MusicNotch */;
+		};
 		4F9CABBF2DD8C511008EAB2C /* Exceptions for "Config" folder in "MusicNotch" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -42,6 +49,9 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		4FA87FC22D847DD700725978 /* MusicNotch */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				4F4A22B02E568A49003F8CDF /* Exceptions for "MusicNotch" folder in "MusicNotch" target */,
+			);
 			path = MusicNotch;
 			sourceTree = "<group>";
 		};
