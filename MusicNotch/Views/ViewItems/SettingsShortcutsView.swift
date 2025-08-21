@@ -15,7 +15,24 @@ struct SettingsShortcutsView: View {
         LuminareSection {
             KeyboardShortcuts.Recorder("Toggle Notch",
                                        name: .toggleNotch)
-            .frame(height: 40)
+            .padding(7)
+            
+            KeyboardShortcuts.Recorder("Play/Pause",
+                                       name: .playPause)
+            .padding(7)
+            
+            KeyboardShortcuts.Recorder("Skip to Next Track",
+                                       name: .nextTrack)
+            .padding(7)
+            
+            KeyboardShortcuts.Recorder("Skip to Previous Track",
+                                       name: .previousTrack)
+            .padding(7)
+            
+            KeyboardShortcuts.Recorder("Toggle Shuffle",
+                                       name: .toggleShuffle)
+            .padding(7)
+            
         } header: {
             Text("Keyboard shortcuts")
         }

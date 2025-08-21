@@ -27,6 +27,22 @@ struct MusicNotchApp: App {
             SpotifyManager.shared.timer = 3
             NotchManager.shared.changeNotch()
         }
+        
+        KeyboardShortcuts.onKeyDown(for: .nextTrack) {
+            spotifyNextTrack()
+        }
+        
+        KeyboardShortcuts.onKeyDown(for: .previousTrack) {
+            spotifyLastTrack()
+        }
+        
+        KeyboardShortcuts.onKeyDown(for: .toggleShuffle) {
+            spotifyShuffle()
+        }
+        
+        KeyboardShortcuts.onKeyDown(for: .playPause) {
+            spotifyPlayPause()
+        }
     }
     
     var body: some Scene {
