@@ -27,6 +27,16 @@ struct MusicNotchApp: App {
             SpotifyManager.shared.timer = 3
             NotchManager.shared.changeNotch()
         }
+        
+        let handlers: [(KeyboardShortcuts.Name, () -> Void)] = [
+            (.nextTrack, spotifyNextTrack),
+            (.previousTrack, spotifyLastTrack),
+            (.toggleShuffle, spotifyShuffle),
+            (.playPause, spotifyPlayPause),
+        ]
+        handlers.forEach { name, action in
+            KeyboardShortcuts.onKeyDown(for: name, action: action)
+        }
     }
     
     var body: some Scene {
@@ -71,10 +81,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         return false
     }
     
-    func applicationShouldHandleReopen(_: NSApplication, hasVisibleWindows _: Bool) -> Bool {
-        WindowManager.openSettings()
-        return true
-    }
     
     func applicationWillTerminate(_ aNotification: Notification) {
         CGDisplayRemoveReconfigurationCallback(displayCallback, UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque()))

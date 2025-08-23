@@ -11,10 +11,10 @@ import AppKit
 import Defaults
 import SwiftUI
 
+@MainActor
 class SpotifyManager: ObservableObject {
     static let shared = SpotifyManager()    
         
-    //@Published var spotifyRunning: Bool = false
     @Published var isPlaying: Bool = false
     @Published var trackName: String = ""
     @Published var artistName: String = ""

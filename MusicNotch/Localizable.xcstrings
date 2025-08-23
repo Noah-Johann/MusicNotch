@@ -494,6 +494,9 @@
         }
       }
     },
+    "Play/Pause" : {
+
+    },
     "Please go to System Settings > Privacy & Security > Automation, and toggle Spotify under MusicNotch" : {
       "localizations" : {
         "de" : {
@@ -584,6 +587,18 @@
         }
       }
     },
+    "Skip Backwards" : {
+
+    },
+    "Skip Forward" : {
+
+    },
+    "Skip to Next Track" : {
+
+    },
+    "Skip to Previous Track" : {
+
+    },
     "Spotify is not opened" : {
       "localizations" : {
         "de" : {
@@ -643,6 +658,12 @@
           }
         }
       }
+    },
+    "Toggle Playback" : {
+
+    },
+    "Toggle Shuffle" : {
+
     },
     "Version %@" : {
       "shouldTranslate" : false
