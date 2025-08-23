@@ -113,12 +113,12 @@ final class NotchManager {
     }
     
     public func setNotchContent(_ content: NotchState, _ changeDisplay: Bool) async {
-            SpotifyManager.shared.updateInfo()
-            
-            if changeDisplay == true {
-                await self.notch.hide()
-            }
-            
+        SpotifyManager.shared.updateInfo()
+        
+        if changeDisplay == true {
+            await self.notch.hide()
+        }
+        
         switch content {
             
         case .open:
@@ -219,6 +219,8 @@ final class NotchManager {
     
     public func showExtensionNotch(type: NotchContent) {
         Task {
+            guard NotchContentState.shared.notchContent == .music else { return }
+            
             switch type {
             case .music:
                 return
@@ -234,12 +236,7 @@ final class NotchManager {
                 await setNotchContent(.closed, false)
             }
             
-            
-            do {
-                try await Task.sleep(nanoseconds: UInt64(Defaults[.displayDuration] * 1000000000))
-            } catch {
-                print("Error sleeping")
-            }
+            try? await Task.sleep(nanoseconds: UInt64(Defaults[.displayDuration] * 1000000000))
             
             if prevNotchState == .hidden {
                 await setNotchContent(.hidden, false)

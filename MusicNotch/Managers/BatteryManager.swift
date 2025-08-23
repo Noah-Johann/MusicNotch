@@ -76,7 +76,6 @@ class BatteryManager: ObservableObject {
     }
     
     @objc private func lowPowerModeChanged() {
-        print("low power mode notification")
         Task { @MainActor in
             updateBatteryInfo()
         }
