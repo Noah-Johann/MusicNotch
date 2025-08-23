@@ -10,10 +10,9 @@ import Luminare
 
 @ViewBuilder
 func aboutLicenseButton(name: LocalizedStringKey, license: LocalizedStringKey, link: URL, image: String) -> some View {
-    @Environment(\.openURL) var openURL
 
     Button {
-        openURL(link)
+        NSWorkspace.shared.open(link)
     } label: {
         HStack(spacing: 12) {
             Image(systemName: "\(image)")

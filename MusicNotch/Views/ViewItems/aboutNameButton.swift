@@ -7,14 +7,14 @@
 
 import SwiftUI
 import Luminare
+import AppKit
 
 
 @ViewBuilder
 func aboutButton(name: LocalizedStringKey, role: LocalizedStringKey, link: URL, image: Image) -> some View {
-    @Environment(\.openURL) var openURL
 
     Button {
-        openURL(link)
+        NSWorkspace.shared.open(link)
     } label: {
         HStack(spacing: 12) {
             image
