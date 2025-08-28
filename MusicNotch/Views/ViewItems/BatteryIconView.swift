@@ -12,7 +12,18 @@ struct BatteryIconView: View {
     
     var iconWidth: CGFloat
     
+//    var cornerRadius: CGFloat {
+//        iconWidth / 18.5185185185
+//    }
+    
     var body: some View {
+        let cornerRadius: CGFloat = iconWidth / 18.5185185185
+        let fillWidth: CGFloat = iconWidth / 144.2275362319
+        let fillHeight: CGFloat = iconWidth / 3.8461538462
+        let fillLeadingInset: CGFloat = iconWidth/10.4166666667
+        let boltWidth: CGFloat = iconWidth * 0.88
+        let boltHeight: CGFloat = iconWidth * 0.6
+        
         ZStack (alignment: .leading) {
             Image(systemName: "battery.0percent")
                 .resizable()
@@ -20,13 +31,13 @@ struct BatteryIconView: View {
                 .foregroundStyle(Color.white.opacity(0.5))
             
             
-            RoundedRectangle(cornerRadius: iconWidth / 18.5185185185)
+            RoundedRectangle(cornerRadius: cornerRadius)
                 .fill(batteryManager.batteryIconColor)
                 .frame(
-                    width: CGFloat(iconWidth / 144.2275362319 * batteryManager.currentCapacity),
-                    height: iconWidth / 3.8461538462,
+                    width: fillWidth * max(5, min(100, batteryManager.currentCapacity)),
+                    height: fillHeight,
                 )
-                .padding(.leading, iconWidth/10.4166666667)
+                .padding(.leading, fillLeadingInset)
             
             
             if batteryManager.isCharging {
@@ -36,7 +47,7 @@ struct BatteryIconView: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .foregroundStyle(Color.black)
-                            .frame(height: iconWidth * 0.6)
+                            .frame(height: boltHeight)
                             .overlay(
                                 Image(systemName: "bolt.fill")
                                     .resizable()
@@ -45,7 +56,7 @@ struct BatteryIconView: View {
                                     .padding(1)
                             )
                     }
-                } .frame(width: iconWidth * 0.88)
+                } .frame(width: boltWidth)
             }
         }
         .frame(width: iconWidth)
