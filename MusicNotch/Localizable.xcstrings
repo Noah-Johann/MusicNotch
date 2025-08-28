@@ -495,7 +495,14 @@
       }
     },
     "Play/Pause" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Play/Pause"
+          }
+        }
+      }
     },
     "Please go to System Settings > Privacy & Security > Automation, and toggle Spotify under MusicNotch" : {
       "localizations" : {
@@ -588,16 +595,44 @@
       }
     },
     "Skip Backwards" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Letzter Titel"
+          }
+        }
+      }
     },
     "Skip Forward" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nächster Titel"
+          }
+        }
+      }
     },
     "Skip to Next Track" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nächster Titel"
+          }
+        }
+      }
     },
     "Skip to Previous Track" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Letzter Titel"
+          }
+        }
+      }
     },
     "Spotify is not opened" : {
       "localizations" : {
@@ -660,10 +695,24 @@
       }
     },
     "Toggle Playback" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wiedergabe umschalten"
+          }
+        }
+      }
     },
     "Toggle Shuffle" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shuffle umschalten"
+          }
+        }
+      }
     },
     "Version %@" : {
       "shouldTranslate" : false
