@@ -16,7 +16,7 @@ class BatteryManager: ObservableObject {
     @Published var currentCapacity: Double = 0
     
     @Published var batteryIconColor: Color = .white
-    @Published var batteryIconName: String = "battery.100percent"
+    @Published var isCharging: Bool = false
     
     private var previousBattery = BatteryManager.errorBatteryInfo
     
@@ -88,18 +88,11 @@ class BatteryManager: ObservableObject {
         let info = getBatteryInfo()
         
         self.currentCapacity = Double(info.currentCapacity)
-        
-        if info.isPluggedIn == true {
-            self.batteryIconName = "battery.100percent.bolt"
-        } else if info.showLowPower == true {
-            self.batteryIconName = "battery.0percent"
-        } else {
-            self.batteryIconName = "battery.100percent"
-        }
+        self.isCharging = info.isPluggedIn
+
         
         if info.showLowPower == true || Int(info.currentCapacity) <= 10 {
             self.batteryIconColor = .red
-            self.batteryIconName = "battery.0percent"
         } else if info.isInLowPowerMode == true {
             self.batteryIconColor = .yellow
         } else if info.isPluggedIn == true {

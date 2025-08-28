@@ -11,12 +11,13 @@ struct ExtensionBatteryViewLeading: View {
     @ObservedObject var batteryManager = BatteryManager.shared
     
     var body: some View {
-        Image(systemName: batteryManager.batteryIconName)
-            .resizable()
-            .scaledToFit()
-            .foregroundColor(batteryManager.batteryIconColor)
-            .frame(width: 30, height: 30)
-            .opacity(0.8)
+        //        Image(systemName: batteryManager.batteryIconName)
+        //            .resizable()
+        //            .scaledToFit()
+        //            .foregroundColor(batteryManager.batteryIconColor)
+        //            .frame(width: 30, height: 30)
+        //            .opacity(0.8)
+        BatteryIconView(iconWidth: 33)
     }
 }
     
