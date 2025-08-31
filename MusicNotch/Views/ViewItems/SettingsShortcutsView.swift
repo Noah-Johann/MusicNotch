@@ -13,9 +13,33 @@ import Defaults
 struct SettingsShortcutsView: View {
     var body: some View {
         LuminareSection {
-            KeyboardShortcuts.Recorder("Toggle Notch",
-                                       name: .toggleNotch)
-            .frame(height: 40)
+            let items: [(String, LocalizedStringResource, KeyboardShortcuts.Name)] = [
+                ("chevron.up.chevron.down", "Toggle Notch", .toggleNotch),
+                ("play", "Play/Pause", .playPause),
+                ("forward", "Skip to Next Track", .nextTrack),
+                ("backward", "Skip to Previous Track", .previousTrack),
+                ("shuffle", "Toggle Shuffle", .toggleShuffle),
+            ]
+            ForEach(items, id: \.0) { image, label, name in
+                KeyboardShortcuts.Recorder(
+                    for: name
+                ) {
+                    HStack {
+                        Image(systemName: "\(image)")
+                            .imageScale(.large)
+                            .bold()
+                            .frame(width: 20)
+                        
+                        Text(label)
+                            .padding(.horizontal, 9)
+                        
+                        Spacer()
+                    }
+                }
+                .padding(.horizontal)
+                .padding(.vertical, 6)
+            }
+            
         } header: {
             Text("Keyboard shortcuts")
         }

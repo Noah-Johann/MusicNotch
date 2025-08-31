@@ -8,16 +8,7 @@
 import Foundation
 
 func spotifyNextTrack() {
-    let task = Process()
-    task.launchPath = "/usr/bin/osascript"
-    task.arguments = ["-e", "tell application \"Spotify\" to next track"]
-    
-    do {
-        try task.run()
-        task.waitUntilExit()
-        SpotifyManager.shared.updateInfo()
-    } catch {
-        print("Error while running: \(error)")
+    Task {
+        try await AppleScriptHelper.run("tell application \"Spotify\" to next track")
     }
-    
 }
