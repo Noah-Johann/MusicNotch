@@ -44,7 +44,8 @@ struct SettingsDisplayView: View {
         } header: {
             Text("Display")
         }
-        .padding(.bottom, 14)    }
+        .padding(.bottom, 14)
+    }
 }
 
 #Preview {

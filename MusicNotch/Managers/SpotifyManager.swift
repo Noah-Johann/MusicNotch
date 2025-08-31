@@ -83,7 +83,7 @@ class SpotifyManager: ObservableObject {
             isSpotifyRunning = false
             
             Task { @MainActor in
-                NotchManager.shared.setNotchContent(.hidden, false)
+                await NotchManager.shared.setNotchContent(.hidden, false)
             }
             
             self.isPlaying = false
@@ -111,15 +111,18 @@ class SpotifyManager: ObservableObject {
         
         let hideNotchTime = Defaults[.hideNotchTime]
         stopTime = 0
-        if hideTimer == nil && self.isPlaying == false {
+        if hideTimer == nil && self.isPlaying == false && NotchContentState.shared.notchContent == .music {
             hideTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
                 guard let self = self else { return }
                 DispatchQueue.main.async {
                     self.stopTime += 1
                     if self.stopTime > Int(hideNotchTime) && NotchManager.shared.notchState == .closed {
+                        guard NotchContentState.shared.notchContent == .music else { return }
                         self.hideTimer?.invalidate()
                         self.hideTimer = nil
-                        NotchManager.shared.setNotchContent(.hidden, false)
+                        Task {
+                           await NotchManager.shared.setNotchContent(.hidden, false)
+                        }
                     }
                 }
             }
@@ -128,7 +131,7 @@ class SpotifyManager: ObservableObject {
         // Open notch when playback starts
         Task { @MainActor in
             if self.isPlaying == true && NotchManager.shared.notchState == .hidden {
-                NotchManager.shared.setNotchContent(.closed, false)
+                await NotchManager.shared.setNotchContent(.closed, false)
             }
         }
         
@@ -140,6 +143,7 @@ class SpotifyManager: ObservableObject {
     }
     
     private func collectBasicInfo() {
+
         guard checkIfSpotifyIsRunning() else { return }
                 
         let script = """

@@ -43,7 +43,8 @@ struct SettingsShortcutsView: View {
         } header: {
             Text("Keyboard shortcuts")
         }
-        .padding(.bottom, 14)    }
+        .padding(.bottom, 14)
+    }
 }
 
 #Preview {

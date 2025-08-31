@@ -34,7 +34,9 @@ class DisplayConfigurationModel: ObservableObject {
 
     /// Called whenever the user changes the display selection.
     func selectionChanged(to newValue: NotchDisplay) {
-        NotchManager.shared.setNotchContent(.closed, true)
+        Task {
+            await NotchManager.shared.setNotchContent(.closed, true)
+        }
     }
 }
 

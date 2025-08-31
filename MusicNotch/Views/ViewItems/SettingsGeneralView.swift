@@ -29,7 +29,7 @@ struct SettingsGeneralView: View {
                 Text("Show menubar item")
                     .padding(.trailing, 5)
                     .luminarePopover(attachedTo: .topTrailing) {
-                        Text("If hidden, settings can be accesed via right click on the player")
+                        Text("If hidden, settings can be accessed via right click on the player")
                             .padding()
                     }
                     .tint(.accentColor)
@@ -39,9 +39,9 @@ struct SettingsGeneralView: View {
                 Text("Show dock icon")
             }
             
-            #if DEBUG
+#if DEBUG
             LuminareToggle("Viewed Onboarding", isOn: $viewedOnboarding)
-            #endif
+#endif
             
             
             Button {
@@ -55,7 +55,8 @@ struct SettingsGeneralView: View {
         } header: {
             Text("General")
         }
-        .padding(.bottom, 14)    }
+        .padding(.bottom, 14)
+    }
 }
 
 #Preview {
