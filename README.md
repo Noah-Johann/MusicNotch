@@ -45,6 +45,12 @@ To download the app using [Homebrew](https://brew.sh), run the following command
 brew install --cask Noah-Johann/MusicNotch/MusicNotch --no-quarantine
 ```
 
+### Updates
+
+MusicNotch automatically checks for updates in the background and notifies you when a new version is available. You can also check for updates manually at any time.
+
+Since MusicNotch uses the Sparkle framework, updating through [Latest](https://github.com/mangerlahn/Latest) is also supported.
+
 ### System Requirements
 - **macOS 14 Sonoma or later**
 - MusicNotch works on Macs with and without a notch
