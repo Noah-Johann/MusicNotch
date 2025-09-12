@@ -228,6 +228,14 @@ final class NotchManager {
                 withAnimation(.bouncy(duration: 0.6)) {
                     NotchContentState.shared.notchContent = .battery
                 }
+            case .volume:
+                withAnimation(.bouncy(duration: 0.6)) {
+                    NotchContentState.shared.notchContent = .volume
+                }
+            case .brightness:
+                withAnimation(.bouncy(duration: 0.6)) {
+                    NotchContentState.shared.notchContent = .brightness
+                }
             }
             
             let prevNotchState = notchState
@@ -265,5 +273,7 @@ enum NotchState {
 enum NotchContent {
     case music
     case battery
+    case volume
+    case brightness
 }
 

@@ -10,6 +10,7 @@ import Defaults
 
 struct Player: View {
     @ObservedObject var spotifyManager = SpotifyManager.shared
+    @ObservedObject var volumeManager = VolumeManager.shared
     
     @State private var isDragging = false
     @State private var trackposition : Double = 0
