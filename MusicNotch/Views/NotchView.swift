@@ -15,8 +15,11 @@ struct NotchViewLeading: View {
             if notchContentManager.notchContent == .music {
                 AlbumArtView(sizeState: "closed")
                     .transition(.blurReplace)
-            } else if notchContentManager.notchContent == .battery{
+            } else if notchContentManager.notchContent == .battery {
                 ExtensionBatteryViewLeading()
+                    .transition(.blurReplace)
+            } else if notchContentManager.notchContent == .volume {
+                ExtensionHUDViewLeading(hudType: .volume)
                     .transition(.blurReplace)
             }
         }
@@ -33,6 +36,9 @@ struct NotchViewTrailing: View {
                     .transition(.blurReplace)
             } else if notchContentManager.notchContent == .battery {
                 ExtensionBatteryViewTrailing()
+                    .transition(.blurReplace)
+            } else if notchContentManager.notchContent == .volume {
+                ExtensionHUDViewTrailing(hudType: .volume)
                     .transition(.blurReplace)
             }
         }

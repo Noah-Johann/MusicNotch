@@ -14,7 +14,7 @@ import Combine
 class VolumeManager: ObservableObject {
     static let shared = VolumeManager()
     
-    @Published var volume: Float = 0
+    @Published var volume: CGFloat = 0
     @Published var isMuted: Bool = false
     
     @Published var deviceIcon: String = "headphones"
@@ -49,6 +49,9 @@ class VolumeManager: ObservableObject {
             callback,
             Unmanaged.passUnretained(self).toOpaque()
         )
+        if status != noErr {
+            print("Error setting up audio device observer")
+        }
     }
     
     func setupVolumeObservers() {
@@ -148,11 +151,13 @@ class VolumeManager: ObservableObject {
         
         print(volume)
         DispatchQueue.main.async {
-            self.volume = volume
+            self.volume = CGFloat(volume)
             
             if volume == 0 {
                 self.isMuted = true
             }
+            
+            NotchManager.shared.showExtensionNotch(type: .volume)
         }
     }
     

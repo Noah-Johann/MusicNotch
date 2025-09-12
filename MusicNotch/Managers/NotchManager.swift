@@ -22,6 +22,8 @@ final class NotchManager {
     private var openingTask: Task<Void, Never>?
     private var hapticTask: Task<Void, Never>?
     private var expandTask: Task<Void, Never>?
+    private var extensionNotchTask: Task<Void, Never>?
+    private var extensionRequestCounter: Int = 0
     
     private var isCurrentlyHovering = false
     
@@ -218,13 +220,17 @@ final class NotchManager {
     }
     
     public func showExtensionNotch(type: NotchContent) {
-        Task {
-            guard NotchContentState.shared.notchContent == .music else { return }
-            
+
+        extensionRequestCounter &+= 1
+        let requestToken = extensionRequestCounter
+
+        extensionNotchTask?.cancel()
+        extensionNotchTask = Task { @MainActor in
             switch type {
             case .music:
                 return
             case .battery:
+                guard NotchContentState.shared.notchContent != .battery else { self.extensionNotchTask = nil; return }
                 withAnimation(.bouncy(duration: 0.6)) {
                     NotchContentState.shared.notchContent = .battery
                 }
@@ -237,27 +243,36 @@ final class NotchManager {
                     NotchContentState.shared.notchContent = .brightness
                 }
             }
-            
+
             let prevNotchState = notchState
-            
+
             if prevNotchState == .hidden || prevNotchState == .open {
                 await setNotchContent(.closed, false)
             }
-            
-            try? await Task.sleep(nanoseconds: UInt64(Defaults[.displayDuration] * 1000000000))
-            
+
+            // Wait for display duration
+            try? await Task.sleep(nanoseconds: UInt64(Defaults[.displayDuration] * 1_000_000_000))
+
+            // Only the latest request should proceed past this point
+            guard requestToken == self.extensionRequestCounter, !Task.isCancelled else {
+                self.extensionNotchTask = nil
+                return
+            }
+
             if prevNotchState == .hidden {
                 await setNotchContent(.hidden, false)
-                
+
                 // wait for notch animation to close
                 try? await Task.sleep(for: .seconds(0.5))
-                
+
                 NotchContentState.shared.notchContent = .music
             } else {
                 withAnimation(.bouncy(duration: 0.6)) {
                     NotchContentState.shared.notchContent = .music
                 }
             }
+
+            self.extensionNotchTask = nil
         }
     }
 }
