@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AppKit
 
 enum HudType {
     case volume
@@ -37,7 +38,7 @@ struct ExtensionHUDViewLeading: View {
                 Text("Volume")
                     .font(.system(size: 12))
             }
-            .frame(width: 80, height: 20)
+            .frame(width: 35 + textWidth("Volume", font: .systemFont(ofSize: 12)), height: 20)
             .padding(.trailing, 4)
             .animation(.easeInOut(duration: 0.4), value: volumeManager.volume)
             
@@ -52,10 +53,10 @@ struct ExtensionHUDViewLeading: View {
                     }
                 } .frame(width: 20)
                 
-                Text("Volume")
+                Text("Brightness")
                     .font(.system(size: 12))
             }
-            .frame(width: 80, height: 20)
+            .frame(width: 35 + textWidth("Brightness", font: .systemFont(ofSize: 12)), height: 20)
             .padding(.trailing, 4)
             .animation(.easeInOut(duration: 0.4), value: brightnessManager.brightness)
         }
@@ -80,7 +81,7 @@ struct ExtensionHUDViewTrailing: View {
                         .foregroundStyle(.secondary)
                 }
             }
-            .frame(width: 80, height: 20)
+            .frame(width: 35 + textWidth("Volume", font: .systemFont(ofSize: 12)), height: 20)
             .padding(.leading, 4)
             .animation(.easeInOut(duration: 0.4), value: volumeManager.volume)
             
@@ -88,11 +89,17 @@ struct ExtensionHUDViewTrailing: View {
             HStack {
                 HudSlider(value: $brightnessManager.brightness)
             }
-            .frame(width: 80, height: 20)
+            .frame(width: 35 + textWidth("Brightness", font: .systemFont(ofSize: 12)), height: 20)
             .padding(.leading, 4)
-            .animation(.easeInOut(duration: 0.4), value: volumeManager.volume)
+            .animation(.easeInOut(duration: 0.4), value: brightnessManager.brightness)
         }
     }
+}
+
+func textWidth(_ key: String, font: NSFont) -> CGFloat {
+    let localized = NSLocalizedString(key, comment: "")
+    let attributes: [NSAttributedString.Key: Any] = [.font: font]
+    return (localized as NSString).size(withAttributes: attributes).width
 }
 
 #Preview {
