@@ -230,7 +230,6 @@ final class NotchManager {
             case .music:
                 return
             case .battery:
-                guard NotchContentState.shared.notchContent != .battery else { self.extensionNotchTask = nil; return }
                 withAnimation(.bouncy(duration: 0.6)) {
                     NotchContentState.shared.notchContent = .battery
                 }
