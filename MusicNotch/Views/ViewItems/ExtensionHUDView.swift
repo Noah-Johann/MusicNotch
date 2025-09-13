@@ -14,6 +14,8 @@ enum HudType {
 
 struct ExtensionHUDViewLeading: View {
     @ObservedObject var volumeManager = VolumeManager.shared
+    @ObservedObject var brightnessManager = BrightnessManager.shared
+    
     let hudType: HudType
     
     var body: some View {
@@ -35,19 +37,35 @@ struct ExtensionHUDViewLeading: View {
                 Text("Volume")
                     .font(.system(size: 12))
             }
-                .frame(width: 80)
-                .padding(.trailing, 4)
-                .animation(.easeInOut(duration: 0.4), value: volumeManager.volume)
-
+            .frame(width: 80, height: 20)
+            .padding(.trailing, 4)
+            .animation(.easeInOut(duration: 0.4), value: volumeManager.volume)
+            
             
         case .brightness:
-            Label("Brightness", systemImage: "sun.max.fill")
+            HStack {
+                HStack {
+                    if brightnessManager.brightness < 0.4 {
+                        Image(systemName: "sun.min")
+                    } else {
+                        Image(systemName: "sun.max")
+                    }
+                } .frame(width: 20)
+                
+                Text("Volume")
+                    .font(.system(size: 12))
+            }
+            .frame(width: 80, height: 20)
+            .padding(.trailing, 4)
+            .animation(.easeInOut(duration: 0.4), value: brightnessManager.brightness)
         }
     }
 }
 
 struct ExtensionHUDViewTrailing: View {
     @ObservedObject var volumeManager = VolumeManager.shared
+    @ObservedObject var brightnessManager = BrightnessManager.shared
+    
     let hudType: HudType
     
     var body: some View {
@@ -56,16 +74,23 @@ struct ExtensionHUDViewTrailing: View {
             HStack {
                 HudSlider(value: $volumeManager.volume)
                 
-                if volumeManager.isMuted {
+                if volumeManager.volume == 0 {
                     Text("muted")
+                        .font(.system(size: 12))
+                        .foregroundStyle(.secondary)
                 }
             }
-                .frame(width: 80)
-                .padding(.leading, 4)
-                .animation(.easeInOut(duration: 0.4), value: volumeManager.volume)
+            .frame(width: 80, height: 20)
+            .padding(.leading, 4)
+            .animation(.easeInOut(duration: 0.4), value: volumeManager.volume)
             
         case .brightness:
-            Label("Brightness", systemImage: "sun.max.fill")
+            HStack {
+                HudSlider(value: $brightnessManager.brightness)
+            }
+            .frame(width: 80, height: 20)
+            .padding(.leading, 4)
+            .animation(.easeInOut(duration: 0.4), value: volumeManager.volume)
         }
     }
 }
