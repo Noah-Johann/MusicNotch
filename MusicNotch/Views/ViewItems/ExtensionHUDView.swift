@@ -34,8 +34,11 @@ struct ExtensionHUDViewLeading: View {
                 
                 Text("Volume")
                     .font(.system(size: 12))
-            } .frame(width: 80)
+            }
+                .frame(width: 80)
                 .padding(.trailing, 4)
+                .animation(.easeInOut(duration: 0.4), value: volumeManager.volume)
+
             
         case .brightness:
             Label("Brightness", systemImage: "sun.max.fill")
@@ -56,8 +59,10 @@ struct ExtensionHUDViewTrailing: View {
                 if volumeManager.isMuted {
                     Text("muted")
                 }
-            } .frame(width: 80)
+            }
+                .frame(width: 80)
                 .padding(.leading, 4)
+                .animation(.easeInOut(duration: 0.4), value: volumeManager.volume)
             
         case .brightness:
             Label("Brightness", systemImage: "sun.max.fill")
