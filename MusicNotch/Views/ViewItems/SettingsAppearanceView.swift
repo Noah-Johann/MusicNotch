@@ -21,7 +21,8 @@ struct SettingsAppearanceView: View {
         } header: {
             Text("Appearance")
         }
-        .padding(.bottom, 14)    }
+        .padding(.bottom, 14)
+    }
 }
 
 #Preview {

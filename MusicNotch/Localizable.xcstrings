@@ -14,6 +14,9 @@
     "-%@" : {
       "shouldTranslate" : false
     },
+    "%lld %%" : {
+      "shouldTranslate" : false
+    },
     "About" : {
       "localizations" : {
         "de" : {
@@ -154,6 +157,16 @@
         }
       }
     },
+    "Display duration" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anzeigedauer"
+          }
+        }
+      }
+    },
     "DynamicNotchKit" : {
       "localizations" : {
         "de" : {
@@ -164,7 +177,17 @@
         }
       }
     },
-    "Extensions (beta)" : {
+    "Enable Battery Extension" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktiviere Batterie-Erweiterung"
+          }
+        }
+      }
+    },
+    "Extensions (BETA)" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -274,12 +297,12 @@
         }
       }
     },
-    "If hidden, settings can be accesed via right click on the player" : {
+    "If hidden, settings can be accessed via right click on the player" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wenn deaktiviert, können die Einstellungen mit Rechts-Klick auf den Player geöffnet werden."
+            "value" : "Wenn deaktiviert können die Einstellungen mit Rechts-Klick auf die Notch geöffnet werden"
           }
         }
       }
@@ -494,6 +517,16 @@
         }
       }
     },
+    "Play/Pause" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Play/Pause"
+          }
+        }
+      }
+    },
     "Please go to System Settings > Privacy & Security > Automation, and toggle Spotify under MusicNotch" : {
       "localizations" : {
         "de" : {
@@ -584,6 +617,46 @@
         }
       }
     },
+    "Skip Backwards" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Letzter Titel"
+          }
+        }
+      }
+    },
+    "Skip Forward" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nächster Titel"
+          }
+        }
+      }
+    },
+    "Skip to Next Track" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nächster Titel"
+          }
+        }
+      }
+    },
+    "Skip to Previous Track" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Letzter Titel"
+          }
+        }
+      }
+    },
     "Spotify is not opened" : {
       "localizations" : {
         "de" : {
@@ -640,6 +713,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Notch öffnen/schließen"
+          }
+        }
+      }
+    },
+    "Toggle Playback" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wiedergabe umschalten"
+          }
+        }
+      }
+    },
+    "Toggle Shuffle" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shuffle umschalten"
           }
         }
       }

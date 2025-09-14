@@ -27,6 +27,16 @@ struct MusicNotchApp: App {
             SpotifyManager.shared.timer = 3
             NotchManager.shared.changeNotch()
         }
+        
+        let handlers: [(KeyboardShortcuts.Name, () -> Void)] = [
+            (.nextTrack, spotifyNextTrack),
+            (.previousTrack, spotifyLastTrack),
+            (.toggleShuffle, spotifyShuffle),
+            (.playPause, spotifyPlayPause),
+        ]
+        handlers.forEach { name, action in
+            KeyboardShortcuts.onKeyDown(for: name, action: action)
+        }
     }
     
     var body: some Scene {
@@ -42,6 +52,9 @@ struct MusicNotchApp: App {
 class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     let aboutMenuHandler = AboutMenuHandler()
     
+    private let batteryManager = BatteryManager.shared
+
+    
     func applicationDidFinishLaunching(_ notification: Notification) {
         if Defaults[.viewedOnboarding] == false {
             WindowManager.openOnboarding()
@@ -49,6 +62,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
             WindowManager.openSettings()
         }
         
+        // Aboutmenu handler
         if let mainMenu = NSApp.mainMenu,
            let appMenu = mainMenu.items.first?.submenu {
             if let aboutItem = appMenu.items.first(where: { $0.action == #selector(NSApplication.orderFrontStandardAboutPanel(_:)) }) {
@@ -71,10 +85,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         return false
     }
     
-    func applicationShouldHandleReopen(_: NSApplication, hasVisibleWindows _: Bool) -> Bool {
-        WindowManager.openSettings()
-        return true
-    }
     
     func applicationWillTerminate(_ aNotification: Notification) {
         CGDisplayRemoveReconfigurationCallback(displayCallback, UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque()))
@@ -91,11 +101,15 @@ private func displayCallback(
     if flags.contains(.addFlag) || flags.contains(.removeFlag) {
         print("Display connected or disconnected")
         DispatchQueue.main.async {
-            NotchManager.shared.setNotchContent(.hidden, true)
+            Task {
+                await NotchManager.shared.setNotchContent(.hidden, true)
+            }
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-            NotchManager.shared.setNotchContent(.closed, true)
-        })
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            Task {
+                await NotchManager.shared.setNotchContent(.closed, true)
+            }
+        }
     }
 }
