@@ -36,13 +36,13 @@ struct SettingsExtensionView: View {
         }
         LuminareSection {
             LuminareToggle(isOn: $batteryExtension) {
-                Text("Enable Battery Extension")
+                Text("Enable Battery extension")
             }
         }
         
         LuminareSection {
             LuminareToggle(isOn: $hudExtension) {
-                Text("HUD Extension")
+                Text("Enable HUD extension")
             }
             
             LuminareToggle(isOn: $accentColorHudSlider) {
