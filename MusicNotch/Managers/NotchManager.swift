@@ -243,9 +243,7 @@ final class NotchManager {
                 }
             }
 
-            let prevNotchState = notchState
-
-            if prevNotchState == .hidden || prevNotchState == .open {
+            if notchState == .hidden || notchState == .open {
                 await setNotchContent(.closed, false)
             }
 
@@ -258,17 +256,12 @@ final class NotchManager {
                 return
             }
 
-            if prevNotchState == .hidden {
-                await setNotchContent(.hidden, false)
-
-                // wait for notch animation to close
-                try? await Task.sleep(for: .seconds(0.5))
-
-                NotchContentState.shared.notchContent = .music
-            } else {
+            if SpotifyManager.shared.isPlaying {
                 withAnimation(.bouncy(duration: 0.6)) {
                     NotchContentState.shared.notchContent = .music
                 }
+            } else {
+                await setNotchContent(.hidden, false)
             }
 
             self.extensionNotchTask = nil
