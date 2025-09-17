@@ -99,7 +99,12 @@ struct ExtensionHUDViewTrailing: View {
 func textWidth(_ key: String, font: NSFont) -> CGFloat {
     let localized = NSLocalizedString(key, comment: "")
     let attributes: [NSAttributedString.Key: Any] = [.font: font]
-    return (localized as NSString).size(withAttributes: attributes).width
+    let frameWidth = (localized as NSString).size(withAttributes: attributes).width
+    if frameWidth > 80 {
+        return frameWidth
+    } else {
+        return 80.0
+    }
 }
 
 #Preview {
