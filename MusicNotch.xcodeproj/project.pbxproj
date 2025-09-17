@@ -28,15 +28,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 		4F4A22B02E568A49003F8CDF /* Exceptions for "MusicNotch" folder in "MusicNotch" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = 4FA87FBF2D847DD700725978 /* MusicNotch */;
-		};
-		4F9CABBF2DD8C511008EAB2C /* Exceptions for "Config" folder in "MusicNotch" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -50,14 +42,6 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				4F4A22B02E568A49003F8CDF /* Exceptions for "MusicNotch" folder in "MusicNotch" target */,
-			);
-			path = MusicNotch;
-			sourceTree = "<group>";
-		};
-		4FC65B3C2DA6E9C700C074CB /* Config */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				4F2B06572E53772900F7AEEE /* Exceptions for "MusicNotch" folder in "MusicNotch" target */,
 			);
 			path = MusicNotch;
 			sourceTree = "<group>";
@@ -357,7 +341,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CREATE_INFOPLIST_SECTION_IN_BINARY = YES;
-				CURRENT_PROJECT_VERSION = 30;
+				CURRENT_PROJECT_VERSION = 51;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"MusicNotch/Preview Content\"";
 				ENABLE_APP_SANDBOX = NO;
@@ -380,7 +364,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = "0.1.0-rc.1";
+				MARKETING_VERSION = 0.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.NoahJohann.MusicNotch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -413,7 +397,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CREATE_INFOPLIST_SECTION_IN_BINARY = YES;
-				CURRENT_PROJECT_VERSION = 30;
+				CURRENT_PROJECT_VERSION = 51;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"MusicNotch/Preview Content\"";
 				ENABLE_APP_SANDBOX = NO;
@@ -436,7 +420,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = "0.1.0-rc.1";
+				MARKETING_VERSION = 0.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.NoahJohann.MusicNotch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
