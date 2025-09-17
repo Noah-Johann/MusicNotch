@@ -149,7 +149,6 @@ class VolumeManager: ObservableObject {
             return
         }
         
-        print(volume)
         DispatchQueue.main.async {
             self.volume = CGFloat(volume)
             
@@ -243,69 +242,70 @@ class VolumeManager: ObservableObject {
             &propSize,
             &transportType
         )
-        
-        var transportString = "unknown"
-        switch transportType {
-        case kAudioDeviceTransportTypeBuiltIn:
-            transportString = "Build in"
-            deviceIcon = "macbook.gen2"
-        case kAudioDeviceTransportTypeBluetooth, kAudioDeviceTransportTypeBluetoothLE:
-            transportString = "Bluetooth"
-        case kAudioDeviceTransportTypeUSB:
-            transportString = "USB"
-        case kAudioDeviceTransportTypeAirPlay:
-            transportString = "AirPlay"
-        case kAudioDeviceTransportTypeVirtual:
-            transportString = "Virtuell"
-        case kAudioDeviceTransportTypeDisplayPort:
-            transportString = "DisplayPort"
-            deviceIcon = "display"
-        case kAudioDeviceTransportTypeHDMI:
-            transportString = "HDMI"
-            deviceIcon = "display"
-        default:
-            transportString = "Other"
-            deviceIcon = "headphones"
-        }
-        
-        print("Output device:")
-        print("  Name: \(deviceName)")
-        print("  Modell: \(modelUID)")
-        print("  Connection type: \(transportString)")
-        
-        
-        // Get more information if audio device is Bluetooth
-        if transportType == kAudioDeviceTransportTypeBluetooth || transportType == kAudioDeviceTransportTypeBluetoothLE {
+        DispatchQueue.main.async {
+            var transportString = "unknown"
+            switch transportType {
+            case kAudioDeviceTransportTypeBuiltIn:
+                transportString = "Build in"
+                self.deviceIcon = "macbook.gen2"
+            case kAudioDeviceTransportTypeBluetooth, kAudioDeviceTransportTypeBluetoothLE:
+                transportString = "Bluetooth"
+            case kAudioDeviceTransportTypeUSB:
+                transportString = "USB"
+            case kAudioDeviceTransportTypeAirPlay:
+                transportString = "AirPlay"
+            case kAudioDeviceTransportTypeVirtual:
+                transportString = "Virtuell"
+            case kAudioDeviceTransportTypeDisplayPort:
+                transportString = "DisplayPort"
+                self.deviceIcon = "display"
+            case kAudioDeviceTransportTypeHDMI:
+                transportString = "HDMI"
+                self.deviceIcon = "display"
+            default:
+                transportString = "Other"
+                self.deviceIcon = "headphones"
+            }
             
-            propertyAddress.mSelector = kAudioDevicePropertyDeviceUID
-            propSize = UInt32(MemoryLayout<CFString?>.size)
+            print("Output device:")
+            print("  Name: \(deviceName)")
+            print("  Modell: \(modelUID)")
+            print("  Connection type: \(transportString)")
             
-            var uidRef: Unmanaged<CFString>?
-            status = AudioObjectGetPropertyData(
-                defaultOutputDeviceID,
-                &propertyAddress,
-                0,
-                nil,
-                &propSize,
-                &uidRef
-            )
             
-            if status == noErr, let unwrappedRef = uidRef {
-                let uid = unwrappedRef.takeRetainedValue() as String
+            // Get more information if audio device is Bluetooth
+            if transportType == kAudioDeviceTransportTypeBluetooth || transportType == kAudioDeviceTransportTypeBluetoothLE {
                 
-                if deviceName.contains("AirPods") || modelUID.contains("AirPods") || uid.contains("AirPods") {
-                    deviceIcon = "airpods"
-                    if deviceName.contains("Pro") || uid.contains("Pro") || modelUID.contains("Pro") {
-                        deviceIcon = "airpods.pro"
-                    } else if deviceName.contains("Max") || uid.contains("Max") || modelUID.contains("Max") {
-                        deviceIcon = "airpods.max"
+                propertyAddress.mSelector = kAudioDevicePropertyDeviceUID
+                propSize = UInt32(MemoryLayout<CFString?>.size)
+                
+                var uidRef: Unmanaged<CFString>?
+                status = AudioObjectGetPropertyData(
+                    defaultOutputDeviceID,
+                    &propertyAddress,
+                    0,
+                    nil,
+                    &propSize,
+                    &uidRef
+                )
+                
+                if status == noErr, let unwrappedRef = uidRef {
+                    let uid = unwrappedRef.takeRetainedValue() as String
+                    
+                    if deviceName.contains("AirPods") || modelUID.contains("AirPods") || uid.contains("AirPods") {
+                        self.deviceIcon = "airpods"
+                        if deviceName.contains("Pro") || uid.contains("Pro") || modelUID.contains("Pro") {
+                            self.deviceIcon = "airpods.pro"
+                        } else if deviceName.contains("Max") || uid.contains("Max") || modelUID.contains("Max") {
+                            self.deviceIcon = "airpods.max"
+                        }
                     }
                 }
             }
-        }
-        
-        if modelUID.contains("Codec Output") {
-            deviceIcon = "headphones"
+            
+            if modelUID.contains("Codec Output") {
+                self.deviceIcon = "headphones"
+            }
         }
     }
 }
