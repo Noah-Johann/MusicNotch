@@ -25,7 +25,8 @@ class WindowManager {
             settingsWindow?.center()
             settingsWindow?.styleMask.remove(.resizable)
         }
-        
+        NSApp.activate(ignoringOtherApps: true)
+
         settingsWindow?.makeKeyAndOrderFront(nil)
         
         NSApp.setActivationPolicy(.regular)
@@ -47,11 +48,11 @@ class WindowManager {
             }
             
             aboutWindow?.center()
-            aboutWindow?.level = .floating
             aboutWindow?.styleMask.remove(.resizable)
             
         }
-        
+        NSApp.activate(ignoringOtherApps: true)
+
         aboutWindow?.makeKeyAndOrderFront(nil)
         
         NSApp.setActivationPolicy(.regular)
@@ -76,10 +77,11 @@ class WindowManager {
                 }
                 
                 onboardingWindow?.center()
-                onboardingWindow?.level = .floating
                 onboardingWindow?.styleMask.remove(.resizable)
             }
             
+            NSApp.activate(ignoringOtherApps: true)
+
             onboardingWindow?.makeKeyAndOrderFront(nil)
             
             NSApp.setActivationPolicy(.regular)
