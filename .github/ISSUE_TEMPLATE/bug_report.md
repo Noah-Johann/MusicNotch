@@ -23,8 +23,11 @@ A clear and concise description of what you expected to happen.
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
 
-**Version**
-Your Version and build of MusicNotch. You can get it in settings. It should look like: MusicNotch Version 0.1.0 (32)
+**MusicNotch version**
+Your version and build of MusicNotch. You can get it in settings. It should look like: MusicNotch Version 0.1.0 (32)
+
+**macOS version**
+Your macOS version. You can find it at  > About this Mac.
 
 **Additional context**
 Add any other context about the problem here.
