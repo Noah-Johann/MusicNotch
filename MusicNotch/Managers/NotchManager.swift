@@ -17,7 +17,7 @@ final class NotchManager {
     
     static let shared = NotchManager()
     
-    let notch: DynamicNotch<Player, NotchViewLeading, NotchViewTrailing>
+    let notch: DynamicNotch<NotchViewExpanded, NotchViewLeading, NotchViewTrailing>
     
     private var openingTask: Task<Void, Never>?
     private var hapticTask: Task<Void, Never>?
@@ -31,7 +31,7 @@ final class NotchManager {
         notch = DynamicNotch(
            hoverBehavior: .increaseShadow,
            style: .notch,
-           expanded: { Player() },
+           expanded: { NotchViewExpanded() },
            compactLeading: { NotchViewLeading() },
            compactTrailing: { NotchViewTrailing() }
        )
@@ -243,7 +243,7 @@ final class NotchManager {
                 }
             }
 
-            if notchState == .hidden || notchState == .open {
+            if notchState == .hidden {
                 await setNotchContent(.closed, false)
             }
 

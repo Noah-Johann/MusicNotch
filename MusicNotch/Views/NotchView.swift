@@ -51,6 +51,27 @@ struct NotchViewTrailing: View {
     }
 }
 
+struct NotchViewExpanded: View {
+    @ObservedObject var notchContentManager = NotchContentState.shared
+    
+    @ObservedObject var volumeManager = VolumeManager.shared
+    @ObservedObject var brightnessManager = BrightnessManager.shared
+    @ObservedObject var keyboardManager = KeyboardManager.shared
+    
+    var body: some View {
+        
+        VStack {
+            Player()
+            
+            if notchContentManager.notchContent == .volume {
+                ExtensionHUDViewExpanded(hudType: .volume)
+            } else if notchContentManager.notchContent == .brightness {
+                ExtensionHUDViewExpanded(hudType: .brightness)
+            }
+        }
+    }
+}
+
 
 class NotchContentState: ObservableObject {
     static let shared = NotchContentState()

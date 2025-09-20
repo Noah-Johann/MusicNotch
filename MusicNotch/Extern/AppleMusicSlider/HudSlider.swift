@@ -14,6 +14,8 @@ struct HudSlider: View {
     @State private var isDragging = false
     @State private var dragOffset: CGFloat = 0
     
+    let isExpanded: Bool
+    
     var body: some View {
         VStack {
             GeometryReader { geo in
@@ -41,22 +43,22 @@ struct HudSlider: View {
                             radius: 7, x: 3)
                         .opacity(value.isZero ? 0 : 1)
                 }
-                .gesture(
-                    DragGesture(minimumDistance: 0)
-                        .onChanged { gesture in
-                            withAnimation(.smooth(duration: 0.3)) {
-                                isDragging = true
-                                updateValue(gesture: gesture, in: geo)
-                            }
-                        }
-                        .onEnded { _ in
-                            withAnimation(.smooth(duration: 0.3)) {
-                                isDragging = false
-                            }
-                        }
-                )
+//                .gesture(
+//                    DragGesture(minimumDistance: 0)
+//                        .onChanged { gesture in
+//                            withAnimation(.smooth(duration: 0.3)) {
+//                                isDragging = true
+//                                updateValue(gesture: gesture, in: geo)
+//                            }
+//                        }
+//                        .onEnded { _ in
+//                            withAnimation(.smooth(duration: 0.3)) {
+//                                isDragging = false
+//                            }
+//                        }
+//                )
             }
-            .frame(height: isDragging ? 8 : 5)
+            .frame(height: isExpanded ? 7 : 5)
         }
     }
     
@@ -70,7 +72,7 @@ struct HudSlider: View {
 
 #Preview {
     @Previewable @State var volume: CGFloat = 0.5
-    HudSlider(value: $volume)
+    HudSlider(value: $volume, isExpanded: false)
         .frame(width: 200)
         .padding(30)
 }
