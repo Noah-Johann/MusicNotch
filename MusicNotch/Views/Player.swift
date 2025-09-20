@@ -11,6 +11,8 @@ import Defaults
 struct Player: View {
     @ObservedObject var spotifyManager = SpotifyManager.shared
     @ObservedObject var volumeManager = VolumeManager.shared
+    @ObservedObject var brightnessManager = BrightnessManager.shared
+    @ObservedObject var keyboardManager = KeyboardManager.shared
     
     @State private var isDragging = false
     @State private var trackposition : Double = 0
