@@ -24,7 +24,7 @@ struct ExtensionHUDViewLeading: View {
         case .volume:
             HStack {
                 HStack {
-                    if volumeManager.volume == 0 {
+                    if volumeManager.volume == 0 || volumeManager.isMuted {
                         Image(systemName: "speaker.slash.fill")
                     } else if volumeManager.volume < 0.4 {
                         Image(systemName: "speaker.wave.1.fill")
@@ -41,6 +41,7 @@ struct ExtensionHUDViewLeading: View {
             .frame(width: 35 + textWidth("Volume", font: .systemFont(ofSize: 12)), height: 20)
             .padding(.trailing, 4)
             .animation(.easeInOut(duration: 0.4), value: volumeManager.volume)
+            .animation(.easeInOut(duration: 0.4), value: volumeManager.isMuted)
             
             
         case .brightness:

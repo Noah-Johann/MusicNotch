@@ -25,7 +25,7 @@ class VolumeManager: ObservableObject {
     
     init() {
         setupDeviceObserver()
-//        handleDeviceChange()
+        handleDeviceChange()
     }
     
     private func defaultAudioDeviceID() -> AudioDeviceID {
@@ -90,6 +90,7 @@ class VolumeManager: ObservableObject {
             let manager = Unmanaged<VolumeManager>.fromOpaque(clientData!).takeUnretainedValue()
             manager.getSystemVolume()
             manager.getMuteStatus()
+            manager.showUpdate()
             return noErr
         }
         _ = AudioObjectAddPropertyListener(
@@ -108,6 +109,7 @@ class VolumeManager: ObservableObject {
             let manager = Unmanaged<VolumeManager>.fromOpaque(clientData!).takeUnretainedValue()
             manager.getMuteStatus()
             manager.getSystemVolume()
+            manager.showUpdate()
             return noErr
         }
         _ = AudioObjectAddPropertyListener(
@@ -178,7 +180,6 @@ class VolumeManager: ObservableObject {
         DispatchQueue.main.async {
             self.volume = CGFloat(volume)
             self.isMuted = (volume == 0) || self.isMuted
-            NotchManager.shared.showExtensionNotch(type: .volume)
         }
     }
     
@@ -204,8 +205,11 @@ class VolumeManager: ObservableObject {
         guard status == noErr else { return }
         DispatchQueue.main.async {
             self.isMuted = (mute != 0)
-            NotchManager.shared.showExtensionNotch(type: .volume)
         }
+    }
+    
+    private func showUpdate() {
+        NotchManager.shared.showExtensionNotch(type: .volume)
     }
 
     private func handleDeviceChange() {
