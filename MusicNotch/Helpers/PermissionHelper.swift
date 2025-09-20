@@ -56,3 +56,11 @@ class PermissionHelper {
     }
 }
 
+enum AccessibilityHelper {
+    static func isAuthorized(prompt: Bool = true) -> Bool {
+        let key = kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String
+        let options = [key: prompt] as CFDictionary
+        return AXIsProcessTrustedWithOptions(options)
+    }
+}
+

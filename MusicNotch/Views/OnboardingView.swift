@@ -21,10 +21,6 @@ struct OnboardingView: View {
     
     @Default(.launchAtLogin) private var launchAtLogin
     
-    func isAccessibilityAuthorized() -> Bool {
-        let options = [kAXTrustedCheckOptionPrompt.takeRetainedValue(): true]
-        return AXIsProcessTrustedWithOptions(options as CFDictionary)
-    }
     
     var body: some View {
         LuminarePane () {
@@ -101,7 +97,7 @@ struct OnboardingView: View {
                             } .buttonStyle(LuminareButtonStyle())
                         } else if OnboardingPage == 2 {
                             Button("Request permission") {
-                                print(isAccessibilityAuthorized())
+                                print(AccessibilityHelper.isAuthorized())
                                 
                                 PermissionHelper.promptUserForConsent(for: "com.spotify.client") { consent in
                                     DispatchQueue.main.async {

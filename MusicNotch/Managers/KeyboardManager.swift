@@ -20,17 +20,12 @@ class KeyboardManager: ObservableObject {
     private let brightnessStep: Float = 1.0 / 16.0
     
     init() {
-        print(isAccessibilityAuthorized())
+        print(AccessibilityHelper.isAuthorized())
         startMonitoring()
     }
     
     deinit {
         stopMonitoring()
-    }
-    
-    func isAccessibilityAuthorized() -> Bool {
-        let options = [kAXTrustedCheckOptionPrompt.takeRetainedValue(): true]
-        return AXIsProcessTrustedWithOptions(options as CFDictionary)
     }
     
     func startMonitoring() {
@@ -44,7 +39,7 @@ class KeyboardManager: ObservableObject {
             eventsOfInterest: CGEventMask(mask),
             callback: { _, type, cgEvent, userInfo in
                 
-                guard let userInfo else { return Unmanaged.passRetained(cgEvent) }
+                guard let userInfo else { return Unmanaged.passUnretained(cgEvent) }
                 let interceptor = Unmanaged<KeyboardManager>.fromOpaque(userInfo).takeUnretainedValue()
                 return interceptor.handleSystemDefined(event: cgEvent)
             },
@@ -66,7 +61,7 @@ class KeyboardManager: ObservableObject {
     
     private func handleSystemDefined(event cgEvent: CGEvent) -> Unmanaged<CGEvent>? {
         guard let nsEvent = NSEvent(cgEvent: cgEvent), nsEvent.type == .systemDefined, nsEvent.subtype.rawValue == 8 else {
-            return Unmanaged.passRetained(cgEvent)
+            return Unmanaged.passUnretained(cgEvent)
         }
         let data1 = nsEvent.data1
         let keyCode = (data1 & 0xFFFF_0000) >> 16
@@ -128,18 +123,20 @@ class KeyboardManager: ObservableObject {
                 NotchManager.shared.showExtensionNotch(type: .volume)
             }
         case .brightnessUp:
-            BrightnessManager.shared.updateBrightness()
             Task {@MainActor in
+                BrightnessManager.shared.updateBrightness()
+
                 NotchManager.shared.showExtensionNotch(type: .brightness)
             }
         case .brightnessDown:
-            BrightnessManager.shared.updateBrightness()
             Task {@MainActor in
+                BrightnessManager.shared.updateBrightness()
+
                 NotchManager.shared.showExtensionNotch(type: .brightness)
             }
         }
         
-        return Unmanaged.passRetained(cgEvent)
+        return Unmanaged.passUnretained(cgEvent)
 
     }
 }

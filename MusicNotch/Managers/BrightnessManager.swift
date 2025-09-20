@@ -9,7 +9,8 @@ import AppKit
 import IOKit
 import CoreGraphics
 
-class BrightnessManager: ObservableObject {
+@MainActor
+final class BrightnessManager: ObservableObject {
     
     static let shared = BrightnessManager()
     

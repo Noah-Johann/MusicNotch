@@ -378,13 +378,15 @@ class VolumeManager: ObservableObject {
     }
     
     public func UpVolume() {
-        let newVolume = volume + 1/32
+        let step: CGFloat = 1.0 / 32.0
+        let newVolume = volume + step
         setVolume(newVolume)
-
+        
     }
     
     public func DownVolume() {
-        let newVolume = volume - 1/32
+        let step: CGFloat = 1.0 / 32.0
+        let newVolume = volume - step
         setVolume(newVolume)
     }
     

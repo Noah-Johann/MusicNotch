@@ -242,10 +242,14 @@ final class NotchManager {
                     NotchContentState.shared.notchContent = .battery
                 }
             case .volume:
+                guard Defaults[.hudExtension] else { return }
+                
                 withAnimation(.bouncy(duration: 0.6)) {
                     NotchContentState.shared.notchContent = .volume
                 }
             case .brightness:
+                guard Defaults[.hudExtension] else { return }
+                
                 withAnimation(.bouncy(duration: 0.6)) {
                     NotchContentState.shared.notchContent = .brightness
                 }
