@@ -273,7 +273,13 @@ final class NotchManager {
                     NotchContentState.shared.notchContent = .music
                 }
             } else {
-                await setNotchContent(.hidden, false)
+                if notchState != .open {
+                    await setNotchContent(.hidden, false)
+                } else {
+                    withAnimation(.bouncy(duration: 0.6)) {
+                        NotchContentState.shared.notchContent = .music
+                    }
+                }
             }
 
             self.extensionNotchTask = nil
