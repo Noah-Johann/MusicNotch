@@ -116,7 +116,7 @@ final class NotchManager {
     
     public func setNotchContent(_ content: NotchState, _ changeDisplay: Bool) async {
         SpotifyManager.shared.updateInfo()
-        
+                
         if changeDisplay == true {
             await self.notch.hide()
         }
@@ -135,6 +135,10 @@ final class NotchManager {
                     await self.setNotchContent(.closed, false)
                     self.expandTask = nil
                     return
+                }
+                
+                withAnimation(.bouncy(duration: 0.6)) {
+                    NotchContentState.shared.notchContent = .music
                 }
                 
                 if Defaults[.notchDisplay] == true {
@@ -182,6 +186,10 @@ final class NotchManager {
             
         case .closed:
             notchState = .closed
+            
+            withAnimation(.bouncy(duration: 0.6)) {
+                NotchContentState.shared.notchContent = .music
+            }
             
             if Defaults[.notchDisplay] == true {
                 guard let notchScreen = NSScreen.screens.first(where: { $0.safeAreaInsets.top > 0 }) else {
