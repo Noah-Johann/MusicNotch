@@ -9,6 +9,7 @@ import Foundation
 import CoreAudio
 import AppKit
 import Combine
+import SwiftUI
 
 @MainActor
 class VolumeManager: ObservableObject {
@@ -24,7 +25,7 @@ class VolumeManager: ObservableObject {
     
     init() {
         setupDeviceObserver()
-        handleDeviceChange()
+//        handleDeviceChange()
     }
     
     private func defaultAudioDeviceID() -> AudioDeviceID {
@@ -88,6 +89,7 @@ class VolumeManager: ObservableObject {
         let volCallback: AudioObjectPropertyListenerProc = { (_, _, _, clientData) -> OSStatus in
             let manager = Unmanaged<VolumeManager>.fromOpaque(clientData!).takeUnretainedValue()
             manager.getSystemVolume()
+            manager.getMuteStatus()
             return noErr
         }
         _ = AudioObjectAddPropertyListener(
@@ -105,6 +107,7 @@ class VolumeManager: ObservableObject {
         let muteCallback: AudioObjectPropertyListenerProc = { (_, _, _, clientData) -> OSStatus in
             let manager = Unmanaged<VolumeManager>.fromOpaque(clientData!).takeUnretainedValue()
             manager.getMuteStatus()
+            manager.getSystemVolume()
             return noErr
         }
         _ = AudioObjectAddPropertyListener(
@@ -201,6 +204,7 @@ class VolumeManager: ObservableObject {
         guard status == noErr else { return }
         DispatchQueue.main.async {
             self.isMuted = (mute != 0)
+            NotchManager.shared.showExtensionNotch(type: .volume)
         }
     }
 
@@ -357,9 +361,9 @@ class VolumeManager: ObservableObject {
         }
     }
     
-    func toggleMute() {
+    public func toggleMute() {
         if isMuted == true {
-            setVolume(Float(volBeforeMute))
+            setVolume(volBeforeMute)
             NotchManager.shared.showExtensionNotch(type: .volume)
         } else {
             volBeforeMute = volume
@@ -369,16 +373,42 @@ class VolumeManager: ObservableObject {
         
     }
     
-    func UpVolume() {
-        
+    public func UpVolume() {
+        let newVolume = volume + 1/32
+        setVolume(newVolume)
+
     }
     
-    func DownVolume() {
-        
+    public func DownVolume() {
+        let newVolume = volume - 1/32
+        setVolume(newVolume)
     }
     
-    private func setVolume(_ volume: Float) {
+    private func setVolume(_ volume: CGFloat) {
+        let deviceID = defaultAudioDeviceID()
+        guard deviceID != kAudioDeviceUnknown else { return }
         
+        var newVolume = max(0.0, min(1.0, Float32(volume)))
+        
+        var propertyAddress = AudioObjectPropertyAddress(
+            mSelector: kAudioDevicePropertyVolumeScalar,
+            mScope: kAudioDevicePropertyScopeOutput,
+            mElement: kAudioObjectPropertyElementMain
+        )
+        
+        let volumeSize = UInt32(MemoryLayout<Float32>.size)
+        let result = AudioObjectSetPropertyData(
+            deviceID,
+            &propertyAddress,
+            0,
+            nil,
+            volumeSize,
+            &newVolume
+        )
+        
+        if result != noErr {
+            print("Failed to set volume: \(result)")
+        }
     }
 }
 

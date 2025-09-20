@@ -75,7 +75,7 @@ struct ExtensionHUDViewTrailing: View {
             HStack {
                 HudSlider(value: $volumeManager.volume)
                 
-                if volumeManager.volume == 0 {
+                if volumeManager.volume == 0 || volumeManager.isMuted {
                     Text("muted")
                         .font(.system(size: 12))
                         .foregroundStyle(.secondary)
@@ -84,6 +84,7 @@ struct ExtensionHUDViewTrailing: View {
             .frame(width: 35 + textWidth("Volume", font: .systemFont(ofSize: 12)), height: 20)
             .padding(.leading, 4)
             .animation(.easeInOut(duration: 0.4), value: volumeManager.volume)
+            .animation(.bouncy(duration: 0.4), value: volumeManager.isMuted)
             
         case .brightness:
             HStack {

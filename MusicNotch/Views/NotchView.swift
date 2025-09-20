@@ -21,6 +21,9 @@ struct NotchViewLeading: View {
             } else if notchContentManager.notchContent == .volume {
                 ExtensionHUDViewLeading(hudType: .volume)
                     .transition(.blurReplace)
+            } else if notchContentManager.notchContent == .brightness {
+                 ExtensionHUDViewLeading(hudType: .brightness)
+                    .transition(.blurReplace)
             }
         }
     }
@@ -39,6 +42,9 @@ struct NotchViewTrailing: View {
                     .transition(.blurReplace)
             } else if notchContentManager.notchContent == .volume {
                 ExtensionHUDViewTrailing(hudType: .volume)
+                    .transition(.blurReplace)
+            } else if notchContentManager.notchContent == .brightness {
+                ExtensionHUDViewTrailing(hudType: .brightness)
                     .transition(.blurReplace)
             }
         }
