@@ -29,7 +29,8 @@ class KeyboardManager: ObservableObject {
     }
     
     func isAccessibilityAuthorized() -> Bool {
-        return AXIsProcessTrusted()
+        let options = [kAXTrustedCheckOptionPrompt.takeRetainedValue(): true]
+        return AXIsProcessTrustedWithOptions(options as CFDictionary)
     }
     
     func startMonitoring() {
@@ -42,9 +43,10 @@ class KeyboardManager: ObservableObject {
             options: .defaultTap,
             eventsOfInterest: CGEventMask(mask),
             callback: { _, type, cgEvent, userInfo in
+                
                 guard let userInfo else { return Unmanaged.passRetained(cgEvent) }
                 let interceptor = Unmanaged<KeyboardManager>.fromOpaque(userInfo).takeUnretainedValue()
-                    return interceptor.handleSystemDefined(event: cgEvent)
+                return interceptor.handleSystemDefined(event: cgEvent)
             },
             userInfo: UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque())
         )
@@ -62,7 +64,6 @@ class KeyboardManager: ObservableObject {
         eventTap = nil
     }
     
-    @MainActor
     private func handleSystemDefined(event cgEvent: CGEvent) -> Unmanaged<CGEvent>? {
         guard let nsEvent = NSEvent(cgEvent: cgEvent), nsEvent.type == .systemDefined, nsEvent.subtype.rawValue == 8 else {
             return Unmanaged.passRetained(cgEvent)
@@ -82,26 +83,63 @@ class KeyboardManager: ObservableObject {
         guard let nx = NXKeyType(rawValue: keyCode) else {
             return Unmanaged.passRetained(cgEvent)
         }
+        
         // Return nil to avoid apple native animation
+        //        switch nx {
+        //        case .soundUp:
+        //            Task { @MainActor in
+        //                VolumeManager.shared.UpVolume()
+        //            }
+        //            return nil
+        //        case .soundDown:
+        //            Task { @MainActor in
+        //                VolumeManager.shared.DownVolume()
+        //            }
+        //            return nil
+        //        case .mute:
+        //            if isPress {
+        //                Task { @MainActor in
+        //                    VolumeManager.shared.toggleMute()
+        //                    print("toggle mute")
+        //                }
+        //            }
+        //            return nil
+        //        case .brightnessUp:
+        //            BrightnessManager.shared.UpBrightness()
+        //            print("up brightness")
+        //            return nil
+        //        case .brightnessDown:
+        //            print("down brightness")
+        //            BrightnessManager.shared.DownBrightness()
+        //            return nil
+        //        }
+        
         switch nx {
         case .soundUp:
-            VolumeManager.shared.UpVolume()
-            return nil
-        case .soundDown:
-            VolumeManager.shared.DownVolume()
-            return nil
-        case .mute:
-            if isPress {
-                VolumeManager.shared.toggleMute()
-                print("toggle mute")
+            Task {@MainActor in
+                NotchManager.shared.showExtensionNotch(type: .volume)
             }
-            return nil
+        case .soundDown:
+            Task {@MainActor in
+                NotchManager.shared.showExtensionNotch(type: .volume)
+            }
+        case .mute:
+            Task {@MainActor in
+                NotchManager.shared.showExtensionNotch(type: .volume)
+            }
         case .brightnessUp:
-           // BrightnessManager.shared.UpBrightness()
-            return nil
+            BrightnessManager.shared.updateBrightness()
+            Task {@MainActor in
+                NotchManager.shared.showExtensionNotch(type: .brightness)
+            }
         case .brightnessDown:
-           // BrightnessManager.shared.DownBrightness()
-            return nil
+            BrightnessManager.shared.updateBrightness()
+            Task {@MainActor in
+                NotchManager.shared.showExtensionNotch(type: .brightness)
+            }
         }
+        
+        return Unmanaged.passRetained(cgEvent)
+
     }
 }
