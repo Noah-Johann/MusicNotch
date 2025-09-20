@@ -19,15 +19,41 @@ class VolumeManager: ObservableObject {
     
     @Published var deviceIcon: String = "headphones"
     
+    private var volBeforeMute: CGFloat = 0
+    private var currentDeviceID: AudioDeviceID = kAudioDeviceUnknown
     
     init() {
-        setupObservers()
-        setupVolumeObservers()
+        setupDeviceObserver()
+        handleDeviceChange()
     }
     
-    func setupObservers() {
-        getAudioOutputDevice()
+    private func defaultAudioDeviceID() -> AudioDeviceID {
+        var defaultOutputDeviceID = AudioDeviceID(0)
+         var propertySize = UInt32(MemoryLayout<AudioDeviceID>.size)
+         var defaultAddress = AudioObjectPropertyAddress(
+             mSelector: kAudioHardwarePropertyDefaultOutputDevice,
+             mScope: kAudioObjectPropertyScopeGlobal,
+             mElement: kAudioObjectPropertyElementMain
+         )
+         
+         let status = AudioObjectGetPropertyData(
+             AudioObjectID(kAudioObjectSystemObject),
+             &defaultAddress,
+             0,
+             nil,
+             &propertySize,
+             &defaultOutputDeviceID
+         )
+         
+         guard status == noErr else {
+             print("Error getting default output device for observer")
+             return kAudioDeviceUnknown
+         }
         
+        return defaultOutputDeviceID
+    }
+    
+    func setupDeviceObserver() {
         var address = AudioObjectPropertyAddress(
             mSelector: kAudioHardwarePropertyDefaultOutputDevice,
             mScope: kAudioObjectPropertyScopeGlobal,
@@ -38,8 +64,7 @@ class VolumeManager: ObservableObject {
         
         let callback: AudioObjectPropertyListenerProc = { (inObjectID, numberAddresses, addresses, clientData) -> OSStatus in
             let manager = Unmanaged<VolumeManager>.fromOpaque(clientData!).takeUnretainedValue()
-            manager.getAudioOutputDevice()
-            manager.setupVolumeObservers()
+            manager.handleDeviceChange()
             return noErr
         }
         
@@ -53,83 +78,81 @@ class VolumeManager: ObservableObject {
             print("Error setting up audio device observer")
         }
     }
-    
-    func setupVolumeObservers() {
-        var defaultOutputDeviceID = AudioDeviceID(0)
-        var propertySize = UInt32(MemoryLayout<AudioDeviceID>.size)
-        var defaultAddress = AudioObjectPropertyAddress(
-            mSelector: kAudioHardwarePropertyDefaultOutputDevice,
-            mScope: kAudioObjectPropertyScopeGlobal,
-            mElement: kAudioObjectPropertyElementMain
-        )
-        
-        let status = AudioObjectGetPropertyData(
-            AudioObjectID(kAudioObjectSystemObject),
-            &defaultAddress,
-            0,
-            nil,
-            &propertySize,
-            &defaultOutputDeviceID
-        )
-        
-        guard status == noErr else {
-            print("Error getting default output device for observer")
-            return
-        }
-        
-        var address = AudioObjectPropertyAddress(
+
+    private func setupPerDeviceObservers(for deviceID: AudioDeviceID) {
+        var volAddress = AudioObjectPropertyAddress(
             mSelector: kAudioDevicePropertyVolumeScalar,
             mScope: kAudioDevicePropertyScopeOutput,
             mElement: kAudioObjectPropertyElementMain
         )
-        
-        let callback: AudioObjectPropertyListenerProc = { (inObjectID, numberAddresses, addresses, clientData) -> OSStatus in
+        let volCallback: AudioObjectPropertyListenerProc = { (_, _, _, clientData) -> OSStatus in
             let manager = Unmanaged<VolumeManager>.fromOpaque(clientData!).takeUnretainedValue()
             manager.getSystemVolume()
             return noErr
         }
-        
-        let addStatus = AudioObjectAddPropertyListener(
-            defaultOutputDeviceID,
-            &address,
-            callback,
+        _ = AudioObjectAddPropertyListener(
+            deviceID,
+            &volAddress,
+            volCallback,
             Unmanaged.passUnretained(self).toOpaque()
         )
-        
-        if addStatus != noErr {
-            print("Error adding volume listener")
+
+        var muteAddress = AudioObjectPropertyAddress(
+            mSelector: kAudioDevicePropertyMute,
+            mScope: kAudioDevicePropertyScopeOutput,
+            mElement: kAudioObjectPropertyElementMain
+        )
+        let muteCallback: AudioObjectPropertyListenerProc = { (_, _, _, clientData) -> OSStatus in
+            let manager = Unmanaged<VolumeManager>.fromOpaque(clientData!).takeUnretainedValue()
+            manager.getMuteStatus()
+            return noErr
         }
+        _ = AudioObjectAddPropertyListener(
+            deviceID,
+            &muteAddress,
+            muteCallback,
+            Unmanaged.passUnretained(self).toOpaque()
+        )
+
+    }
+
+    private func teardownPerDeviceObservers(for deviceID: AudioDeviceID) {
+
+        var volAddress = AudioObjectPropertyAddress(
+            mSelector: kAudioDevicePropertyVolumeScalar,
+            mScope: kAudioDevicePropertyScopeOutput,
+            mElement: kAudioObjectPropertyElementMain
+        )
+        _ = AudioObjectRemovePropertyListener(
+            deviceID,
+            &volAddress,
+            { (_, _, _, _) -> OSStatus in return noErr },
+            nil
+        )
+
+        var muteAddress = AudioObjectPropertyAddress(
+            mSelector: kAudioDevicePropertyMute,
+            mScope: kAudioDevicePropertyScopeOutput,
+            mElement: kAudioObjectPropertyElementMain
+        )
+        _ = AudioObjectRemovePropertyListener(
+            deviceID,
+            &muteAddress,
+            { (_, _, _, _) -> OSStatus in return noErr },
+            nil
+        )
     }
     
     func getSystemVolume() {
-        var defaultOutputDeviceID = AudioDeviceID(0)
-        var propertySize = UInt32(MemoryLayout<AudioDeviceID>.size)
-        
-        // Get the default output device
-        var address = AudioObjectPropertyAddress(
-            mSelector: kAudioHardwarePropertyDefaultOutputDevice,
-            mScope: kAudioObjectPropertyScopeGlobal,
-            mElement: kAudioObjectPropertyElementMain
-        )
-        
-        let status = AudioObjectGetPropertyData(
-            AudioObjectID(kAudioObjectSystemObject),
-            &address,
-            0,
-            nil,
-            &propertySize,
-            &defaultOutputDeviceID
-        )
-        
-        guard status == noErr else {
+        let defaultOutputDeviceID = defaultAudioDeviceID()
+        guard defaultOutputDeviceID != kAudioDeviceUnknown else {
             print("Error getting default output device")
             return
         }
         
-        // Get the volume scalar (0.0 – 1.0)
         var volume = Float32(0)
-        propertySize = UInt32(MemoryLayout<Float32>.size)
-        address = AudioObjectPropertyAddress(
+        var propertySize = UInt32(MemoryLayout<Float32>.size)
+        var address = AudioObjectPropertyAddress(
             mSelector: kAudioDevicePropertyVolumeScalar,
             mScope: kAudioDevicePropertyScopeOutput,
             mElement: kAudioObjectPropertyElementMain
@@ -151,44 +174,69 @@ class VolumeManager: ObservableObject {
         
         DispatchQueue.main.async {
             self.volume = CGFloat(volume)
-            
-            if volume == 0 {
-                self.isMuted = true
-            }
-            
+            self.isMuted = (volume == 0) || self.isMuted
             NotchManager.shared.showExtensionNotch(type: .volume)
         }
     }
     
-    func getAudioOutputDevice() {
-        // Get playback device
-        var defaultOutputDeviceID: AudioDeviceID = 0
-        var propertyAddress = AudioObjectPropertyAddress(
-            mSelector: kAudioHardwarePropertyDefaultOutputDevice,
-            mScope: kAudioObjectPropertyScopeGlobal,
+    private func getMuteStatus() {
+        let deviceID = defaultAudioDeviceID()
+        guard deviceID != kAudioDeviceUnknown else { return }
+
+        var mute: UInt32 = 0
+        var propertySize = UInt32(MemoryLayout<UInt32>.size)
+        var address = AudioObjectPropertyAddress(
+            mSelector: kAudioDevicePropertyMute,
+            mScope: kAudioDevicePropertyScopeOutput,
             mElement: kAudioObjectPropertyElementMain
         )
-        var propSize = UInt32(MemoryLayout<AudioDeviceID>.size)
-        
-        var status = AudioObjectGetPropertyData(
-            AudioObjectID(kAudioObjectSystemObject),
-            &propertyAddress,
+        let status = AudioObjectGetPropertyData(
+            deviceID,
+            &address,
             0,
             nil,
-            &propSize,
-            &defaultOutputDeviceID
+            &propertySize,
+            &mute
         )
-        
-        
-        guard status == noErr else {
-            print("Error on getting output device: \(status)")
-            return
+        guard status == noErr else { return }
+        DispatchQueue.main.async {
+            self.isMuted = (mute != 0)
         }
-        
-        guard defaultOutputDeviceID != 0 else {
+    }
+
+    private func handleDeviceChange() {
+        let newDevice = defaultAudioDeviceID()
+        guard newDevice != kAudioDeviceUnknown else { return }
+
+        if currentDeviceID != kAudioDeviceUnknown && currentDeviceID != newDevice {
+            teardownPerDeviceObservers(for: currentDeviceID)
+        }
+        currentDeviceID = newDevice
+
+        // Update device info
+        getAudioOutputDevice()
+        // Register per-device observers
+        setupPerDeviceObservers(for: newDevice)
+        // Refresh current values
+        getSystemVolume()
+        getMuteStatus()
+    }
+    
+    func getAudioOutputDevice() {
+        // Get playback device
+        let defaultOutputDeviceID = defaultAudioDeviceID()
+        guard defaultOutputDeviceID != kAudioDeviceUnknown else {
             print("No device found")
             return
         }
+        
+        var propertyAddress = AudioObjectPropertyAddress(
+            mSelector: kAudioDevicePropertyDeviceNameCFString,
+            mScope: kAudioObjectPropertyScopeGlobal,
+            mElement: kAudioObjectPropertyElementMain
+        )
+        var propSize: UInt32
+        var status: OSStatus
         
         // Get device name
         var deviceName = "Unknown"
@@ -243,7 +291,7 @@ class VolumeManager: ObservableObject {
             &transportType
         )
         DispatchQueue.main.async {
-            var transportString = "unknown"
+            var transportString: String = "unknown"
             switch transportType {
             case kAudioDeviceTransportTypeBuiltIn:
                 transportString = "Build in"
@@ -308,4 +356,29 @@ class VolumeManager: ObservableObject {
             }
         }
     }
+    
+    func toggleMute() {
+        if isMuted == true {
+            setVolume(Float(volBeforeMute))
+            NotchManager.shared.showExtensionNotch(type: .volume)
+        } else {
+            volBeforeMute = volume
+            setVolume(0)
+            NotchManager.shared.showExtensionNotch(type: .volume)
+        }
+        
+    }
+    
+    func UpVolume() {
+        
+    }
+    
+    func DownVolume() {
+        
+    }
+    
+    private func setVolume(_ volume: Float) {
+        
+    }
 }
+
