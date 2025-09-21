@@ -10,6 +10,7 @@ import CoreAudio
 import AppKit
 import Combine
 import SwiftUI
+import Defaults
 
 @MainActor
 class VolumeManager: ObservableObject {
@@ -209,7 +210,9 @@ class VolumeManager: ObservableObject {
     }
     
     private func showUpdate() {
-        NotchManager.shared.showExtensionNotch(type: .volume)
+        if Defaults[.hudExtension] {
+            NotchManager.shared.showExtensionNotch(type: .volume)
+        }
     }
 
     private func handleDeviceChange() {

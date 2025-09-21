@@ -8,6 +8,7 @@
 import Foundation
 import AppKit
 import Carbon.HIToolbox
+import Defaults
 
 
 private let kSystemDefinedEventType = CGEventType(rawValue: 14)!
@@ -109,30 +110,32 @@ class KeyboardManager: ObservableObject {
         //            return nil
         //        }
         
-        switch nx {
-        case .soundUp:
-            Task {@MainActor in
-                NotchManager.shared.showExtensionNotch(type: .volume)
-            }
-        case .soundDown:
-            Task {@MainActor in
-                NotchManager.shared.showExtensionNotch(type: .volume)
-            }
-        case .mute:
-            Task {@MainActor in
-                NotchManager.shared.showExtensionNotch(type: .volume)
-            }
-        case .brightnessUp:
-            Task {@MainActor in
-                BrightnessManager.shared.updateBrightness()
-
-                NotchManager.shared.showExtensionNotch(type: .brightness)
-            }
-        case .brightnessDown:
-            Task {@MainActor in
-                BrightnessManager.shared.updateBrightness()
-
-                NotchManager.shared.showExtensionNotch(type: .brightness)
+        if Defaults[.hudExtension] {
+            switch nx {
+            case .soundUp:
+                Task {@MainActor in
+                    NotchManager.shared.showExtensionNotch(type: .volume)
+                }
+            case .soundDown:
+                Task {@MainActor in
+                    NotchManager.shared.showExtensionNotch(type: .volume)
+                }
+            case .mute:
+                Task {@MainActor in
+                    NotchManager.shared.showExtensionNotch(type: .volume)
+                }
+            case .brightnessUp:
+                Task {@MainActor in
+                    BrightnessManager.shared.updateBrightness()
+                    
+                    NotchManager.shared.showExtensionNotch(type: .brightness)
+                }
+            case .brightnessDown:
+                Task {@MainActor in
+                    BrightnessManager.shared.updateBrightness()
+                    
+                    NotchManager.shared.showExtensionNotch(type: .brightness)
+                }
             }
         }
         
