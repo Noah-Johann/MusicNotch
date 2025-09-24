@@ -21,7 +21,6 @@ class KeyboardManager: ObservableObject {
     private let brightnessStep: Float = 1.0 / 16.0
     
     init() {
-        print(AccessibilityHelper.isAuthorized())
         startMonitoring()
     }
     
