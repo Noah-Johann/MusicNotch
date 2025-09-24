@@ -9,7 +9,7 @@ import SwiftUI
 import Luminare
 
 @ViewBuilder
-func PermissionButton(permissionName: String, granted: Bool, icon: String, action: @escaping () -> Void = {}) -> some View {
+func PermissionButton(permissionName: LocalizedStringKey, granted: Bool, icon: String, action: @escaping () -> Void = {}) -> some View {
     
     Button {
         action()
@@ -32,6 +32,11 @@ func PermissionButton(permissionName: String, granted: Bool, icon: String, actio
 
             VStack(alignment: .leading) {
                 Text(permissionName)
+                    .padding(.trailing, 5)
+                    .luminarePopover(attachedTo: .topTrailing) {
+                        Text("Please relaunch the app after giving permissions")
+                            .padding()
+                    }
             }
 
             Spacer()
