@@ -1,5 +1,5 @@
 {
-  "originHash" : "b7da33c458226d7c5bbd4404cc13a1d7dbb72e3d2ec06af863ae17dbb126bfb5",
+  "originHash" : "43e391ed891595aa3e8e1a0a8edd8defa5647fd95bd8c937e28123df37914d30",
   "pins" : [
     {
       "identity" : "defaults",
@@ -40,10 +40,10 @@
     {
       "identity" : "luminare",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Cement-Labs/Luminare",
+      "location" : "https://github.com/MrKai77/Luminare",
       "state" : {
         "branch" : "main",
-        "revision" : "64499882e3e44a246f38fc5f697936ef3dbdc48b"
+        "revision" : "820333b428bf191b27935cc7765e2ea0a8bea0ff"
       }
     },
     {
