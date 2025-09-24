@@ -131,6 +131,7 @@ class SpotifyManager: ObservableObject {
         // Open notch when playback starts
         Task { @MainActor in
             if self.isPlaying == true && NotchManager.shared.notchState == .hidden {
+                NotchContentState.shared.notchContent = .music
                 await NotchManager.shared.setNotchContent(.closed, false)
             }
         }

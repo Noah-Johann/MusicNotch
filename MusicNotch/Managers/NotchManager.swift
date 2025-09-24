@@ -17,11 +17,13 @@ final class NotchManager {
     
     static let shared = NotchManager()
     
-    let notch: DynamicNotch<Player, NotchViewLeading, NotchViewTrailing>
+    let notch: DynamicNotch<NotchViewExpanded, NotchViewLeading, NotchViewTrailing>
     
     private var openingTask: Task<Void, Never>?
     private var hapticTask: Task<Void, Never>?
     private var expandTask: Task<Void, Never>?
+    private var extensionNotchTask: Task<Void, Never>?
+    private var extensionRequestCounter: Int = 0
     
     private var isCurrentlyHovering = false
     
@@ -29,7 +31,7 @@ final class NotchManager {
         notch = DynamicNotch(
            hoverBehavior: .increaseShadow,
            style: .notch,
-           expanded: { Player() },
+           expanded: { NotchViewExpanded() },
            compactLeading: { NotchViewLeading() },
            compactTrailing: { NotchViewTrailing() }
        )
@@ -115,6 +117,8 @@ final class NotchManager {
     public func setNotchContent(_ content: NotchState, _ changeDisplay: Bool) async {
         SpotifyManager.shared.updateInfo()
         
+        let prevNotchState = self.notchState
+                
         if changeDisplay == true {
             await self.notch.hide()
         }
@@ -133,6 +137,10 @@ final class NotchManager {
                     await self.setNotchContent(.closed, false)
                     self.expandTask = nil
                     return
+                }
+                
+                withAnimation(.bouncy(duration: 0.6)) {
+                    NotchContentState.shared.notchContent = .music
                 }
                 
                 if Defaults[.notchDisplay] == true {
@@ -181,6 +189,12 @@ final class NotchManager {
         case .closed:
             notchState = .closed
             
+            if prevNotchState == .open {
+                withAnimation(.bouncy(duration: 0.6)) {
+                    NotchContentState.shared.notchContent = .music
+                }
+            }
+            
             if Defaults[.notchDisplay] == true {
                 guard let notchScreen = NSScreen.screens.first(where: { $0.safeAreaInsets.top > 0 }) else {
                     if Defaults[.noNotchScreenHide] && Defaults[.notchDisplay] {
@@ -218,9 +232,12 @@ final class NotchManager {
     }
     
     public func showExtensionNotch(type: NotchContent) {
-        Task {
-            guard NotchContentState.shared.notchContent == .music else { return }
-            
+
+        extensionRequestCounter &+= 1
+        let requestToken = extensionRequestCounter
+
+        extensionNotchTask?.cancel()
+        extensionNotchTask = Task { @MainActor in
             switch type {
             case .music:
                 return
@@ -228,28 +245,48 @@ final class NotchManager {
                 withAnimation(.bouncy(duration: 0.6)) {
                     NotchContentState.shared.notchContent = .battery
                 }
+            case .volume:
+                guard Defaults[.hudExtension] else { return }
+                
+                withAnimation(.bouncy(duration: 0.6)) {
+                    NotchContentState.shared.notchContent = .volume
+                }
+            case .brightness:
+                guard Defaults[.hudExtension] else { return }
+                
+                withAnimation(.bouncy(duration: 0.6)) {
+                    NotchContentState.shared.notchContent = .brightness
+                }
             }
-            
-            let prevNotchState = notchState
-            
-            if prevNotchState == .hidden || prevNotchState == .open {
+
+            if notchState == .hidden {
                 await setNotchContent(.closed, false)
             }
-            
-            try? await Task.sleep(nanoseconds: UInt64(Defaults[.displayDuration] * 1000000000))
-            
-            if prevNotchState == .hidden {
-                await setNotchContent(.hidden, false)
-                
-                // wait for notch animation to close
-                try? await Task.sleep(for: .seconds(0.5))
-                
-                NotchContentState.shared.notchContent = .music
-            } else {
+
+            // Wait for display duration
+            try? await Task.sleep(nanoseconds: UInt64(Defaults[.displayDuration] * 1_000_000_000))
+
+            // Only the latest request should proceed past this point
+            guard requestToken == self.extensionRequestCounter, !Task.isCancelled else {
+                self.extensionNotchTask = nil
+                return
+            }
+
+            if SpotifyManager.shared.isPlaying {
                 withAnimation(.bouncy(duration: 0.6)) {
                     NotchContentState.shared.notchContent = .music
                 }
+            } else {
+                if notchState != .open {
+                    await setNotchContent(.hidden, false)
+                } else {
+                    withAnimation(.bouncy(duration: 0.6)) {
+                        NotchContentState.shared.notchContent = .music
+                    }
+                }
             }
+
+            self.extensionNotchTask = nil
         }
     }
 }
@@ -265,5 +302,7 @@ enum NotchState {
 enum NotchContent {
     case music
     case battery
+    case volume
+    case brightness
 }
 

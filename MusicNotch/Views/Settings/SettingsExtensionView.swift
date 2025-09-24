@@ -12,6 +12,9 @@ import Defaults
 struct SettingsExtensionView: View {
     @Default(.batteryExtension) private var batteryExtension
     @Default(.displayDuration) private var displayDuration
+    @Default(.hudExtension) private var hudExtension
+    @Default(.accentColorHudSlider) private var accentColorHudSlider
+    @Default(.gradientHudSlider) private var gradientHudSlider
     
     var body: some View {
         LuminareSection {
@@ -28,13 +31,29 @@ struct SettingsExtensionView: View {
             .luminareSliderLayout(.regular)
             .padding(.bottom, 3)
             
-            LuminareToggle(isOn: $batteryExtension) {
-                Text("Enable Battery Extension")
-            }
-            
         } header: {
             Text("Extensions (BETA)")
         }
+        LuminareSection {
+            LuminareToggle(isOn: $batteryExtension) {
+                Text("Enable Battery extension")
+            }
+        }
+        
+        LuminareSection {
+            LuminareToggle(isOn: $hudExtension) {
+                Text("Enable HUD extension")
+            }
+            
+            LuminareToggle(isOn: $accentColorHudSlider) {
+                Text("Accent color slider")
+            }
+            
+            LuminareToggle(isOn: $gradientHudSlider) {
+                Text("Gradient slider")
+            }
+        }
+        
         .padding(.bottom, 14)
     }
 }
