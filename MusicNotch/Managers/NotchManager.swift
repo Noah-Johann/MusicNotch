@@ -242,6 +242,7 @@ final class NotchManager {
     }
     
     public func showExtensionNotch(type: NotchContent) {
+        guard NotchContentState.shared.notchContent != .locked || type == .unlocked else { return }
 
         extensionRequestCounter &+= 1
         let requestToken = extensionRequestCounter
@@ -266,6 +267,20 @@ final class NotchManager {
                 
                 withAnimation(.bouncy(duration: 0.6)) {
                     NotchContentState.shared.notchContent = .brightness
+                }
+            case .locked:
+                withAnimation(.bouncy(duration: 0.6)) {
+                    NotchContentState.shared.notchContent = .locked
+                }
+                if notchState == .hidden {
+                    await setNotchContent(.closed, false)
+                }
+                self.extensionNotchTask = nil
+                
+                return
+            case .unlocked:
+                withAnimation(.bouncy(duration: 0.6)) {
+                    NotchContentState.shared.notchContent = .unlocked
                 }
             }
 
@@ -314,5 +329,7 @@ enum NotchContent {
     case battery
     case volume
     case brightness
+    case locked
+    case unlocked
 }
 

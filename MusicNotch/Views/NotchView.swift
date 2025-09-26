@@ -24,6 +24,12 @@ struct NotchViewLeading: View {
             } else if notchContentManager.notchContent == .brightness {
                  ExtensionHUDViewLeading(hudType: .brightness)
                     .transition(.blurReplace)
+            } else if notchContentManager.notchContent == .locked {
+                ExtensionLockViewLeading(lockType: .locked)
+                    .transition(.blurReplace)
+            } else if notchContentManager.notchContent == .unlocked {
+                ExtensionLockViewLeading(lockType: .unlocked)
+                    .transition(.blurReplace)
             }
         }
     }
@@ -46,6 +52,12 @@ struct NotchViewTrailing: View {
             } else if notchContentManager.notchContent == .brightness {
                 ExtensionHUDViewTrailing(hudType: .brightness)
                     .transition(.blurReplace)
+            } else if notchContentManager.notchContent == .locked {
+                ExtensionLockViewTrailing()
+                    .transition(.blurReplace)
+            } else if notchContentManager.notchContent == .unlocked {
+                ExtensionLockViewTrailing()
+                    .transition(.blurReplace)
             }
         }
     }
@@ -57,9 +69,9 @@ struct NotchViewExpanded: View {
     @ObservedObject var volumeManager = VolumeManager.shared
     @ObservedObject var brightnessManager = BrightnessManager.shared
     @ObservedObject var keyboardManager = KeyboardManager.shared
+    @ObservedObject var lockScreenManager = LockScreenManager.shared
     
     var body: some View {
-        
         VStack {
             Player()
             
