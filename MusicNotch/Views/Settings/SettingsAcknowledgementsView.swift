@@ -55,7 +55,13 @@ struct SettingsAcknowledgementsView: View {
                                        license: "MIT",
                                        link: URL(string: "https://github.com/pratikg29/Custom-Slider-Control")!,
                                        image: "book"
-                    ) .frame( height: 40)                        }
+                    ) .frame( height: 40)
+                    aboutLicenseButton(name: "Sparkle",
+                                       license: "MIT",
+                                       link: URL(string: "https://github.com/sparkle-project/Sparkle")!,
+                                       image: "book"
+                    ) .frame( height: 40)
+                }
             } header: {
                 Text ("Acknowledgements")
             }

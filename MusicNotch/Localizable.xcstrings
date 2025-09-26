@@ -27,6 +27,26 @@
         }
       }
     },
+    "Accent color slider" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Akzentfarbener Regler"
+          }
+        }
+      }
+    },
+    "Accessibility Permission" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Berechtigung für Bedinungshilfen"
+          }
+        }
+      }
+    },
     "Acknowledgements" : {
       "localizations" : {
         "de" : {
@@ -53,6 +73,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Erscheinungsbild"
+          }
+        }
+      }
+    },
+    "Brightness" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Helligkeit"
           }
         }
       }
@@ -177,12 +207,34 @@
         }
       }
     },
-    "Enable Battery Extension" : {
+    "Enable Battery extension" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aktiviere Batterie-Erweiterung"
+            "value" : "Aktiviere Batterie Erweiterung"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable Battery extension"
+          }
+        }
+      }
+    },
+    "Enable HUD extension" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktiviere HUD Erweiterung"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable HUD extension"
           }
         }
       }
@@ -193,6 +245,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Erweiterungen (BETA)"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Extensions (BETA)"
           }
         }
       }
@@ -243,6 +301,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "GPL 3.0 Lizenz"
+          }
+        }
+      }
+    },
+    "Gradient slider" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Farbverlauf Regler"
           }
         }
       }
@@ -407,6 +475,16 @@
         }
       }
     },
+    "muted" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "stumm"
+          }
+        }
+      }
+    },
     "Next" : {
       "localizations" : {
         "de" : {
@@ -533,6 +611,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bitte öffnen sie Einstellungen > Datenschutz & Sicherheit > Automation und erlauben sie Spotify unter MusicNotch"
+          }
+        }
+      }
+    },
+    "Please relaunch the app after giving permissions" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bitte die App neustarten, nachdem Berechtigungen erteilt wurden"
           }
         }
       }
@@ -761,6 +849,16 @@
         }
       },
       "shouldTranslate" : false
+    },
+    "Volume" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lautstärke"
+          }
+        }
+      }
     },
     "Welcome" : {
       "localizations" : {

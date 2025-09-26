@@ -22,7 +22,6 @@ struct OnboardingView: View {
     @Default(.launchAtLogin) private var launchAtLogin
     
     
-    
     var body: some View {
         LuminarePane () {
             VStack (alignment: .center){
@@ -98,6 +97,8 @@ struct OnboardingView: View {
                             } .buttonStyle(LuminareButtonStyle())
                         } else if OnboardingPage == 2 {
                             Button("Request permission") {
+                                print(AccessibilityHelper.isAuthorized(prompt: true))
+                                
                                 PermissionHelper.promptUserForConsent(for: "com.spotify.client") { consent in
                                     DispatchQueue.main.async {
                                         print("Constent \(consent)")

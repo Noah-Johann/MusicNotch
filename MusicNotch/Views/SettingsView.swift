@@ -30,6 +30,8 @@ struct SettingsView: View {
                 SettingsExtensionView()
                 
                 SettingsShortcutsView()
+                
+                SettingsPermissionView()
 
                 SettingsAboutView()
                                 

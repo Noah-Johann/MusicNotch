@@ -19,13 +19,15 @@
 		4F8405652DB6DAE100BC97E2 /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F8405642DB6DAE100BC97E2 /* DynamicNotchKit */; };
 		4F8405682DB6DB5100BC97E2 /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F8405672DB6DB5100BC97E2 /* DynamicNotchKit */; };
 		4FABD4852D9704BB00F8CFEA /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 4FABD4842D9704BB00F8CFEA /* KeyboardShortcuts */; };
-		4FB90C3B2E339FE7005048EC /* Luminare in Frameworks */ = {isa = PBXBuildFile; productRef = 4FB90C3A2E339FE7005048EC /* Luminare */; };
+		4FAD01402E7ECE06002D4794 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FAD013F2E7ECE06002D4794 /* IOKit.framework */; };
+		4FAD05212E8499BA002D4794 /* Luminare in Frameworks */ = {isa = PBXBuildFile; productRef = 4FAD05202E8499BA002D4794 /* Luminare */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		4F67B5F72D849896001FF27A /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
 		4F9BC36E2DE62E9B00175262 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		4FA87FC02D847DD700725978 /* MusicNotch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MusicNotch.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4FAD013F2E7ECE06002D4794 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -59,7 +61,6 @@
 				4F8405652DB6DAE100BC97E2 /* DynamicNotchKit in Frameworks */,
 				4F4DCDD92DB137F800067056 /* DynamicNotchKit in Frameworks */,
 				4F2905DE2DB8E196004C1DA1 /* DynamicNotchKit in Frameworks */,
-				4FB90C3B2E339FE7005048EC /* Luminare in Frameworks */,
 				4F4DCDE22DB13C3100067056 /* DynamicNotchKit in Frameworks */,
 				4F8405682DB6DB5100BC97E2 /* DynamicNotchKit in Frameworks */,
 				4F33DF842D9EE522008F0182 /* Defaults in Frameworks */,
@@ -67,6 +68,8 @@
 				4F59E1482E4A9949005E4B75 /* Sparkle in Frameworks */,
 				4F33DF812D9EDF9A008F0182 /* LaunchAtLogin in Frameworks */,
 				4FABD4852D9704BB00F8CFEA /* KeyboardShortcuts in Frameworks */,
+				4FAD01402E7ECE06002D4794 /* IOKit.framework in Frameworks */,
+				4FAD05212E8499BA002D4794 /* Luminare in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -76,6 +79,7 @@
 		4F67B5F62D849896001FF27A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4FAD013F2E7ECE06002D4794 /* IOKit.framework */,
 				4F9BC36E2DE62E9B00175262 /* Carbon.framework */,
 				4F67B5F72D849896001FF27A /* ScriptingBridge.framework */,
 			);
@@ -127,10 +131,10 @@
 				4F8405642DB6DAE100BC97E2 /* DynamicNotchKit */,
 				4F8405672DB6DB5100BC97E2 /* DynamicNotchKit */,
 				4F2905DD2DB8E196004C1DA1 /* DynamicNotchKit */,
-				4FB90C3A2E339FE7005048EC /* Luminare */,
 				4F59E1472E4A9949005E4B75 /* Sparkle */,
 				4F29BD2E2E7470EC0098A721 /* DynamicNotchKit */,
 				4F29BDAC2E747C1A0098A721 /* DynamicNotchKit */,
+				4FAD05202E8499BA002D4794 /* Luminare */,
 			);
 			productName = MusicNotch;
 			productReference = 4FA87FC02D847DD700725978 /* MusicNotch.app */;
@@ -166,9 +170,9 @@
 				4FABD4832D9704BB00F8CFEA /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
 				4F33DF7F2D9EDF9A008F0182 /* XCRemoteSwiftPackageReference "LaunchAtLogin-Modern" */,
 				4F33DF822D9EE522008F0182 /* XCRemoteSwiftPackageReference "Defaults" */,
-				4FB90C392E339FE7005048EC /* XCRemoteSwiftPackageReference "Luminare" */,
 				4F59E1462E4A9949005E4B75 /* XCRemoteSwiftPackageReference "Sparkle" */,
 				4F29BDAB2E747C1A0098A721 /* XCRemoteSwiftPackageReference "DynamicNotchKit" */,
+				4FAD051F2E8499BA002D4794 /* XCRemoteSwiftPackageReference "Luminare" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 4FA87FC12D847DD700725978 /* Products */;
@@ -344,7 +348,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CREATE_INFOPLIST_SECTION_IN_BINARY = YES;
-				CURRENT_PROJECT_VERSION = 42;
+				CURRENT_PROJECT_VERSION = 51;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"MusicNotch/Preview Content\"";
 				ENABLE_APP_SANDBOX = NO;
@@ -367,7 +371,8 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 0.1.1;
+				MARKETING_VERSION = 0.1.2;
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.NoahJohann.MusicNotch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -400,7 +405,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CREATE_INFOPLIST_SECTION_IN_BINARY = YES;
-				CURRENT_PROJECT_VERSION = 42;
+				CURRENT_PROJECT_VERSION = 51;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"MusicNotch/Preview Content\"";
 				ENABLE_APP_SANDBOX = NO;
@@ -423,7 +428,8 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 0.1.1;
+				MARKETING_VERSION = 0.1.2;
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.NoahJohann.MusicNotch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -504,9 +510,9 @@
 				kind = branch;
 			};
 		};
-		4FB90C392E339FE7005048EC /* XCRemoteSwiftPackageReference "Luminare" */ = {
+		4FAD051F2E8499BA002D4794 /* XCRemoteSwiftPackageReference "Luminare" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Cement-Labs/Luminare";
+			repositoryURL = "https://github.com/MrKai77/Luminare";
 			requirement = {
 				branch = main;
 				kind = branch;
@@ -564,9 +570,9 @@
 			package = 4FABD4832D9704BB00F8CFEA /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */;
 			productName = KeyboardShortcuts;
 		};
-		4FB90C3A2E339FE7005048EC /* Luminare */ = {
+		4FAD05202E8499BA002D4794 /* Luminare */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4FB90C392E339FE7005048EC /* XCRemoteSwiftPackageReference "Luminare" */;
+			package = 4FAD051F2E8499BA002D4794 /* XCRemoteSwiftPackageReference "Luminare" */;
 			productName = Luminare;
 		};
 /* End XCSwiftPackageProductDependency section */

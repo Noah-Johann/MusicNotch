@@ -35,6 +35,12 @@ extension Defaults.Keys {
     
     // Extensions
     static let displayDuration = Key <Double>("displayDuration", default: 3.0)
+    
     static let batteryExtension = Key<Bool>("batteryExtension", default: true)
+    
+    static let hudExtension = Key<Bool>("hudExtension", default: true)
+    static let gradientHudSlider = Key<Bool>("gradientHudSlider", default: true)
+    static let accentColorHudSlider = Key<Bool>("accentColorHudSlider", default: false)
+    
 }
 

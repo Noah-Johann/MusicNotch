@@ -11,6 +11,7 @@ import SwiftUI
 struct ButtonView: View {
     
     @ObservedObject var spotifyManager = SpotifyManager.shared
+    @ObservedObject var volumeManager = VolumeManager.shared
     
     var body: some View {
         //Controls
@@ -87,7 +88,7 @@ struct ButtonView: View {
             
             
             //Speaker
-            Image(systemName: AudioDeviceManager.shared.deviceIcon)
+            Image(systemName: volumeManager.deviceIcon)
                 .imageScale(.large)
                 .foregroundStyle(.secondary)
                 .font(.system(size: 17))

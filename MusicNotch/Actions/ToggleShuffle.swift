@@ -10,5 +10,6 @@ import Foundation
 func spotifyShuffle() {
     Task {
         try await AppleScriptHelper.run("tell application \"Spotify\" to set shuffling to not shuffling")
+        await SpotifyManager.shared.updateInfo()
     }
 }
