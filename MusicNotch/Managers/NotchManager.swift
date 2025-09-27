@@ -54,6 +54,8 @@ final class NotchManager {
             self.openingTask?.cancel()
             self.hapticTask?.cancel()
             
+            guard NotchContentState.shared.notchContent != .locked || NotchContentState.shared.notchContent != .unlocked else { return }
+            
             self.openingTask = Task { @MainActor in
                 // Wait for the opening delay
                 do {
