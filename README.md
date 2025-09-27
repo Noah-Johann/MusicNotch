@@ -12,12 +12,20 @@
 
 <br/>
 
+<!--
 ## Table of Contents
 
 *   [Download](#download)
 *   [Localization](#localization)
 *   [License](#license)
 *   [Acknowledgments](#acknowledgments)
+-->
+
+## Features
+MusicNotch turns your MacBook's notch from just a cutout in your screen into a dynamic information center complete with music controls. Control your **Spotify** playback easily with a hover of the notch instead of opening a separate app. Get information about battery status, volume, brightness and more.  
+
+### Roadmap
+For details about upcoming and planned features, check out the [Roadmap](https://github.com/users/Noah-Johann/projects/1)
 
 ## Download
 
