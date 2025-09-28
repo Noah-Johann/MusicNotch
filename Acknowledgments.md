@@ -9,7 +9,7 @@
 * [DynamicNotchKit](https://github.com/MrKai77/DynamicNotchKit), licensed under MIT License
 * [Custom-Slider-Control](https://github.com/pratikg29/Custom-Slider-Control), licensed under MIT License
 * [Sparkle](https://github.com/sparkle-project/Sparkle?), see [License](https://github.com/sparkle-project/Sparkle/blob/master/LICENSE)
-
+* [SkyLightWindow](https://github.com/Lakr233/SkyLightWindow], licensed under MIT License
 ### Additional code and inspiration were taken from: 
 
 * [boring.notch](https://github.com/TheBoredTeam/boring.notch), licensed under GNU General Public License v3

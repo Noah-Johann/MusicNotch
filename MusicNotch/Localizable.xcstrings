@@ -749,6 +749,16 @@
         }
       }
     },
+    "SkyLightWindow" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SkyLightWindow"
+          }
+        }
+      }
+    },
     "Sparkle" : {
       "localizations" : {
         "de" : {
