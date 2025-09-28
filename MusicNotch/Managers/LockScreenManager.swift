@@ -15,6 +15,10 @@ class LockScreenManager: ObservableObject {
         setupObservers()
     }
     
+    deinit {
+        DistributedNotificationCenter.default.removeObserver(self)
+    }
+    
     private func setupObservers() {
         DistributedNotificationCenter.default.addObserver(
             forName: NSNotification.Name("com.apple.screenIsLocked"),
