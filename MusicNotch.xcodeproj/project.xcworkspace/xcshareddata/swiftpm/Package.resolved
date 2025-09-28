@@ -1,5 +1,5 @@
 {
-  "originHash" : "43e391ed891595aa3e8e1a0a8edd8defa5647fd95bd8c937e28123df37914d30",
+  "originHash" : "40f58109a07a7051eeefccf19f3409324032595ee0f0df1e97118d48b41f3d3b",
   "pins" : [
     {
       "identity" : "defaults",
@@ -44,6 +44,15 @@
       "state" : {
         "branch" : "main",
         "revision" : "820333b428bf191b27935cc7765e2ea0a8bea0ff"
+      }
+    },
+    {
+      "identity" : "skylightwindow",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Lakr233/SkyLightWindow",
+      "state" : {
+        "revision" : "b7bd99f62a0673a99bed4bfd31098ca1dcdd10eb",
+        "version" : "1.0.0"
       }
     },
     {

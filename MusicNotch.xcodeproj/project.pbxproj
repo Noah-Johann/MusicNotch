@@ -16,6 +16,7 @@
 		4F4DCDE22DB13C3100067056 /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F4DCDE12DB13C3000067056 /* DynamicNotchKit */; };
 		4F59E1482E4A9949005E4B75 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 4F59E1472E4A9949005E4B75 /* Sparkle */; };
 		4F67B5F82D849896001FF27A /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F67B5F72D849896001FF27A /* ScriptingBridge.framework */; };
+		4F75FABC2E86D6FB0064EF5E /* SkyLightWindow in Frameworks */ = {isa = PBXBuildFile; productRef = 4F75FABB2E86D6FB0064EF5E /* SkyLightWindow */; };
 		4F8405652DB6DAE100BC97E2 /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F8405642DB6DAE100BC97E2 /* DynamicNotchKit */; };
 		4F8405682DB6DB5100BC97E2 /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F8405672DB6DB5100BC97E2 /* DynamicNotchKit */; };
 		4FABD4852D9704BB00F8CFEA /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 4FABD4842D9704BB00F8CFEA /* KeyboardShortcuts */; };
@@ -57,6 +58,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F29BD2F2E7470EC0098A721 /* DynamicNotchKit in Frameworks */,
+				4F75FABC2E86D6FB0064EF5E /* SkyLightWindow in Frameworks */,
 				4F29BDAD2E747C1A0098A721 /* DynamicNotchKit in Frameworks */,
 				4F8405652DB6DAE100BC97E2 /* DynamicNotchKit in Frameworks */,
 				4F4DCDD92DB137F800067056 /* DynamicNotchKit in Frameworks */,
@@ -135,6 +137,7 @@
 				4F29BD2E2E7470EC0098A721 /* DynamicNotchKit */,
 				4F29BDAC2E747C1A0098A721 /* DynamicNotchKit */,
 				4FAD05202E8499BA002D4794 /* Luminare */,
+				4F75FABB2E86D6FB0064EF5E /* SkyLightWindow */,
 			);
 			productName = MusicNotch;
 			productReference = 4FA87FC02D847DD700725978 /* MusicNotch.app */;
@@ -173,6 +176,7 @@
 				4F59E1462E4A9949005E4B75 /* XCRemoteSwiftPackageReference "Sparkle" */,
 				4F29BDAB2E747C1A0098A721 /* XCRemoteSwiftPackageReference "DynamicNotchKit" */,
 				4FAD051F2E8499BA002D4794 /* XCRemoteSwiftPackageReference "Luminare" */,
+				4F75FABA2E86D6FB0064EF5E /* XCRemoteSwiftPackageReference "SkyLightWindow" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 4FA87FC12D847DD700725978 /* Products */;
@@ -348,9 +352,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CREATE_INFOPLIST_SECTION_IN_BINARY = YES;
-				CURRENT_PROJECT_VERSION = 51;
+				CURRENT_PROJECT_VERSION = 65;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"MusicNotch/Preview Content\"";
+				DEVELOPMENT_TEAM = C3PS85G8WX;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -371,7 +376,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 0.1.2;
+				MARKETING_VERSION = 0.1.3;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.NoahJohann.MusicNotch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -405,9 +410,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CREATE_INFOPLIST_SECTION_IN_BINARY = YES;
-				CURRENT_PROJECT_VERSION = 51;
+				CURRENT_PROJECT_VERSION = 65;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"MusicNotch/Preview Content\"";
+				DEVELOPMENT_TEAM = C3PS85G8WX;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -428,7 +434,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 0.1.2;
+				MARKETING_VERSION = 0.1.3;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.NoahJohann.MusicNotch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -502,6 +508,14 @@
 				minimumVersion = 2.7.1;
 			};
 		};
+		4F75FABA2E86D6FB0064EF5E /* XCRemoteSwiftPackageReference "SkyLightWindow" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Lakr233/SkyLightWindow";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		4FABD4832D9704BB00F8CFEA /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sindresorhus/KeyboardShortcuts";
@@ -556,6 +570,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4F59E1462E4A9949005E4B75 /* XCRemoteSwiftPackageReference "Sparkle" */;
 			productName = Sparkle;
+		};
+		4F75FABB2E86D6FB0064EF5E /* SkyLightWindow */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F75FABA2E86D6FB0064EF5E /* XCRemoteSwiftPackageReference "SkyLightWindow" */;
+			productName = SkyLightWindow;
 		};
 		4F8405642DB6DAE100BC97E2 /* DynamicNotchKit */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -15,6 +15,7 @@ struct SettingsExtensionView: View {
     @Default(.hudExtension) private var hudExtension
     @Default(.accentColorHudSlider) private var accentColorHudSlider
     @Default(.gradientHudSlider) private var gradientHudSlider
+    @Default(.lockExtension) private var lockExtension
     
     var body: some View {
         LuminareSection {
@@ -32,7 +33,7 @@ struct SettingsExtensionView: View {
             .padding(.bottom, 3)
             
         } header: {
-            Text("Extensions (BETA)")
+            Text("Extensions")
         }
         LuminareSection {
             LuminareToggle(isOn: $batteryExtension) {
@@ -51,6 +52,12 @@ struct SettingsExtensionView: View {
             
             LuminareToggle(isOn: $gradientHudSlider) {
                 Text("Gradient slider")
+            }
+        }
+        
+        LuminareSection {
+            LuminareToggle(isOn: $lockExtension) {
+                Text("Enable LockScreen extension")
             }
         }
         

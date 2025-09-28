@@ -239,18 +239,22 @@
         }
       }
     },
-    "Extensions (BETA)" : {
+    "Enable LockScreen extension" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Erweiterungen (BETA)"
+            "value" : "Aktiviere LockScreen Erweiterung"
           }
-        },
-        "en" : {
+        }
+      }
+    },
+    "Extensions" : {
+      "localizations" : {
+        "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Extensions (BETA)"
+            "value" : "Erweiterungen"
           }
         }
       }
@@ -745,6 +749,26 @@
         }
       }
     },
+    "SkyLightWindow" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SkyLightWindow"
+          }
+        }
+      }
+    },
+    "Sparkle" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sparkle"
+          }
+        }
+      }
+    },
     "Spotify is not opened" : {
       "localizations" : {
         "de" : {
@@ -849,6 +873,16 @@
         }
       },
       "shouldTranslate" : false
+    },
+    "Viewed Onboarding" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Viewed Onboarding"
+          }
+        }
+      }
     },
     "Volume" : {
       "localizations" : {
