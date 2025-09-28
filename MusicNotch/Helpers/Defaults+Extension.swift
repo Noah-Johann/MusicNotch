@@ -42,5 +42,7 @@ extension Defaults.Keys {
     static let gradientHudSlider = Key<Bool>("gradientHudSlider", default: true)
     static let accentColorHudSlider = Key<Bool>("accentColorHudSlider", default: false)
     
+    static let lockExtension = Key<Bool>("lockExtension", default: true)
+    
 }
 

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Defaults
 
 class LockScreenManager: ObservableObject {
     static let shared = LockScreenManager()
@@ -32,12 +33,14 @@ class LockScreenManager: ObservableObject {
     
     @objc private func screenLocked() {
         Task { @MainActor in
+            guard Defaults[.lockExtension] == true else { return }
             NotchManager.shared.showExtensionNotch(type: .locked)
         }
     }
     
     @objc private func screenUnlocked() {
         Task { @MainActor in
+            guard Defaults[.lockExtension] == true else { return }
             NotchManager.shared.showExtensionNotch(type: .unlocked)
         }
     }
