@@ -609,6 +609,9 @@
         }
       }
     },
+    "Player glow" : {
+
+    },
     "Please go to System Settings > Privacy & Security > Automation, and toggle Spotify under MusicNotch" : {
       "localizations" : {
         "de" : {

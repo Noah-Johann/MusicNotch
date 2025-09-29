@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Defaults
 
 struct CustomSlider<T: BinaryFloatingPoint>: View {
     @Binding var value: T
@@ -16,6 +17,8 @@ struct CustomSlider<T: BinaryFloatingPoint>: View {
     let emptyColor: Color
     let height: CGFloat
     let onEditingChanged: (Bool) -> Void
+    
+    @ObservedObject private var spotifyManager = SpotifyManager.shared
     
     // private variables
     @State private var localRealProgress: T = 0
@@ -43,6 +46,8 @@ struct CustomSlider<T: BinaryFloatingPoint>: View {
                 }
 //                .shadow(color: .black.opacity(0.1), radius: isActive ? 20 : 0, x: 0, y: 0)
                 .animation(animation, value: isActive)
+                .shadow(color: Defaults[.playerGlow] ? (spotifyManager.aveColor.map { Color(nsColor: $0) } ?? .clear).opacity(0.9) : .clear, radius: 20, x: 3)
+
             }
             .frame(width: bounds.size.width, height: bounds.size.height, alignment: .center)
             .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)

@@ -11,11 +11,16 @@ import Defaults
 
 struct SettingsAppearanceView: View {
     @Default(.coloredSpect) private var coloredSpect
+    @Default(.playerGlow) private var playerGlow
     
     var body: some View {
         LuminareSection {
             LuminareToggle(isOn: $coloredSpect) {
                 Text("Colored spectogram")
+            }
+            
+            LuminareToggle(isOn: $playerGlow) {
+                Text ("Player glow")
             }
             
         } header: {

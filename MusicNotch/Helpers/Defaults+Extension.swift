@@ -26,6 +26,7 @@ extension Defaults.Keys {
     
     // Appearance
     static let coloredSpect = Key<Bool>("coloredSpect", default: true)
+    static let playerGlow = Key<Bool>("playerGlow", default: true)
     
     // Notch
     static let openNotchOnHover = Key<Bool>("openNotchOnHover", default: true)
