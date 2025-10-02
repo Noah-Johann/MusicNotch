@@ -1,5 +1,5 @@
 //
-//  BatteryIconView.swift
+//  BasicBatteryIconView.swift
 //  MusicNotch
 //
 //  Created by Noah Johann on 28.08.25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct BatteryIconView: View {
+struct BasicBatteryIconView: View {
     @ObservedObject var batteryManager = BatteryManager.shared
     
     var iconWidth: CGFloat
@@ -64,6 +64,6 @@ struct BatteryIconView: View {
 }
 
 #Preview {
-    BatteryIconView(iconWidth: 30)
+    BasicBatteryIconView(iconWidth: 30)
         .padding()
 }
