@@ -58,19 +58,18 @@ final class UpdateManager: ObservableObject {
         }
     }
     
-    func checkForUpdates() {
+    func checkForUpdates(fromMenuBar: Bool = false) {
         updater.checkForUpdates()
+        if fromMenuBar {
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
+                self.downloadUpdate()
+            }
+        }
     }
 
     func downloadUpdate() {
         if let userDriver = updater.value(forKey: "userDriver") as? CustomUserDriver {
             userDriver.proceedWithDownload()
-        }
-    }
-
-    func installUpdate() {
-        if let userDriver = updater.value(forKey: "userDriver") as? CustomUserDriver {
-            userDriver.proceedWithInstall()
         }
     }
 }
@@ -96,13 +95,6 @@ final class CustomUserDriver: NSObject, @MainActor SPUUserDriver {
     func proceedWithDownload() {
         if let reply = downloadReply {
             downloadReply = nil
-            reply(.install) // Changed from .dismiss to .skip to trigger download
-        }
-    }
-    
-    func proceedWithInstall() {
-        if let reply = installReply {
-            installReply = nil
             reply(.install)
         }
     }

@@ -81,7 +81,7 @@ struct SettingsAboutView: View {
                     
                 case .readyToInstall:
                     Button {
-                        updateManager.installUpdate()
+                        updateManager.downloadUpdate()
                     } label: {
                         Text("Install update")
                     }  .buttonStyle(LuminareCosmeticButtonStyle(icon: Image(systemName: "")))
