@@ -75,26 +75,35 @@ struct SettingsAboutView: View {
                         HStack {
                             HudSlider(value: $updateManager.updateProgress, isExpanded: true)
                         }
-                    }  .buttonStyle(LuminareCosmeticButtonStyle(icon: Image(systemName: "")))
-                        .padding()
-                        .disabled(true)
+                        .padding(. horizontal, 25)
+                        .padding(.vertical)
+                    }  .buttonStyle(LuminareButtonStyle())
+
                     
                 case .readyToInstall:
                     Button {
-                        updateManager.downloadUpdate()
+                        updateManager.installUpdate()
                     } label: {
-                        Text("Install update")
-                    }  .buttonStyle(LuminareCosmeticButtonStyle(icon: Image(systemName: "")))
+                        HStack (spacing: 12) {
+                            Image(systemName: "gear.badge")
+                            Text("Install update")
+                            Spacer()
+                        } .padding()
+                    }  .buttonStyle(LuminareButtonStyle())
                     
                 case .installing:
                     Button {} label: {
-                        Text("Install update")
-                    }  .buttonStyle(LuminareCosmeticButtonStyle(icon: Image(systemName: "")))
+                        HStack (spacing: 12) {
+                            Image(systemName: "gear.badge")
+                            Text("Install update")
+                            Spacer()
+                        }
+                    }  .buttonStyle(LuminareButtonStyle())
                     
                 case .installed:
                     Button {} label: {
                         Text("Installed update")
-                    }  .buttonStyle(LuminareCosmeticButtonStyle(icon: Image(systemName: "")))
+                    }  .buttonStyle(LuminareButtonStyle())
                 }
             } .frame(height: 36)
             

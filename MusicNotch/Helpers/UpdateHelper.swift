@@ -72,6 +72,12 @@ final class UpdateManager: ObservableObject {
             userDriver.proceedWithDownload()
         }
     }
+    
+    func installUpdate() {
+        if let userDriver = updater.value(forKey: "userDriver") as? CustomUserDriver {
+            userDriver.proceedWithInstall()
+        }
+    }
 }
 
 @MainActor
@@ -98,6 +104,14 @@ final class CustomUserDriver: NSObject, @MainActor SPUUserDriver {
             reply(.install)
         }
     }
+    
+    func proceedWithInstall() {
+        if let reply = installReply {
+            installReply = nil
+            reply(.install)
+        }
+    }
+
 
     // MARK: - Required Methods
 
@@ -146,6 +160,7 @@ final class CustomUserDriver: NSObject, @MainActor SPUUserDriver {
 
     func showDownloadInitiated(cancellation: @escaping () -> Void) {
         print("Download started…")
+        manager?.downloadedSize = 0
         manager?.updateState = .downloading
     }
 

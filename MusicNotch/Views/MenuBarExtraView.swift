@@ -53,8 +53,10 @@ struct MenuBarExtraView: View {
                 switch updateManager.updateState {
                 case .idle, .checking, .error, .installed, .noUpdates:
                     updateManager.checkForUpdates(fromMenuBar: true)
-                case .updateAvailable, .readyToInstall:
+                case .updateAvailable:
                     updateManager.downloadUpdate()
+                case .readyToInstall:
+                    updateManager.installUpdate()
                 case .installing, .downloading, .extracting:
                     print("fix")
                 }
