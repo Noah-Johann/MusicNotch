@@ -123,6 +123,7 @@ final class NotchManager {
                 
         if changeDisplay == true {
             await self.notch.hide()
+            NotchContentState.shared.notchContent = .music
         }
         
         switch content {
