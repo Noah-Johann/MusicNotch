@@ -181,8 +181,8 @@ final class CustomUserDriver: NSObject, @MainActor SPUUserDriver {
     func showDownloadDidReceiveData(ofLength length: UInt64) {
         manager?.downloadedSize += Double(length)
         manager?.updateProgress = (manager?.downloadedSize ?? 0) / (manager?.updateSize ?? 1000000)
-        print("Downloaded \(manager!.downloadedSize) bytes")
-        print("Progress \(manager!.updateProgress)")
+//        print("Downloaded \(manager!.downloadedSize) bytes")
+//        print("Progress \(manager!.updateProgress)")
 
     }
 

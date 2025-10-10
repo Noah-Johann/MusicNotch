@@ -84,7 +84,7 @@ struct SettingsAboutView: View {
                         HStack {
                             HudSlider(value: $updateManager.updateProgress, isExpanded: true)
                         }
-                        .padding(. horizontal, 25)
+                        .padding(.horizontal, 25)
                         .padding(.vertical)
                     }  .buttonStyle(LuminareButtonStyle())
 
