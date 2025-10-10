@@ -18,6 +18,8 @@ extension Defaults.Keys {
     
     static let launchAtLogin = Key<Bool>("LaunchAtLogin", default: LaunchAtLogin.isEnabled)
     
+    static let autoUpdates = Key<Bool>("autoUpdates", default: true)
+    
     // Display
     static let notchDisplay = Key<Bool>("notchDisplay", default: true)
     static let mainDisplay = Key<Bool>("mainDisplay", default: false)

@@ -77,6 +77,16 @@
         }
       }
     },
+    "Auto check for updates" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatisch nach Updates suchen"
+          }
+        }
+      }
+    },
     "Brightness" : {
       "localizations" : {
         "de" : {
@@ -193,6 +203,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Anzeigedauer"
+          }
+        }
+      }
+    },
+    "Download update" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Update herunterladen"
+          }
+        }
+      }
+    },
+    "Downloading update..." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Update herunterladen…"
           }
         }
       }
@@ -379,6 +409,36 @@
         }
       }
     },
+    "Install update" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Update installieren"
+          }
+        }
+      }
+    },
+    "Installed update" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Update installiert"
+          }
+        }
+      }
+    },
+    "Installing update..." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Update installieren…"
+          }
+        }
+      }
+    },
     "Keyboard shortcuts" : {
       "localizations" : {
         "de" : {
@@ -495,6 +555,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Weiter"
+          }
+        }
+      }
+    },
+    "No updates available" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine Updates verfügbar"
           }
         }
       }
@@ -648,6 +718,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Beenden"
+          }
+        }
+      }
+    },
+    "Release Notes" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Release Notes"
           }
         }
       }
@@ -851,6 +931,9 @@
           }
         }
       }
+    },
+    "v%@" : {
+      "shouldTranslate" : false
     },
     "Version %@" : {
       "shouldTranslate" : false
