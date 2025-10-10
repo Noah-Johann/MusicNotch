@@ -9,6 +9,7 @@
 import Foundation
 import Sparkle
 import AppKit
+import Defaults
 
 enum UpdateState: Equatable {
     case idle
@@ -51,6 +52,9 @@ final class UpdateManager: ObservableObject {
         userDriver.updater = updater
         userDriver.manager = self
         
+        updater.automaticallyChecksForUpdates = Defaults[.autoUpdates]
+        updater.automaticallyDownloadsUpdates = Defaults[.autoUpdates]
+        
         do {
             try updater.start()
         } catch {
@@ -65,6 +69,11 @@ final class UpdateManager: ObservableObject {
                 self.downloadUpdate()
             }
         }
+    }
+    
+    func updateAutoSettings() {
+        updater.automaticallyChecksForUpdates = Defaults[.autoUpdates]
+        updater.automaticallyDownloadsUpdates = Defaults[.autoUpdates]
     }
 
     func downloadUpdate() {

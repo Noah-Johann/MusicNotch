@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Luminare
+import Defaults
 
 struct SettingsAboutView: View {
     
@@ -15,6 +16,8 @@ struct SettingsAboutView: View {
     private let releaseNotes: String = "https://github.com/Noah-Johann/MusicNotch/releases/latest"
     
     @State private var updateProgress: CGFloat = 0
+    
+    @Default(.autoUpdates) private var autoUpdates
 
     var body: some View {
         
@@ -29,6 +32,12 @@ struct SettingsAboutView: View {
         
 // MARK: Update Button
         LuminareSection {
+            LuminareToggle(isOn: $autoUpdates) {
+                Text ("Auto check for updates")
+            } .onChange(of: autoUpdates) {
+                updateManager.updateAutoSettings()
+            }
+
             VStack {
                 switch updateManager.updateState {
                 case .idle, .error, .checking:
