@@ -40,7 +40,7 @@ struct aboutView: View {
                                 role: "Contribute on Github",
                                 link: URL(string: "https://github.com/Noah-Johann/MusicNotch")!,
                                 image: Image("Github")
-                    ) .frame(width: 270, height: 60)
+                    )
                 } .padding(.bottom, 20)
                 VStack {
                     Button {
