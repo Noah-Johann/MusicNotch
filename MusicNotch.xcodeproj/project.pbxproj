@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		4F2905DE2DB8E196004C1DA1 /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F2905DD2DB8E196004C1DA1 /* DynamicNotchKit */; };
 		4F29BD2F2E7470EC0098A721 /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F29BD2E2E7470EC0098A721 /* DynamicNotchKit */; };
-		4F29BDAD2E747C1A0098A721 /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F29BDAC2E747C1A0098A721 /* DynamicNotchKit */; };
 		4F33DF812D9EDF9A008F0182 /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 4F33DF802D9EDF9A008F0182 /* LaunchAtLogin */; };
 		4F33DF842D9EE522008F0182 /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 4F33DF832D9EE522008F0182 /* Defaults */; };
 		4F4DCDD92DB137F800067056 /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F4DCDD82DB137F800067056 /* DynamicNotchKit */; };
@@ -22,6 +21,8 @@
 		4FABD4852D9704BB00F8CFEA /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 4FABD4842D9704BB00F8CFEA /* KeyboardShortcuts */; };
 		4FAD01402E7ECE06002D4794 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FAD013F2E7ECE06002D4794 /* IOKit.framework */; };
 		4FAD05212E8499BA002D4794 /* Luminare in Frameworks */ = {isa = PBXBuildFile; productRef = 4FAD05202E8499BA002D4794 /* Luminare */; };
+		4FB5D9312E9A83D800997E62 /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4FB5D9302E9A83D800997E62 /* DynamicNotchKit */; };
+		4FB5D9342E9A85CD00997E62 /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4FB5D9332E9A85CD00997E62 /* DynamicNotchKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,17 +60,18 @@
 			files = (
 				4F29BD2F2E7470EC0098A721 /* DynamicNotchKit in Frameworks */,
 				4F75FABC2E86D6FB0064EF5E /* SkyLightWindow in Frameworks */,
-				4F29BDAD2E747C1A0098A721 /* DynamicNotchKit in Frameworks */,
 				4F8405652DB6DAE100BC97E2 /* DynamicNotchKit in Frameworks */,
 				4F4DCDD92DB137F800067056 /* DynamicNotchKit in Frameworks */,
 				4F2905DE2DB8E196004C1DA1 /* DynamicNotchKit in Frameworks */,
 				4F4DCDE22DB13C3100067056 /* DynamicNotchKit in Frameworks */,
 				4F8405682DB6DB5100BC97E2 /* DynamicNotchKit in Frameworks */,
 				4F33DF842D9EE522008F0182 /* Defaults in Frameworks */,
+				4FB5D9342E9A85CD00997E62 /* DynamicNotchKit in Frameworks */,
 				4F67B5F82D849896001FF27A /* ScriptingBridge.framework in Frameworks */,
 				4F59E1482E4A9949005E4B75 /* Sparkle in Frameworks */,
 				4F33DF812D9EDF9A008F0182 /* LaunchAtLogin in Frameworks */,
 				4FABD4852D9704BB00F8CFEA /* KeyboardShortcuts in Frameworks */,
+				4FB5D9312E9A83D800997E62 /* DynamicNotchKit in Frameworks */,
 				4FAD01402E7ECE06002D4794 /* IOKit.framework in Frameworks */,
 				4FAD05212E8499BA002D4794 /* Luminare in Frameworks */,
 			);
@@ -135,9 +137,10 @@
 				4F2905DD2DB8E196004C1DA1 /* DynamicNotchKit */,
 				4F59E1472E4A9949005E4B75 /* Sparkle */,
 				4F29BD2E2E7470EC0098A721 /* DynamicNotchKit */,
-				4F29BDAC2E747C1A0098A721 /* DynamicNotchKit */,
 				4FAD05202E8499BA002D4794 /* Luminare */,
 				4F75FABB2E86D6FB0064EF5E /* SkyLightWindow */,
+				4FB5D9302E9A83D800997E62 /* DynamicNotchKit */,
+				4FB5D9332E9A85CD00997E62 /* DynamicNotchKit */,
 			);
 			productName = MusicNotch;
 			productReference = 4FA87FC02D847DD700725978 /* MusicNotch.app */;
@@ -174,9 +177,9 @@
 				4F33DF7F2D9EDF9A008F0182 /* XCRemoteSwiftPackageReference "LaunchAtLogin-Modern" */,
 				4F33DF822D9EE522008F0182 /* XCRemoteSwiftPackageReference "Defaults" */,
 				4F59E1462E4A9949005E4B75 /* XCRemoteSwiftPackageReference "Sparkle" */,
-				4F29BDAB2E747C1A0098A721 /* XCRemoteSwiftPackageReference "DynamicNotchKit" */,
 				4FAD051F2E8499BA002D4794 /* XCRemoteSwiftPackageReference "Luminare" */,
 				4F75FABA2E86D6FB0064EF5E /* XCRemoteSwiftPackageReference "SkyLightWindow" */,
+				4FB5D9322E9A85CD00997E62 /* XCRemoteSwiftPackageReference "DynamicNotchKit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 4FA87FC12D847DD700725978 /* Products */;
@@ -476,14 +479,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		4F29BDAB2E747C1A0098A721 /* XCRemoteSwiftPackageReference "DynamicNotchKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Noah-Johann/DynamicNotchKit/";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
 		4F33DF7F2D9EDF9A008F0182 /* XCRemoteSwiftPackageReference "LaunchAtLogin-Modern" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sindresorhus/LaunchAtLogin-Modern";
@@ -532,6 +527,14 @@
 				kind = branch;
 			};
 		};
+		4FB5D9322E9A85CD00997E62 /* XCRemoteSwiftPackageReference "DynamicNotchKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Noah-Johann/DynamicNotchKit/";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -541,11 +544,6 @@
 		};
 		4F29BD2E2E7470EC0098A721 /* DynamicNotchKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = DynamicNotchKit;
-		};
-		4F29BDAC2E747C1A0098A721 /* DynamicNotchKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4F29BDAB2E747C1A0098A721 /* XCRemoteSwiftPackageReference "DynamicNotchKit" */;
 			productName = DynamicNotchKit;
 		};
 		4F33DF802D9EDF9A008F0182 /* LaunchAtLogin */ = {
@@ -593,6 +591,15 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4FAD051F2E8499BA002D4794 /* XCRemoteSwiftPackageReference "Luminare" */;
 			productName = Luminare;
+		};
+		4FB5D9302E9A83D800997E62 /* DynamicNotchKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DynamicNotchKit;
+		};
+		4FB5D9332E9A85CD00997E62 /* DynamicNotchKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4FB5D9322E9A85CD00997E62 /* XCRemoteSwiftPackageReference "DynamicNotchKit" */;
+			productName = DynamicNotchKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

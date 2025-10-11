@@ -307,6 +307,7 @@ final class NotchManager {
             } else {
                 if notchState != .open {
                     await setNotchContent(.hidden, false)
+                    NotchContentState.shared.notchContent = .music
                 } else {
                     withAnimation(.bouncy(duration: 0.6)) {
                         NotchContentState.shared.notchContent = .music

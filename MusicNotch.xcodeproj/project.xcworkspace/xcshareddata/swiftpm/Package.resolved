@@ -1,5 +1,5 @@
 {
-  "originHash" : "40f58109a07a7051eeefccf19f3409324032595ee0f0df1e97118d48b41f3d3b",
+  "originHash" : "7401bd15c9c3403be79740a2a7c5e99c90d31236191c57e617e5dbcbd1145d3d",
   "pins" : [
     {
       "identity" : "defaults",
@@ -16,7 +16,7 @@
       "location" : "https://github.com/Noah-Johann/DynamicNotchKit/",
       "state" : {
         "branch" : "main",
-        "revision" : "a7eb228b2e56b4a16dc3c15c66158af32040065c"
+        "revision" : "d8f2524cdbe874c3b097cde556d9c52ccf9834f9"
       }
     },
     {
