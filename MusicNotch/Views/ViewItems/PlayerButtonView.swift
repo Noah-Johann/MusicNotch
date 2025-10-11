@@ -19,22 +19,28 @@ struct ButtonView: View {
             
             //Shuffle
             Button(action: {
-                spotifyShuffle()
+                    spotifyShuffle()
             })
             {
-                
-                Image(systemName: spotifyManager.shuffle ? "shuffle.circle.fill" : "shuffle.circle")
-                    .imageScale(.large)
-                    .font(.system(size: 18))
-                    .fontWeight(.semibold)
-                    .foregroundStyle(.secondary)
-                    .frame(width: 30, height: 30)
-                
+                VStack (spacing: 3){
+                    Image(systemName: "shuffle")
+                        .imageScale(.large)
+                        .font(.system(size: 17))
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.secondary)
+                        .frame(width: 20, height: 20)
+                    if spotifyManager.shuffle {
+                        Circle()
+                            .fill(Color.secondary)
+                            .frame(width: 3, height: 3)
+                    }
+                }            .transition(.opacity.combined(with: .scale))
+                    .animation(.spring(response: 0.3, dampingFraction: 0.4), value: spotifyManager.shuffle)
             }
             .background(Color.clear)
             .buttonStyle(BorderlessButtonStyle())
             .padding(.horizontal, 17)
-            
+
             
             
             
@@ -95,10 +101,11 @@ struct ButtonView: View {
                 .frame(width: 30, height: 30)
                 .padding(.horizontal, 17)
             
-        }
+        } .frame(height: 40)
     }
 }
 
 #Preview {
     ButtonView()
+        .padding()
 }

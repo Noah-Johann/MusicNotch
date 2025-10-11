@@ -10,6 +10,7 @@ import Luminare
 
 struct MenuBarExtraView: View {    
     @ObservedObject var spotifyManager = SpotifyManager.shared
+    @ObservedObject var updateManager = UpdateManager.shared
     
     var body: some View {
         Section {
@@ -48,8 +49,36 @@ struct MenuBarExtraView: View {
         }
         
         Section {
-            Button("Check for updates") {
-                UpdaterWrapper.shared.updaterController.checkForUpdates(nil)
+            Button {
+                switch updateManager.updateState {
+                case .idle, .checking, .error, .installed, .noUpdates:
+                    updateManager.checkForUpdates(fromMenuBar: true)
+                case .updateAvailable:
+                    updateManager.downloadUpdate()
+                case .readyToInstall:
+                    updateManager.installUpdate()
+                case .installing, .downloading, .extracting:
+                    print("fix")
+                }
+            } label: {
+                switch updateManager.updateState {
+                case .idle, .checking, .error:
+                    Text("Check for updates")
+                case .noUpdates:
+                    Text("No updates available")
+                case .updateAvailable:
+                    Text("Download update")
+                case .downloading, .extracting:
+                    Text("Downloading update...")
+                case .readyToInstall:
+                    Text("Install update")
+                case .installing, .installed:
+                    Text("Installing update...")
+                }
+            }
+        } .onAppear {
+            if updateManager.updateState == .noUpdates {
+                updateManager.updateState = .idle
             }
         }
         

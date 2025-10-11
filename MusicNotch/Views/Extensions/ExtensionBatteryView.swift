@@ -17,7 +17,7 @@ struct ExtensionBatteryViewLeading: View {
         //            .foregroundColor(batteryManager.batteryIconColor)
         //            .frame(width: 30, height: 30)
         //            .opacity(0.8)
-        BatteryIconView(iconWidth: 33)
+        BasicBatteryIconView(iconWidth: 33)
     }
 }
     

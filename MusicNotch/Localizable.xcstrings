@@ -77,6 +77,16 @@
         }
       }
     },
+    "Auto check for updates" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatisch nach Updates suchen"
+          }
+        }
+      }
+    },
     "Brightness" : {
       "localizations" : {
         "de" : {
@@ -197,6 +207,26 @@
         }
       }
     },
+    "Download update" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Update herunterladen"
+          }
+        }
+      }
+    },
+    "Downloading update..." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Update herunterladen…"
+          }
+        }
+      }
+    },
     "DynamicNotchKit" : {
       "localizations" : {
         "de" : {
@@ -239,18 +269,22 @@
         }
       }
     },
-    "Extensions (BETA)" : {
+    "Enable LockScreen extension" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Erweiterungen (BETA)"
+            "value" : "Aktiviere LockScreen Erweiterung"
           }
-        },
-        "en" : {
+        }
+      }
+    },
+    "Extensions" : {
+      "localizations" : {
+        "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Extensions (BETA)"
+            "value" : "Erweiterungen"
           }
         }
       }
@@ -375,6 +409,36 @@
         }
       }
     },
+    "Install update" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Update installieren"
+          }
+        }
+      }
+    },
+    "Installed update" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Update installiert"
+          }
+        }
+      }
+    },
+    "Installing update..." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Update installieren…"
+          }
+        }
+      }
+    },
     "Keyboard shortcuts" : {
       "localizations" : {
         "de" : {
@@ -495,6 +559,16 @@
         }
       }
     },
+    "No updates available" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine Updates verfügbar"
+          }
+        }
+      }
+    },
     "Noah Johann" : {
       "localizations" : {
         "de" : {
@@ -605,6 +679,9 @@
         }
       }
     },
+    "Player glow" : {
+
+    },
     "Please go to System Settings > Privacy & Security > Automation, and toggle Spotify under MusicNotch" : {
       "localizations" : {
         "de" : {
@@ -641,6 +718,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Beenden"
+          }
+        }
+      }
+    },
+    "Release Notes" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Release Notes"
           }
         }
       }
@@ -745,8 +832,25 @@
         }
       }
     },
+    "SkyLightWindow" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SkyLightWindow"
+          }
+        }
+      }
+    },
     "Sparkle" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sparkle"
+          }
+        }
+      }
     },
     "Spotify is not opened" : {
       "localizations" : {
@@ -828,6 +932,9 @@
         }
       }
     },
+    "v%@" : {
+      "shouldTranslate" : false
+    },
     "Version %@" : {
       "shouldTranslate" : false
     },
@@ -852,6 +959,16 @@
         }
       },
       "shouldTranslate" : false
+    },
+    "Viewed Onboarding" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Viewed Onboarding"
+          }
+        }
+      }
     },
     "Volume" : {
       "localizations" : {

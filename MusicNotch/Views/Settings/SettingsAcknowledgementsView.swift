@@ -61,6 +61,11 @@ struct SettingsAcknowledgementsView: View {
                                        link: URL(string: "https://github.com/sparkle-project/Sparkle")!,
                                        image: "book"
                     ) .frame( height: 40)
+                    aboutLicenseButton(name: "SkyLightWindow",
+                                       license: "MIT",
+                                       link: URL(string: "https://github.com/Lakr233/SkyLightWindow")!,
+                                       image: "book"
+                    ) .frame( height: 40)
                 }
             } header: {
                 Text ("Acknowledgements")

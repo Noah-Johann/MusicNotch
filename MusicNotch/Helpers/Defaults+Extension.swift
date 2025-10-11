@@ -18,6 +18,8 @@ extension Defaults.Keys {
     
     static let launchAtLogin = Key<Bool>("LaunchAtLogin", default: LaunchAtLogin.isEnabled)
     
+    static let autoUpdates = Key<Bool>("autoUpdates", default: true)
+    
     // Display
     static let notchDisplay = Key<Bool>("notchDisplay", default: true)
     static let mainDisplay = Key<Bool>("mainDisplay", default: false)
@@ -26,6 +28,7 @@ extension Defaults.Keys {
     
     // Appearance
     static let coloredSpect = Key<Bool>("coloredSpect", default: true)
+    static let playerGlow = Key<Bool>("playerGlow", default: true)
     
     // Notch
     static let openNotchOnHover = Key<Bool>("openNotchOnHover", default: true)
@@ -41,6 +44,8 @@ extension Defaults.Keys {
     static let hudExtension = Key<Bool>("hudExtension", default: true)
     static let gradientHudSlider = Key<Bool>("gradientHudSlider", default: true)
     static let accentColorHudSlider = Key<Bool>("accentColorHudSlider", default: false)
+    
+    static let lockExtension = Key<Bool>("lockExtension", default: true)
     
 }
 

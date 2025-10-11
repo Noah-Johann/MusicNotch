@@ -27,7 +27,7 @@ struct AlbumArtView: View {
                     .cornerRadius((NSScreen.main?.isOnNotchScreen ?? false) ? 6 : 4)
                     .padding(.vertical, 10)
                     .animation(.easeInOut(duration: 0.3), value: sizeState == "open" ? albumArtSizeOpen : albumArtSizeClosed)
-                
+                    .shadow(color: sizeState == "open" && Defaults[.playerGlow] ? (spotifyManager.aveColor.map { Color(nsColor: $0) } ?? .clear).opacity(1) : .clear, radius: 50, x: 5, y: 10)
             }
         }
         .frame(width: sizeState == "open" ? 80 : 30,
@@ -56,4 +56,5 @@ struct AlbumArtView: View {
 
 #Preview {
     AlbumArtView(sizeState: "open")
+        .padding(60)
 }

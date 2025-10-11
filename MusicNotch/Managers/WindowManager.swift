@@ -15,6 +15,16 @@ class WindowManager {
     static var settingsWindow: LuminareWindow?
     static var aboutWindow: LuminareWindow?
     
+    private static func configureWindow(_ window: NSWindow?) {
+        guard let window = window else { return }
+        // Ensure the window is released when closed to avoid lingering snapshots
+        window.isReleasedWhenClosed = true
+        // Prevent participation in Mission Control / Exposé
+        window.collectionBehavior.insert(.transient)
+        // Avoid tabbing these utility windows
+        window.tabbingMode = .disallowed
+    }
+    
     static func openSettings() {
         if settingsWindow == nil {
             settingsWindow = LuminareWindow{
@@ -24,6 +34,7 @@ class WindowManager {
             
             settingsWindow?.center()
             settingsWindow?.styleMask.remove(.resizable)
+            configureWindow(settingsWindow)
         }
         NSApp.activate(ignoringOtherApps: true)
 
@@ -36,6 +47,7 @@ class WindowManager {
         if !Defaults[.showDockItem] {
             NSApp.setActivationPolicy(.accessory)
         }
+        settingsWindow?.orderOut(nil)
         settingsWindow?.close()
         settingsWindow = nil
     }
@@ -49,7 +61,7 @@ class WindowManager {
             
             aboutWindow?.center()
             aboutWindow?.styleMask.remove(.resizable)
-            
+            configureWindow(aboutWindow)
         }
         NSApp.activate(ignoringOtherApps: true)
 
@@ -63,6 +75,7 @@ class WindowManager {
         if !Defaults[.showDockItem] {
             NSApp.setActivationPolicy(.accessory)
         }
+        aboutWindow?.orderOut(nil)
         aboutWindow?.close()
         aboutWindow = nil
     }
@@ -78,6 +91,7 @@ class WindowManager {
                 
                 onboardingWindow?.center()
                 onboardingWindow?.styleMask.remove(.resizable)
+                configureWindow(onboardingWindow)
             }
             
             NSApp.activate(ignoringOtherApps: true)
@@ -92,6 +106,7 @@ class WindowManager {
         if !Defaults[.showDockItem] {
             NSApp.setActivationPolicy(.accessory)
         }
+        onboardingWindow?.orderOut(nil)
         onboardingWindow?.close()
         onboardingWindow = nil
     }
