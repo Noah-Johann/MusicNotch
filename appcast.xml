@@ -3,13 +3,13 @@
     <channel>
         <title>MusicNotch</title>
         <item>
-            <title>0.1.2</title>
-            <pubDate>Sun, 26 Sep 2025 15:58:04 +0200</pubDate>
-            <sparkle:version>52</sparkle:version>
-            <sparkle:shortVersionString>0.1.2</sparkle:shortVersionString>
+            <title>0.1.3</title>
+            <pubDate>Sat, 11 Oct 2025 15:58:04 +0200</pubDate>
+            <sparkle:version>67</sparkle:version>
+            <sparkle:shortVersionString>0.1.3</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-            <enclosure url="https://github.com/Noah-Johann/MusicNotch/releases/latest/download/MusicNotch.dmg" length="14452712" type="application/octet-stream"
-            sparkle:edSignature="Mj3p475COaENDNmwLQKQtoQLa5lTMBNE0LMDl0NIJgu7V4IaU2yqU+Ak47Zxvr6ZPGZNRNrr9B/FZFdsRfxwBg=="/>
+            <enclosure url="https://github.com/Noah-Johann/MusicNotch/releases/latest/download/MusicNotch.dmg" length="14511366" type="application/octet-stream"
+            sparkle:edSignature="skLwet1KJQb1j/ic/n3r2yPk0qg/g6YboC7oLoz1ah8wDr0P9eTzPN1W77FukoTPvRBFciaK2JEBk53joDfICg=="/>
         </item>
     </channel>
 </rss>
