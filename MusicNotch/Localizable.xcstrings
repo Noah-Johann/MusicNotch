@@ -57,6 +57,9 @@
         }
       }
     },
+    "Activate Gadgets" : {
+
+    },
     "All set up!" : {
       "localizations" : {
         "de" : {
@@ -86,6 +89,12 @@
           }
         }
       }
+    },
+    "Battery Gadget" : {
+
+    },
+    "Bottom" : {
+
     },
     "Brightness" : {
       "localizations" : {
@@ -298,6 +307,9 @@
           }
         }
       }
+    },
+    "Gadgets" : {
+
     },
     "General" : {
       "localizations" : {
@@ -762,6 +774,9 @@
         }
       }
     },
+    "Settings Gadget" : {
+
+    },
     "Show acknowledgements" : {
       "localizations" : {
         "de" : {
@@ -791,6 +806,9 @@
           }
         }
       }
+    },
+    "Show notch" : {
+
     },
     "Skip Backwards" : {
       "localizations" : {
@@ -931,6 +949,9 @@
           }
         }
       }
+    },
+    "Top" : {
+
     },
     "v%@" : {
       "shouldTranslate" : false

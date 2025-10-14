@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Defaults
 
 struct NotchViewLeading: View {
     @ObservedObject var notchContentManager = NotchContentState.shared
@@ -71,14 +72,58 @@ struct NotchViewExpanded: View {
     @ObservedObject var keyboardManager = KeyboardManager.shared
     @ObservedObject var lockScreenManager = LockScreenManager.shared
     
+    @Default(.activateGadgets) private var activateGadgets
+    @Default(.topGadgets) private var topGadgets
+    @Default(.bottomGadgets) private var bottomGadgets
+    @Default(.batteryGadget) private var batteryGadget
+    @Default(.settingsGadget) private var settingsGadget
+    
     var body: some View {
         VStack {
+            if topGadgets && activateGadgets {
+                HStack (spacing: 15) {
+                    Spacer()
+                    if batteryGadget {
+                        BasicBatteryIconView(iconWidth: 30)
+                    }
+                    
+                    if settingsGadget {
+                        Button {
+                            WindowManager.openSettings()
+                        } label: {
+                            Image(systemName: "gear")
+                        } .buttonStyle(PlainButtonStyle())
+                    }
+                } .padding(.horizontal)
+            }
+            
             Player()
             
             if notchContentManager.notchContent == .volume {
                 ExtensionHUDViewExpanded(hudType: .volume)
             } else if notchContentManager.notchContent == .brightness {
                 ExtensionHUDViewExpanded(hudType: .brightness)
+            }
+            
+            if bottomGadgets && activateGadgets {
+                HStack (spacing: 15) {
+                    if batteryGadget {
+                        BasicBatteryIconView(iconWidth: 30)
+                    }
+                    
+                    if settingsGadget {
+                        Button {
+                            WindowManager.openSettings()
+                        } label: {
+                            Image(systemName: "gear")
+                                .resizable()
+                                .frame(width: 17, height: 17)
+                        } .buttonStyle(PlainButtonStyle())
+                    }
+                    
+                    Spacer()
+                } .padding(.horizontal)
+                    .padding(.bottom)
             }
         }
     }

@@ -29,6 +29,8 @@ struct SettingsView: View {
                 
                 SettingsExtensionView()
                 
+                SetttingsGadgetsView()
+                
                 SettingsShortcutsView()
                 
                 SettingsPermissionView()

@@ -47,5 +47,14 @@ extension Defaults.Keys {
     
     static let lockExtension = Key<Bool>("lockExtension", default: true)
     
+    // Gadgets
+    static let activateGadgets = Key<Bool>("activateGadgets", default: true)
+    
+    static let topGadgets = Key<Bool>("topGadgets", default: false)
+    static let bottomGadgets = Key<Bool>("bottomGadgets", default: true)
+    
+    static let batteryGadget = Key<Bool>("batteryGadget", default: true)
+    static let settingsGadget = Key<Bool>("settingsGadget", default: true)
+    
 }
 
