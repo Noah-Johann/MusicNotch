@@ -40,7 +40,9 @@ class BatteryManager: ObservableObject {
     
     init() {
         previousBattery = getBatteryInfo()
-        
+        Task { @MainActor in
+            updateBatteryInfo()
+        }
         setupObservers()
         startMonitoring()
     }
