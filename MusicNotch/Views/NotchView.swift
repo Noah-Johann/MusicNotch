@@ -84,17 +84,19 @@ struct NotchViewExpanded: View {
                 HStack (spacing: 15) {
                     Spacer()
                     if batteryGadget {
-                        BasicBatteryIconView(iconWidth: 30)
+                        BasicBatteryIconView(iconWidth: notchContentManager.notchContent == .battery ? 80 : 30)
                     }
-                    
-                    if settingsGadget {
-                        Button {
-                            WindowManager.openSettings()
-                        } label: {
-                            Image(systemName: "gear")
-                        } .buttonStyle(PlainButtonStyle())
+                    if notchContentManager.notchContent != .battery || !batteryGadget {
+                        if settingsGadget {
+                            Button {
+                                WindowManager.openSettings()
+                            } label: {
+                                Image(systemName: "gear")
+                            } .buttonStyle(PlainButtonStyle())
+                        }
                     }
                 } .padding(.horizontal)
+                    .padding(.top, notchContentManager.notchContent == .battery ? 10 : 2)
             }
             
             Player()
@@ -107,21 +109,19 @@ struct NotchViewExpanded: View {
             
             if bottomGadgets && activateGadgets {
                 HStack (spacing: 15) {
-                    if batteryGadget {
-                        BasicBatteryIconView(iconWidth: 30)
-                    }
-                    
-                    if settingsGadget {
-                        Button {
-                            WindowManager.openSettings()
-                        } label: {
-                            Image(systemName: "gear")
-                                .resizable()
-                                .frame(width: 17, height: 17)
-                        } .buttonStyle(PlainButtonStyle())
-                    }
-                    
                     Spacer()
+                    if batteryGadget {
+                        BasicBatteryIconView(iconWidth: notchContentManager.notchContent == .battery ? 80 : 30)
+                    }
+                    if notchContentManager.notchContent != .battery || !batteryGadget {
+                        if settingsGadget {
+                            Button {
+                                WindowManager.openSettings()
+                            } label: {
+                                Image(systemName: "gear")
+                            } .buttonStyle(PlainButtonStyle())
+                        }
+                    }
                 } .padding(.horizontal)
                     .padding(.bottom)
             }
