@@ -9,6 +9,7 @@ import Foundation
 import DynamicNotchKit
 import SwiftUI
 import Defaults
+import AppKit
 
 @MainActor
 final class NotchManager {
@@ -26,6 +27,18 @@ final class NotchManager {
     private var extensionRequestCounter: Int = 0
     
     private var isCurrentlyHovering = false
+
+    private var localScrollMonitor: Any?
+    private var globalScrollMonitor: Any?
+    private weak var observedWindow: NSWindow?
+
+    private var isHorizontalGestureActive = false
+    private var isVerticalGestureActive = false
+
+    var onHorizontalSwipe: ((SwipeDirection) -> Void)?
+    var onVerticalSwipe: ((SwipeDirection) -> Void)?
+
+    enum SwipeDirection { case left, right, up, down }
     
     private init() {
         notch = DynamicNotch(
@@ -42,15 +55,64 @@ final class NotchManager {
                 self.handleHoverChange(isHovering)
             }
         }
+        
+        Task { @MainActor in
+            self.addScrollMonitors()
+        }
+        
+        self.onHorizontalSwipe = { direction in
+            if Defaults[.hapticFeedback] {
+                let performer = NSHapticFeedbackManager.defaultPerformer
+                performer.perform(.alignment, performanceTime: .default)
+            }
+            switch direction {
+            case .left:
+                spotifyNextTrack()
+                print("next track")
+            case .right:
+                spotifyLastTrack()
+                print("last track")
+            default:
+                break
+            }
+        }
+        self.onVerticalSwipe = { [weak self] direction in
+            guard let self else { return }
+            if Defaults[.hapticFeedback] {
+                let performer = NSHapticFeedbackManager.defaultPerformer
+                performer.perform(.alignment, performanceTime: .default)
+            }
+            switch direction {
+            case .up:
+                Task {
+                    await self.setNotchContent(.closed, false)
+                    print("notch close")
+                }
+            case .down:
+                Task {
+                    await self.setNotchContent(.openWithoutHover, false)
+                    print("notch open")
+                }
+            default:
+                break
+            }
+        }
     }
     
+    @MainActor deinit {
+        removeScrollMonitors()
+    }
+    
+    // MARK: - Hover Management
+
     private func handleHoverChange(_ isHovering: Bool) {
-        guard Defaults[.openNotchOnHover] else { return }
-        
         self.isCurrentlyHovering = isHovering
         
+       // guard Defaults[.openNotchOnHover] else { return }
         if isHovering {
             // Cancel any existing tasks
+            guard Defaults[.openNotchOnHover] else { return }
+
             self.openingTask?.cancel()
             self.hapticTask?.cancel()
             
@@ -98,6 +160,92 @@ final class NotchManager {
         }
     }
     
+    // MARK: - Gesture monitor setup
+    private func addScrollMonitors() {
+        guard let window = notch.windowController?.window else { return }
+        if observedWindow === window { return }
+
+        removeScrollMonitors()
+
+        observedWindow = window
+
+        localScrollMonitor = NSEvent.addLocalMonitorForEvents(matching: [.scrollWheel]) { [weak self] event in
+            self?.handleScrollEvent(event)
+            return event
+        }
+
+        globalScrollMonitor = NSEvent.addGlobalMonitorForEvents(matching: [.scrollWheel]) { [weak self] event in
+            self?.handleScrollEvent(event)
+        }
+    }
+
+    private func removeScrollMonitors() {
+        if let localScrollMonitor { NSEvent.removeMonitor(localScrollMonitor) }
+        if let globalScrollMonitor { NSEvent.removeMonitor(globalScrollMonitor) }
+        localScrollMonitor = nil
+        globalScrollMonitor = nil
+        observedWindow = nil
+        isHorizontalGestureActive = false
+        isVerticalGestureActive = false
+    }
+
+    private func handleScrollEvent(_ event: NSEvent) {
+
+        guard isCurrentlyHovering else { return }
+
+        let phase = event.phase
+        let momentum = event.momentumPhase
+
+        let dx = event.scrollingDeltaX
+        let dy = event.scrollingDeltaY
+
+        let inverted = event.isDirectionInvertedFromDevice
+
+        let absX = abs(dx)
+        let absY = abs(dy)
+        let horizontalDominant = absX > absY
+
+        let began = phase.contains(.began) || momentum.contains(.began)
+        let ended = phase.contains(.ended) || phase.contains(.cancelled) || momentum.contains(.ended)
+
+        if began {
+            if horizontalDominant {
+                if !isHorizontalGestureActive {
+                    isHorizontalGestureActive = true
+                    let direction: SwipeDirection = {
+                        if inverted {
+                            return dx > 0 ? .left : .right
+                        } else {
+                            return dx > 0 ? .right : .left
+                        }
+                    }()
+                    onHorizontalSwipe?(direction)
+                }
+                // Reset vertical if switching dominance
+                isVerticalGestureActive = false
+            } else {
+                if !isVerticalGestureActive {
+                    isVerticalGestureActive = true
+                    let direction: SwipeDirection = {
+                        if inverted {
+                            return dy > 0 ? .down : .up
+                        } else {
+                            return dy > 0 ? .up : .down
+                        }
+                    }()
+                    onVerticalSwipe?(direction)
+                }
+                // Reset horizontal if switching dominance
+                isHorizontalGestureActive = false
+            }
+        }
+
+        if ended {
+            isHorizontalGestureActive = false
+            isVerticalGestureActive = false
+        }
+    }
+    
     public func changeNotch() {
         openingTask?.cancel()
         hapticTask?.cancel()
@@ -123,6 +271,7 @@ final class NotchManager {
                 
         if changeDisplay == true {
             await self.notch.hide()
+            self.addScrollMonitors()
             NotchContentState.shared.notchContent = .music
         }
         
@@ -150,16 +299,20 @@ final class NotchManager {
                     guard let notchScreen = NSScreen.screens.first(where: { $0.safeAreaInsets.top > 0 }) else {
                         if Defaults[.noNotchScreenHide] {
                             await self.notch.hide()
+          //                  self.addScrollMonitors()
                         } else {
                             await self.notch.expand(on: NSScreen.screens.first!)
+         //                   self.addScrollMonitors()
                             self.notch.moveToSky()
                         }
                         return
                     }
                     await self.notch.expand(on: notchScreen)
+        //            self.addScrollMonitors()
                     self.notch.moveToSky()
                 } else {
                     await self.notch.expand(on: NSScreen.screens.first!)
+        //            self.addScrollMonitors()
                     self.notch.moveToSky()
                 }
                 
@@ -178,16 +331,20 @@ final class NotchManager {
                     guard let notchScreen = NSScreen.screens.first(where: { $0.safeAreaInsets.top > 0 }) else {
                         if Defaults[.noNotchScreenHide] {
                             await self.notch.hide()
+          //                  self.addScrollMonitors()
                         } else {
                             await self.notch.expand(on: NSScreen.screens.first!)
+         //                   self.addScrollMonitors()
                             self.notch.moveToSky()
                         }
                         return
                     }
                     await self.notch.expand(on: notchScreen)
+        //            self.addScrollMonitors()
                     self.notch.moveToSky()
                 } else {
                     await self.notch.expand(on: NSScreen.screens.first!)
+        //            self.addScrollMonitors()
                     self.notch.moveToSky()
                 }
                 
@@ -208,16 +365,20 @@ final class NotchManager {
                 guard let notchScreen = NSScreen.screens.first(where: { $0.safeAreaInsets.top > 0 }) else {
                     if Defaults[.noNotchScreenHide] && Defaults[.notchDisplay] {
                         await self.notch.hide()
+       //                 self.addScrollMonitors()
                     } else {
                         await self.notch.compact(on: NSScreen.screens.first!)
+       //                 self.addScrollMonitors()
                         self.notch.moveToSky()
                     }
                     return
                 }
                 await self.notch.compact(on: notchScreen)
+      //          self.addScrollMonitors()
                 self.notch.moveToSky()
             } else {
                 await self.notch.compact(on: NSScreen.screens.first!)
+     //           self.addScrollMonitors()
                 self.notch.moveToSky()
             }
             
@@ -225,8 +386,10 @@ final class NotchManager {
             notchState = .hidden
             if Defaults[.mainDisplay] == true && Defaults[.disableNotchOnHide] == true {
                 await self.notch.hide()
+    //            self.addScrollMonitors()
             } else if Defaults[.mainDisplay] == true && Defaults[.disableNotchOnHide] == false {
                 await self.notch.compact(on: NSScreen.screens.first!)
+    //            self.addScrollMonitors()
                 self.notch.moveToSky()
             }
             
@@ -234,14 +397,18 @@ final class NotchManager {
                 guard NSScreen.screens.first(where: { $0.safeAreaInsets.top > 0 }) != nil else {
                     if Defaults[.noNotchScreenHide] {
                         await self.notch.hide()
+      //                  self.addScrollMonitors()
                     } else {
                         await self.notch.close()
+       //                 self.addScrollMonitors()
                     }
                     return
                 }
                 await self.notch.close()
+  //              self.addScrollMonitors()
             }
         }
+        self.addScrollMonitors()
     }
     
     public func showExtensionNotch(type: NotchContent) {
