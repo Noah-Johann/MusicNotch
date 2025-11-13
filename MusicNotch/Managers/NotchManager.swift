@@ -206,7 +206,8 @@ final class NotchManager {
         let horizontalDominant = absX > absY
 
         let began = phase.contains(.began) || momentum.contains(.began)
-        let ended = phase.contains(.ended) || phase.contains(.cancelled) || momentum.contains(.ended)
+    //    let ended = phase.contains(.ended) || phase.contains(.cancelled) || momentum.contains(.ended)
+        let ended = momentum.contains(.ended)
 
         if began {
             if horizontalDominant {
@@ -221,7 +222,6 @@ final class NotchManager {
                     }()
                     onHorizontalSwipe?(direction)
                 }
-                // Reset vertical if switching dominance
                 isVerticalGestureActive = false
             } else {
                 if !isVerticalGestureActive {
@@ -235,7 +235,6 @@ final class NotchManager {
                     }()
                     onVerticalSwipe?(direction)
                 }
-                // Reset horizontal if switching dominance
                 isHorizontalGestureActive = false
             }
         }
