@@ -28,30 +28,22 @@ class GadgetsConfigurationModel: ObservableObject {
         set {
             topGadgets = newValue == .topGadgets
             bottomGadgets = newValue == .bottomGadgets
-          //  selectionChanged(to: newValue)
         }
     }
-
-//    /// Called whenever the user changes the display selection.
-//    func selectionChanged(to newValue: GadgetsPosition) {
-//        Task {
-//            await NotchManager.shared.setNotchContent(.closed, true)
-//        }
-//    }
 }
 
 enum GadgetsPosition: CaseIterable {
     case topGadgets
     case bottomGadgets
     
-//    var image: Image {
-//        switch self {
-//        case .top: Image(systemName: "macbook")
-//                .resizable()
-//        case .mainDisplay: Image(systemName: "display.2")
-//                .resizable()
-//        }
-//    }
+    var image: Image {
+        switch self {
+        case .topGadgets: Image(systemName: "chevron.up")
+                .resizable()
+        case .bottomGadgets: Image(systemName: "chevron.down")
+                .resizable()
+        }
+    }
     
     var text: LocalizedStringKey {
         switch self {
@@ -74,10 +66,10 @@ struct GadgetsPickerView: View {
            // .animation(LuminareConstants.animation),
             columns: 2
         ) { option in
-            VStack(spacing: 6) {
-//                option.image
-//                    .scaledToFit()
-//                    .frame(width: 30, height: 40)
+            HStack(spacing: 6) {
+                option.image
+                    .scaledToFit()
+                    .frame(width: 20, height: 30)
                 Text(option.text)
                     .font(.title3)
             }
