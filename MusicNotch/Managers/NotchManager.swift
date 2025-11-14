@@ -108,9 +108,7 @@ final class NotchManager {
     private func handleHoverChange(_ isHovering: Bool) {
         self.isCurrentlyHovering = isHovering
         
-       // guard Defaults[.openNotchOnHover] else { return }
         if isHovering {
-            // Cancel any existing tasks
             guard Defaults[.openNotchOnHover] else { return }
 
             self.openingTask?.cancel()
@@ -154,7 +152,7 @@ final class NotchManager {
             }
         }
         
-        if Defaults[.hapticFeedback] {
+        if Defaults[.hapticFeedback] && Defaults[.openNotchOnHover] {
             let performer = NSHapticFeedbackManager.defaultPerformer
             performer.perform(.alignment, performanceTime: .default)
         }
@@ -206,7 +204,6 @@ final class NotchManager {
         let horizontalDominant = absX > absY
 
         let began = phase.contains(.began) || momentum.contains(.began)
-    //    let ended = phase.contains(.ended) || phase.contains(.cancelled) || momentum.contains(.ended)
         let ended = momentum.contains(.ended)
 
         if began {
@@ -280,7 +277,6 @@ final class NotchManager {
             notchState = .open
             SpotifyManager.shared.updateInfo()
             
-            // Track the expand operation so we can cancel it if needed
             self.expandTask = Task {
                 // Check one more time if we should still expand
                 guard self.isCurrentlyHovering && !Task.isCancelled else {
@@ -298,20 +294,16 @@ final class NotchManager {
                     guard let notchScreen = NSScreen.screens.first(where: { $0.safeAreaInsets.top > 0 }) else {
                         if Defaults[.noNotchScreenHide] {
                             await self.notch.hide()
-          //                  self.addScrollMonitors()
                         } else {
                             await self.notch.expand(on: NSScreen.screens.first!)
-         //                   self.addScrollMonitors()
                             self.notch.moveToSky()
                         }
                         return
                     }
                     await self.notch.expand(on: notchScreen)
-        //            self.addScrollMonitors()
                     self.notch.moveToSky()
                 } else {
                     await self.notch.expand(on: NSScreen.screens.first!)
-        //            self.addScrollMonitors()
                     self.notch.moveToSky()
                 }
                 
@@ -323,27 +315,22 @@ final class NotchManager {
             notchState = .open
             SpotifyManager.shared.updateInfo()
             
-            // Track the expand operation so we can cancel it if needed
             self.expandTask = Task {
                 
                 if Defaults[.notchDisplay] == true {
                     guard let notchScreen = NSScreen.screens.first(where: { $0.safeAreaInsets.top > 0 }) else {
                         if Defaults[.noNotchScreenHide] {
                             await self.notch.hide()
-          //                  self.addScrollMonitors()
                         } else {
                             await self.notch.expand(on: NSScreen.screens.first!)
-         //                   self.addScrollMonitors()
                             self.notch.moveToSky()
                         }
                         return
                     }
                     await self.notch.expand(on: notchScreen)
-        //            self.addScrollMonitors()
                     self.notch.moveToSky()
                 } else {
                     await self.notch.expand(on: NSScreen.screens.first!)
-        //            self.addScrollMonitors()
                     self.notch.moveToSky()
                 }
                 
@@ -364,20 +351,16 @@ final class NotchManager {
                 guard let notchScreen = NSScreen.screens.first(where: { $0.safeAreaInsets.top > 0 }) else {
                     if Defaults[.noNotchScreenHide] && Defaults[.notchDisplay] {
                         await self.notch.hide()
-       //                 self.addScrollMonitors()
                     } else {
                         await self.notch.compact(on: NSScreen.screens.first!)
-       //                 self.addScrollMonitors()
                         self.notch.moveToSky()
                     }
                     return
                 }
                 await self.notch.compact(on: notchScreen)
-      //          self.addScrollMonitors()
                 self.notch.moveToSky()
             } else {
                 await self.notch.compact(on: NSScreen.screens.first!)
-     //           self.addScrollMonitors()
                 self.notch.moveToSky()
             }
             
@@ -385,10 +368,8 @@ final class NotchManager {
             notchState = .hidden
             if Defaults[.mainDisplay] == true && Defaults[.disableNotchOnHide] == true {
                 await self.notch.hide()
-    //            self.addScrollMonitors()
             } else if Defaults[.mainDisplay] == true && Defaults[.disableNotchOnHide] == false {
                 await self.notch.compact(on: NSScreen.screens.first!)
-    //            self.addScrollMonitors()
                 self.notch.moveToSky()
             }
             
@@ -396,15 +377,12 @@ final class NotchManager {
                 guard NSScreen.screens.first(where: { $0.safeAreaInsets.top > 0 }) != nil else {
                     if Defaults[.noNotchScreenHide] {
                         await self.notch.hide()
-      //                  self.addScrollMonitors()
                     } else {
                         await self.notch.close()
-       //                 self.addScrollMonitors()
                     }
                     return
                 }
                 await self.notch.close()
-  //              self.addScrollMonitors()
             }
         }
         self.addScrollMonitors()
