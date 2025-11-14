@@ -262,6 +262,9 @@
         }
       }
     },
+    "Enable Gesture control" : {
+
+    },
     "Enable HUD extension" : {
       "localizations" : {
         "de" : {
@@ -287,6 +290,9 @@
           }
         }
       }
+    },
+    "Enable Media Gestures" : {
+
     },
     "Extensions" : {
       "localizations" : {
@@ -320,6 +326,9 @@
           }
         }
       }
+    },
+    "Gestures" : {
+
     },
     "GitHub" : {
       "localizations" : {
@@ -899,6 +908,12 @@
           }
         }
       }
+    },
+    "Swipe horizontal to change the current track." : {
+
+    },
+    "Swipe vertical to open and close the notch." : {
+
     },
     "The time it takes for the notch to hide if the playback is stopped." : {
       "localizations" : {

@@ -25,6 +25,8 @@ struct SettingsView: View {
                 
                 SettingsNotchView()
                 
+                SettingsGesturesView()
+                
                 SettingsAppearanceView()
                 
                 SettingsExtensionView()

@@ -32,6 +32,7 @@ struct SetttingsGadgetsView: View {
         } header: {
             Text("Gadgets")
         } .animation(.easeInOut(duration: 0.2), value: activateGadgets)
+            .padding(.bottom, 14)
     }
 }
 

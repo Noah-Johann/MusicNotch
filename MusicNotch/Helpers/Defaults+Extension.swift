@@ -36,6 +36,10 @@ extension Defaults.Keys {
     static let hapticFeedback = Key<Bool>("hapticFeedback", default: true)
     static let hideNotchTime = Key<Double>("hideNotchTime", default: 3)
     
+    // Gestures
+    static let enableGestures = Key<Bool>("enableGestures", default: true)
+    static let mediaGestures = Key<Bool>("mediaGestures", default: true)
+    
     // Extensions
     static let displayDuration = Key <Double>("displayDuration", default: 3.0)
     
