@@ -61,6 +61,7 @@ final class NotchManager {
         }
         
         self.onHorizontalSwipe = { direction in
+            guard Defaults[.enableGestures] && Defaults[.mediaGestures] else { return }
             if Defaults[.hapticFeedback] {
                 let performer = NSHapticFeedbackManager.defaultPerformer
                 performer.perform(.alignment, performanceTime: .default)
@@ -77,6 +78,7 @@ final class NotchManager {
             }
         }
         self.onVerticalSwipe = { [weak self] direction in
+            guard Defaults[.enableGestures] else { return }
             guard let self else { return }
             if Defaults[.hapticFeedback] {
                 let performer = NSHapticFeedbackManager.defaultPerformer
