@@ -9,20 +9,47 @@ import SwiftUI
 import Defaults
 
 struct AudioSpectView: View {
-    
     @ObservedObject var spotifyManager = SpotifyManager.shared
     
     @Default(.coloredSpect) private var coloredSpect
+    @Default(.openNotchOnHover) private var openNotchOnHover
+    
+    @State private var hovering: Bool = false
+  //  @Default(
     
     var body: some View {
-        Rectangle()
-            .fill(coloredSpect ? Color(nsColor: spotifyManager.aveColor ?? .white).gradient : Color.white.gradient)
-            .frame(width: 35, alignment: .center)
-            .mask {
-                AudioSpectrumView(isPlaying: $spotifyManager.isPlaying)
-                    .frame(width: 15, height: 16)
+        ZStack {
+            if hovering {
+                Button {
+                    spotifyPlayPause()
+                } label: {
+                    Image(systemName: spotifyManager.isPlaying == true ? "pause.fill" : "play.fill")
+                        .contentTransition(.symbolEffect(.replace))
+                } .buttonStyle(PlainButtonStyle())
             }
+            
+            if !hovering {
+                Rectangle()
+                    .fill(coloredSpect ? Color(nsColor: spotifyManager.aveColor ?? .white).gradient : Color.white.gradient)
+                    .frame(width: 35, alignment: .center)
+                    .mask {
+                        AudioSpectrumView(isPlaying: $spotifyManager.isPlaying)
+                            .frame(width: 15, height: 16)
+                    }
+            }
+        } .onHover(perform: { isHovering in
+            if isHovering {
+                guard !openNotchOnHover else { hovering = false ; return}
+                
+                hovering = true
+            } else {
+                hovering = false
+            }
+        })
+        .animation(.bouncy(duration: 0.4), value: hovering)
+        .frame(width: 30, height: 30)
     }
+    
 }
 
 #Preview {
