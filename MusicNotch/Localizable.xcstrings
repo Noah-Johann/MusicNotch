@@ -98,7 +98,14 @@
       }
     },
     "Automatic MusicGlance" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatisches MusicGlance"
+          }
+        }
+      }
     },
     "Battery Gadget" : {
       "localizations" : {
@@ -593,7 +600,14 @@
       }
     },
     "MusicGlance" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MusicGlance"
+          }
+        }
+      }
     },
     "MusicNotch" : {
       "localizations" : {
@@ -886,7 +900,14 @@
       }
     },
     "Show MusicGlance" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zeige MusicGlance"
+          }
+        }
+      }
     },
     "Show notch" : {
       "localizations" : {
