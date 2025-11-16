@@ -31,10 +31,17 @@ extension Defaults.Keys {
     static let playerGlow = Key<Bool>("playerGlow", default: true)
     
     // Notch
-    static let openNotchOnHover = Key<Bool>("openNotchOnHover", default: true)
-    static let openingDelay = Key<Double>("openingDelay", default: 0.0)
+    static let openNotchOnHover = Key<Bool>("openNotchOnHover", default: false)
+    static let openingDelay = Key<Double>("openingDelay", default: 0.3)
     static let hapticFeedback = Key<Bool>("hapticFeedback", default: true)
     static let hideNotchTime = Key<Double>("hideNotchTime", default: 3)
+    
+    // Gestures
+    static let enableGestures = Key<Bool>("enableGestures", default: true)
+    static let mediaGestures = Key<Bool>("mediaGestures", default: true)
+    
+    // MusicGlance
+    static let autoMusicGlance = Key<Bool>("autoMusicGlance", default: true)
     
     // Extensions
     static let displayDuration = Key <Double>("displayDuration", default: 3.0)
@@ -46,6 +53,15 @@ extension Defaults.Keys {
     static let accentColorHudSlider = Key<Bool>("accentColorHudSlider", default: false)
     
     static let lockExtension = Key<Bool>("lockExtension", default: true)
+    
+    // Gadgets
+    static let activateGadgets = Key<Bool>("activateGadgets", default: true)
+    
+    static let topGadgets = Key<Bool>("topGadgets", default: true)
+    static let bottomGadgets = Key<Bool>("bottomGadgets", default: false)
+    
+    static let batteryGadget = Key<Bool>("batteryGadget", default: true)
+    static let settingsGadget = Key<Bool>("settingsGadget", default: true)
     
 }
 

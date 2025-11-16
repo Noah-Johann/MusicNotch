@@ -6,14 +6,15 @@
 //
 
 import SwiftUI
+import Defaults
 
 struct NotchViewLeading: View {
     @ObservedObject var notchContentManager = NotchContentState.shared
     
     var body: some View {
         ZStack {
-            if notchContentManager.notchContent == .music {
-                AlbumArtView(sizeState: "closed")
+            if notchContentManager.notchContent == .music || notchContentManager.notchContent == .musicGlance {
+                NotchMusicViewLeading()
                     .transition(.blurReplace)
             } else if notchContentManager.notchContent == .battery {
                 ExtensionBatteryViewLeading()
@@ -40,8 +41,8 @@ struct NotchViewTrailing: View {
     
     var body: some View {
         ZStack {
-            if notchContentManager.notchContent == .music {
-                AudioSpectView()
+            if notchContentManager.notchContent == .music || notchContentManager.notchContent == .musicGlance {
+                NotchMusicViewTrailing()
                     .transition(.blurReplace)
             } else if notchContentManager.notchContent == .battery {
                 ExtensionBatteryViewTrailing()
@@ -71,14 +72,58 @@ struct NotchViewExpanded: View {
     @ObservedObject var keyboardManager = KeyboardManager.shared
     @ObservedObject var lockScreenManager = LockScreenManager.shared
     
+    @Default(.activateGadgets) private var activateGadgets
+    @Default(.topGadgets) private var topGadgets
+    @Default(.bottomGadgets) private var bottomGadgets
+    @Default(.batteryGadget) private var batteryGadget
+    @Default(.settingsGadget) private var settingsGadget
+    
     var body: some View {
         VStack {
+            if topGadgets && activateGadgets {
+                HStack (spacing: 15) {
+                    Spacer()
+                    if batteryGadget {
+                        BasicBatteryIconView(iconWidth: notchContentManager.notchContent == .battery ? 80 : 30)
+                    }
+                    if notchContentManager.notchContent != .battery || !batteryGadget {
+                        if settingsGadget {
+                            Button {
+                                WindowManager.openSettings()
+                            } label: {
+                                Image(systemName: "gear")
+                            } .buttonStyle(PlainButtonStyle())
+                        }
+                    }
+                } .padding(.horizontal)
+                    .padding(.top, notchContentManager.notchContent == .battery ? 10 : 2)
+            }
+            
             Player()
             
             if notchContentManager.notchContent == .volume {
                 ExtensionHUDViewExpanded(hudType: .volume)
             } else if notchContentManager.notchContent == .brightness {
                 ExtensionHUDViewExpanded(hudType: .brightness)
+            }
+            
+            if bottomGadgets && activateGadgets {
+                HStack (spacing: 15) {
+                    Spacer()
+                    if batteryGadget {
+                        BasicBatteryIconView(iconWidth: notchContentManager.notchContent == .battery ? 80 : 30)
+                    }
+                    if notchContentManager.notchContent != .battery || !batteryGadget {
+                        if settingsGadget {
+                            Button {
+                                WindowManager.openSettings()
+                            } label: {
+                                Image(systemName: "gear")
+                            } .buttonStyle(PlainButtonStyle())
+                        }
+                    }
+                } .padding(.horizontal)
+                    .padding(.bottom)
             }
         }
     }

@@ -25,8 +25,6 @@ enum UpdateState: Equatable {
 }
 
 
-// MARK: - UpdateManager Singleton integrating Sparkle with CustomUserDriver
-
 @MainActor
 final class UpdateManager: ObservableObject {
     static let shared = UpdateManager()
@@ -67,6 +65,18 @@ final class UpdateManager: ObservableObject {
         if fromMenuBar {
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
                 self.downloadUpdate()
+                
+                if self.updateState == .noUpdates {
+                    let alert = NSAlert()
+                    alert.messageText = "No updates found"
+                    alert.informativeText = "No updates found. Check back later for new updates."
+                    alert.runModal()
+                } else if self.updateState == .updateAvailable {
+                    let alert = NSAlert()
+                    alert.messageText = "Update found"
+                    alert.informativeText = "An update has been found and will be downloaded in the background. Check back later to install."
+                    alert.runModal()
+                }
             }
         }
     }
@@ -105,7 +115,6 @@ final class CustomUserDriver: NSObject, @MainActor SPUUserDriver {
         super.init()
     }
 
-    // MARK: - Manual Control Methods
     
     func proceedWithDownload() {
         if let reply = downloadReply {
@@ -122,7 +131,6 @@ final class CustomUserDriver: NSObject, @MainActor SPUUserDriver {
     }
 
 
-    // MARK: - Required Methods
 
     func show(_ request: SPUUpdatePermissionRequest, reply: @escaping (SUUpdatePermissionResponse) -> Void) {
         // Called the first time Sparkle runs

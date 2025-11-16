@@ -16,6 +16,7 @@ struct Player: View {
     @State private var playbackTimer: Timer?
     
     @Default(.coloredSpect) private var coloredSpect
+    @Default(.bottomGadgets) private var bottomGadgets
     
     var body: some View {
         VStack {
@@ -96,7 +97,7 @@ struct Player: View {
             playbackTimer?.invalidate()
         }
 
-        .padding(.bottom, 15)
+        .padding(.bottom, bottomGadgets ? 4 : 15)
         .padding(.top, 10)
         .contextMenu {
             ContextMenuView()

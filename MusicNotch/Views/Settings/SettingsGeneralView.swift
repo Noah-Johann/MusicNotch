@@ -41,6 +41,14 @@ struct SettingsGeneralView: View {
             
 #if DEBUG
             LuminareToggle("Viewed Onboarding", isOn: $viewedOnboarding)
+            
+            Button {
+                Task { @MainActor in
+                    await NotchManager.shared.setNotchContent(.closed, true)
+                }
+            } label: {
+                Text("Show notch")
+            }
 #endif
             
             

@@ -107,6 +107,9 @@ class SpotifyManager: ObservableObject {
         if self.trackName != oldTrackName {
             oldTrackName = self.trackName
             fetchAlbumArt()
+            if Defaults[.autoMusicGlance] {
+                NotchManager.shared.showExtensionNotch(type: .musicGlance)
+            }
         }
         
         let hideNotchTime = Defaults[.hideNotchTime]
@@ -131,8 +134,12 @@ class SpotifyManager: ObservableObject {
         // Open notch when playback starts
         Task { @MainActor in
             if self.isPlaying == true && NotchManager.shared.notchState == .hidden {
-                NotchContentState.shared.notchContent = .music
-                await NotchManager.shared.setNotchContent(.closed, false)
+                if Defaults[.autoMusicGlance] {
+                    NotchManager.shared.showExtensionNotch(type: .musicGlance)
+                } else {
+                    NotchContentState.shared.notchContent = .music
+                    await NotchManager.shared.setNotchContent(.closed, false)
+                }
             }
         }
         

@@ -1,5 +1,5 @@
 {
-  "originHash" : "7401bd15c9c3403be79740a2a7c5e99c90d31236191c57e617e5dbcbd1145d3d",
+  "originHash" : "30b6cea6bfab224d102d3ff05c7ae6cbd16cf2afee914a0e74a2b4c10b301c45",
   "pins" : [
     {
       "identity" : "defaults",
@@ -7,7 +7,7 @@
       "location" : "https://github.com/sindresorhus/Defaults",
       "state" : {
         "branch" : "main",
-        "revision" : "9d53e58f342996b781135f0e9db9e6d01b1ab360"
+        "revision" : "752bcb9eb2e110fa9d82826c99857b0e9a76fb1d"
       }
     },
     {
@@ -16,7 +16,7 @@
       "location" : "https://github.com/Noah-Johann/DynamicNotchKit/",
       "state" : {
         "branch" : "main",
-        "revision" : "d8f2524cdbe874c3b097cde556d9c52ccf9834f9"
+        "revision" : "658ed5d152ace574d961ed2b00d9bec71eff4456"
       }
     },
     {
@@ -60,8 +60,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/sparkle-project/Sparkle",
       "state" : {
-        "revision" : "df074165274afaa39539c05d57b0832620775b11",
-        "version" : "2.7.1"
+        "revision" : "5581748cef2bae787496fe6d61139aebe0a451f6",
+        "version" : "2.8.1"
       }
     },
     {
@@ -69,8 +69,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/swiftlang/swift-syntax",
       "state" : {
-        "revision" : "f99ae8aa18f0cf0d53481901f88a0991dc3bd4a2",
-        "version" : "601.0.1"
+        "revision" : "4799286537280063c85a32f09884cfbca301b1a1",
+        "version" : "602.0.0"
       }
     },
     {

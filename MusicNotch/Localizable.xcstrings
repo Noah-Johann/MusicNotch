@@ -57,6 +57,16 @@
         }
       }
     },
+    "Activate Gadgets" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktiviere Gadgets"
+          }
+        }
+      }
+    },
     "All set up!" : {
       "localizations" : {
         "de" : {
@@ -83,6 +93,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Automatisch nach Updates suchen"
+          }
+        }
+      }
+    },
+    "Automatic MusicGlance" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatisches MusicGlance"
+          }
+        }
+      }
+    },
+    "Battery Gadget" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Batterie Gadget"
+          }
+        }
+      }
+    },
+    "Bottom" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unten"
           }
         }
       }
@@ -253,6 +293,16 @@
         }
       }
     },
+    "Enable Gesture control" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktiviere Gesten"
+          }
+        }
+      }
+    },
     "Enable HUD extension" : {
       "localizations" : {
         "de" : {
@@ -279,6 +329,16 @@
         }
       }
     },
+    "Enable Media Gestures" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktiviere Musikgesten"
+          }
+        }
+      }
+    },
     "Extensions" : {
       "localizations" : {
         "de" : {
@@ -299,12 +359,32 @@
         }
       }
     },
+    "Gadgets" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gadgets"
+          }
+        }
+      }
+    },
     "General" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Generell"
+          }
+        }
+      }
+    },
+    "Gestures" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gesten"
           }
         }
       }
@@ -519,6 +599,16 @@
         }
       }
     },
+    "MusicGlance" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MusicGlance"
+          }
+        }
+      }
+    },
     "MusicNotch" : {
       "localizations" : {
         "de" : {
@@ -680,7 +770,14 @@
       }
     },
     "Player glow" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hintergrund-Glow"
+          }
+        }
+      }
     },
     "Please go to System Settings > Privacy & Security > Automation, and toggle Spotify under MusicNotch" : {
       "localizations" : {
@@ -762,6 +859,16 @@
         }
       }
     },
+    "Settings Gadget" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Einstellungen Gadget"
+          }
+        }
+      }
+    },
     "Show acknowledgements" : {
       "localizations" : {
         "de" : {
@@ -788,6 +895,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zeige Menuleisten-Symbol"
+          }
+        }
+      }
+    },
+    "Show MusicGlance" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zeige MusicGlance"
+          }
+        }
+      }
+    },
+    "Show notch" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zeige Notch"
           }
         }
       }
@@ -882,6 +1009,26 @@
         }
       }
     },
+    "Swipe horizontal to change the current track." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wische horizontal, um den aktuellen Song zu wechseln."
+          }
+        }
+      }
+    },
+    "Swipe vertical to open and close the notch." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wische vertikal, um die Notch zu öffnen oder schließen."
+          }
+        }
+      }
+    },
     "The time it takes for the notch to hide if the playback is stopped." : {
       "localizations" : {
         "de" : {
@@ -928,6 +1075,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Shuffle umschalten"
+          }
+        }
+      }
+    },
+    "Top" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oben"
           }
         }
       }
