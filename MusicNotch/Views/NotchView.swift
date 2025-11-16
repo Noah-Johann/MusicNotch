@@ -13,8 +13,8 @@ struct NotchViewLeading: View {
     
     var body: some View {
         ZStack {
-            if notchContentManager.notchContent == .music {
-                AlbumArtView(sizeState: "closed")
+            if notchContentManager.notchContent == .music || notchContentManager.notchContent == .musicGlance {
+                NotchMusicViewLeading()
                     .transition(.blurReplace)
             } else if notchContentManager.notchContent == .battery {
                 ExtensionBatteryViewLeading()
@@ -41,8 +41,8 @@ struct NotchViewTrailing: View {
     
     var body: some View {
         ZStack {
-            if notchContentManager.notchContent == .music {
-                AudioSpectView()
+            if notchContentManager.notchContent == .music || notchContentManager.notchContent == .musicGlance {
+                NotchMusicViewTrailing()
                     .transition(.blurReplace)
             } else if notchContentManager.notchContent == .battery {
                 ExtensionBatteryViewTrailing()

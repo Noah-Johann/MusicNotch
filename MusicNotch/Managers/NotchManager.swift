@@ -401,6 +401,10 @@ final class NotchManager {
             switch type {
             case .music:
                 return
+            case .musicGlance:
+                withAnimation(.bouncy(duration: 0.6)) {
+                    NotchContentState.shared.notchContent = .musicGlance
+                }
             case .battery:
                 withAnimation(.bouncy(duration: 0.6)) {
                     NotchContentState.shared.notchContent = .battery
@@ -476,6 +480,7 @@ enum NotchState {
 
 enum NotchContent {
     case music
+    case musicGlance
     case battery
     case volume
     case brightness
