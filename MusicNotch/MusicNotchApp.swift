@@ -27,6 +27,9 @@ struct MusicNotchApp: App {
             SpotifyManager.shared.timer = 3
             NotchManager.shared.changeNotch()
         }
+        KeyboardShortcuts.onKeyDown(for: .toggleMusicGlance) {
+            NotchManager.shared.showExtensionNotch(type: .musicGlance)
+        }
         
         let handlers: [(KeyboardShortcuts.Name, () -> Void)] = [
             (.nextTrack, spotifyNextTrack),

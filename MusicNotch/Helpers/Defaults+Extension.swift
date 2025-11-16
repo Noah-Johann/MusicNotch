@@ -40,6 +40,9 @@ extension Defaults.Keys {
     static let enableGestures = Key<Bool>("enableGestures", default: true)
     static let mediaGestures = Key<Bool>("mediaGestures", default: true)
     
+    // MusicGlance
+    static let autoMusicGlance = Key<Bool>("autoMusicGlance", default: true)
+    
     // Extensions
     static let displayDuration = Key <Double>("displayDuration", default: 3.0)
     

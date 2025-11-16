@@ -97,6 +97,9 @@
         }
       }
     },
+    "Automatic MusicGlance" : {
+
+    },
     "Battery Gadget" : {
       "localizations" : {
         "de" : {
@@ -589,6 +592,9 @@
         }
       }
     },
+    "MusicGlance" : {
+
+    },
     "MusicNotch" : {
       "localizations" : {
         "de" : {
@@ -878,6 +884,9 @@
           }
         }
       }
+    },
+    "Show MusicGlance" : {
+
     },
     "Show notch" : {
       "localizations" : {
