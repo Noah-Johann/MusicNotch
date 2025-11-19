@@ -7,6 +7,7 @@
 import SwiftUI
 import DynamicNotchKit
 import Defaults
+import AppKit
 
 struct Player: View {
     @ObservedObject var spotifyManager = SpotifyManager.shared
@@ -21,8 +22,20 @@ struct Player: View {
     var body: some View {
         VStack {
             HStack {
-                AlbumArtView(sizeState: "open")
-                
+                ZStack {
+                    AlbumArtView(sizeState: "open")
+
+                    
+                    Button(action: {
+                        let url = URL(fileURLWithPath: "/Applications/Spotify.app")
+                        NSWorkspace.shared.open(url)
+                    }, label: {
+                        Color.clear
+                            .frame(width: 80, height: 80)
+                            .contentShape(Rectangle())
+                    }) .buttonStyle(.plain)
+                        .frame(width: 80, height : 80)
+                }
                 VStack {
                     Text(spotifyManager.isSpotifyRunning ? spotifyManager.trackName : "Nothing playing")
                         .font(.system(size: 17, weight: .medium))
