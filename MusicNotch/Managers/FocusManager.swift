@@ -8,16 +8,16 @@
 import SwiftUI
 import Foundation
 
-struct FocusInfo {
-    let name: String
-    let icon: String?
-    let color: String?
+struct FocusMode {
+    var name: String
+    var icon: String?
+    var color: String?
 }
 
 class FocusManager: ObservableObject {
     static let shared = FocusManager()
     
-    @Published var focus = FocusInfo(name: "Unknown", icon: nil, color: nil)
+    @Published var focus = FocusMode(name: "Unknown", icon: nil, color: nil)
     
     init() {
         setupObservers()
@@ -52,15 +52,17 @@ class FocusManager: ObservableObject {
 //        print(focus.color)
         
         do {
-            print(try currentFocusMode())
+            focus = try currentFocusMode()
+            print(focus.name)
+            print(focus.icon)
         } catch {
             print("Failed to read Focus mode:", error)
         }
     }
     
-    private func getCurrentFocus() -> FocusInfo {
+    private func getCurrentFocus() -> FocusMode {
         
-        return FocusInfo(name: "No focus", icon: "", color:"")
+        return FocusMode(name: "No focus", icon: "", color:"")
     }
     
     
@@ -68,7 +70,7 @@ class FocusManager: ObservableObject {
 
 
 
-func currentFocusMode() throws -> String {
+func currentFocusMode() throws -> FocusMode {
     func loadJSON<T: Decodable>(at path: String, as type: T.Type) throws -> T {
         let expandedPath = (path as NSString).expandingTildeInPath
         let url = URL(fileURLWithPath: expandedPath)
@@ -88,12 +90,34 @@ func currentFocusMode() throws -> String {
     }
 
     struct ModesRoot: Decodable { let data: [ModesData] }
-    struct ModesData: Decodable { let modeConfigurations: [String: ModeConfiguration] }
+    struct ModesData: Decodable {
+        let modeConfigurations: [String: ModeConfiguration]
+    }
     struct ModeConfiguration: Decodable {
         let mode: Mode
         let triggers: Triggers?
     }
-    struct Mode: Decodable { let name: String }
+    struct Mode: Decodable {
+        let name: String
+        let systemImageName: String?
+        let tintColorName: String?
+
+        enum CodingKeys: String, CodingKey {
+            case name
+            case systemImageName
+            case tintColorName
+            case glyphName
+        }
+
+        init(from decoder: Decoder) throws {
+            let c = try decoder.container(keyedBy: CodingKeys.self)
+            name = try c.decode(String.self, forKey: .name)
+            // Prefer systemImageName, fall back to glyphName if present in some configs
+            systemImageName = try c.decodeIfPresent(String.self, forKey: .systemImageName)
+                ?? c.decodeIfPresent(String.self, forKey: .glyphName)
+            tintColorName = try c.decodeIfPresent(String.self, forKey: .tintColorName)
+        }
+    }
     struct Triggers: Decodable {
         let triggers: [Trigger]?
     }
@@ -114,12 +138,14 @@ func currentFocusMode() throws -> String {
         as: ModesRoot.self
     )
 
-    var focus = "No focus"
+    var focus = FocusMode(name: "No focus", icon: "", color: "")
 
     if let manual = assertions.data.first?.storeAssertionRecords,
        let modeID = manual.first?.assertionDetails.assertionDetailsModeIdentifier,
        let config = modes.data.first?.modeConfigurations[modeID] {
-        focus = config.mode.name
+        focus.name = config.mode.name
+        focus.icon = config.mode.systemImageName  // fallback or nil if you prefer
+        focus.color = config.mode.tintColorName
     } else if let configurations = modes.data.first?.modeConfigurations {
         let components = Calendar.current.dateComponents([.hour, .minute], from: Date())
         let now = (components.hour ?? 0) * 60 + (components.minute ?? 0)
@@ -128,7 +154,6 @@ func currentFocusMode() throws -> String {
             guard let trigger = config.triggers?.triggers?.first,
                   trigger.enabledSetting == 2 else { continue }
 
-            // Only process triggers that have all time fields
             guard let startHour = trigger.timePeriodStartTimeHour,
                   let startMinute = trigger.timePeriodStartTimeMinute,
                   let endHour = trigger.timePeriodEndTimeHour,
@@ -141,11 +166,11 @@ func currentFocusMode() throws -> String {
 
             if start < end {
                 if now >= start && now < end {
-                    focus = config.mode.name
+                    focus.name = config.mode.name
                 }
-            } else if start > end { // window spans midnight
+            } else if start > end {
                 if now >= start || now < end {
-                    focus = config.mode.name
+                    focus.name = config.mode.name
                 }
             }
         }

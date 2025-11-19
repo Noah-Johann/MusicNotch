@@ -71,6 +71,7 @@ struct NotchViewExpanded: View {
     @ObservedObject var brightnessManager = BrightnessManager.shared
     @ObservedObject var keyboardManager = KeyboardManager.shared
     @ObservedObject var lockScreenManager = LockScreenManager.shared
+    @ObservedObject var focusManager = FocusManager.shared
     
     @Default(.activateGadgets) private var activateGadgets
     @Default(.topGadgets) private var topGadgets
