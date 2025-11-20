@@ -107,7 +107,7 @@ class SpotifyManager: ObservableObject {
         if self.trackName != oldTrackName {
             oldTrackName = self.trackName
             fetchAlbumArt()
-            if Defaults[.autoMusicGlance] {
+            if Defaults[.autoMusicGlance] && NotchContentState.shared.notchContent != .musicGlance {
                 NotchManager.shared.showExtensionNotch(type: .musicGlance)
             }
         }
