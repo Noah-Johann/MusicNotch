@@ -759,6 +759,12 @@
         }
       }
     },
+    "Play lock sound" : {
+
+    },
+    "Play unlock sound" : {
+
+    },
     "Play/Pause" : {
       "localizations" : {
         "de" : {

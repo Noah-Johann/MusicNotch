@@ -422,6 +422,12 @@ final class NotchManager {
                     NotchContentState.shared.notchContent = .brightness
                 }
             case .locked:
+                if Defaults[.lockSound] {
+                    Task.detached {
+                        playSound(sound: .lock)
+                    }
+                }
+                
                 withAnimation(.bouncy(duration: 0.6)) {
                     NotchContentState.shared.notchContent = .locked
                 }
@@ -432,6 +438,12 @@ final class NotchManager {
                 
                 return
             case .unlocked:
+                if Defaults[.unlockSound] {
+                    Task.detached {
+                        playSound(sound: .unlock)
+                    }
+                }
+                
                 withAnimation(.bouncy(duration: 0.6)) {
                     NotchContentState.shared.notchContent = .unlocked
                 }

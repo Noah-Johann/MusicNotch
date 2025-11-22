@@ -53,6 +53,8 @@ extension Defaults.Keys {
     static let accentColorHudSlider = Key<Bool>("accentColorHudSlider", default: false)
     
     static let lockExtension = Key<Bool>("lockExtension", default: true)
+    static let lockSound = Key<Bool>("lockSound", default: true)
+    static let unlockSound = Key<Bool>("unlockSound", default: true)
     
     // Gadgets
     static let activateGadgets = Key<Bool>("activateGadgets", default: true)

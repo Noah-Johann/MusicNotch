@@ -16,6 +16,8 @@ struct SettingsExtensionView: View {
     @Default(.accentColorHudSlider) private var accentColorHudSlider
     @Default(.gradientHudSlider) private var gradientHudSlider
     @Default(.lockExtension) private var lockExtension
+    @Default(.lockSound) private var lockSound
+    @Default(.unlockSound) private var unlockSound
     
     var body: some View {
         LuminareSection {
@@ -58,6 +60,32 @@ struct SettingsExtensionView: View {
         LuminareSection {
             LuminareToggle(isOn: $lockExtension) {
                 Text("Enable LockScreen extension")
+            }
+            
+            LuminareToggle(isOn: $lockSound) {
+                HStack {
+                    Text("Play lock sound")
+                    
+                    Button(action: {
+                        playSound(sound: .lock)
+                    }, label: {
+                        Image(systemName: "speaker.wave.2.circle.fill")
+                            .foregroundStyle(.secondary)
+                    }) .buttonStyle(.plain)
+                }
+            }
+            
+            LuminareToggle(isOn: $unlockSound) {
+                HStack {
+                    Text("Play unlock sound")
+                    
+                    Button (action: {
+                        playSound(sound: .unlock)
+                    }, label: {
+                        Image(systemName: "speaker.wave.2.circle.fill")
+                            .foregroundStyle(.secondary)
+                    }) .buttonStyle(.plain)
+                }
             }
         }
         
