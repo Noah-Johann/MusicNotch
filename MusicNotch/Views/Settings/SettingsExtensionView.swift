@@ -71,6 +71,7 @@ struct SettingsExtensionView: View {
                     }, label: {
                         Image(systemName: "speaker.wave.2.circle.fill")
                             .foregroundStyle(.secondary)
+                            .imageScale(.large)
                     }) .buttonStyle(.plain)
                 }
             }
@@ -84,6 +85,7 @@ struct SettingsExtensionView: View {
                     }, label: {
                         Image(systemName: "speaker.wave.2.circle.fill")
                             .foregroundStyle(.secondary)
+                            .imageScale(.large)
                     }) .buttonStyle(.plain)
                 }
             }
