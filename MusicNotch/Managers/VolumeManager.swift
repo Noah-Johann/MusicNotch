@@ -19,7 +19,11 @@ class VolumeManager: ObservableObject {
     @Published var volume: CGFloat = 0
     @Published var isMuted: Bool = false
     
+    @Published var deviceName: String = ""
     @Published var deviceIcon: String = "headphones"
+    @Published var deviceID: String = ""
+    @Published var deviceBattery: Int = 100
+    
     
     private var volBeforeMute: CGFloat = 0
     private var currentDeviceID: AudioDeviceID = kAudioDeviceUnknown
@@ -326,98 +330,118 @@ class VolumeManager: ObservableObject {
                 self.deviceIcon = "headphones"
             }
             
+            if modelUID.contains("Codec Output") {
+                self.deviceIcon = "headphones"
+            }
+            
             print("Output device:")
             print("  Name: \(deviceName)")
             print("  Modell: \(modelUID)")
             print("  Connection type: \(transportString)")
             
             
-            // Get more information if audio device is Bluetooth
             if transportType == kAudioDeviceTransportTypeBluetooth || transportType == kAudioDeviceTransportTypeBluetoothLE {
+                self.getBluetoothModel(name: deviceName)
+//                propertyAddress.mSelector = kAudioDevicePropertyDeviceUID
+//                propSize = UInt32(MemoryLayout<CFString?>.size)
+//                
+//                var uidRef: Unmanaged<CFString>?
+//                status = AudioObjectGetPropertyData(
+//                    defaultOutputDeviceID,
+//                    &propertyAddress,
+//                    0,
+//                    nil,
+//                    &propSize,
+//                    &uidRef
+//                )
+//                
+//                if status == noErr, let unwrappedRef = uidRef {
+//                    let uid = unwrappedRef.takeRetainedValue() as String
+//                    
+//                    if deviceName.contains("AirPods") || modelUID.contains("AirPods") || uid.contains("AirPods") {
+//                        self.deviceIcon = "airpods"
+//                        if deviceName.contains("Pro") || uid.contains("Pro") || modelUID.contains("Pro") {
+//                            self.deviceIcon = "airpods.pro"
+//                        } else if deviceName.contains("Max") || uid.contains("Max") || modelUID.contains("Max") {
+//                            self.deviceIcon = "airpods.max"
+//                        }
+//                    }
+//                }
+            }
+
+        }
+    }
+    
+    private func getBluetoothModel (name: String) {
+        let task = Process()
+        task.launchPath = "/usr/sbin/system_profiler"
+        task.arguments = ["SPBluetoothDataType", "-json"]
+        
+        let pipe = Pipe()
+        task.standardOutput = pipe
+        task.standardError = pipe
+        
+        do {
+            try task.run()
+            task.waitUntilExit()
+
+            let data = pipe.fileHandleForReading.readDataToEndOfFile()
+            if let root = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
+                guard let btArray = root["SPBluetoothDataType"] as? [[String: Any]] else { return }
                 
-                propertyAddress.mSelector = kAudioDevicePropertyDeviceUID
-                propSize = UInt32(MemoryLayout<CFString?>.size)
-                
-                var uidRef: Unmanaged<CFString>?
-                status = AudioObjectGetPropertyData(
-                    defaultOutputDeviceID,
-                    &propertyAddress,
-                    0,
-                    nil,
-                    &propSize,
-                    &uidRef
-                )
-                
-                if status == noErr, let unwrappedRef = uidRef {
-                    let uid = unwrappedRef.takeRetainedValue() as String
-                    
-                    if deviceName.contains("AirPods") || modelUID.contains("AirPods") || uid.contains("AirPods") {
-                        self.deviceIcon = "airpods"
-                        if deviceName.contains("Pro") || uid.contains("Pro") || modelUID.contains("Pro") {
-                            self.deviceIcon = "airpods.pro"
-                        } else if deviceName.contains("Max") || uid.contains("Max") || modelUID.contains("Max") {
-                            self.deviceIcon = "airpods.max"
+                for entry in btArray {
+                    if let devices = entry["device_connected"] as? [[String: Any]] {
+                        for deviceObj in devices {
+                            for (deviceName, deviceData) in deviceObj {
+                                if deviceName.contains("AirPods"),
+                                   let deviceDict = deviceData as? [String: Any] {
+                                    
+                                    self.deviceID = deviceDict["device_productID"] as? String ?? ""
+                                    
+//                                    var battery: Int = 100
+//                                    for items in deviceDict {
+//                                        if items.key.contains("battery") {
+//                                            var keyBattery = items.value as? Int ?? 100
+//                                            if keyBattery < battery {
+//                                                battery = keyBattery
+//                                            }
+//                                        }
+//                                    }
+                                    let batteryString = deviceDict["device_batteryLevel"] as? String
+                                    
+                                    if batteryString != nil {
+                                        let battery = Int(batteryString!.filter { $0.isNumber }) ?? nil
+                                        self.deviceBattery = battery!
+                                    }
+                                    
+                                    let batteryLeftString = deviceDict["device_batteryLevelLeft"] as? String ?? nil
+                                    let batteryRightString = deviceDict["device_batteryLevelRight"] as? String ?? nil
+                                    
+                                    guard batteryRightString != nil else { return }
+                                    guard batteryLeftString != nil else { return }
+                                    
+                                    let batteryLeft = Int(batteryLeftString!.filter { $0.isNumber }) ?? 100
+                                    let batteryRight = Int(batteryRightString!.filter { $0.isNumber }) ?? 100
+                                    
+                                    if batteryLeft < batteryRight {
+                                        self.deviceBattery = batteryLeft
+                                    } else if batteryLeft > batteryRight {
+                                        self.deviceBattery = batteryRight
+                                    }
+                                                                        
+                                    print(deviceID)
+                                    print(deviceBattery)
+                                }
+                            }
                         }
                     }
                 }
             }
-            
-            if modelUID.contains("Codec Output") {
-                self.deviceIcon = "headphones"
-            }
-        }
-    }
-    
-    public func toggleMute() {
-        if isMuted == true {
-            setVolume(volBeforeMute)
-            NotchManager.shared.showExtensionNotch(type: .volume)
-        } else {
-            volBeforeMute = volume
-            setVolume(0)
-            NotchManager.shared.showExtensionNotch(type: .volume)
+        } catch {
+            print("Error: \(error)")
         }
         
-    }
-    
-    public func UpVolume() {
-        let step: CGFloat = 1.0 / 32.0
-        let newVolume = volume + step
-        setVolume(newVolume)
-        
-    }
-    
-    public func DownVolume() {
-        let step: CGFloat = 1.0 / 32.0
-        let newVolume = volume - step
-        setVolume(newVolume)
-    }
-    
-    private func setVolume(_ volume: CGFloat) {
-        let deviceID = defaultAudioDeviceID()
-        guard deviceID != kAudioDeviceUnknown else { return }
-        
-        var newVolume = max(0.0, min(1.0, Float32(volume)))
-        
-        var propertyAddress = AudioObjectPropertyAddress(
-            mSelector: kAudioDevicePropertyVolumeScalar,
-            mScope: kAudioDevicePropertyScopeOutput,
-            mElement: kAudioObjectPropertyElementMain
-        )
-        
-        let volumeSize = UInt32(MemoryLayout<Float32>.size)
-        let result = AudioObjectSetPropertyData(
-            deviceID,
-            &propertyAddress,
-            0,
-            nil,
-            volumeSize,
-            &newVolume
-        )
-        
-        if result != noErr {
-            print("Failed to set volume: \(result)")
-        }
+        print("newdevice")
     }
 }
 
