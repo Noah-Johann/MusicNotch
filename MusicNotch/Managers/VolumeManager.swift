@@ -23,6 +23,7 @@ class VolumeManager: ObservableObject {
     @Published var deviceIcon: String = "headphones"
     @Published var deviceID: String = ""
     @Published var deviceBattery: Int = 100
+    @Published var deviceVideo: String = "AirPodsPro2"
     
     
     private var volBeforeMute: CGFloat = 0
@@ -397,16 +398,7 @@ class VolumeManager: ObservableObject {
                                    let deviceDict = deviceData as? [String: Any] {
                                     
                                     self.deviceID = deviceDict["device_productID"] as? String ?? ""
-                                    
-//                                    var battery: Int = 100
-//                                    for items in deviceDict {
-//                                        if items.key.contains("battery") {
-//                                            var keyBattery = items.value as? Int ?? 100
-//                                            if keyBattery < battery {
-//                                                battery = keyBattery
-//                                            }
-//                                        }
-//                                    }
+
                                     let batteryString = deviceDict["device_batteryLevel"] as? String
                                     
                                     if batteryString != nil {
@@ -431,6 +423,10 @@ class VolumeManager: ObservableObject {
                                                                         
                                     print(deviceID)
                                     print(deviceBattery)
+                                    
+                                    getAirPodsInfo(device: deviceID)
+                                    
+                                    NotchManager.shared.showExtensionNotch(type: .bluetooth)
                                 }
                             }
                         }
@@ -442,6 +438,39 @@ class VolumeManager: ObservableObject {
         }
         
         print("newdevice")
+    }
+    
+    private func getAirPodsInfo(device: String) {
+        switch device {
+        case "0x2027":
+            self.deviceVideo = "AirPodsPro3"
+            self.deviceIcon = "airpods.pro"
+        case "0x2024", "0x2014":
+            self.deviceVideo = "AirPodsPro2"
+            self.deviceIcon = "airpods.pro"
+        case "0x200E":
+            self.deviceVideo = "AirPodsPro1"
+            self.deviceIcon = "airpods.pro"
+        case "0x2019":
+            self.deviceVideo = "AirPods4"
+            self.deviceIcon = "airpods.gen4"
+        case "0x2013":
+            self.deviceVideo = "AirPods3"
+            self.deviceIcon = "airpods.gen3"
+        case "0x200F", "0x2002":
+            self.deviceVideo = "AirPods1"
+            self.deviceIcon = "airpods"
+        case "0x201F":
+            self.deviceVideo = "AirPodsMax2"
+            self.deviceIcon = "airpods.max"
+        case "0x200A":
+            self.deviceVideo = "AirPodsMax1"
+            self.deviceIcon = "airpods.max"
+        default:
+            self.deviceVideo = "AirPodsPro2"
+            self.deviceIcon = "airpods.pro"
+        }
+        
     }
 }
 
