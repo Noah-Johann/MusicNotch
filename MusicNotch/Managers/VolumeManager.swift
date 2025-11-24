@@ -398,6 +398,7 @@ class VolumeManager: ObservableObject {
                                    let deviceDict = deviceData as? [String: Any] {
                                     
                                     self.deviceID = deviceDict["device_productID"] as? String ?? ""
+                                    let vendorID = deviceDict["device_vendorID"] as? String ?? nil
 
                                     let batteryString = deviceDict["device_batteryLevel"] as? String
                                     
@@ -420,13 +421,14 @@ class VolumeManager: ObservableObject {
                                     } else if batteryLeft > batteryRight {
                                         self.deviceBattery = CGFloat(batteryRight)
                                     }
-                                                                        
-                                    print(deviceID)
-                                    print(deviceBattery)
                                     
-                                    getAirPodsInfo(device: deviceID)
-                                    
-                                    NotchManager.shared.showExtensionNotch(type: .bluetooth)
+                                    if vendorID == "0x004C" {
+                                        getAirPodsInfo(device: deviceID)
+                                        
+                                        NotchManager.shared.showExtensionNotch(type: .bluetooth)
+                                    } else {
+                                        self.deviceIcon = "earbuds.stemless"
+                                    }
                                 }
                             }
                         }
@@ -436,8 +438,6 @@ class VolumeManager: ObservableObject {
         } catch {
             print("Error: \(error)")
         }
-        
-        print("newdevice")
     }
     
     private func getAirPodsInfo(device: String) {
