@@ -22,7 +22,7 @@ class VolumeManager: ObservableObject {
     @Published var deviceName: String = ""
     @Published var deviceIcon: String = "headphones"
     @Published var deviceID: String = ""
-    @Published var deviceBattery: Int = 100
+    @Published var deviceBattery: CGFloat = 100
     @Published var deviceVideo: String = "AirPodsPro2"
     
     
@@ -403,7 +403,7 @@ class VolumeManager: ObservableObject {
                                     
                                     if batteryString != nil {
                                         let battery = Int(batteryString!.filter { $0.isNumber }) ?? nil
-                                        self.deviceBattery = battery!
+                                        self.deviceBattery = CGFloat(battery!)
                                     }
                                     
                                     let batteryLeftString = deviceDict["device_batteryLevelLeft"] as? String ?? nil
@@ -416,9 +416,9 @@ class VolumeManager: ObservableObject {
                                     let batteryRight = Int(batteryRightString!.filter { $0.isNumber }) ?? 100
                                     
                                     if batteryLeft < batteryRight {
-                                        self.deviceBattery = batteryLeft
+                                        self.deviceBattery = CGFloat(batteryLeft)
                                     } else if batteryLeft > batteryRight {
-                                        self.deviceBattery = batteryRight
+                                        self.deviceBattery = CGFloat(batteryRight)
                                     }
                                                                         
                                     print(deviceID)

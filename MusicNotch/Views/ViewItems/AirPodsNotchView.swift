@@ -14,7 +14,7 @@ struct AirPodsNotchViewLeading: View {
     var body: some View {
         if let url = Bundle.main.url(forResource: volumeManager.deviceVideo, withExtension: "mov") {
             VideoView(url: url)
-                .frame(width: 30, height: 30)
+                .frame(width: 33, height: 33)
                 .aspectRatio(contentMode: .fit)
         } else {
             Text("Video not found")
@@ -24,21 +24,14 @@ struct AirPodsNotchViewLeading: View {
 
 struct AirPodsNotchViewTrailing: View {
     var body: some View {
-        BasicBatteryIconView(iconWidth: 30)
+        BatteryRingView()
+            .frame(width: 30, height: 30)
     }
 }
 
-#Preview {
-    if let url = Bundle.main.url(forResource: "AirPodsPro2", withExtension: "mov") {
-        let player = AVPlayer(url: url)
-        VideoPlayer(player: player)
-            .onAppear {
-                player.play()
-            }
-    } else {
-        Text("Video not found")
-    }
-}
+//#Preview {
+//
+//}
 
 struct VideoView: NSViewRepresentable {
     let url: URL
