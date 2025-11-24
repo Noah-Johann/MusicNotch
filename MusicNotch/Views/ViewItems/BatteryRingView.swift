@@ -26,7 +26,7 @@ struct BatteryRingView: View {
     }
     
     private func ringColor(percent: CGFloat) -> Color {
-        if percent < 20 {
+        if percent <= 20 {
             return .red
         } else {
             return .green
