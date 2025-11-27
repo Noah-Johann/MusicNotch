@@ -11,6 +11,7 @@ import AppKit
 
 struct Player: View {
     @ObservedObject var spotifyManager = SpotifyManager.shared
+    @ObservedObject var accessibilityManager = AccessibilityManager.shared
     
     @State private var isDragging = false
     @State private var trackposition : Double = 0
@@ -49,14 +50,19 @@ struct Player: View {
                 .padding(.horizontal, 10)
                 .padding(.top, 27)
                 
-                Rectangle()
-                    .fill(coloredSpect ? Color(nsColor: spotifyManager.aveColor ?? .white).gradient : Color.white.gradient)
-                    .frame(width: 35, alignment: .center)
-                    .mask {
-                        AudioSpectrumView(isPlaying: $spotifyManager.isPlaying)
-                            .frame(width: 20, height: 20)
-                    }
-                
+                if !accessibilityManager.isReduceMotion {
+                    Rectangle()
+                        .fill(coloredSpect ? Color(nsColor: spotifyManager.aveColor ?? .white).gradient : Color.white.gradient)
+                        .frame(width: 35, alignment: .center)
+                        .mask {
+                            AudioSpectrumView(isPlaying: $spotifyManager.isPlaying)
+                                .frame(width: 20, height: 20)
+                        }
+                } else {
+                    Rectangle()
+                        .fill(Color.clear)
+                        .frame(width: 35)
+                }
                 
             } .frame(width: 300)
                 .padding(.bottom, 8)
