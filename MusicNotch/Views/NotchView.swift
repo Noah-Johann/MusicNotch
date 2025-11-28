@@ -33,6 +33,7 @@ struct NotchViewLeading: View {
                     .transition(.blurReplace)
             } else if notchContentManager.notchContent == .bluetooth {
                 AirPodsNotchViewLeading()
+                    .transition(.blurReplace)
             }
         }
     }
@@ -63,6 +64,7 @@ struct NotchViewTrailing: View {
                     .transition(.blurReplace)
             } else if notchContentManager.notchContent == .bluetooth {
                 AirPodsNotchViewTrailing()
+                    .transition(.blurReplace)
             }
         }
     }
