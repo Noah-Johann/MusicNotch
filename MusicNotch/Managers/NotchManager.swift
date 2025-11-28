@@ -447,6 +447,10 @@ final class NotchManager {
                 withAnimation(.bouncy(duration: 0.6)) {
                     NotchContentState.shared.notchContent = .unlocked
                 }
+            case .bluetooth:
+                withAnimation(.bouncy(duration: 0.6)) {
+                    NotchContentState.shared.notchContent = .bluetooth
+                }
             }
 
             if notchState == .hidden {
@@ -494,6 +498,7 @@ enum NotchContent {
     case music
     case musicGlance
     case battery
+    case bluetooth
     case volume
     case brightness
     case locked

@@ -31,6 +31,9 @@ struct NotchViewLeading: View {
             } else if notchContentManager.notchContent == .unlocked {
                 ExtensionLockViewLeading(lockType: .unlocked)
                     .transition(.blurReplace)
+            } else if notchContentManager.notchContent == .bluetooth {
+                AirPodsNotchViewLeading()
+                    .transition(.blurReplace)
             }
         }
     }
@@ -58,6 +61,9 @@ struct NotchViewTrailing: View {
                     .transition(.blurReplace)
             } else if notchContentManager.notchContent == .unlocked {
                 ExtensionLockViewTrailing()
+                    .transition(.blurReplace)
+            } else if notchContentManager.notchContent == .bluetooth {
+                AirPodsNotchViewTrailing()
                     .transition(.blurReplace)
             }
         }

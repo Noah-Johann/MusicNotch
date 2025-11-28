@@ -18,6 +18,8 @@ struct SettingsExtensionView: View {
     @Default(.lockExtension) private var lockExtension
     @Default(.lockSound) private var lockSound
     @Default(.unlockSound) private var unlockSound
+    @Default(.bluetoothRecognition) private var bluetoothRecognition
+    @Default(.bluetoothSymbols) private var bluetoothSymbols
     
     var body: some View {
         LuminareSection {
@@ -88,6 +90,16 @@ struct SettingsExtensionView: View {
                             .imageScale(.large)
                     }) .buttonStyle(.plain)
                 }
+            }
+        }
+            
+        LuminareSection {
+            LuminareToggle(isOn: $bluetoothRecognition) {
+                Text("Enable Bluetooth extension")
+            }
+            
+            LuminareToggle(isOn: $bluetoothSymbols) {
+                Text("Use device symbols")
             }
         }
         
