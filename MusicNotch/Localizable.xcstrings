@@ -293,6 +293,16 @@
         }
       }
     },
+    "Enable Bluetooth extension" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktiviere Bluetooth Erweiterung"
+          }
+        }
+      }
+    },
     "Enable Gesture control" : {
       "localizations" : {
         "de" : {
@@ -760,10 +770,24 @@
       }
     },
     "Play lock sound" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spiele Entsperrton"
+          }
+        }
+      }
     },
     "Play unlock sound" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spiele Sperrton"
+          }
+        }
+      }
     },
     "Play/Pause" : {
       "localizations" : {
@@ -1095,6 +1119,16 @@
         }
       }
     },
+    "Use device symbols" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verwende Gerätesymbole"
+          }
+        }
+      }
+    },
     "v%@" : {
       "shouldTranslate" : false
     },
@@ -1124,7 +1158,7 @@
       "shouldTranslate" : false
     },
     "Video not found" : {
-
+      "shouldTranslate" : false
     },
     "Viewed Onboarding" : {
       "localizations" : {
