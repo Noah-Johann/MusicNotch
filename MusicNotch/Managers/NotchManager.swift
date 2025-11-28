@@ -15,6 +15,7 @@ import AppKit
 final class NotchManager {
     
     @Published var notchState: NotchState = .hidden
+    @Published var notchDismissed: Bool = false
     
     static let shared = NotchManager()
     
@@ -87,8 +88,14 @@ final class NotchManager {
             switch direction {
             case .up:
                 Task {
-                    await self.setNotchContent(.closed, false)
-                    print("notch close")
+                    if self.notchState == .open {
+                        await self.setNotchContent(.closed, false)
+                        print("notch close")
+                    } else if self.notchState == .closed {
+                        self.notchDismissed = true
+                        await self.setNotchContent(.hidden, false)
+                        print("dismiss notch")
+                    }
                 }
             case .down:
                 Task {

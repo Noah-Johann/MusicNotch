@@ -133,7 +133,7 @@ class SpotifyManager: ObservableObject {
         
         // Open notch when playback starts
         Task { @MainActor in
-            if self.isPlaying == true && NotchManager.shared.notchState == .hidden {
+            if self.isPlaying == true && NotchManager.shared.notchState == .hidden && !NotchManager.shared.notchDismissed {
                 if Defaults[.autoMusicGlance] {
                     NotchManager.shared.showExtensionNotch(type: .musicGlance)
                 } else {
@@ -141,6 +141,10 @@ class SpotifyManager: ObservableObject {
                     await NotchManager.shared.setNotchContent(.closed, false)
                 }
             }
+        }
+        
+        if self.isPlaying == false && NotchManager.shared.notchDismissed == true {
+            NotchManager.shared.notchDismissed = false
         }
         
         // Remove Nothing-Playing-Timer
