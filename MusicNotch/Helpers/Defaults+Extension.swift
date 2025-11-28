@@ -56,7 +56,7 @@ extension Defaults.Keys {
     static let lockSound = Key<Bool>("lockSound", default: true)
     static let unlockSound = Key<Bool>("unlockSound", default: true)
     
-    static let bluetoothRecognition = Key<Bool>("airpodsRecognition", default: true)
+    static let bluetoothRecognition = Key<Bool>("bluetoothRecognition", default: true)
     static let bluetoothSymbols = Key<Bool>("bluetoothSymbols", default: false)
     static let bluetoothVideos = Key<Bool>("bluetoothVideos", default: true)
     

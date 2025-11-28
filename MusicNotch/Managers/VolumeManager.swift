@@ -314,6 +314,7 @@ class VolumeManager: ObservableObject {
                 self.deviceIcon = "macbook.gen2"
             case kAudioDeviceTransportTypeBluetooth, kAudioDeviceTransportTypeBluetoothLE:
                 transportString = "Bluetooth"
+                self.deviceIcon = "earbuds.stemless"
             case kAudioDeviceTransportTypeUSB:
                 transportString = "USB"
             case kAudioDeviceTransportTypeAirPlay:
@@ -343,31 +344,6 @@ class VolumeManager: ObservableObject {
             
             if transportType == kAudioDeviceTransportTypeBluetooth || transportType == kAudioDeviceTransportTypeBluetoothLE {
                 self.getBluetoothModel(name: deviceName)
-//                propertyAddress.mSelector = kAudioDevicePropertyDeviceUID
-//                propSize = UInt32(MemoryLayout<CFString?>.size)
-//                
-//                var uidRef: Unmanaged<CFString>?
-//                status = AudioObjectGetPropertyData(
-//                    defaultOutputDeviceID,
-//                    &propertyAddress,
-//                    0,
-//                    nil,
-//                    &propSize,
-//                    &uidRef
-//                )
-//                
-//                if status == noErr, let unwrappedRef = uidRef {
-//                    let uid = unwrappedRef.takeRetainedValue() as String
-//                    
-//                    if deviceName.contains("AirPods") || modelUID.contains("AirPods") || uid.contains("AirPods") {
-//                        self.deviceIcon = "airpods"
-//                        if deviceName.contains("Pro") || uid.contains("Pro") || modelUID.contains("Pro") {
-//                            self.deviceIcon = "airpods.pro"
-//                        } else if deviceName.contains("Max") || uid.contains("Max") || modelUID.contains("Max") {
-//                            self.deviceIcon = "airpods.max"
-//                        }
-//                    }
-//                }
             }
 
         }
@@ -394,40 +370,32 @@ class VolumeManager: ObservableObject {
                     if let devices = entry["device_connected"] as? [[String: Any]] {
                         for deviceObj in devices {
                             for (deviceName, deviceData) in deviceObj {
-                                if deviceName.contains("AirPods"),
+                                print("self \(self.deviceIcon)")
+                                print(deviceName)
+                                if deviceName == name,
                                    let deviceDict = deviceData as? [String: Any] {
                                     
                                     self.deviceID = deviceDict["device_productID"] as? String ?? ""
                                     let vendorID = deviceDict["device_vendorID"] as? String ?? nil
 
-                                    let batteryString = deviceDict["device_batteryLevel"] as? String
                                     
-                                    if batteryString != nil {
-                                        let battery = Int(batteryString!.filter { $0.isNumber }) ?? nil
+                                    if let batteryString = deviceDict["device_batteryLevel"] as? String {
+                                        let battery = Int(batteryString.filter { $0.isNumber }) ?? nil
                                         self.deviceBattery = CGFloat(battery!)
                                     }
-                                    
-                                    let batteryLeftString = deviceDict["device_batteryLevelLeft"] as? String ?? nil
-                                    let batteryRightString = deviceDict["device_batteryLevelRight"] as? String ?? nil
-                                    
-                                    guard batteryRightString != nil else { return }
-                                    guard batteryLeftString != nil else { return }
-                                    
-                                    let batteryLeft = Int(batteryLeftString!.filter { $0.isNumber }) ?? 100
-                                    let batteryRight = Int(batteryRightString!.filter { $0.isNumber }) ?? 100
-                                    
-                                    if batteryLeft < batteryRight {
-                                        self.deviceBattery = CGFloat(batteryLeft)
-                                    } else if batteryLeft > batteryRight {
-                                        self.deviceBattery = CGFloat(batteryRight)
+
+                                    if let batteryLeftString = deviceDict["device_batteryLevelLeft"] as? String, let batteryRightString = deviceDict["device_batteryLevelRight"] as? String {
+                                        let batteryLeft = Int(batteryLeftString.filter { $0.isNumber }) ?? 100
+                                        let batteryRight = Int(batteryRightString.filter { $0.isNumber }) ?? 100
+                                        self.deviceBattery = CGFloat(min(batteryLeft, batteryRight))
                                     }
                                     
                                     if vendorID == "0x004C" {
                                         getAirPodsInfo(device: deviceID)
                                         
-                                        NotchManager.shared.showExtensionNotch(type: .bluetooth)
-                                    } else {
-                                        self.deviceIcon = "earbuds.stemless"
+                                        if Defaults[.bluetoothRecognition] {
+                                            NotchManager.shared.showExtensionNotch(type: .bluetooth)
+                                        }
                                     }
                                 }
                             }
