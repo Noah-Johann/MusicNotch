@@ -774,7 +774,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Spiele Entsperrton"
+            "value" : "Spiele Sperrton"
           }
         }
       }
@@ -784,7 +784,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Spiele Sperrton"
+            "value" : "Spiele Entsperrton"
           }
         }
       }
