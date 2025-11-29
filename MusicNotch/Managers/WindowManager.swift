@@ -14,6 +14,7 @@ class WindowManager {
     static var onboardingWindow: LuminareWindow?
     static var settingsWindow: LuminareWindow?
     static var aboutWindow: LuminareWindow?
+    static var lockscreenWindow: MusicPlayerWindow?
     
     private static func configureWindow(_ window: NSWindow?) {
         guard let window = window else { return }
@@ -115,6 +116,16 @@ class WindowManager {
         closeSettings()
         closeAbout()
         closeOnboarding()
+    }
+    
+    static func showLockScreen() {
+        lockscreenWindow = MusicPlayerWindow()
+        lockscreenWindow?.orderFrontRegardless()
+    }
+    
+    static func hideLockScreen() {
+        lockscreenWindow?.close()
+        lockscreenWindow = nil
     }
     
 }

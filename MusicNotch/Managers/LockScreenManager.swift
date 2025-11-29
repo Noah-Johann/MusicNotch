@@ -37,6 +37,8 @@ class LockScreenManager: ObservableObject {
     
     @objc private func screenLocked() {
         Task { @MainActor in
+            WindowManager.showLockScreen()
+            SpotifyManager.shared.updateInfo()
             guard Defaults[.lockExtension] == true else { return }
             NotchManager.shared.showExtensionNotch(type: .locked)
         }
@@ -44,6 +46,7 @@ class LockScreenManager: ObservableObject {
     
     @objc private func screenUnlocked() {
         Task { @MainActor in
+            WindowManager.hideLockScreen()
             guard Defaults[.lockExtension] == true else { return }
             NotchManager.shared.showExtensionNotch(type: .unlocked)
         }
