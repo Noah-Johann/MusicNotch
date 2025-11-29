@@ -153,10 +153,10 @@ class MusicPlayerWindow: NSPanel {
         
         self.contentView = NSHostingView(rootView: LockScreenPlayingView().moveToSky())
         
-        if let screen = NSScreen.main {
+        if let screen = NSScreen.screens.first {
             let screenFrame = screen.visibleFrame
 
-            self.setFrameOrigin(NSPoint(x: (screenFrame.maxX / 2) - 175, y: 210))
+            self.setFrameOrigin(NSPoint(x: (screenFrame.maxX / 2) - 175, y: screenFrame.maxY / 6))
         } else {
             self.setFrameOrigin(NSPoint(x: 500, y: 200))
         }
