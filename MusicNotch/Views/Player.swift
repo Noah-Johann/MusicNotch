@@ -24,7 +24,7 @@ struct Player: View {
         VStack {
             HStack {
                 ZStack {
-                    AlbumArtView(sizeState: "open")
+                    AlbumArtView(size: 80, shrink: 10, cornerRadius: 17, glow: true)
 
                     
                     Button(action: {

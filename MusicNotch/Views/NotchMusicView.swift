@@ -26,8 +26,13 @@ struct NotchMusicViewLeading: View {
                     return
                 }
             }, label: {
-                AlbumArtView(sizeState: "closed")
+                AlbumArtView(size: (NSScreen.main?.isOnNotchScreen ?? false) ? 30.0 : 20.0,
+                             shrink: 5,
+                             cornerRadius: (NSScreen.main?.isOnNotchScreen ?? false) ? 6 : 4,
+                             glow: false,
+                )
             }) .buttonStyle(.plain)
+                .padding(.leading, 3)
             if notchContentState.notchContent == .musicGlance {
                 Text(spotifyManager.trackName)
                     .foregroundStyle(Color(spotifyManager.aveColor ?? .white).gradient)
