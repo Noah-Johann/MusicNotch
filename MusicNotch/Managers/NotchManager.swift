@@ -44,7 +44,7 @@ final class NotchManager {
     private init() {
         notch = DynamicNotch(
            hoverBehavior: .increaseShadow,
-           style: .notch,
+           style: .notch(topCornerRadius: 25, bottomCornerRadius: 55),
            expanded: { NotchViewExpanded() },
            compactLeading: { NotchViewLeading() },
            compactTrailing: { NotchViewTrailing() }

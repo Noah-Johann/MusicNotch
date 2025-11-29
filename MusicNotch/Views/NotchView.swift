@@ -131,7 +131,7 @@ struct NotchViewExpanded: View {
                 } .padding(.horizontal)
                     .padding(.bottom)
             }
-        }
+        } .padding(.bottom)
     }
 }
 
