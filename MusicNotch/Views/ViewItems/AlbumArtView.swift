@@ -28,7 +28,6 @@ struct AlbumArtView: View {
                     .frame(width: artworkSize,
                            height: artworkSize)
                     .cornerRadius(cornerRadius)
-                    .padding(.vertical, 10)
                     .animation(.easeInOut(duration: 0.3), value: artworkSize)
                     .shadow(color: glow && Defaults[.playerGlow] ? (spotifyManager.aveColor.map { Color(nsColor: $0) } ?? .clear).opacity(1) : .clear, radius: 50, x: 5, y: 10)
             }
