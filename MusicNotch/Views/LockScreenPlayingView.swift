@@ -46,24 +46,25 @@ struct LockScreenPlayingView: View {
                                 .foregroundStyle(.gray)
                                 .frame(height: 17, alignment: .top)
                         } .frame(height: 70, alignment: .center)
-                        //     .padding(.horizontal, 10)
                         
                         Spacer()
                         
                         if !accessibilityManager.isReduceMotion {
                             Rectangle()
                                 .fill(coloredSpect ? Color(nsColor: spotifyManager.aveColor ?? .white).gradient : Color.white.gradient)
-                                .frame(width: 35, alignment: .center)
+                                .frame(width: 35, height: 45, alignment: .center)
                                 .mask {
                                     AudioSpectrumView(isPlaying: $spotifyManager.isPlaying)
                                         .frame(width: 30, height: 30)
                                 }
+                                .padding(.bottom, 17)
+                                .padding(.trailing, 10)
                         } else {
                             Rectangle()
                                 .fill(Color.clear)
                                 .frame(width: 35)
                         }
-                    }
+                    } .frame(height: 90)
                     
                     HStack {
                         Text(formatTime(Int(trackposition)))
