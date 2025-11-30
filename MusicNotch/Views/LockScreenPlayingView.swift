@@ -11,93 +11,185 @@ import Defaults
 
 struct LockScreenPlayingView: View {
     @ObservedObject private var spotifyManager = SpotifyManager.shared
+    @ObservedObject private var volumeManager = VolumeManager.shared
     @ObservedObject private var accessibilityManager = AccessibilityManager.shared
     
     @State private var trackposition: Double = 0
     @State private var isDragging: Bool = false
     @State private var playbackTimer: Timer?
     
+    @State private var showVolume: Bool = false
+    
     @Default(.coloredSpect) private var coloredSpect
     
     var body: some View {
         ZStack {
             VStack {
-                HStack (alignment: .center) {
-                    AlbumArtView(size: 70,
-                                 shrink: 8,
-                                 cornerRadius: 13,
-                                 glow: false,
-                    )
-                    .padding(.top, 10)
-                    .padding(.leading, 17)
-                    .padding(.trailing, 4)
-                    
-                    VStack (alignment: .leading, spacing: 4) {
-                        Text(spotifyManager.isSpotifyRunning ? spotifyManager.trackName : "Nothing playing")
-                            .font(.title2.bold())
-                            .foregroundStyle(.white)
-                            .frame(height: 27, alignment: .bottom)
-                        Text(spotifyManager.isSpotifyRunning ? spotifyManager.artistName : "Start a song on Spotify")
-                            .font(.system(size: 14, weight: .regular))
-                            .foregroundStyle(.gray)
-                            .frame(height: 17, alignment: .top)
-                    } .frame(height: 70, alignment: .center)
-               //     .padding(.horizontal, 10)
-                    
-                    Spacer()
-                    
-                    if !accessibilityManager.isReduceMotion {
-                        Rectangle()
-                            .fill(coloredSpect ? Color(nsColor: spotifyManager.aveColor ?? .white).gradient : Color.white.gradient)
-                            .frame(width: 35, alignment: .center)
-                            .mask {
-                                AudioSpectrumView(isPlaying: $spotifyManager.isPlaying)
-                                    .frame(width: 30, height: 30)
-                            }
-                    } else {
-                        Rectangle()
-                            .fill(Color.clear)
-                            .frame(width: 35)
-                    }
-                }
-                
-                HStack {
-                    Text(formatTime(Int(trackposition)))
-                        .frame(minWidth: 50, maxWidth: 80, minHeight: 20, alignment: .center)
-                        .foregroundStyle(.gray)
-                        .fontWeight(.semibold)
-                        .font(.system(size: 12))
-                    
-                    CustomSlider(value: $trackposition,
-                                 inRange: 0...Double(spotifyManager.trackDuration),
-                                 activeFillColor: .white,
-                                 fillColor: .white,
-                                 emptyColor: Color(NSColor.darkGray),
-                                 height: 8.0,
-                                 onEditingChanged: { isEditing in
-                        isDragging = isEditing
-                        if !isEditing {
-                            progressChanged()
+                VStack (){
+                    HStack (alignment: .center) {
+                        AlbumArtView(size: 70,
+                                     shrink: 8,
+                                     cornerRadius: 13,
+                                     glow: false,
+                        )
+                        .padding(.top, 10)
+                        .padding(.leading, 17)
+                        .padding(.trailing, 4)
+                        
+                        VStack (alignment: .leading, spacing: 4) {
+                            Text(spotifyManager.isSpotifyRunning ? spotifyManager.trackName : "Nothing playing")
+                                .font(.title2.bold())
+                                .foregroundStyle(.white)
+                                .frame(height: 27, alignment: .bottom)
+                            Text(spotifyManager.isSpotifyRunning ? spotifyManager.artistName : "Start a song on Spotify")
+                                .font(.system(size: 14, weight: .regular))
+                                .foregroundStyle(.gray)
+                                .frame(height: 17, alignment: .top)
+                        } .frame(height: 70, alignment: .center)
+                        //     .padding(.horizontal, 10)
+                        
+                        Spacer()
+                        
+                        if !accessibilityManager.isReduceMotion {
+                            Rectangle()
+                                .fill(coloredSpect ? Color(nsColor: spotifyManager.aveColor ?? .white).gradient : Color.white.gradient)
+                                .frame(width: 35, alignment: .center)
+                                .mask {
+                                    AudioSpectrumView(isPlaying: $spotifyManager.isPlaying)
+                                        .frame(width: 30, height: 30)
+                                }
+                        } else {
+                            Rectangle()
+                                .fill(Color.clear)
+                                .frame(width: 35)
                         }
-                    }) .frame(width: 200, height: 10, alignment: .center)
+                    }
                     
-                    Text("-\(formatTime(spotifyManager.trackDuration - Int(trackposition)))")
-                        .frame(minWidth: 55, maxWidth: 80, minHeight: 20, alignment: .center)
-                        .foregroundStyle(.gray)
-                        .fontWeight(.semibold)
-                        .font(.system(size: 12))
-                }.frame(height: 15)
-                    .padding(.bottom, 6)
-                
-                
-                ButtonView()
+                    HStack {
+                        Text(formatTime(Int(trackposition)))
+                            .frame(minWidth: 50, maxWidth: 80, minHeight: 20, alignment: .center)
+                            .foregroundStyle(.gray)
+                            .fontWeight(.semibold)
+                            .font(.system(size: 12))
+                        
+                        CustomSlider(value: $trackposition,
+                                     inRange: 0...Double(spotifyManager.trackDuration),
+                                     activeFillColor: .white,
+                                     fillColor: .white,
+                                     emptyColor: Color(NSColor.darkGray),
+                                     height: 8.0,
+                                     onEditingChanged: { isEditing in
+                            isDragging = isEditing
+                            if !isEditing {
+                                progressChanged()
+                            }
+                        }) .frame(width: 200, height: 10, alignment: .center)
+                        
+                        Text("-\(formatTime(spotifyManager.trackDuration - Int(trackposition)))")
+                            .frame(minWidth: 55, maxWidth: 80, minHeight: 20, alignment: .center)
+                            .foregroundStyle(.gray)
+                            .fontWeight(.semibold)
+                            .font(.system(size: 12))
+                    }.frame(height: 15)
+                        .padding(.bottom, 6)
+                    
+                    
+                    HStack {
+                        Button(action: {
+                            spotifyShuffle()
+                        })
+                        {
+                            VStack (spacing: 3){
+                                Image(systemName: "shuffle")
+                                    .imageScale(.large)
+                                    .font(.system(size: 17))
+                                    .fontWeight(.semibold)
+                                    .foregroundStyle(.secondary)
+                                    .frame(width: 20, height: 20)
+                                if spotifyManager.shuffle {
+                                    Circle()
+                                        .fill(Color.secondary)
+                                        .frame(width: 3, height: 3)
+                                }
+                            }            .transition(.opacity.combined(with: .scale))
+                                .animation(.spring(response: 0.3, dampingFraction: 0.4), value: spotifyManager.shuffle)
+                        }
+                        .background(Color.clear)
+                        .buttonStyle(BorderlessButtonStyle())
+                        .padding(.horizontal, 17)
+                        
+                        
+                        Button(action: {
+                            spotifyLastTrack()
+                        }) {
+                            Image(systemName: "backward.fill")
+                                .imageScale(.large)
+                                .foregroundStyle(.primary)
+                                .font(.system(size: 17))
+                                .frame(width: 30, height: 30)
+                            
+                        }
+                        .background(Color.clear)
+                        .buttonStyle(BorderlessButtonStyle())
+                        .padding(.horizontal, 5)
+                        
+                        
+                        Button(action: {
+                            spotifyPlayPause()
+                        }) {
+                            Image(systemName: spotifyManager.isPlaying ? "pause.fill" : "play.fill")
+                                .imageScale(.large)
+                                .foregroundStyle(.primary)
+                                .font(.system(size: 22, weight: .bold))
+                                .frame(width: 30, height: 30)
+                                .contentTransition(.symbolEffect(.replace))
+                        }
+                        .background(Color.clear)
+                        .buttonStyle(BorderlessButtonStyle())
+                        .padding(.horizontal, 16)
+                        
+                        
+                        Button(action: {
+                            spotifyNextTrack()
+                        }) {
+                            Image(systemName: "forward.fill")
+                                .imageScale(.large)
+                                .foregroundStyle(.primary)
+                                .font(.system(size: 17))
+                                .frame(width: 30, height: 30)
+                            
+                        }
+                        .background(Color.clear)
+                        .buttonStyle(BorderlessButtonStyle())
+                        .padding(.horizontal, 5)
+                        
+                        
+                        Button(action: {
+                            showVolume.toggle()
+                        }) {
+                            Image(systemName: volumeManager.deviceIcon)
+                                .imageScale(.large)
+                                .foregroundStyle(.secondary)
+                                .font(.system(size: 17))
+                                .frame(width: 30, height: 30)
+                                .padding(.horizontal, 17)
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                    }
+                    .frame(height: 40)
                     .padding(.bottom, 20)
+                } .frame(height: 190)
+                
+                if showVolume {
+                    ExtensionHUDViewExpanded(hudType: .volume, width: 320)
+                }
             }
         }
-        .frame(width: 350, height: 190)
+        .frame(width: 350, height: showVolume ? 240 : 190)
         .contentShape(RoundedRectangle(cornerRadius: 30, style: .continuous))
         .background(.clear)
         .glassEffect(.clear, in: RoundedRectangle(cornerRadius: 30, style: .continuous))
+        .animation(.bouncy(duration: 0.3), value: showVolume)
         .onReceive(spotifyManager.$trackPosition) { newValue in
             trackposition = Double(newValue)
         }
