@@ -28,10 +28,11 @@ class VolumeManager: ObservableObject {
     
     private var volBeforeMute: CGFloat = 0
     private var currentDeviceID: AudioDeviceID = kAudioDeviceUnknown
+    private var disabledHUD: Bool = false
     
     init() {
         setupDeviceObserver()
-        handleDeviceChange()
+   //     handleDeviceChange()
     }
     
     private func defaultAudioDeviceID() -> AudioDeviceID {
@@ -160,32 +161,50 @@ class VolumeManager: ObservableObject {
             print("Error getting default output device")
             return
         }
-        
-        var volume = Float32(0)
-        var propertySize = UInt32(MemoryLayout<Float32>.size)
-        var address = AudioObjectPropertyAddress(
-            mSelector: kAudioDevicePropertyVolumeScalar,
-            mScope: kAudioDevicePropertyScopeOutput,
-            mElement: kAudioObjectPropertyElementMain
-        )
-        
-        let volStatus = AudioObjectGetPropertyData(
-            defaultOutputDeviceID,
-            &address,
-            0,
-            nil,
-            &propertySize,
-            &volume
-        )
-        
-        guard volStatus == noErr else {
-            print("Error getting device volume")
-            return
+
+        var usedVolume: Float32? = nil
+        func channelVolume(_ ch: UInt32) -> Float32? {
+            var addr = AudioObjectPropertyAddress(
+                mSelector: kAudioDevicePropertyVolumeScalar,
+                mScope: kAudioDevicePropertyScopeOutput,
+                mElement: ch
+            )
+            guard AudioObjectHasProperty(defaultOutputDeviceID, &addr) else { return nil }
+            var vol = Float32(0)
+            var size = UInt32(MemoryLayout<Float32>.size)
+            let status = AudioObjectGetPropertyData(defaultOutputDeviceID, &addr, 0, nil, &size, &vol)
+            return status == noErr ? vol : nil
         }
-        
-        DispatchQueue.main.async {
-            self.volume = CGFloat(volume)
-            self.isMuted = (volume == 0) || self.isMuted
+
+        let left = channelVolume(1)
+        let right = channelVolume(2)
+        if let l = left, let r = right {
+            usedVolume = (l + r) / 2
+        } else if let single = left ?? right {
+            usedVolume = single
+        }
+
+        if usedVolume == nil {
+            var addr = AudioObjectPropertyAddress(
+                mSelector: kAudioDevicePropertyVolumeScalar,
+                mScope: kAudioDevicePropertyScopeOutput,
+                mElement: kAudioObjectPropertyElementMain
+            )
+            if AudioObjectHasProperty(defaultOutputDeviceID, &addr) {
+                var vol = Float32(0)
+                var size = UInt32(MemoryLayout<Float32>.size)
+                let status = AudioObjectGetPropertyData(defaultOutputDeviceID, &addr, 0, nil, &size, &vol)
+                if status == noErr {
+                    usedVolume = vol
+                }
+            }
+        }
+
+        if let vol = usedVolume {
+            DispatchQueue.main.async {
+                self.volume = CGFloat(vol)
+                self.isMuted = (vol == 0) || self.isMuted
+            }
         }
     }
     
@@ -215,7 +234,8 @@ class VolumeManager: ObservableObject {
     }
     
     private func showUpdate() {
-        if Defaults[.hudExtension] {
+        if Defaults[.hudExtension] && !disabledHUD {
+            print("showhud")
             NotchManager.shared.showExtensionNotch(type: .volume)
         }
     }
@@ -231,11 +251,13 @@ class VolumeManager: ObservableObject {
 
         // Update device info
         getAudioOutputDevice()
+        self.disabledHUD = true
         // Register per-device observers
         setupPerDeviceObservers(for: newDevice)
         // Refresh current values
         getSystemVolume()
         getMuteStatus()
+        self.disabledHUD = false
     }
     
     func getAudioOutputDevice() {
