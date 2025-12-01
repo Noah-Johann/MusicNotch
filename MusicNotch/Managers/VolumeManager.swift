@@ -32,7 +32,7 @@ class VolumeManager: ObservableObject {
     
     init() {
         setupDeviceObserver()
-   //     handleDeviceChange()
+        handleDeviceChange()
     }
     
     private func defaultAudioDeviceID() -> AudioDeviceID {
