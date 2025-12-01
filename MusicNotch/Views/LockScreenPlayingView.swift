@@ -8,6 +8,7 @@
 import SwiftUI
 import AppKit
 import Defaults
+import UniversalGlass
 
 struct LockScreenPlayingView: View {
     @ObservedObject private var spotifyManager = SpotifyManager.shared
@@ -180,7 +181,7 @@ struct LockScreenPlayingView: View {
         .frame(width: 350, height: 190)
         .contentShape(RoundedRectangle(cornerRadius: 30, style: .continuous))
         .background(.clear)
-        .glassEffect(.clear, in: RoundedRectangle(cornerRadius: 30, style: .continuous))
+        .universalGlassEffect(.ultraThin, in: RoundedRectangle(cornerRadius: 30, style: .continuous))
         .onReceive(spotifyManager.$trackPosition) { newValue in
             trackposition = Double(newValue)
         }
