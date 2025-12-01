@@ -207,6 +207,18 @@ struct LockScreenPlayingView: View {
         .onDisappear {
             playbackTimer?.invalidate()
         }
+        .contextMenu {
+            Text("Version \(Bundle.main.appVersion!)")
+                .foregroundStyle(.secondary)
+            Section {
+                Button("Hide player") {
+                    WindowManager.hideLockScreen()
+                } .keyboardShortcut("H", modifiers: .command)
+                Button("Quit") {
+                    NSApp.terminate(nil)
+                } .keyboardShortcut("Q", modifiers: .command)
+            }
+        }
     }
     
     private func progressChanged() {
