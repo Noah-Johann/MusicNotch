@@ -36,6 +36,7 @@ class SpotifyManager: ObservableObject {
     private var oldTrackName: String = ""
     private var hideTimer: Timer?
     private var stopTime = 0
+    private var launched: Bool = false
     
     
     private init() {
@@ -108,7 +109,11 @@ class SpotifyManager: ObservableObject {
             oldTrackName = self.trackName
             fetchAlbumArt()
             if Defaults[.autoMusicGlance] && NotchContentState.shared.notchContent != .musicGlance {
-                NotchManager.shared.showExtensionNotch(type: .musicGlance)
+                if launched == false {
+                    launched = true
+                } else {
+                    NotchManager.shared.showExtensionNotch(type: .musicGlance)
+                }
             }
         }
         
