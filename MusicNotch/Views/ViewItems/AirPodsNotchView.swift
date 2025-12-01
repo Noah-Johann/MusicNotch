@@ -11,11 +11,12 @@ import Defaults
 
 struct AirPodsNotchViewLeading: View {
     @ObservedObject private var volumeManager = VolumeManager.shared
+    @ObservedObject private var accessibilityManager = AccessibilityManager.shared
     
     @Default(.bluetoothSymbols) private var bluetoothSymbols
 
     var body: some View {
-        if bluetoothSymbols {
+        if bluetoothSymbols || accessibilityManager.isReduceMotion {
             Image(systemName: volumeManager.deviceIcon)
                 .resizable()
                 .scaledToFit()

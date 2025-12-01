@@ -21,6 +21,8 @@ struct SettingsExtensionView: View {
     @Default(.bluetoothRecognition) private var bluetoothRecognition
     @Default(.bluetoothSymbols) private var bluetoothSymbols
     
+    @ObservedObject private var accessibilityManager = AccessibilityManager.shared
+    
     var body: some View {
         LuminareSection {
             LuminareSlider(
@@ -100,7 +102,7 @@ struct SettingsExtensionView: View {
             
             LuminareToggle(isOn: $bluetoothSymbols) {
                 Text("Use device symbols")
-            }
+            } .disabled(accessibilityManager.isReduceMotion)
         }
         
         .padding(.bottom, 14)
