@@ -7,17 +7,27 @@
 
 import SwiftUI
 import AVKit
+import Defaults
 
 struct AirPodsNotchViewLeading: View {
     @ObservedObject private var volumeManager = VolumeManager.shared
+    
+    @Default(.bluetoothSymbols) private var bluetoothSymbols
 
     var body: some View {
-        if let url = Bundle.main.url(forResource: volumeManager.deviceVideo, withExtension: "mov") {
-            VideoView(url: url)
-                .frame(width: 33, height: 33)
-                .aspectRatio(contentMode: .fit)
+        if bluetoothSymbols {
+            Image(systemName: volumeManager.deviceIcon)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 25, height: 25)
         } else {
-            Text("Video not found")
+            if let url = Bundle.main.url(forResource: volumeManager.deviceVideo, withExtension: "mov") {
+                VideoView(url: url)
+                    .frame(width: 33, height: 33)
+                    .aspectRatio(contentMode: .fit)
+            } else {
+                Text("Video not found")
+            }
         }
     }
 }
