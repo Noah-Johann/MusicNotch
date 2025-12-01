@@ -33,6 +33,8 @@ struct SettingsView: View {
                 
                 SettingsExtensionView()
                 
+                SettingsLockScreenView()
+                
                 SetttingsGadgetsView()
                 
                 SettingsShortcutsView()

@@ -119,13 +119,17 @@ class WindowManager {
     }
     
     static func showLockScreen() {
-        lockscreenWindow = MusicPlayerWindow()
-        lockscreenWindow?.orderFrontRegardless()
+        if Defaults[.lockPlayer] {
+            lockscreenWindow = MusicPlayerWindow()
+            lockscreenWindow?.orderFrontRegardless()
+        }
     }
     
     static func hideLockScreen() {
-        lockscreenWindow?.close()
-        lockscreenWindow = nil
+        if Defaults[.lockPlayer] {
+            lockscreenWindow?.close()
+            lockscreenWindow = nil
+        }
     }
     
 }

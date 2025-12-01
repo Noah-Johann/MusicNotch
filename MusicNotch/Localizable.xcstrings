@@ -329,12 +329,22 @@
         }
       }
     },
-    "Enable LockScreen extension" : {
+    "Enable LockScreen icon" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aktiviere LockScreen Erweiterung"
+            "value" : "Aktiviere Sperrsymbol"
+          }
+        }
+      }
+    },
+    "Enable LockScreen player" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktiviere Sperrbildschirm-Player"
           }
         }
       }
@@ -575,6 +585,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "LaunchAtLogin"
+          }
+        }
+      }
+    },
+    "LockScreen" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sperrbildschirm"
           }
         }
       }
@@ -839,12 +859,32 @@
         }
       }
     },
+    "Position adjustment" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Positonsanpassung"
+          }
+        }
+      }
+    },
     "Previous" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zurück"
+          }
+        }
+      }
+    },
+    "px" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "px"
           }
         }
       }

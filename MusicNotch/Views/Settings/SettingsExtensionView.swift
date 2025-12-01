@@ -15,9 +15,6 @@ struct SettingsExtensionView: View {
     @Default(.hudExtension) private var hudExtension
     @Default(.accentColorHudSlider) private var accentColorHudSlider
     @Default(.gradientHudSlider) private var gradientHudSlider
-    @Default(.lockExtension) private var lockExtension
-    @Default(.lockSound) private var lockSound
-    @Default(.unlockSound) private var unlockSound
     @Default(.bluetoothRecognition) private var bluetoothRecognition
     @Default(.bluetoothSymbols) private var bluetoothSymbols
     
@@ -58,40 +55,6 @@ struct SettingsExtensionView: View {
             
             LuminareToggle(isOn: $gradientHudSlider) {
                 Text("Gradient slider")
-            }
-        }
-        
-        LuminareSection {
-            LuminareToggle(isOn: $lockExtension) {
-                Text("Enable LockScreen extension")
-            }
-            
-            LuminareToggle(isOn: $lockSound) {
-                HStack {
-                    Text("Play lock sound")
-                    
-                    Button(action: {
-                        playSound(sound: .lock)
-                    }, label: {
-                        Image(systemName: "speaker.wave.2.circle.fill")
-                            .foregroundStyle(.secondary)
-                            .imageScale(.large)
-                    }) .buttonStyle(.plain)
-                }
-            }
-            
-            LuminareToggle(isOn: $unlockSound) {
-                HStack {
-                    Text("Play unlock sound")
-                    
-                    Button (action: {
-                        playSound(sound: .unlock)
-                    }, label: {
-                        Image(systemName: "speaker.wave.2.circle.fill")
-                            .foregroundStyle(.secondary)
-                            .imageScale(.large)
-                    }) .buttonStyle(.plain)
-                }
             }
         }
             

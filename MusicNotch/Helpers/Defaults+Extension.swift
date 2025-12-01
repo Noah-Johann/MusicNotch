@@ -40,6 +40,13 @@ extension Defaults.Keys {
     static let enableGestures = Key<Bool>("enableGestures", default: true)
     static let mediaGestures = Key<Bool>("mediaGestures", default: true)
     
+    // LockScreen
+    static let lockExtension = Key<Bool>("lockExtension", default: true)
+    static let lockSound = Key<Bool>("lockSound", default: true)
+    static let unlockSound = Key<Bool>("unlockSound", default: true)
+    static let lockPlayer = Key<Bool>("lockPlayer", default: true)
+    static let lockPosition = Key<Double>("lockPosition", default: 0)
+    
     // MusicGlance
     static let autoMusicGlance = Key<Bool>("autoMusicGlance", default: true)
     
@@ -51,10 +58,6 @@ extension Defaults.Keys {
     static let hudExtension = Key<Bool>("hudExtension", default: true)
     static let gradientHudSlider = Key<Bool>("gradientHudSlider", default: true)
     static let accentColorHudSlider = Key<Bool>("accentColorHudSlider", default: false)
-    
-    static let lockExtension = Key<Bool>("lockExtension", default: true)
-    static let lockSound = Key<Bool>("lockSound", default: true)
-    static let unlockSound = Key<Bool>("unlockSound", default: true)
     
     static let bluetoothRecognition = Key<Bool>("bluetoothRecognition", default: true)
     static let bluetoothSymbols = Key<Bool>("bluetoothSymbols", default: false)

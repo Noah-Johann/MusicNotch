@@ -17,9 +17,7 @@ struct LockScreenPlayingView: View {
     @State private var trackposition: Double = 0
     @State private var isDragging: Bool = false
     @State private var playbackTimer: Timer?
-    
-    @State private var showVolume: Bool = false
-    
+        
     @Default(.coloredSpect) private var coloredSpect
     
     var body: some View {
@@ -165,32 +163,24 @@ struct LockScreenPlayingView: View {
                         .padding(.horizontal, 5)
                         
                         
-                        Button(action: {
-                            showVolume.toggle()
-                        }) {
-                            Image(systemName: volumeManager.deviceIcon)
-                                .imageScale(.large)
-                                .foregroundStyle(.secondary)
-                                .font(.system(size: 17))
-                                .frame(width: 30, height: 30)
-                                .padding(.horizontal, 17)
-                        }
-                        .buttonStyle(PlainButtonStyle())
+                        
+                        Image(systemName: volumeManager.deviceIcon)
+                            .imageScale(.large)
+                            .foregroundStyle(.secondary)
+                            .font(.system(size: 17))
+                            .frame(width: 30, height: 30)
+                            .padding(.horizontal, 17)
+                        
                     }
                     .frame(height: 40)
                     .padding(.bottom, 20)
                 } .frame(height: 190)
-                
-                if showVolume {
-                    ExtensionHUDViewExpanded(hudType: .volume, width: 320)
-                }
             }
         }
-        .frame(width: 350, height: showVolume ? 240 : 190)
+        .frame(width: 350, height: 190)
         .contentShape(RoundedRectangle(cornerRadius: 30, style: .continuous))
         .background(.clear)
         .glassEffect(.clear, in: RoundedRectangle(cornerRadius: 30, style: .continuous))
-        .animation(.bouncy(duration: 0.3), value: showVolume)
         .onReceive(spotifyManager.$trackPosition) { newValue in
             trackposition = Double(newValue)
         }
@@ -261,9 +251,9 @@ class MusicPlayerWindow: NSPanel {
         if let screen = NSScreen.screens.first {
             let screenFrame = screen.visibleFrame
 
-            self.setFrameOrigin(NSPoint(x: (screenFrame.maxX / 2) - 175, y: screenFrame.maxY / 6))
+            self.setFrameOrigin(NSPoint(x: (screenFrame.maxX / 2) - 175, y: (screenFrame.maxY / 6) + Defaults[.lockPosition]))
         } else {
-            self.setFrameOrigin(NSPoint(x: 500, y: 200))
+            self.setFrameOrigin(NSPoint(x: 500, y: 200 + Defaults[.lockPosition]))
         }
     }
 }
