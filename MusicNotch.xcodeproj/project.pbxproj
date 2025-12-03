@@ -23,6 +23,7 @@
 		4FAD05212E8499BA002D4794 /* Luminare in Frameworks */ = {isa = PBXBuildFile; productRef = 4FAD05202E8499BA002D4794 /* Luminare */; };
 		4FB5D9312E9A83D800997E62 /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4FB5D9302E9A83D800997E62 /* DynamicNotchKit */; };
 		4FB5D9342E9A85CD00997E62 /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4FB5D9332E9A85CD00997E62 /* DynamicNotchKit */; };
+		4FFB0D422EDE286C0096B9FF /* UniversalGlass in Frameworks */ = {isa = PBXBuildFile; productRef = 4FFB0D412EDE286C0096B9FF /* UniversalGlass */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -72,6 +73,7 @@
 				4F33DF812D9EDF9A008F0182 /* LaunchAtLogin in Frameworks */,
 				4FABD4852D9704BB00F8CFEA /* KeyboardShortcuts in Frameworks */,
 				4FB5D9312E9A83D800997E62 /* DynamicNotchKit in Frameworks */,
+				4FFB0D422EDE286C0096B9FF /* UniversalGlass in Frameworks */,
 				4FAD01402E7ECE06002D4794 /* IOKit.framework in Frameworks */,
 				4FAD05212E8499BA002D4794 /* Luminare in Frameworks */,
 			);
@@ -141,6 +143,7 @@
 				4F75FABB2E86D6FB0064EF5E /* SkyLightWindow */,
 				4FB5D9302E9A83D800997E62 /* DynamicNotchKit */,
 				4FB5D9332E9A85CD00997E62 /* DynamicNotchKit */,
+				4FFB0D412EDE286C0096B9FF /* UniversalGlass */,
 			);
 			productName = MusicNotch;
 			productReference = 4FA87FC02D847DD700725978 /* MusicNotch.app */;
@@ -180,6 +183,7 @@
 				4FAD051F2E8499BA002D4794 /* XCRemoteSwiftPackageReference "Luminare" */,
 				4F75FABA2E86D6FB0064EF5E /* XCRemoteSwiftPackageReference "SkyLightWindow" */,
 				4FB5D9322E9A85CD00997E62 /* XCRemoteSwiftPackageReference "DynamicNotchKit" */,
+				4FFB0D402EDE286C0096B9FF /* XCRemoteSwiftPackageReference "UniversalGlass" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 4FA87FC12D847DD700725978 /* Products */;
@@ -355,7 +359,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CREATE_INFOPLIST_SECTION_IN_BINARY = YES;
-				CURRENT_PROJECT_VERSION = 76;
+				CURRENT_PROJECT_VERSION = 89;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"MusicNotch/Preview Content\"";
 				DEVELOPMENT_TEAM = C3PS85G8WX;
@@ -373,13 +377,15 @@
 				INFOPLIST_FILE = MusicNotch/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = MusicNotch;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSAppleEventsUsageDescription = "MusicNotch needs access to apple events to show and control playback.";
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "MusicNotch needs access to Bluetooth to show connection status and battery level of devices.";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2025 Noah Johann";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 0.1.4;
+				MARKETING_VERSION = 0.1.5;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.NoahJohann.MusicNotch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -413,7 +419,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CREATE_INFOPLIST_SECTION_IN_BINARY = YES;
-				CURRENT_PROJECT_VERSION = 76;
+				CURRENT_PROJECT_VERSION = 89;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"MusicNotch/Preview Content\"";
 				DEVELOPMENT_TEAM = C3PS85G8WX;
@@ -431,13 +437,15 @@
 				INFOPLIST_FILE = MusicNotch/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = MusicNotch;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSAppleEventsUsageDescription = "MusicNotch needs access to apple events to show and control playback.";
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "MusicNotch needs access to Bluetooth to show connection status and battery level of devices.";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2025 Noah Johann";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 0.1.4;
+				MARKETING_VERSION = 0.1.5;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.NoahJohann.MusicNotch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -535,6 +543,14 @@
 				kind = branch;
 			};
 		};
+		4FFB0D402EDE286C0096B9FF /* XCRemoteSwiftPackageReference "UniversalGlass" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Aeastr/UniversalGlass";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -600,6 +616,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4FB5D9322E9A85CD00997E62 /* XCRemoteSwiftPackageReference "DynamicNotchKit" */;
 			productName = DynamicNotchKit;
+		};
+		4FFB0D412EDE286C0096B9FF /* UniversalGlass */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4FFB0D402EDE286C0096B9FF /* XCRemoteSwiftPackageReference "UniversalGlass" */;
+			productName = UniversalGlass;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -293,6 +293,16 @@
         }
       }
     },
+    "Enable Bluetooth extension" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktiviere Bluetooth Erweiterung"
+          }
+        }
+      }
+    },
     "Enable Gesture control" : {
       "localizations" : {
         "de" : {
@@ -319,12 +329,22 @@
         }
       }
     },
-    "Enable LockScreen extension" : {
+    "Enable LockScreen icon" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aktiviere LockScreen Erweiterung"
+            "value" : "Aktiviere Sperrsymbol"
+          }
+        }
+      }
+    },
+    "Enable LockScreen player" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktiviere Sperrbildschirm-Player"
           }
         }
       }
@@ -469,6 +489,16 @@
         }
       }
     },
+    "Hide player" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Widget schließen"
+          }
+        }
+      }
+    },
     "If active, the notch can't be opened when nothing is playing" : {
       "localizations" : {
         "de" : {
@@ -555,6 +585,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "LaunchAtLogin"
+          }
+        }
+      }
+    },
+    "LockScreen" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sperrbildschirm"
           }
         }
       }
@@ -759,6 +799,26 @@
         }
       }
     },
+    "Play lock sound" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spiele Sperrton"
+          }
+        }
+      }
+    },
+    "Play unlock sound" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spiele Entsperrton"
+          }
+        }
+      }
+    },
     "Play/Pause" : {
       "localizations" : {
         "de" : {
@@ -799,12 +859,32 @@
         }
       }
     },
+    "Position adjustment" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Positonsanpassung"
+          }
+        }
+      }
+    },
     "Previous" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zurück"
+          }
+        }
+      }
+    },
+    "px" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "px"
           }
         }
       }
@@ -1089,6 +1169,16 @@
         }
       }
     },
+    "Use device symbols" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verwende Gerätesymbole"
+          }
+        }
+      }
+    },
     "v%@" : {
       "shouldTranslate" : false
     },
@@ -1115,6 +1205,9 @@
           }
         }
       },
+      "shouldTranslate" : false
+    },
+    "Video not found" : {
       "shouldTranslate" : false
     },
     "Viewed Onboarding" : {

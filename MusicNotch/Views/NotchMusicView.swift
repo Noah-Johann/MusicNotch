@@ -13,8 +13,26 @@ struct NotchMusicViewLeading: View {
     
     var body: some View {
         HStack {
-            AlbumArtView(sizeState: "closed")
-            
+            Button (action: {
+                if notchContentState.notchContent == .music {
+                    withAnimation(.bouncy(duration: 0.6)) {
+                        NotchContentState.shared.notchContent = .musicGlance
+                    }
+                } else if notchContentState.notchContent == .musicGlance {
+                    withAnimation(.bouncy(duration: 0.6)) {
+                        NotchContentState.shared.notchContent = .music
+                    }
+                } else {
+                    return
+                }
+            }, label: {
+                AlbumArtView(size: (NSScreen.main?.isOnNotchScreen ?? false) ? 30.0 : 20.0,
+                             shrink: 5,
+                             cornerRadius: (NSScreen.main?.isOnNotchScreen ?? false) ? 6 : 4,
+                             glow: false,
+                )
+            }) .buttonStyle(.plain)
+                .padding(.leading, 3)
             if notchContentState.notchContent == .musicGlance {
                 Text(spotifyManager.trackName)
                     .foregroundStyle(Color(spotifyManager.aveColor ?? .white).gradient)

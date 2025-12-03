@@ -15,7 +15,10 @@ struct SettingsExtensionView: View {
     @Default(.hudExtension) private var hudExtension
     @Default(.accentColorHudSlider) private var accentColorHudSlider
     @Default(.gradientHudSlider) private var gradientHudSlider
-    @Default(.lockExtension) private var lockExtension
+    @Default(.bluetoothRecognition) private var bluetoothRecognition
+    @Default(.bluetoothSymbols) private var bluetoothSymbols
+    
+    @ObservedObject private var accessibilityManager = AccessibilityManager.shared
     
     var body: some View {
         LuminareSection {
@@ -54,11 +57,15 @@ struct SettingsExtensionView: View {
                 Text("Gradient slider")
             }
         }
-        
+            
         LuminareSection {
-            LuminareToggle(isOn: $lockExtension) {
-                Text("Enable LockScreen extension")
+            LuminareToggle(isOn: $bluetoothRecognition) {
+                Text("Enable Bluetooth extension")
             }
+            
+            LuminareToggle(isOn: $bluetoothSymbols) {
+                Text("Use device symbols")
+            } .disabled(accessibilityManager.isReduceMotion)
         }
         
         .padding(.bottom, 14)

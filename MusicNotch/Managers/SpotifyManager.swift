@@ -36,6 +36,7 @@ class SpotifyManager: ObservableObject {
     private var oldTrackName: String = ""
     private var hideTimer: Timer?
     private var stopTime = 0
+    private var launched: Bool = false
     
     
     private init() {
@@ -107,24 +108,30 @@ class SpotifyManager: ObservableObject {
         if self.trackName != oldTrackName {
             oldTrackName = self.trackName
             fetchAlbumArt()
-            if Defaults[.autoMusicGlance] {
-                NotchManager.shared.showExtensionNotch(type: .musicGlance)
+            if Defaults[.autoMusicGlance] && NotchContentState.shared.notchContent != .musicGlance {
+                if launched == false {
+                    launched = true
+                } else {
+                    NotchManager.shared.showExtensionNotch(type: .musicGlance)
+                }
             }
         }
         
         let hideNotchTime = Defaults[.hideNotchTime]
         stopTime = 0
-        if hideTimer == nil && self.isPlaying == false && NotchContentState.shared.notchContent == .music {
-            hideTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-                guard let self = self else { return }
-                DispatchQueue.main.async {
-                    self.stopTime += 1
-                    if self.stopTime > Int(hideNotchTime) && NotchManager.shared.notchState == .closed {
-                        guard NotchContentState.shared.notchContent == .music else { return }
-                        self.hideTimer?.invalidate()
-                        self.hideTimer = nil
-                        Task {
-                           await NotchManager.shared.setNotchContent(.hidden, false)
+        if hideTimer == nil && self.isPlaying == false {
+            if NotchContentState.shared.notchContent == .music || NotchContentState.shared.notchContent == .musicGlance {
+                hideTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+                    guard let self = self else { return }
+                    DispatchQueue.main.async {
+                        self.stopTime += 1
+                        if self.stopTime > Int(hideNotchTime) && NotchManager.shared.notchState == .closed {
+                            guard NotchContentState.shared.notchContent == .music || NotchContentState.shared.notchContent == .musicGlance else { return }
+                            self.hideTimer?.invalidate()
+                            self.hideTimer = nil
+                            Task {
+                                await NotchManager.shared.setNotchContent(.hidden, false)
+                            }
                         }
                     }
                 }
@@ -133,7 +140,7 @@ class SpotifyManager: ObservableObject {
         
         // Open notch when playback starts
         Task { @MainActor in
-            if self.isPlaying == true && NotchManager.shared.notchState == .hidden {
+            if self.isPlaying == true && NotchManager.shared.notchState == .hidden && !NotchManager.shared.notchDismissed {
                 if Defaults[.autoMusicGlance] {
                     NotchManager.shared.showExtensionNotch(type: .musicGlance)
                 } else {
@@ -141,6 +148,10 @@ class SpotifyManager: ObservableObject {
                     await NotchManager.shared.setNotchContent(.closed, false)
                 }
             }
+        }
+        
+        if self.isPlaying == false && NotchManager.shared.notchDismissed == true {
+            NotchManager.shared.notchDismissed = false
         }
         
         // Remove Nothing-Playing-Timer

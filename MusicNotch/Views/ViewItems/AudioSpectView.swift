@@ -10,16 +10,16 @@ import Defaults
 
 struct AudioSpectView: View {
     @ObservedObject var spotifyManager = SpotifyManager.shared
+    @ObservedObject var accessibilityManager = AccessibilityManager.shared
     
     @Default(.coloredSpect) private var coloredSpect
     @Default(.openNotchOnHover) private var openNotchOnHover
     
     @State private var hovering: Bool = false
-  //  @Default(
     
     var body: some View {
         ZStack {
-            if hovering {
+            if hovering || accessibilityManager.isReduceMotion {
                 Button {
                     spotifyPlayPause()
                 } label: {
@@ -28,7 +28,7 @@ struct AudioSpectView: View {
                 } .buttonStyle(PlainButtonStyle())
             }
             
-            if !hovering {
+            if !hovering && !accessibilityManager.isReduceMotion {
                 Rectangle()
                     .fill(coloredSpect ? Color(nsColor: spotifyManager.aveColor ?? .white).gradient : Color.white.gradient)
                     .frame(width: 35, alignment: .center)

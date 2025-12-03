@@ -15,6 +15,7 @@ import AppKit
 final class NotchManager {
     
     @Published var notchState: NotchState = .hidden
+    @Published var notchDismissed: Bool = false
     
     static let shared = NotchManager()
     
@@ -43,7 +44,7 @@ final class NotchManager {
     private init() {
         notch = DynamicNotch(
            hoverBehavior: .increaseShadow,
-           style: .notch,
+           style: .notch(topCornerRadius: 25, bottomCornerRadius: 55),
            expanded: { NotchViewExpanded() },
            compactLeading: { NotchViewLeading() },
            compactTrailing: { NotchViewTrailing() }
@@ -87,8 +88,14 @@ final class NotchManager {
             switch direction {
             case .up:
                 Task {
-                    await self.setNotchContent(.closed, false)
-                    print("notch close")
+                    if self.notchState == .open {
+                        await self.setNotchContent(.closed, false)
+                        print("notch close")
+                    } else if self.notchState == .closed {
+                        self.notchDismissed = true
+                        await self.setNotchContent(.hidden, false)
+                        print("dismiss notch")
+                    }
                 }
             case .down:
                 Task {
@@ -422,6 +429,12 @@ final class NotchManager {
                     NotchContentState.shared.notchContent = .brightness
                 }
             case .locked:
+                if Defaults[.lockSound] {
+                    Task.detached {
+                        playSound(sound: .lock)
+                    }
+                }
+                
                 withAnimation(.bouncy(duration: 0.6)) {
                     NotchContentState.shared.notchContent = .locked
                 }
@@ -432,8 +445,18 @@ final class NotchManager {
                 
                 return
             case .unlocked:
+                if Defaults[.unlockSound] {
+                    Task.detached {
+                        playSound(sound: .unlock)
+                    }
+                }
+                
                 withAnimation(.bouncy(duration: 0.6)) {
                     NotchContentState.shared.notchContent = .unlocked
+                }
+            case .bluetooth:
+                withAnimation(.bouncy(duration: 0.6)) {
+                    NotchContentState.shared.notchContent = .bluetooth
                 }
             }
 
@@ -482,6 +505,7 @@ enum NotchContent {
     case music
     case musicGlance
     case battery
+    case bluetooth
     case volume
     case brightness
     case locked

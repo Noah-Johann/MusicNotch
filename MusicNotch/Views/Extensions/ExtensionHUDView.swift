@@ -115,6 +115,7 @@ struct ExtensionHUDViewExpanded: View {
 
     
     let hudType: HudType
+    let width: CGFloat
     
     var body: some View {
         switch hudType {
@@ -147,7 +148,7 @@ struct ExtensionHUDViewExpanded: View {
                     }
                 }
             }
-            .frame(width: 390, height: 30)
+            .frame(width: width, height: 30)
             .padding(.bottom, 10)
             .animation(.easeInOut(duration: 0.3), value: volumeManager.volume)
             .animation(.easeInOut(duration: 0.3), value: volumeManager.isMuted)
@@ -170,7 +171,7 @@ struct ExtensionHUDViewExpanded: View {
                     HudSlider(value: $brightnessManager.brightness, isExpanded: true)
                 }
             }
-            .frame(width: 390, height: 30)
+            .frame(width: width, height: 30)
             .padding(.bottom, 10)
             .animation(.easeInOut(duration: 0.3), value: brightnessManager.brightness)
         }
@@ -178,7 +179,7 @@ struct ExtensionHUDViewExpanded: View {
 }
 
 #Preview {
-    ExtensionHUDViewExpanded(hudType: .volume)
+    ExtensionHUDViewExpanded(hudType: .volume, width: 390)
         .padding()
 }
  

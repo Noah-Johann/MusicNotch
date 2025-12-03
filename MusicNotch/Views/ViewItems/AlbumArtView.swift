@@ -10,51 +10,39 @@ import Defaults
 
 struct AlbumArtView: View {
     
-    var sizeState: String
+    var size: Double
+    var shrink: Double
+    var cornerRadius: Double
+    var glow: Bool
     
     @ObservedObject var spotifyManager = SpotifyManager.shared
+
+    @State private var artworkSize: Double = 0
     
-    @State private var albumArtSizeOpen = 80.0
-    @State public var albumArtSizeClosed = (NSScreen.main?.isOnNotchScreen ?? false) ? 30.0 : 20.0
     var body: some View {
         HStack {
             if let albumArt = spotifyManager.albumArtImage {
                 Image(nsImage: spotifyManager.isSpotifyRunning ? albumArt : NSApp.applicationIconImage)
                     .resizable()
                     .scaledToFit()
-                    .frame(width: sizeState == "open" ? albumArtSizeOpen : albumArtSizeClosed,
-                           height: sizeState == "open" ? albumArtSizeOpen : albumArtSizeClosed)
-                    .cornerRadius((NSScreen.main?.isOnNotchScreen ?? false) ? 6 : 4)
-                    .padding(.vertical, 10)
-                    .animation(.easeInOut(duration: 0.3), value: sizeState == "open" ? albumArtSizeOpen : albumArtSizeClosed)
-                    .shadow(color: sizeState == "open" && Defaults[.playerGlow] ? (spotifyManager.aveColor.map { Color(nsColor: $0) } ?? .clear).opacity(1) : .clear, radius: 50, x: 5, y: 10)
+                    .frame(width: artworkSize,
+                           height: artworkSize)
+                    .cornerRadius(cornerRadius)
+                    .animation(.easeInOut(duration: 0.3), value: artworkSize)
+                    .shadow(color: glow && Defaults[.playerGlow] ? (spotifyManager.aveColor.map { Color(nsColor: $0) } ?? .clear).opacity(1) : .clear, radius: 50, x: 5, y: 10)
             }
         }
-        .frame(width: sizeState == "open" ? 80 : 30,
-               height: sizeState == "open" ? 80 : 30)
-        .padding(.leading, sizeState == "closed" ? 3 : 0)
+        .frame(width: size, height: size)
         .onChange(of: spotifyManager.isPlaying) {
-            changeArtSize(spotifyManager.isPlaying)
+            artworkSize = spotifyManager.isPlaying ? size : size - shrink
         }
         .onAppear() {
-            changeArtSize(spotifyManager.isPlaying)
+            artworkSize = spotifyManager.isPlaying ? size : size - shrink
         }
     }
-    
-    func changeArtSize (_ playbackState: Bool) {
-        if playbackState == true {
-            albumArtSizeOpen = 80
-            albumArtSizeClosed = (NSScreen.main?.isOnNotchScreen ?? false) ? 30.0 : 20.0
-            
-        } else if playbackState == false {
-            albumArtSizeOpen = 70
-            albumArtSizeClosed = (NSScreen.main?.isOnNotchScreen ?? false) ? 25 : 15
-        }
-    }
-
 }
 
 #Preview {
-    AlbumArtView(sizeState: "open")
+    AlbumArtView(size: 80, shrink: 10, cornerRadius: 20, glow: true)
         .padding(60)
 }

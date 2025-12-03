@@ -94,13 +94,25 @@ struct ButtonView: View {
             
             
             //Speaker
-            Image(systemName: volumeManager.deviceIcon)
-                .imageScale(.large)
-                .foregroundStyle(.secondary)
-                .font(.system(size: 17))
-                .frame(width: 30, height: 30)
-                .padding(.horizontal, 17)
-            
+            Button(action: {
+                if NotchContentState.shared.notchContent == .music {
+                    withAnimation(.bouncy(duration: 0.6)) {
+                        NotchContentState.shared.notchContent = .volume
+                    }
+                } else {
+                    withAnimation(.bouncy(duration: 0.6)) {
+                        NotchContentState.shared.notchContent = .music
+                    }
+                }
+            }) {
+                Image(systemName: volumeManager.deviceIcon)
+                    .imageScale(.large)
+                    .foregroundStyle(.secondary)
+                    .font(.system(size: 17))
+                    .frame(width: 30, height: 30)
+                    .padding(.horizontal, 17)
+            }
+            .buttonStyle(PlainButtonStyle())
         } .frame(height: 40)
     }
 }
