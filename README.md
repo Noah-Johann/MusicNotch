@@ -7,8 +7,11 @@
   <p align="center">Make your notch do so many things</p>
 </div>
 
-> [!NOTE]
-> MusicNotch currently only works with the official Spotify client. This will be expanded in the future.
+<br/>
+
+<p align="center">
+  <img src="assets/MusicNotch_Demo.gif" alt="MusicNotch Demo" />
+</p>
 
 <br/>
 
@@ -23,6 +26,10 @@
 
 ## Features
 MusicNotch turns your MacBook's notch from just a cutout in your screen into a dynamic information center complete with music controls. Control your **Spotify** playback easily with a hover of the notch instead of opening a separate app. Get information about battery status, volume, brightness and more.  
+
+> [!NOTE]
+> MusicNotch currently only works with the official Spotify client. This will be expanded in the future.
+
 
 ### Roadmap
 For details about upcoming and planned features, check out the [Roadmap](https://github.com/users/Noah-Johann/projects/1)
