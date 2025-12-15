@@ -140,6 +140,8 @@ class SpotifyManager: ObservableObject {
         
         // Open notch when playback starts
         Task { @MainActor in
+            WindowManager.showLockScreen()
+            
             if self.isPlaying == true && NotchManager.shared.notchState == .hidden && !NotchManager.shared.notchDismissed {
                 if Defaults[.autoMusicGlance] {
                     NotchManager.shared.showExtensionNotch(type: .musicGlance)

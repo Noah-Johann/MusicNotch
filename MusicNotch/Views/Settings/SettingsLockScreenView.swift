@@ -15,6 +15,7 @@ struct SettingsLockScreenView: View {
     @Default(.unlockSound) private var unlockSound
     @Default(.lockPlayer) private var lockPlayer
     @Default(.lockPosition) private var lockPosition
+    @Default(.alwaysShowPlayer) private var alwaysShowPlayer
     
     var body: some View {
         LuminareSection {
@@ -66,6 +67,10 @@ struct SettingsLockScreenView: View {
             }
             .luminareSliderLayout(.regular)
             .padding(.bottom, 3)
+            
+            LuminareToggle(isOn: $alwaysShowPlayer) {
+                Text("Always show player")
+            }
             
         } header: {
             Text("LockScreen")

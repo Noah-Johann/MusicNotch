@@ -46,6 +46,7 @@ extension Defaults.Keys {
     static let unlockSound = Key<Bool>("unlockSound", default: true)
     static let lockPlayer = Key<Bool>("lockPlayer", default: true)
     static let lockPosition = Key<Double>("lockPosition", default: 0)
+    static let alwaysShowPlayer = Key<Bool>("alwaysShowPlayer", default: false)
     
     // MusicGlance
     static let autoMusicGlance = Key<Bool>("autoMusicGlance", default: true)
