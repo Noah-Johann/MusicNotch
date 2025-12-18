@@ -44,10 +44,18 @@ struct SettingsGeneralView: View {
             
             Button {
                 Task { @MainActor in
-                    await NotchManager.shared.setNotchContent(.closed, true)
+                    await NotchManager.shared.setNotchState(.compact, true)
                 }
             } label: {
                 Text("Show notch")
+            }
+            
+            Button {
+                Task { @MainActor in
+                    NotchManager.shared.notch.windowController?.window?.alphaValue = 0.0
+                }
+            } label: {
+                Text("Opacity 0")
             }
 #endif
             

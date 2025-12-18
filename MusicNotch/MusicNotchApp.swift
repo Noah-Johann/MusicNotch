@@ -25,7 +25,7 @@ struct MusicNotchApp: App {
     init() {
         KeyboardShortcuts.onKeyDown(for: .toggleNotch) {
             SpotifyManager.shared.timer = 3
-            NotchManager.shared.changeNotch()
+            NotchManager.shared.toggleNotch()
         }
         KeyboardShortcuts.onKeyDown(for: .toggleMusicGlance) {
             NotchManager.shared.showExtensionNotch(type: .musicGlance)
@@ -105,13 +105,13 @@ private func displayCallback(
         print("Display connected or disconnected")
         DispatchQueue.main.async {
             Task {
-                await NotchManager.shared.setNotchContent(.hidden, true)
+                await NotchManager.shared.setNotchState(.hidden, true)
             }
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
             Task {
-                await NotchManager.shared.setNotchContent(.closed, true)
+                await NotchManager.shared.setNotchState(.compact, true)
             }
         }
     }

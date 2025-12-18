@@ -84,7 +84,7 @@ class SpotifyManager: ObservableObject {
             isSpotifyRunning = false
             
             Task { @MainActor in
-                await NotchManager.shared.setNotchContent(.hidden, false)
+                await NotchManager.shared.setNotchState(.closed, false)
             }
             
             self.isPlaying = false
@@ -125,12 +125,12 @@ class SpotifyManager: ObservableObject {
                     guard let self = self else { return }
                     DispatchQueue.main.async {
                         self.stopTime += 1
-                        if self.stopTime > Int(hideNotchTime) && NotchManager.shared.notchState == .closed {
+                        if self.stopTime > Int(hideNotchTime) && NotchManager.shared.notchState == .compact {
                             guard NotchContentState.shared.notchContent == .music || NotchContentState.shared.notchContent == .musicGlance else { return }
                             self.hideTimer?.invalidate()
                             self.hideTimer = nil
                             Task {
-                                await NotchManager.shared.setNotchContent(.hidden, false)
+                                await NotchManager.shared.setNotchState(.closed, false)
                             }
                         }
                     }
@@ -140,14 +140,14 @@ class SpotifyManager: ObservableObject {
         
         // Open notch when playback starts
         Task { @MainActor in
-            WindowManager.showLockScreen()
+            WindowManager.showLockScreenPlayer()
             
-            if self.isPlaying == true && NotchManager.shared.notchState == .hidden && !NotchManager.shared.notchDismissed {
+            if self.isPlaying == true && NotchManager.shared.notchState == .closed && !NotchManager.shared.notchDismissed {
                 if Defaults[.autoMusicGlance] {
                     NotchManager.shared.showExtensionNotch(type: .musicGlance)
                 } else {
                     NotchContentState.shared.notchContent = .music
-                    await NotchManager.shared.setNotchContent(.closed, false)
+                    await NotchManager.shared.setNotchState(.compact, false)
                 }
             }
         }

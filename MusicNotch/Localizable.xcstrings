@@ -211,6 +211,7 @@
       }
     },
     "Disable Notch on external Screens" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -221,6 +222,7 @@
       }
     },
     "Disable notch when there is no Notch Display" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -472,6 +474,9 @@
         }
       }
     },
+    "Hide closed notch" : {
+
+    },
     "Hide delay" : {
       "localizations" : {
         "de" : {
@@ -483,6 +488,7 @@
       }
     },
     "Hide fake notch" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -503,6 +509,7 @@
       }
     },
     "If active, the notch can't be opened when nothing is playing" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -731,6 +738,9 @@
           }
         }
       }
+    },
+    "Opacity 0" : {
+
     },
     "Open Notch on hover" : {
       "localizations" : {

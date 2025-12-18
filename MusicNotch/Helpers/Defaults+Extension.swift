@@ -23,8 +23,7 @@ extension Defaults.Keys {
     // Display
     static let notchDisplay = Key<Bool>("notchDisplay", default: true)
     static let mainDisplay = Key<Bool>("mainDisplay", default: false)
-    static let disableNotchOnHide = Key<Bool>("disableNotchOnHide", default: false)
-    static let noNotchScreenHide = Key<Bool>("noNotchScreenHide", default: false)
+    static let transparentNotch = Key<Bool>("transparentNotch", default: false)
     
     // Appearance
     static let coloredSpect = Key<Bool>("coloredSpect", default: true)
