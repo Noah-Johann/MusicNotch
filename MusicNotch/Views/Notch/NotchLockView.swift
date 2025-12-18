@@ -1,5 +1,5 @@
 //
-//  ExtensionLockView.swift
+//  NotchLockView.swift
 //  MusicNotch
 //
 //  Created by Noah Johann on 26.09.25.
@@ -13,7 +13,7 @@ enum LockType {
     case unlocked
 }
 
-struct ExtensionLockViewLeading: View {
+struct NotchLockViewLeading: View {
     let lockType: LockType
     
     var body: some View {
@@ -31,7 +31,7 @@ struct ExtensionLockViewLeading: View {
     }
 }
 
-struct ExtensionLockViewTrailing: View {
+struct NotchLockViewTrailing: View {
     var body: some View {
         VStack {}
             .frame(width: 20, height: 20)

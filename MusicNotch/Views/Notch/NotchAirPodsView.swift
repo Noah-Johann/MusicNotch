@@ -1,5 +1,5 @@
 //
-//  AirPodsNotchView.swift
+//  NotchAirPodsView.swift
 //  MusicNotch
 //
 //  Created by Noah Johann on 23.11.25.
@@ -9,7 +9,7 @@ import SwiftUI
 import AVKit
 import Defaults
 
-struct AirPodsNotchViewLeading: View {
+struct NotchAirPodsViewLeading: View {
     @ObservedObject private var volumeManager = VolumeManager.shared
     @ObservedObject private var accessibilityManager = AccessibilityManager.shared
     
@@ -33,7 +33,7 @@ struct AirPodsNotchViewLeading: View {
     }
 }
 
-struct AirPodsNotchViewTrailing: View {
+struct NotchAirPodsViewTrailing: View {
     var body: some View {
         BatteryRingView()
             .frame(width: 30, height: 30)

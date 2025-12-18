@@ -1,5 +1,5 @@
 //
-//  ExtensionHUDView.swift
+//  NotchHUDView.swift
 //  MusicNotch
 //
 //  Created by Noah Johann on 12.09.25.
@@ -7,13 +7,14 @@
 
 import SwiftUI
 import AppKit
+import Defaults
 
 enum HudType {
     case volume
     case brightness
 }
 
-struct ExtensionHUDViewLeading: View {
+struct NotchHUDViewLeading: View {
     @ObservedObject var volumeManager = VolumeManager.shared
     @ObservedObject var brightnessManager = BrightnessManager.shared
     
@@ -24,19 +25,25 @@ struct ExtensionHUDViewLeading: View {
         case .volume:
             HStack {
                 HStack {
-                    if volumeManager.volume == 0 || volumeManager.isMuted {
-                        Image(systemName: "speaker.slash.fill")
-                    } else if volumeManager.volume < 0.4 {
-                        Image(systemName: "speaker.wave.1.fill")
-                    } else if volumeManager.volume < 0.7 {
-                        Image(systemName: "speaker.wave.2.fill")
+                    if Defaults[.hudDeviceIcons] {
+                        Image(systemName: volumeManager.deviceIcon)
                     } else {
-                        Image(systemName: "speaker.wave.3.fill")
+                        if volumeManager.volume == 0 || volumeManager.isMuted {
+                            Image(systemName: "speaker.slash.fill")
+                        } else if volumeManager.volume < 0.4 {
+                            Image(systemName: "speaker.wave.1.fill")
+                        } else if volumeManager.volume < 0.7 {
+                            Image(systemName: "speaker.wave.2.fill")
+                        } else {
+                            Image(systemName: "speaker.wave.3.fill")
+                        }
                     }
                 } .frame(width: 20)
                 
                 Text("Volume")
                     .font(.system(size: 12))
+                
+                Spacer()
             }
             .frame(width: 35 + textWidth("Volume", font: .systemFont(ofSize: 12)), height: 20)
             .padding(.trailing, 4)
@@ -64,7 +71,7 @@ struct ExtensionHUDViewLeading: View {
     }
 }
 
-struct ExtensionHUDViewTrailing: View {
+struct NotchHUDViewTrailing: View {
     @ObservedObject var volumeManager = VolumeManager.shared
     @ObservedObject var brightnessManager = BrightnessManager.shared
     
@@ -109,7 +116,7 @@ func textWidth(_ key: String, font: NSFont) -> CGFloat {
     }
 }
 
-struct ExtensionHUDViewExpanded: View {
+struct NotchHUDViewExpanded: View {
     @ObservedObject var volumeManager = VolumeManager.shared
     @ObservedObject var brightnessManager = BrightnessManager.shared
 
@@ -179,7 +186,7 @@ struct ExtensionHUDViewExpanded: View {
 }
 
 #Preview {
-    ExtensionHUDViewExpanded(hudType: .volume, width: 390)
+    NotchHUDViewExpanded(hudType: .volume, width: 390)
         .padding()
 }
  

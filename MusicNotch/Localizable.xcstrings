@@ -1182,6 +1182,9 @@
         }
       }
     },
+    "Use device icons" : {
+
+    },
     "Use device symbols" : {
       "localizations" : {
         "de" : {
