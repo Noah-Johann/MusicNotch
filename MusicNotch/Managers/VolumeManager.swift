@@ -201,7 +201,7 @@ class VolumeManager: ObservableObject {
         }
 
         if let vol = usedVolume {
-            DispatchQueue.main.async {
+            Task { @MainActor in
                 self.volume = CGFloat(vol)
                 self.isMuted = (vol == 0) || self.isMuted
             }
@@ -228,7 +228,7 @@ class VolumeManager: ObservableObject {
             &mute
         )
         guard status == noErr else { return }
-        DispatchQueue.main.async {
+        Task { @MainActor in
             self.isMuted = (mute != 0)
         }
     }
@@ -328,7 +328,7 @@ class VolumeManager: ObservableObject {
             &propSize,
             &transportType
         )
-        DispatchQueue.main.async {
+        Task { @MainActor in
             var transportString: String = "unknown"
             switch transportType {
             case kAudioDeviceTransportTypeBuiltIn:

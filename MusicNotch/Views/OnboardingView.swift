@@ -100,7 +100,7 @@ struct OnboardingView: View {
                                 print(AccessibilityHelper.isAuthorized(prompt: true))
                                 
                                 PermissionHelper.promptUserForConsent(for: "com.spotify.client") { consent in
-                                    DispatchQueue.main.async {
+                                    Task { @MainActor in
                                         print("Constent \(consent)")
                                         switch consent {
                                         case .granted:

@@ -58,7 +58,7 @@ class SpotifyManager: ObservableObject {
     }
 
     private func setupSpotifyObservers() {
-        DispatchQueue.main.async { [weak self] in
+        Task { [weak self] in
             guard let self = self else { return }
             
             DistributedNotificationCenter.default().addObserver(
@@ -123,7 +123,7 @@ class SpotifyManager: ObservableObject {
             if NotchContentState.shared.notchContent == .music || NotchContentState.shared.notchContent == .musicGlance {
                 hideTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
                     guard let self = self else { return }
-                    DispatchQueue.main.async {
+                    Task { @MainActor in
                         self.stopTime += 1
                         if self.stopTime > Int(hideNotchTime) && NotchManager.shared.notchState == .compact {
                             guard NotchContentState.shared.notchContent == .music || NotchContentState.shared.notchContent == .musicGlance else { return }
@@ -308,7 +308,7 @@ class SpotifyManager: ObservableObject {
         guard let url = URL(string: albumArtURL) else { return }
         URLSession.shared.dataTask(with: url) { data, _, _ in
             guard let data = data, let image = NSImage(data: data) else { return }
-            DispatchQueue.main.async {
+            Task { @MainActor in
                 self.albumArtImage = image
                 self.getAverageColor()
             }

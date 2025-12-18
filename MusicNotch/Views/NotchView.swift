@@ -73,6 +73,7 @@ struct NotchViewTrailing: View {
 struct NotchViewExpanded: View {
     @ObservedObject var notchContentManager = NotchContentState.shared
     
+    @ObservedObject var batteryManager = BatteryManager.shared
     @ObservedObject var volumeManager = VolumeManager.shared
     @ObservedObject var brightnessManager = BrightnessManager.shared
     @ObservedObject var keyboardManager = KeyboardManager.shared

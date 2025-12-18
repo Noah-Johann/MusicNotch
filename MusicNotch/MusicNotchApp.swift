@@ -55,8 +55,6 @@ struct MusicNotchApp: App {
 class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     let aboutMenuHandler = AboutMenuHandler()
     
-    private let batteryManager = BatteryManager.shared
-
     
     func applicationDidFinishLaunching(_ notification: Notification) {
         if Defaults[.viewedOnboarding] == false {
@@ -103,14 +101,12 @@ private func displayCallback(
 
     if flags.contains(.addFlag) || flags.contains(.removeFlag) {
         print("Display connected or disconnected")
-        DispatchQueue.main.async {
-            Task {
+            Task { @MainActor in
                 await NotchManager.shared.setNotchState(.hidden, true)
             }
-        }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-            Task {
+            Task { @MainActor in
                 await NotchManager.shared.setNotchState(.compact, true)
             }
         }
