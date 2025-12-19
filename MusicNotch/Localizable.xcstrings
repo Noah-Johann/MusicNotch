@@ -599,6 +599,9 @@
         }
       }
     },
+    "License" : {
+
+    },
     "LockScreen" : {
       "localizations" : {
         "de" : {
