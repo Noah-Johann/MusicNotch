@@ -10,15 +10,15 @@ import AppKit
 import SwiftUI
 import Defaults
 
-@MainActor
+@MainActor @Observable
 class MusicManager {
     static let shared = MusicManager()
     
-    private var hideTimer: Timer?
+    private var hideTimer: Timer? = nil
     private var stopTime = 0
     private var launched: Bool = false
-    
-    @Published var music = MusicTrack(
+        
+    var music = MusicTrack(
         trackName: "",
         artistName: "",
         albumName: "",
@@ -28,11 +28,15 @@ class MusicManager {
         isLoved: false,
         shuffle: false,
     )
+    var albumArt: NSImage?
+    var aveColor: NSColor?
     
     private var prevMusic = MusicTrack(trackName: "", artistName: "", albumName: "", trackDuration: 0, trackPosition: 0, isPlaying: false, isLoved: false, shuffle: false)
     
     init () {
-        prevMusic = getMusicInfo()
+        if SpotifyManager.shared.checkIfSpotifyIsRunning() {
+            prevMusic = getMusicInfo()
+        }
         
         setupObservers()
         
@@ -58,8 +62,20 @@ class MusicManager {
         }
     }
     
-    @objc private func spotifyNotification(notification: Notification) {
-        guard Defaults[.musicPlayer] == .spotify else { return }
+    @objc private func spotifyNotification(_ sender: NSNotification?) {
+     //   guard Defaults[.musicPlayer] == .spotify else { return }
+        
+        let musicAppKilled = sender?.userInfo?["Player State"] as? String == "Stopped"
+        if musicAppKilled {
+            SpotifyManager.shared.isSpotifyRunning = false
+            music = disabledPlayback()
+            return
+        } else {
+            SpotifyManager.shared.isSpotifyRunning = true
+        }
+
+        
+        guard SpotifyManager.shared.isSpotifyRunning && SpotifyManager.shared.checkIfSpotifyIsRunning() else { return }
         updateMusic()
     }
     
@@ -76,53 +92,59 @@ class MusicManager {
                 //                }
                 NotchManager.shared.showExtensionNotch(type: .musicGlance)
             }
+        }
+        
+        if music.isPlaying == true {
+            WindowManager.showLockScreenPlayer()
             
-            if music.isPlaying == true {
-                WindowManager.showLockScreenPlayer()
+            if hideTimer != nil {
+                stopTime = 0
+                hideTimer?.invalidate()
+                hideTimer = nil
+            }
+            
+            if NotchManager.shared.notchState == .closed || NotchManager.shared.notchState == .transparent {
+                guard !NotchManager.shared.notchDismissed else { return }
                 
-                if NotchManager.shared.notchDismissed == true {
-                    NotchManager.shared.notchDismissed = false
-                }
-                
-                if NotchManager.shared.notchState == .closed || NotchManager.shared.notchState == .transparent {
-                    guard !NotchManager.shared.notchDismissed else { return }
-                    
-                    if Defaults[.autoMusicGlance] {
-                        NotchManager.shared.showExtensionNotch(type: .musicGlance)
-                    } else {
-                        NotchContentState.shared.notchContent = .music
-                        Task {
-                            await NotchManager.shared.setNotchState(.compact, false)
-                        }
+                if Defaults[.autoMusicGlance] {
+                    NotchManager.shared.showExtensionNotch(type: .musicGlance)
+                } else {
+                    NotchContentState.shared.notchContent = .music
+                    Task {
+                        await NotchManager.shared.setNotchState(.compact, false)
                     }
                 }
             }
+        }
+        
+        if music.isPlaying == false {
+            print("false playing")
+            if NotchManager.shared.notchDismissed == true {
+                NotchManager.shared.notchDismissed = false
+            }
             
-            if music.isPlaying == false {
-                if hideTimer == nil {
-                    if NotchContentState.shared.notchContent == .music || NotchContentState.shared.notchContent == .musicGlance {
-                        hideTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-                            guard let self = self else { return }
-                            Task { @MainActor in
-                                self.stopTime += 1
-                                if self.stopTime > Int(Defaults[.hideNotchTime]) && NotchManager.shared.notchState == .compact {
-                                    guard NotchContentState.shared.notchContent == .music || NotchContentState.shared.notchContent == .musicGlance else { return }
-                                    self.hideTimer?.invalidate()
-                                    self.hideTimer = nil
-                                    self.stopTime = 0
-                                    Task {
-                                        await NotchManager.shared.setNotchState(.closed, false)
-                                    }
+            if hideTimer == nil {
+                print("hidetimer nil")
+                if NotchContentState.shared.notchContent == .music || NotchContentState.shared.notchContent == .musicGlance {
+                    print("setup timer")
+                    hideTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+                        guard let self = self else { return }
+                        Task { @MainActor in
+                            self.stopTime += 1
+                            print(self.stopTime)
+                            if self.stopTime > Int(Defaults[.hideNotchTime]) && NotchManager.shared.notchState == .compact {
+                                guard NotchContentState.shared.notchContent == .music || NotchContentState.shared.notchContent == .musicGlance else { return }
+                                Task {
+                                    await NotchManager.shared.setNotchState(.closed, false)
                                 }
+                                self.hideTimer?.invalidate()
+                                self.hideTimer = nil
+                                self.stopTime = 0
+                                print("close notch")
+
                             }
                         }
                     }
-                    
-                    
-                } else if hideTimer != nil {
-                    stopTime = 0
-                    self.hideTimer?.invalidate()
-                    self.hideTimer = nil
                 }
             }
         }
@@ -158,7 +180,6 @@ class MusicManager {
                            albumName: "Nothing",
                            trackDuration: 0,
                            trackPosition: 0,
-                           aveColor: .white,
                            isPlaying: false,
                            isLoved: false,
                            shuffle: false,
@@ -180,14 +201,12 @@ class MusicManager {
 // MARK: - Constants
 
 struct MusicTrack {
-    @State var trackName: String
+    var trackName: String
     var artistName: String
     var albumName: String
     var trackDuration: Int
     var trackPosition: Int
-    var albumArt: NSImage?
-    var aveColor: NSColor?
-    @State var isPlaying: Bool
+    var isPlaying: Bool
     var isLoved: Bool
     var shuffle: Bool
 }

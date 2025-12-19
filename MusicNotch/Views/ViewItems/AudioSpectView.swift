@@ -10,7 +10,7 @@ import Defaults
 
 struct AudioSpectView: View {
     @ObservedObject var spotifyManager = SpotifyManager.shared
-    @ObservedObject var musicManager = MusicManager.shared
+    @State var musicManager = MusicManager.shared
     @ObservedObject var accessibilityManager = AccessibilityManager.shared
     
     @Default(.coloredSpect) private var coloredSpect
@@ -31,7 +31,7 @@ struct AudioSpectView: View {
             
             if !hovering && !accessibilityManager.isReduceMotion {
                 Rectangle()
-                    .fill(coloredSpect ? Color(nsColor: musicManager.music.aveColor ?? .white).gradient : Color.white.gradient)
+                    .fill(coloredSpect ? Color(nsColor: musicManager.aveColor ?? .white).gradient : Color.white.gradient)
                     .frame(width: 35, alignment: .center)
                     .mask {
                         AudioSpectrumView(isPlaying: $musicManager.music.isPlaying)

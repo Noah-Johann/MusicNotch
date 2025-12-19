@@ -16,13 +16,13 @@ struct AlbumArtView: View {
     var glow: Bool
     
     @ObservedObject var spotifyManager = SpotifyManager.shared
-    @ObservedObject var musicManager = MusicManager.shared
+    @State var musicManager = MusicManager.shared
 
     @State private var artworkSize: Double = 0
     
     var body: some View {
         HStack {
-            if let albumArt = musicManager.music.albumArt {
+            if let albumArt = musicManager.albumArt {
                 Image(nsImage: spotifyManager.isSpotifyRunning ? albumArt : NSApp.applicationIconImage)
                     .resizable()
                     .scaledToFit()
@@ -30,7 +30,7 @@ struct AlbumArtView: View {
                            height: artworkSize)
                     .cornerRadius(cornerRadius)
                     .animation(.easeInOut(duration: 0.3), value: artworkSize)
-                    .shadow(color: glow && Defaults[.playerGlow] ? (musicManager.music.aveColor.map { Color(nsColor: $0) } ?? .clear).opacity(1) : .clear, radius: 50, x: 5, y: 10)
+                    .shadow(color: glow && Defaults[.playerGlow] ? (musicManager.aveColor.map { Color(nsColor: $0) } ?? .clear).opacity(1) : .clear, radius: 50, x: 5, y: 10)
             }
         }
         .frame(width: size, height: size)

@@ -11,7 +11,7 @@ import SwiftUI
 struct ButtonView: View {
     
     @ObservedObject var spotifyManager = SpotifyManager.shared
-    @ObservedObject var musicManager = MusicManager.shared
+    @State var musicManager = MusicManager.shared
     @ObservedObject var volumeManager = VolumeManager.shared
     
     var body: some View {

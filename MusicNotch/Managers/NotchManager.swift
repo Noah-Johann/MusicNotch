@@ -260,6 +260,8 @@ final class NotchManager {
         }
     }
     
+    // MARK: - Notch control
+    
     public func toggleNotch() {
         openingTask?.cancel()
         hapticTask?.cancel()
@@ -278,9 +280,7 @@ final class NotchManager {
         }
     }
     
-    public func setNotchState(_ state: NotchState, _ changeDisplay: Bool) async {
-        MusicManager.shared.updateMusic()
-        
+    public func setNotchState(_ state: NotchState, _ changeDisplay: Bool) async {        
         let prevNotchState = self.notchState
                 
         if changeDisplay == true {
@@ -319,6 +319,7 @@ final class NotchManager {
 
         case .compact:
             notchState = .compact
+            MusicManager.shared.updateMusic()
             if prevNotchState == .open {
                 withAnimation(.bouncy(duration: 0.6)) {
                     NotchContentState.shared.notchContent = .music

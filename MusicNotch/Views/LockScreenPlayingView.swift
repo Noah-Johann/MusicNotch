@@ -12,7 +12,7 @@ import UniversalGlass
 
 struct LockScreenPlayingView: View {
     @ObservedObject private var spotifyManager = SpotifyManager.shared
-    @ObservedObject private var musicManager = MusicManager.shared
+    @State private var musicManager = MusicManager.shared
     @ObservedObject private var volumeManager = VolumeManager.shared
     @ObservedObject private var accessibilityManager = AccessibilityManager.shared
     
@@ -51,7 +51,7 @@ struct LockScreenPlayingView: View {
                         
                         if !accessibilityManager.isReduceMotion {
                             Rectangle()
-                                .fill(coloredSpect ? Color(nsColor: musicManager.music.aveColor ?? .white).gradient : Color.white.gradient)
+                                .fill(coloredSpect ? Color(nsColor: musicManager.aveColor ?? .white).gradient : Color.white.gradient)
                                 .frame(width: 35, height: 45, alignment: .center)
                                 .mask {
                                     AudioSpectrumView(isPlaying: $musicManager.music.isPlaying)

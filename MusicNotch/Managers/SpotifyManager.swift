@@ -13,12 +13,8 @@ import SwiftUI
 
 @MainActor
 class SpotifyManager: ObservableObject {
-    static let shared = SpotifyManager()    
-        
-   private var trackId: String = ""
-    
-//    @Published var timer: Int = 0
-    
+    static let shared = SpotifyManager()
+                    
     @Published var isSpotifyRunning: Bool = false
     
     private var oldTrackName: String = ""
@@ -30,40 +26,14 @@ class SpotifyManager: ObservableObject {
     }
 
     
-    private func checkIfSpotifyIsRunning() -> Bool {
-        let runningApps = NSWorkspace.shared.runningApplications
-        return runningApps.contains { $0.bundleIdentifier == "com.spotify.client" }
+    public func checkIfSpotifyIsRunning() -> Bool {
+        let workspace = NSWorkspace.shared
+        
+        return workspace.runningApplications.contains { app in
+            app.bundleIdentifier == "com.spotify.client"
+        }
     }
-    
-//    @objc private func notificationUpdate (_ sender: NSNotification?) {
-//        let musicAppKilled = sender?.userInfo?["Player State"] as? String == "Stopped"
-//        
-//        if musicAppKilled {
-//            isSpotifyRunning = false
-//            
-//            Task { @MainActor in
-//                await NotchManager.shared.setNotchState(.closed, false)
-//            }
-//            
-//            self.spotifyTrack.isPlaying = false
-//            
-//            return
-//        }
-//        
-//        isSpotifyRunning = true
-//        
-//        updateInfo()
-//    }
-    
-//    public func updateInfo() {
-//        // checkIfSpotifyIsRunning checks if a process called spotify exist. This is usefull if the function is called outside of the NotificationObserver
-//        // isSpotifyRunning gets set by the content of the notification and only gets changed when the function gets called from the NotificationObserver
-//        
-//        guard checkIfSpotifyIsRunning() && isSpotifyRunning else { return }
-//        
-//    
-//    }
-    
+      
     public func collectSpotifyInfo() -> MusicTrack? {
         guard checkIfSpotifyIsRunning() else { return nil }
                 
@@ -169,20 +139,21 @@ class SpotifyManager: ObservableObject {
                     isLoved: finalResult[6] == "true",
                     shuffle: finalResult[8] == "true",
                 )
-                
+                                
                 if oldTrackName != returnTrack.trackName {
                     oldTrackName = returnTrack.trackName
+//                    Task { @MainActor in
+//                        await MusicManager.shared.albumArt = fetchAlbumArt(url: finalResult[9])
+//                        if MusicManager.shared.albumArt != nil {
+//                            await MusicManager.shared.aveColor = getAverageColor(image: MusicManager.shared.albumArt!)
+//                        } else {
+//                            MusicManager.shared.aveColor = .white
+//                        }
+//                    }
                     Task { @MainActor in
-                        await returnTrack.albumArt = fetchAlbumArt(url: finalResult[9])
-                        if returnTrack.albumArt != nil {
-                            await returnTrack.aveColor = getAverageColor(image: returnTrack.albumArt!)
-                        } else {
-                            returnTrack.aveColor = .white
-                        }
+                        fetchAlbumArt(albumUrl: finalResult[9])
                     }
                 }
-                
-                self.trackId = finalResult[7]
                 
                 return returnTrack
                 
@@ -220,21 +191,25 @@ class SpotifyManager: ObservableObject {
         return nil
     }
     
-    private func fetchAlbumArt(url: String) async -> NSImage? {
-        guard let url = URL(string: url) else { return nil }
-        do {
-            let (data, _) = try await URLSession.shared.data(from: url)
-            return NSImage(data: data)
-        } catch {
-            return nil
-        }
-    }
-    
-    private func getAverageColor(image: NSImage) async -> NSColor? {
-        await withCheckedContinuation { continuation in
-            image.averageColor { color in
-                continuation.resume(returning: color)
-            }
-        }
-    }
+    private func fetchAlbumArt(albumUrl: String) {
+         guard let url = URL(string: albumUrl) else { return }
+         URLSession.shared.dataTask(with: url) { data, _, _ in
+             guard let data = data, let image = NSImage(data: data) else { return }
+             DispatchQueue.main.async {
+                 MusicManager.shared.albumArt = image
+                 self.getAverageColor()
+             }
+         }.resume()
+     }
+     
+     private func getAverageColor() {
+         guard let image = MusicManager.shared.albumArt else { return }
+         image.averageColor { color in
+             if let color = color {
+                 MusicManager.shared.aveColor = color
+             } else {
+                 print("Failed to get average color")
+             }
+         }
+     }
 }

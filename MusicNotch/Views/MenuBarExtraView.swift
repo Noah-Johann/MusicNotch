@@ -9,7 +9,7 @@ import SwiftUI
 import Luminare
 
 struct MenuBarExtraView: View {    
-    @ObservedObject var musicManager = MusicManager.shared
+    @State var musicManager = MusicManager.shared
     @ObservedObject var updateManager = UpdateManager.shared
     
     var body: some View {
