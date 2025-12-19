@@ -9,7 +9,7 @@ import SwiftUI
 
 struct NotchMusicViewLeading: View {
     @ObservedObject private var notchContentState = NotchContentState.shared
-    @ObservedObject private var spotifyManager = SpotifyManager.shared
+    @ObservedObject private var musicManager = MusicManager.shared
     
     var body: some View {
         HStack {
@@ -34,8 +34,8 @@ struct NotchMusicViewLeading: View {
             }) .buttonStyle(.plain)
                 .padding(.leading, 3)
             if notchContentState.notchContent == .musicGlance {
-                Text(spotifyManager.trackName)
-                    .foregroundStyle(Color(spotifyManager.aveColor ?? .white).gradient)
+                Text(musicManager.music.trackName)
+                    .foregroundStyle(Color(musicManager.music.aveColor ?? .white).gradient)
                     .frame(minWidth: 75, maxWidth: 125)
             }
         }
@@ -44,13 +44,13 @@ struct NotchMusicViewLeading: View {
 
 struct NotchMusicViewTrailing: View {
     @ObservedObject private var notchContentState = NotchContentState.shared
-    @ObservedObject private var spotifyManager = SpotifyManager.shared
+    @ObservedObject private var musicManager = MusicManager.shared
 
     var body: some View {
         HStack {
             if notchContentState.notchContent == .musicGlance {
-                Text(spotifyManager.artistName)
-                    .foregroundStyle(Color(spotifyManager.aveColor ?? .white).gradient)
+                Text(musicManager.music.artistName)
+                    .foregroundStyle(Color(musicManager.music.aveColor ?? .white).gradient)
                     .frame(minWidth: 75, maxWidth: 125)
             }
             

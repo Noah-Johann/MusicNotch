@@ -9,7 +9,7 @@ import SwiftUI
 import Luminare
 
 struct MenuBarExtraView: View {    
-    @ObservedObject var spotifyManager = SpotifyManager.shared
+    @ObservedObject var musicManager = MusicManager.shared
     @ObservedObject var updateManager = UpdateManager.shared
     
     var body: some View {
@@ -17,8 +17,8 @@ struct MenuBarExtraView: View {
             Button {
                 spotifyPlayPause()
             } label: {
-                Image(systemName: spotifyManager.isPlaying == true ? "pause.fill" : "play.fill")
-                Text(spotifyManager.isPlaying == true ? "Pause" : "Play")
+                Image(systemName: musicManager.music.isPlaying == true ? "pause.fill" : "play.fill")
+                Text(musicManager.music.isPlaying == true ? "Pause" : "Play")
             }
             
             Button {

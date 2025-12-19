@@ -10,6 +10,6 @@ import Foundation
 func spotifyLastTrack() {
     Task {
         try await AppleScriptHelper.run("tell application \"Spotify\" to previous track")
-        await SpotifyManager.shared.updateInfo()
+        await MusicManager.shared.updateMusic()
     }
 }

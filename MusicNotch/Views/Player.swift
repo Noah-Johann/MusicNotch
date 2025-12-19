@@ -11,6 +11,7 @@ import AppKit
 
 struct Player: View {
     @ObservedObject var spotifyManager = SpotifyManager.shared
+    @ObservedObject var musicManager = MusicManager.shared
     @ObservedObject var accessibilityManager = AccessibilityManager.shared
     
     @State private var isDragging = false
@@ -38,11 +39,11 @@ struct Player: View {
                         .frame(width: 80, height : 80)
                 }
                 VStack {
-                    Text(spotifyManager.isSpotifyRunning ? spotifyManager.trackName : "Nothing playing")
+                    Text(spotifyManager.isSpotifyRunning ? musicManager.music.trackName : "Nothing playing")
                         .font(.system(size: 17, weight: .medium))
                         .foregroundStyle(.white)
                         .frame(width: 240, alignment: .leading)
-                    Text(spotifyManager.isSpotifyRunning ? spotifyManager.artistName : "Start a song on Spotify")
+                    Text(spotifyManager.isSpotifyRunning ? musicManager.music.artistName : "Start a song on Spotify")
                         .font(.system(size: 14, weight: .regular))
                         .foregroundStyle(.gray)
                         .frame(width: 240, alignment: .leading)
@@ -52,10 +53,10 @@ struct Player: View {
                 
                 if !accessibilityManager.isReduceMotion {
                     Rectangle()
-                        .fill(coloredSpect ? Color(nsColor: spotifyManager.aveColor ?? .white).gradient : Color.white.gradient)
+                        .fill(coloredSpect ? Color(nsColor: musicManager.music.aveColor ?? .white).gradient : Color.white.gradient)
                         .frame(width: 35, alignment: .center)
                         .mask {
-                            AudioSpectrumView(isPlaying: $spotifyManager.isPlaying)
+                            AudioSpectrumView(isPlaying: $musicManager.music.isPlaying)
                                 .frame(width: 20, height: 20)
                         }
                 } else {
@@ -76,7 +77,7 @@ struct Player: View {
                     .font(.system(size: 12))
                 
                 CustomSlider(value: $trackposition,
-                             inRange: 0...Double(spotifyManager.trackDuration),
+                             inRange: 0...Double(musicManager.music.trackDuration),
                              activeFillColor: .white,
                              fillColor: .white,
                              emptyColor: Color(NSColor.darkGray),
@@ -88,7 +89,7 @@ struct Player: View {
                     }
                 }) .frame(width: 280, height: 10, alignment: .center)
                 
-                Text("-\(formatTime(spotifyManager.trackDuration - Int(trackposition)))")
+                Text("-\(formatTime(musicManager.music.trackDuration - Int(trackposition)))")
                     .frame(minWidth: 55, maxWidth: 80, minHeight: 20, alignment: .center)
                     .foregroundStyle(.gray)
                     .fontWeight(.semibold)
@@ -100,13 +101,13 @@ struct Player: View {
             
         }
         .background(.black)
-        .onReceive(spotifyManager.$trackPosition) { newValue in
+        .onChange(of: musicManager.music.trackPosition) { _, newValue in
             trackposition = Double(newValue)
         }
         .onAppear {
             playbackTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
                 Task { @MainActor in
-                    if spotifyManager.isPlaying == true {
+                    if musicManager.music.isPlaying == true {
                         trackposition += 1
                     }
                 }

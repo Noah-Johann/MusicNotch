@@ -20,6 +20,8 @@ extension Defaults.Keys {
     
     static let autoUpdates = Key<Bool>("autoUpdates", default: true)
     
+    static let musicPlayer = Key<MusicApp>("musicPlayer", default: .nowPlaying)
+    
     // Display
     static let notchDisplay = Key<Bool>("notchDisplay", default: true)
     static let mainDisplay = Key<Bool>("mainDisplay", default: false)

@@ -279,7 +279,7 @@ final class NotchManager {
     }
     
     public func setNotchState(_ state: NotchState, _ changeDisplay: Bool) async {
-        SpotifyManager.shared.updateInfo()
+        MusicManager.shared.updateMusic()
         
         let prevNotchState = self.notchState
                 
@@ -292,7 +292,7 @@ final class NotchManager {
         switch state {
         case .open:
             notchState = .open
-            SpotifyManager.shared.updateInfo()
+            MusicManager.shared.updateMusic()
             
             self.expandTask = Task {
                 guard self.isCurrentlyHovering && !Task.isCancelled else {
@@ -311,7 +311,7 @@ final class NotchManager {
             }
         case .openWithoutHover:
             notchState = .open
-            SpotifyManager.shared.updateInfo()
+            MusicManager.shared.updateMusic()
             
             await self.notch.expand(on: NSScreen.selectedDisplay(.open)!)
             self.notch.moveToSky()
@@ -399,7 +399,7 @@ final class NotchManager {
                 return
             }
 
-            if SpotifyManager.shared.isPlaying {
+            if MusicManager.shared.music.isPlaying {
                 setNotchContent(.music)
             } else {
                 if notchState != .open {

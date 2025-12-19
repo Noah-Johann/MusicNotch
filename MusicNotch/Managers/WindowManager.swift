@@ -121,7 +121,7 @@ class WindowManager {
     @MainActor static func showLockScreenPlayer(sendFromLock: Bool? = nil) {
         if Defaults[.lockPlayer] {
             if NotchContentState.shared.notchContent == .locked || sendFromLock == true {
-                if SpotifyManager.shared.isPlaying || Defaults[.alwaysShowPlayer] {
+                if MusicManager.shared.music.isPlaying || Defaults[.alwaysShowPlayer] {
                     if lockscreenWindow == nil {
                         lockscreenWindow = MusicPlayerWindow()
                     }

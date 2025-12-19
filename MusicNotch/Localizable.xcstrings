@@ -141,6 +141,7 @@
       }
     },
     "BSD 3-Clause" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -181,6 +182,7 @@
       }
     },
     "Custom Slider Control" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -191,6 +193,7 @@
       }
     },
     "Defaults" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -273,6 +276,7 @@
       }
     },
     "DynamicNotchKit" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -465,6 +469,7 @@
       }
     },
     "Hide acknowledgements" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -570,6 +575,7 @@
       }
     },
     "KeyboardShortcuts" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -590,6 +596,7 @@
       }
     },
     "LaunchAtLogin" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -613,6 +620,7 @@
       }
     },
     "Luminare" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -643,6 +651,7 @@
       }
     },
     "MIT" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -966,6 +975,7 @@
       }
     },
     "Show acknowledgements" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1056,6 +1066,7 @@
       }
     },
     "SkyLightWindow" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1066,6 +1077,7 @@
       }
     },
     "Sparkle" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {

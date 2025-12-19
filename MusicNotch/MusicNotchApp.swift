@@ -24,7 +24,6 @@ struct MusicNotchApp: App {
     
     init() {
         KeyboardShortcuts.onKeyDown(for: .toggleNotch) {
-            SpotifyManager.shared.timer = 3
             NotchManager.shared.toggleNotch()
         }
         KeyboardShortcuts.onKeyDown(for: .toggleMusicGlance) {

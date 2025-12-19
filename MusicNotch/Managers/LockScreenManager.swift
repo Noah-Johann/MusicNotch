@@ -39,7 +39,7 @@ class LockScreenManager: ObservableObject {
         Task { @MainActor in
             Task.detached { if Defaults[.lockSound] { playSound(sound: .lock) } }
             WindowManager.showLockScreenPlayer(sendFromLock: true)
-            SpotifyManager.shared.updateInfo()
+            MusicManager.shared.updateMusic()
             if Defaults[.lockExtension] {
                 NotchManager.shared.showExtensionNotch(type: .locked)
             }

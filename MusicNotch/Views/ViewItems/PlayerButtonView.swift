@@ -11,6 +11,7 @@ import SwiftUI
 struct ButtonView: View {
     
     @ObservedObject var spotifyManager = SpotifyManager.shared
+    @ObservedObject var musicManager = MusicManager.shared
     @ObservedObject var volumeManager = VolumeManager.shared
     
     var body: some View {
@@ -29,13 +30,13 @@ struct ButtonView: View {
                         .fontWeight(.semibold)
                         .foregroundStyle(.secondary)
                         .frame(width: 20, height: 20)
-                    if spotifyManager.shuffle {
+                    if musicManager.music.shuffle {
                         Circle()
                             .fill(Color.secondary)
                             .frame(width: 3, height: 3)
                     }
                 }            .transition(.opacity.combined(with: .scale))
-                    .animation(.spring(response: 0.3, dampingFraction: 0.4), value: spotifyManager.shuffle)
+                    .animation(.spring(response: 0.3, dampingFraction: 0.4), value: musicManager.music.shuffle)
             }
             .background(Color.clear)
             .buttonStyle(BorderlessButtonStyle())
@@ -65,7 +66,7 @@ struct ButtonView: View {
             Button(action: {
                 spotifyPlayPause()
             }) {
-                Image(systemName: spotifyManager.isPlaying ? "pause.fill" : "play.fill")
+                Image(systemName: musicManager.music.isPlaying ? "pause.fill" : "play.fill")
                     .imageScale(.large)
                     .foregroundStyle(.primary)
                     .font(.system(size: 22, weight: .bold))
