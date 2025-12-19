@@ -105,6 +105,7 @@ struct Player: View {
             trackposition = Double(newValue)
         }
         .onAppear {
+            trackposition = Double(musicManager.music.trackPosition)
             playbackTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
                 Task { @MainActor in
                     if musicManager.music.isPlaying == true {

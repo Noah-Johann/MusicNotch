@@ -13,10 +13,6 @@ import Defaults
 @MainActor @Observable
 class MusicManager {
     static let shared = MusicManager()
-    
-    private var hideTimer: Timer? = nil
-    private var stopTime = 0
-    private var launched: Bool = false
         
     var music = MusicTrack(
         trackName: "",
@@ -31,6 +27,9 @@ class MusicManager {
     var albumArt: NSImage?
     var aveColor: NSColor?
     
+    private var hideTimer: Timer? = nil
+    private var stopTime = 0
+    private var launched: Bool = false
     private var prevMusic = MusicTrack(trackName: "", artistName: "", albumName: "", trackDuration: 0, trackPosition: 0, isPlaying: false, isLoved: false, shuffle: false)
     
     init () {
@@ -85,11 +84,6 @@ class MusicManager {
             prevMusic = music
             
             if Defaults[.autoMusicGlance] && NotchContentState.shared.notchContent != .musicGlance {
-                //                if launched == false {
-                //                    launched = true
-                //                } else {
-                //                    NotchManager.shared.showExtensionNotch(type: .musicGlance)
-                //                }
                 NotchManager.shared.showExtensionNotch(type: .musicGlance)
             }
         }
@@ -126,22 +120,24 @@ class MusicManager {
             if hideTimer == nil {
                 print("hidetimer nil")
                 if NotchContentState.shared.notchContent == .music || NotchContentState.shared.notchContent == .musicGlance {
+                    if NotchManager.shared.notchDismissed == false {
                     print("setup timer")
-                    hideTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-                        guard let self = self else { return }
-                        Task { @MainActor in
-                            self.stopTime += 1
-                            print(self.stopTime)
-                            if self.stopTime > Int(Defaults[.hideNotchTime]) && NotchManager.shared.notchState == .compact {
-                                guard NotchContentState.shared.notchContent == .music || NotchContentState.shared.notchContent == .musicGlance else { return }
-                                Task {
-                                    await NotchManager.shared.setNotchState(.closed, false)
+                        hideTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+                            guard let self = self else { return }
+                            Task { @MainActor in
+                                self.stopTime += 1
+                                print(self.stopTime)
+                                if self.stopTime > Int(Defaults[.hideNotchTime]) && NotchManager.shared.notchState == .compact {
+                                    guard NotchContentState.shared.notchContent == .music || NotchContentState.shared.notchContent == .musicGlance else { return }
+                                    Task {
+                                        await NotchManager.shared.setNotchState(.closed, false)
+                                    }
+                                    self.hideTimer?.invalidate()
+                                    self.hideTimer = nil
+                                    self.stopTime = 0
+                                    print("close notch")
+                                    
                                 }
-                                self.hideTimer?.invalidate()
-                                self.hideTimer = nil
-                                self.stopTime = 0
-                                print("close notch")
-
                             }
                         }
                     }

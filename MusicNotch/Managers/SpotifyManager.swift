@@ -129,7 +129,7 @@ class SpotifyManager: ObservableObject {
             }
                         
             if finalResult.count >= 10 {
-                var returnTrack = MusicTrack (
+                let returnTrack = MusicTrack (
                     trackName: finalResult[1],
                     artistName: finalResult[2],
                     albumName: finalResult[3],
@@ -142,14 +142,6 @@ class SpotifyManager: ObservableObject {
                                 
                 if oldTrackName != returnTrack.trackName {
                     oldTrackName = returnTrack.trackName
-//                    Task { @MainActor in
-//                        await MusicManager.shared.albumArt = fetchAlbumArt(url: finalResult[9])
-//                        if MusicManager.shared.albumArt != nil {
-//                            await MusicManager.shared.aveColor = getAverageColor(image: MusicManager.shared.albumArt!)
-//                        } else {
-//                            MusicManager.shared.aveColor = .white
-//                        }
-//                    }
                     Task { @MainActor in
                         fetchAlbumArt(albumUrl: finalResult[9])
                     }
