@@ -11,7 +11,6 @@ import Defaults
 import UniversalGlass
 
 struct LockScreenPlayingView: View {
-    @ObservedObject private var spotifyManager = SpotifyManager.shared
     @State private var musicManager = MusicManager.shared
     @ObservedObject private var volumeManager = VolumeManager.shared
     @ObservedObject private var accessibilityManager = AccessibilityManager.shared
@@ -37,11 +36,11 @@ struct LockScreenPlayingView: View {
                         .padding(.trailing, 4)
                         
                         VStack (alignment: .leading, spacing: 4) {
-                            Text(spotifyManager.isSpotifyRunning ? musicManager.music.trackName : "Nothing playing")
+                            Text(musicManager.music.trackName)
                                 .font(.title2.bold())
                                 .foregroundStyle(.white)
                                 .frame(height: 27, alignment: .bottom)
-                            Text(spotifyManager.isSpotifyRunning ? musicManager.music.artistName : "Start a song on Spotify")
+                            Text(musicManager.music.artistName)
                                 .font(.system(size: 14, weight: .regular))
                                 .foregroundStyle(.gray)
                                 .frame(height: 17, alignment: .top)

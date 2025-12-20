@@ -12,10 +12,10 @@ import Defaults
 import SwiftUI
 
 @MainActor
-class SpotifyManager: ObservableObject {
+class SpotifyManager {
     static let shared = SpotifyManager()
                     
-    @Published var isSpotifyRunning: Bool = false
+    public var isSpotifyRunning: Bool = false
     
     private var oldTrackName: String = ""
     
@@ -183,12 +183,22 @@ class SpotifyManager: ObservableObject {
         return nil
     }
     
+    @MainActor
     private func fetchAlbumArt(albumUrl: String) {
+        print("fetchAlbumArt")
          guard let url = URL(string: albumUrl) else { return }
+        print("haveURL")
          URLSession.shared.dataTask(with: url) { data, _, _ in
-             guard let data = data, let image = NSImage(data: data) else { return }
+             guard let data = data, let image = NSImage(data: data) else {
+                 Task { @MainActor in
+                     self.defaultIcon()
+                 }
+                 return
+             }
              Task { @MainActor in
+                 print("setting image")
                  MusicManager.shared.albumArt = image
+                 print("setImage")
                  self.getAverageColor()
              }
          }.resume()
@@ -204,4 +214,10 @@ class SpotifyManager: ObservableObject {
              }
          }
      }
+    
+    private func defaultIcon() {
+        Task { @MainActor in
+            MusicManager.shared.albumArt = NSImage(named: "no_playback")
+        }
+    }
 }

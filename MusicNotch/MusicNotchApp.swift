@@ -18,7 +18,6 @@ struct MusicNotchApp: App {
 
     @State private var showMenuBarIcon: Bool = true
     
-    @ObservedObject var spotifyManager = SpotifyManager.shared
     
     @Default(.showMenuBarItem) private var showMenuBarItem
     

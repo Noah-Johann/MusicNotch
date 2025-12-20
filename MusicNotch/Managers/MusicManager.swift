@@ -18,14 +18,14 @@ class MusicManager {
         trackName: "",
         artistName: "",
         albumName: "",
-        trackDuration: 0,
+        trackDuration: 1,
         trackPosition: 0,
         isPlaying: false,
         isLoved: false,
         shuffle: false,
     )
-    var albumArt: NSImage?
-    var aveColor: NSColor?
+    var albumArt: NSImage? = NSImage(named: "no_playback")
+    var aveColor: NSColor? = .white
     
     private var hideTimer: Timer? = nil
     private var stopTime = 0
@@ -181,13 +181,16 @@ class MusicManager {
         let playback = MusicTrack(trackName: "Nothing playing",
                            artistName: "No current playback",
                            albumName: "Nothing",
-                           trackDuration: 0,
+                           trackDuration: 1,
                            trackPosition: 0,
                            isPlaying: false,
                            isLoved: false,
                            shuffle: false,
         )
         
+        Task { @MainActor in
+            self.albumArt = NSImage(named: "no_playback")
+        }
         if NotchContentState.shared.notchContent == .musicGlance || NotchContentState.shared.notchContent == .music {
             Task {
                 await NotchManager.shared.setNotchState(.closed, false)

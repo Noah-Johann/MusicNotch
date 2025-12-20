@@ -10,7 +10,6 @@ import Defaults
 import AppKit
 
 struct Player: View {
-    @ObservedObject var spotifyManager = SpotifyManager.shared
     @State var musicManager = MusicManager.shared
     @ObservedObject var accessibilityManager = AccessibilityManager.shared
     
@@ -39,11 +38,11 @@ struct Player: View {
                         .frame(width: 80, height : 80)
                 }
                 VStack {
-                    Text(spotifyManager.isSpotifyRunning ? musicManager.music.trackName : "Nothing playing")
+                    Text(musicManager.music.trackName)
                         .font(.system(size: 17, weight: .medium))
                         .foregroundStyle(.white)
                         .frame(width: 240, alignment: .leading)
-                    Text(spotifyManager.isSpotifyRunning ? musicManager.music.artistName : "Start a song on Spotify")
+                    Text(musicManager.music.artistName)
                         .font(.system(size: 14, weight: .regular))
                         .foregroundStyle(.gray)
                         .frame(width: 240, alignment: .leading)

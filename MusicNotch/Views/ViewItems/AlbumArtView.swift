@@ -15,7 +15,6 @@ struct AlbumArtView: View {
     var cornerRadius: Double
     var glow: Bool
     
-    @ObservedObject var spotifyManager = SpotifyManager.shared
     @State var musicManager = MusicManager.shared
 
     @State private var artworkSize: Double = 0
@@ -23,7 +22,7 @@ struct AlbumArtView: View {
     var body: some View {
         HStack {
             if let albumArt = musicManager.albumArt {
-                Image(nsImage: spotifyManager.isSpotifyRunning ? albumArt : NSApp.applicationIconImage)
+                Image(nsImage: albumArt)
                     .resizable()
                     .scaledToFit()
                     .frame(width: artworkSize,

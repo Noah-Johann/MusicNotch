@@ -10,7 +10,6 @@ import SwiftUI
 
 struct ButtonView: View {
     
-    @ObservedObject var spotifyManager = SpotifyManager.shared
     @State var musicManager = MusicManager.shared
     @ObservedObject var volumeManager = VolumeManager.shared
     
