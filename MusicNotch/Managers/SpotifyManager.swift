@@ -187,7 +187,7 @@ class SpotifyManager: ObservableObject {
          guard let url = URL(string: albumUrl) else { return }
          URLSession.shared.dataTask(with: url) { data, _, _ in
              guard let data = data, let image = NSImage(data: data) else { return }
-             DispatchQueue.main.async {
+             Task { @MainActor in
                  MusicManager.shared.albumArt = image
                  self.getAverageColor()
              }

@@ -103,13 +103,14 @@ final class NotchManager {
                 }
             case .down:
                 Task {
-                    if self.notchState == .closed || self.notchState == .transparent {
-                        await self.setNotchState(.compact, false)
-                        print("notch compact")
-                    } else {
-                        await self.setNotchState(.openWithoutHover, false)
-                        print("notch open")
-                    }
+                    await self.setNotchState(.openWithoutHover, false)
+//                    if self.notchState == .closed || self.notchState == .transparent {
+//                        await self.setNotchState(.compact, false)
+//                        print("notch compact")
+//                    } else {
+//                        await self.setNotchState(.openWithoutHover, false)
+//                        print("notch open")
+//                    }
                 }
             default:
                 break
@@ -165,7 +166,11 @@ final class NotchManager {
             
             if notchState == .open || self.expandTask != nil {
                 Task {
-                    await self.setNotchState(.compact, false)
+                    if MusicManager.shared.music.isPlaying {
+                        await self.setNotchState(.compact, false)
+                    } else {
+                        await self.setNotchState(.closed, false)
+                    }
                 }
             }
         }

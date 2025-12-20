@@ -120,7 +120,7 @@ class MusicManager {
             if hideTimer == nil {
                 print("hidetimer nil")
                 if NotchContentState.shared.notchContent == .music || NotchContentState.shared.notchContent == .musicGlance {
-                    if NotchManager.shared.notchDismissed == false {
+                    if NotchManager.shared.notchDismissed == false && NotchManager.shared.notchState == .compact {
                     print("setup timer")
                         hideTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
                             guard let self = self else { return }
@@ -141,6 +141,13 @@ class MusicManager {
                             }
                         }
                     }
+                }
+            } else if hideTimer != nil {
+                if NotchManager.shared.notchState == .closed || NotchManager.shared.notchState == .transparent {
+                    self.hideTimer?.invalidate()
+                    self.hideTimer = nil
+                    self.stopTime = 0
+                    print("cancel timer")
                 }
             }
         }
