@@ -32,11 +32,7 @@ class MusicManager {
     private var launched: Bool = false
     private var prevMusic = MusicTrack(trackName: "", artistName: "", albumName: "", trackDuration: 0, trackPosition: 0, isPlaying: false, isLoved: false, shuffle: false)
     
-    init () {
-        if SpotifyManager.shared.checkIfSpotifyIsRunning() {
-            prevMusic = getMusicInfo()
-        }
-        
+    init () {        
         setupObservers()
         
         updateMusic()
@@ -84,7 +80,11 @@ class MusicManager {
             prevMusic = music
             
             if Defaults[.autoMusicGlance] && NotchContentState.shared.notchContent != .musicGlance {
-                NotchManager.shared.showExtensionNotch(type: .musicGlance)
+                if launched == false {
+                    launched = true
+                } else {
+                    NotchManager.shared.showExtensionNotch(type: .musicGlance)
+                }
             }
         }
         
