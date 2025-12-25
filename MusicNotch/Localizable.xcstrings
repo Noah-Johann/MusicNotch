@@ -14,6 +14,9 @@
     "-%@" : {
       "shouldTranslate" : false
     },
+    "%@" : {
+
+    },
     "%lld %%" : {
       "shouldTranslate" : false
     },
@@ -53,17 +56,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Danksagungen"
-          }
-        }
-      }
-    },
-    "Activate Gadgets" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aktiviere Gadgets"
           }
         }
       }
@@ -111,45 +103,12 @@
         }
       }
     },
-    "Battery Gadget" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Batterie Gadget"
-          }
-        }
-      }
-    },
-    "Bottom" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unten"
-          }
-        }
-      }
-    },
     "Brightness" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Helligkeit"
-          }
-        }
-      }
-    },
-    "BSD 3-Clause" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "BSD 3-Clause"
           }
         }
       }
@@ -184,56 +143,12 @@
         }
       }
     },
-    "Custom Slider Control" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Custom Slider Control"
-          }
-        }
-      }
-    },
-    "Defaults" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Defaults"
-          }
-        }
-      }
-    },
     "Development" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Entwicklung"
-          }
-        }
-      }
-    },
-    "Disable Notch on external Screens" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Deaktiviere Notch auf externen Displays"
-          }
-        }
-      }
-    },
-    "Disable notch when there is no Notch Display" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Deaktiviere die Notch, wenn es kein Display mit Notch gibt."
           }
         }
       }
@@ -274,17 +189,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Update herunterladen…"
-          }
-        }
-      }
-    },
-    "DynamicNotchKit" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "DynamicNotchKit"
           }
         }
       }
@@ -391,17 +295,6 @@
         }
       }
     },
-    "Gadgets" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gadgets"
-          }
-        }
-      }
-    },
     "General" : {
       "localizations" : {
         "de" : {
@@ -472,17 +365,6 @@
         }
       }
     },
-    "Hide acknowledgements" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Schließe Danksagungen"
-          }
-        }
-      }
-    },
     "Hide closed notch" : {
 
     },
@@ -496,34 +378,12 @@
         }
       }
     },
-    "Hide fake notch" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fake Notch entfernen"
-          }
-        }
-      }
-    },
     "Hide player" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Widget schließen"
-          }
-        }
-      }
-    },
-    "If active, the notch can't be opened when nothing is playing" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wenn aktiv kann die Notch nicht geöffnet werden, wenn kein Playback aktiv ist."
           }
         }
       }
@@ -578,17 +438,6 @@
         }
       }
     },
-    "KeyboardShortcuts" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "KeyboardShortcuts"
-          }
-        }
-      }
-    },
     "Launch at login" : {
       "localizations" : {
         "de" : {
@@ -599,19 +448,15 @@
         }
       }
     },
-    "LaunchAtLogin" : {
-      "extractionState" : "stale",
+    "License" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "LaunchAtLogin"
+            "value" : "Lizenz"
           }
         }
       }
-    },
-    "License" : {
-
     },
     "LockScreen" : {
       "localizations" : {
@@ -619,17 +464,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sperrbildschirm"
-          }
-        }
-      }
-    },
-    "Luminare" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Luminare"
           }
         }
       }
@@ -650,17 +484,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nachricht"
-          }
-        }
-      }
-    },
-    "MIT" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "MIT"
           }
         }
       }
@@ -968,28 +791,6 @@
         }
       }
     },
-    "Settings Gadget" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Einstellungen Gadget"
-          }
-        }
-      }
-    },
-    "Show acknowledgements" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Öffne Danksagungen"
-          }
-        }
-      }
-    },
     "Show dock icon" : {
       "localizations" : {
         "de" : {
@@ -1066,28 +867,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Letzter Titel"
-          }
-        }
-      }
-    },
-    "SkyLightWindow" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "SkyLightWindow"
-          }
-        }
-      }
-    },
-    "Sparkle" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sparkle"
           }
         }
       }
@@ -1192,21 +971,7 @@
         }
       }
     },
-    "Top" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Oben"
-          }
-        }
-      }
-    },
     "Use device icons" : {
-
-    },
-    "Use device symbols" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {

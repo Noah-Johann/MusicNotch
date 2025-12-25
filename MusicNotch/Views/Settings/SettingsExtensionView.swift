@@ -69,7 +69,7 @@ struct SettingsExtensionView: View {
             }
             
             LuminareToggle(isOn: $bluetoothSymbols) {
-                Text("Use device symbols")
+                Text("Use device icons")
             } .disabled(accessibilityManager.isReduceMotion)
         }
         
