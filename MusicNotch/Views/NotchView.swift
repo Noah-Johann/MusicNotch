@@ -17,22 +17,22 @@ struct NotchViewLeading: View {
                 NotchMusicViewLeading()
                     .transition(.blurReplace)
             } else if notchContentManager.notchContent == .battery {
-                ExtensionBatteryViewLeading()
+                NotchBatteryViewLeading()
                     .transition(.blurReplace)
             } else if notchContentManager.notchContent == .volume {
-                ExtensionHUDViewLeading(hudType: .volume)
+                NotchHUDViewLeading(hudType: .volume)
                     .transition(.blurReplace)
             } else if notchContentManager.notchContent == .brightness {
-                 ExtensionHUDViewLeading(hudType: .brightness)
+                 NotchHUDViewLeading(hudType: .brightness)
                     .transition(.blurReplace)
             } else if notchContentManager.notchContent == .locked {
-                ExtensionLockViewLeading(lockType: .locked)
+                NotchLockViewLeading(lockType: .locked)
                     .transition(.blurReplace)
             } else if notchContentManager.notchContent == .unlocked {
-                ExtensionLockViewLeading(lockType: .unlocked)
+                NotchLockViewLeading(lockType: .unlocked)
                     .transition(.blurReplace)
             } else if notchContentManager.notchContent == .bluetooth {
-                AirPodsNotchViewLeading()
+                NotchAirPodsViewLeading()
                     .transition(.blurReplace)
             }
         }
@@ -48,22 +48,22 @@ struct NotchViewTrailing: View {
                 NotchMusicViewTrailing()
                     .transition(.blurReplace)
             } else if notchContentManager.notchContent == .battery {
-                ExtensionBatteryViewTrailing()
+                NotchBatteryViewTrailing()
                     .transition(.blurReplace)
             } else if notchContentManager.notchContent == .volume {
-                ExtensionHUDViewTrailing(hudType: .volume)
+                NotchHUDViewTrailing(hudType: .volume)
                     .transition(.blurReplace)
             } else if notchContentManager.notchContent == .brightness {
-                ExtensionHUDViewTrailing(hudType: .brightness)
+                NotchHUDViewTrailing(hudType: .brightness)
                     .transition(.blurReplace)
             } else if notchContentManager.notchContent == .locked {
-                ExtensionLockViewTrailing()
+                NotchLockViewTrailing()
                     .transition(.blurReplace)
             } else if notchContentManager.notchContent == .unlocked {
-                ExtensionLockViewTrailing()
+                NotchLockViewTrailing()
                     .transition(.blurReplace)
             } else if notchContentManager.notchContent == .bluetooth {
-                AirPodsNotchViewTrailing()
+                NotchAirPodsViewTrailing()
                     .transition(.blurReplace)
             }
         }
@@ -73,63 +73,20 @@ struct NotchViewTrailing: View {
 struct NotchViewExpanded: View {
     @ObservedObject var notchContentManager = NotchContentState.shared
     
+    @ObservedObject var batteryManager = BatteryManager.shared
     @ObservedObject var volumeManager = VolumeManager.shared
     @ObservedObject var brightnessManager = BrightnessManager.shared
     @ObservedObject var keyboardManager = KeyboardManager.shared
     @ObservedObject var lockScreenManager = LockScreenManager.shared
     
-    @Default(.activateGadgets) private var activateGadgets
-    @Default(.topGadgets) private var topGadgets
-    @Default(.bottomGadgets) private var bottomGadgets
-    @Default(.batteryGadget) private var batteryGadget
-    @Default(.settingsGadget) private var settingsGadget
-    
     var body: some View {
         VStack {
-            if topGadgets && activateGadgets {
-                HStack (spacing: 15) {
-                    Spacer()
-                    if batteryGadget {
-                        BasicBatteryIconView(iconWidth: notchContentManager.notchContent == .battery ? 80 : 30)
-                    }
-                    if notchContentManager.notchContent != .battery || !batteryGadget {
-                        if settingsGadget {
-                            Button {
-                                WindowManager.openSettings()
-                            } label: {
-                                Image(systemName: "gear")
-                            } .buttonStyle(PlainButtonStyle())
-                        }
-                    }
-                } .padding(.horizontal)
-                    .padding(.top, notchContentManager.notchContent == .battery ? 10 : 2)
-            }
-            
             Player()
             
             if notchContentManager.notchContent == .volume {
-                ExtensionHUDViewExpanded(hudType: .volume, width: 390)
+                NotchHUDViewExpanded(hudType: .volume, width: 350)
             } else if notchContentManager.notchContent == .brightness {
-                ExtensionHUDViewExpanded(hudType: .brightness, width: 390)
-            }
-            
-            if bottomGadgets && activateGadgets {
-                HStack (spacing: 15) {
-                    Spacer()
-                    if batteryGadget {
-                        BasicBatteryIconView(iconWidth: notchContentManager.notchContent == .battery ? 80 : 30)
-                    }
-                    if notchContentManager.notchContent != .battery || !batteryGadget {
-                        if settingsGadget {
-                            Button {
-                                WindowManager.openSettings()
-                            } label: {
-                                Image(systemName: "gear")
-                            } .buttonStyle(PlainButtonStyle())
-                        }
-                    }
-                } .padding(.horizontal)
-                    .padding(.bottom)
+                NotchHUDViewExpanded(hudType: .brightness, width: 350)
             }
         } .padding(.bottom)
     }

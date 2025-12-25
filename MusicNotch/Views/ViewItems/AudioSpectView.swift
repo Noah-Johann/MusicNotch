@@ -9,7 +9,7 @@ import SwiftUI
 import Defaults
 
 struct AudioSpectView: View {
-    @ObservedObject var spotifyManager = SpotifyManager.shared
+    @State var musicManager = MusicManager.shared
     @ObservedObject var accessibilityManager = AccessibilityManager.shared
     
     @Default(.coloredSpect) private var coloredSpect
@@ -23,17 +23,17 @@ struct AudioSpectView: View {
                 Button {
                     spotifyPlayPause()
                 } label: {
-                    Image(systemName: spotifyManager.isPlaying == true ? "pause.fill" : "play.fill")
+                    Image(systemName: musicManager.music.isPlaying == true ? "pause.fill" : "play.fill")
                         .contentTransition(.symbolEffect(.replace))
                 } .buttonStyle(PlainButtonStyle())
             }
             
             if !hovering && !accessibilityManager.isReduceMotion {
                 Rectangle()
-                    .fill(coloredSpect ? Color(nsColor: spotifyManager.aveColor ?? .white).gradient : Color.white.gradient)
+                    .fill(coloredSpect ? Color(nsColor: musicManager.aveColor ?? .white).gradient : Color.white.gradient)
                     .frame(width: 35, alignment: .center)
                     .mask {
-                        AudioSpectrumView(isPlaying: $spotifyManager.isPlaying)
+                        AudioSpectrumView(isPlaying: $musicManager.music.isPlaying)
                             .frame(width: 15, height: 16)
                     }
             }

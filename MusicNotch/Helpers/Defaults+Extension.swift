@@ -20,11 +20,12 @@ extension Defaults.Keys {
     
     static let autoUpdates = Key<Bool>("autoUpdates", default: true)
     
+    static let musicPlayer = Key<MusicApp>("musicPlayer", default: .nowPlaying)
+    
     // Display
     static let notchDisplay = Key<Bool>("notchDisplay", default: true)
     static let mainDisplay = Key<Bool>("mainDisplay", default: false)
-    static let disableNotchOnHide = Key<Bool>("disableNotchOnHide", default: false)
-    static let noNotchScreenHide = Key<Bool>("noNotchScreenHide", default: false)
+    static let transparentNotch = Key<Bool>("transparentNotch", default: false)
     
     // Appearance
     static let coloredSpect = Key<Bool>("coloredSpect", default: true)
@@ -57,21 +58,12 @@ extension Defaults.Keys {
     static let batteryExtension = Key<Bool>("batteryExtension", default: true)
     
     static let hudExtension = Key<Bool>("hudExtension", default: true)
+    static let hudDeviceIcons = Key<Bool>("hudDeviceIcons", default: true)
     static let gradientHudSlider = Key<Bool>("gradientHudSlider", default: true)
     static let accentColorHudSlider = Key<Bool>("accentColorHudSlider", default: false)
     
     static let bluetoothRecognition = Key<Bool>("bluetoothRecognition", default: true)
     static let bluetoothSymbols = Key<Bool>("bluetoothSymbols", default: false)
     static let bluetoothVideos = Key<Bool>("bluetoothVideos", default: true)
-    
-    // Gadgets
-    static let activateGadgets = Key<Bool>("activateGadgets", default: true)
-    
-    static let topGadgets = Key<Bool>("topGadgets", default: true)
-    static let bottomGadgets = Key<Bool>("bottomGadgets", default: false)
-    
-    static let batteryGadget = Key<Bool>("batteryGadget", default: true)
-    static let settingsGadget = Key<Bool>("settingsGadget", default: true)
-    
 }
 

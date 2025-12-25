@@ -111,18 +111,20 @@ class KeyboardManager: ObservableObject {
         
         if Defaults[.hudExtension] {
             switch nx {
-            case .soundUp:
-                Task {@MainActor in
-                    NotchManager.shared.showExtensionNotch(type: .volume)
-                }
-            case .soundDown:
-                Task {@MainActor in
-                    NotchManager.shared.showExtensionNotch(type: .volume)
-                }
-            case .mute:
-                Task {@MainActor in
-                    NotchManager.shared.showExtensionNotch(type: .volume)
-                }
+//            case .soundUp:
+//                Task {@MainActor in
+//                    NotchManager.shared.showExtensionNotch(type: .volume)
+//                }
+//            case .soundDown:
+//                Task {@MainActor in
+//                    NotchManager.shared.showExtensionNotch(type: .volume)
+//                }
+//            case .mute:
+//                Task {@MainActor in
+//                    NotchManager.shared.showExtensionNotch(type: .volume)
+//                }
+            case .soundUp, .soundDown, .mute:
+                break
             case .brightnessUp:
                 Task {@MainActor in
                     BrightnessManager.shared.updateBrightness()

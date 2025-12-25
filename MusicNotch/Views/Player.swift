@@ -10,7 +10,7 @@ import Defaults
 import AppKit
 
 struct Player: View {
-    @ObservedObject var spotifyManager = SpotifyManager.shared
+    @State var musicManager = MusicManager.shared
     @ObservedObject var accessibilityManager = AccessibilityManager.shared
     
     @State private var isDragging = false
@@ -18,13 +18,12 @@ struct Player: View {
     @State private var playbackTimer: Timer?
     
     @Default(.coloredSpect) private var coloredSpect
-    @Default(.bottomGadgets) private var bottomGadgets
     
     var body: some View {
-        VStack {
+        VStack (spacing: 12) {
             HStack {
                 ZStack {
-                    AlbumArtView(size: 80, shrink: 10, cornerRadius: 17, glow: true)
+                    AlbumArtView(size: 65, shrink: 10, cornerRadius: 12, glow: true)
 
                     
                     Button(action: {
@@ -32,31 +31,33 @@ struct Player: View {
                         NSWorkspace.shared.open(url)
                     }, label: {
                         Color.clear
-                            .frame(width: 80, height: 80)
+                            .frame(width: 65, height: 65)
                             .contentShape(Rectangle())
                     }) .buttonStyle(.plain)
-                        .frame(width: 80, height : 80)
+                        .frame(width: 65, height : 65)
                 }
                 VStack {
-                    Text(spotifyManager.isSpotifyRunning ? spotifyManager.trackName : "Nothing playing")
+                    Text(musicManager.music.trackName)
                         .font(.system(size: 17, weight: .medium))
                         .foregroundStyle(.white)
-                        .frame(width: 240, alignment: .leading)
-                    Text(spotifyManager.isSpotifyRunning ? spotifyManager.artistName : "Start a song on Spotify")
+                        .frame(width: 220, alignment: .leading)
+                    Text(musicManager.music.artistName)
                         .font(.system(size: 14, weight: .regular))
                         .foregroundStyle(.gray)
-                        .frame(width: 240, alignment: .leading)
+                        .frame(width: 220, alignment: .leading)
                 }
-                .padding(.horizontal, 10)
+                .padding(.leading, 8)
                 .padding(.top, 27)
+                
+                Spacer()
                 
                 if !accessibilityManager.isReduceMotion {
                     Rectangle()
-                        .fill(coloredSpect ? Color(nsColor: spotifyManager.aveColor ?? .white).gradient : Color.white.gradient)
-                        .frame(width: 35, alignment: .center)
+                        .fill(coloredSpect ? Color(nsColor: musicManager.aveColor ?? .white).gradient : Color.white.gradient)
+                        .frame(width: 30, alignment: .center)
                         .mask {
-                            AudioSpectrumView(isPlaying: $spotifyManager.isPlaying)
-                                .frame(width: 20, height: 20)
+                            AudioSpectrumView(isPlaying: $musicManager.music.isPlaying)
+                                .frame(width: 15, height: 15)
                         }
                 } else {
                     Rectangle()
@@ -64,7 +65,7 @@ struct Player: View {
                         .frame(width: 35)
                 }
                 
-            } .frame(width: 300)
+            } .frame(width: 350)
                 .padding(.bottom, 8)
         
             //Progress Bar
@@ -76,7 +77,7 @@ struct Player: View {
                     .font(.system(size: 12))
                 
                 CustomSlider(value: $trackposition,
-                             inRange: 0...Double(spotifyManager.trackDuration),
+                             inRange: 0...Double(musicManager.music.trackDuration),
                              activeFillColor: .white,
                              fillColor: .white,
                              emptyColor: Color(NSColor.darkGray),
@@ -86,9 +87,9 @@ struct Player: View {
                     if !isEditing {
                         progressChanged()
                     }
-                }) .frame(width: 280, height: 10, alignment: .center)
+                }) .frame(width: 240, height: 10, alignment: .center)
                 
-                Text("-\(formatTime(spotifyManager.trackDuration - Int(trackposition)))")
+                Text("-\(formatTime(musicManager.music.trackDuration - Int(trackposition)))")
                     .frame(minWidth: 55, maxWidth: 80, minHeight: 20, alignment: .center)
                     .foregroundStyle(.gray)
                     .fontWeight(.semibold)
@@ -100,13 +101,14 @@ struct Player: View {
             
         }
         .background(.black)
-        .onReceive(spotifyManager.$trackPosition) { newValue in
+        .onChange(of: musicManager.music.trackPosition) { _, newValue in
             trackposition = Double(newValue)
         }
         .onAppear {
+            trackposition = Double(musicManager.music.trackPosition)
             playbackTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
                 Task { @MainActor in
-                    if spotifyManager.isPlaying == true {
+                    if musicManager.music.isPlaying == true {
                         trackposition += 1
                     }
                 }
@@ -116,8 +118,8 @@ struct Player: View {
             playbackTimer?.invalidate()
         }
 
-        .padding(.bottom, bottomGadgets ? 4 : 15)
-        .padding(.top, 10)
+        .padding(.bottom, 10)
+        .padding(.top, 15)
         .contextMenu {
             ContextMenuView()
         }

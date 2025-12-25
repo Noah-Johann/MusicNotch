@@ -1,5 +1,5 @@
 //
-//  fetchSpotify.swift
+//  SpotifyManager.swift
 //  MusicNotch
 //
 //  Created by Noah Johann on 14.03.25.
@@ -12,160 +12,30 @@ import Defaults
 import SwiftUI
 
 @MainActor
-class SpotifyManager: ObservableObject {
-    static let shared = SpotifyManager()    
-        
-    @Published var isPlaying: Bool = false
-    @Published var trackName: String = ""
-    @Published var artistName: String = ""
-    @Published var albumName: String = ""
-    @Published var trackDuration: Int = 30 // in Sekunden
-    @Published var trackPosition: Int = 5 // in Sekunden
-    @Published var isLoved: Bool = false
-    @Published var trackId: String = ""
-    @Published var trackURL: String = ""
-    @Published var shuffle: Bool = false
-    @Published var albumArtURL: String = ""
-    @Published var albumArtImage: NSImage? = nil
-    @Published var aveColor: NSColor? = nil
-    
-    @Published var timer: Int = 0
-    
-    @Published var isSpotifyRunning: Bool = false
+class SpotifyManager {
+    static let shared = SpotifyManager()
+                    
+    public var isSpotifyRunning: Bool = false
     
     private var oldTrackName: String = ""
-    private var hideTimer: Timer?
-    private var stopTime = 0
-    private var launched: Bool = false
-    
     
     private init() {
-        setupSpotifyObservers()
-        
         if checkIfSpotifyIsRunning() {
             isSpotifyRunning = true
-            updateInfo()
-        }
-    }
-    
-    deinit {
-        DistributedNotificationCenter.default().removeObserver(self)
-        
-        if hideTimer != nil {
-            hideTimer?.invalidate()
-            hideTimer = nil
         }
     }
 
-    private func setupSpotifyObservers() {
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            
-            DistributedNotificationCenter.default().addObserver(
-                self,
-                selector: #selector(notificationUpdate),
-                name: NSNotification.Name("com.spotify.client.PlaybackStateChanged"),
-                object: nil,
-                suspensionBehavior: .deliverImmediately
-
-            )
+    
+    public func checkIfSpotifyIsRunning() -> Bool {
+        let workspace = NSWorkspace.shared
+        
+        return workspace.runningApplications.contains { app in
+            app.bundleIdentifier == "com.spotify.client"
         }
     }
-    
-    private func checkIfSpotifyIsRunning() -> Bool {
-        let runningApps = NSWorkspace.shared.runningApplications
-        return runningApps.contains { $0.bundleIdentifier == "com.spotify.client" }
-    }
-    
-    @objc private func notificationUpdate (_ sender: NSNotification?) {
-        let musicAppKilled = sender?.userInfo?["Player State"] as? String == "Stopped"
-        
-        if musicAppKilled {
-            isSpotifyRunning = false
-            
-            Task { @MainActor in
-                await NotchManager.shared.setNotchContent(.hidden, false)
-            }
-            
-            self.isPlaying = false
-            
-            return
-        }
-        
-        isSpotifyRunning = true
-        
-        updateInfo()
-    }
-    
-    public func updateInfo() {
-        // checkIfSpotifyIsRunning checks if a process called spotify exist. This is usefull if the function is called outside of the NotificationObserver
-        // isSpotifyRunning gets set by the content of the notification and only gets changed when the function gets called from the NotificationObserver
-        
-        guard checkIfSpotifyIsRunning() && isSpotifyRunning else { return }
-        
-        collectBasicInfo()
-        
-        if self.trackName != oldTrackName {
-            oldTrackName = self.trackName
-            fetchAlbumArt()
-            if Defaults[.autoMusicGlance] && NotchContentState.shared.notchContent != .musicGlance {
-                if launched == false {
-                    launched = true
-                } else {
-                    NotchManager.shared.showExtensionNotch(type: .musicGlance)
-                }
-            }
-        }
-        
-        let hideNotchTime = Defaults[.hideNotchTime]
-        stopTime = 0
-        if hideTimer == nil && self.isPlaying == false {
-            if NotchContentState.shared.notchContent == .music || NotchContentState.shared.notchContent == .musicGlance {
-                hideTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-                    guard let self = self else { return }
-                    DispatchQueue.main.async {
-                        self.stopTime += 1
-                        if self.stopTime > Int(hideNotchTime) && NotchManager.shared.notchState == .closed {
-                            guard NotchContentState.shared.notchContent == .music || NotchContentState.shared.notchContent == .musicGlance else { return }
-                            self.hideTimer?.invalidate()
-                            self.hideTimer = nil
-                            Task {
-                                await NotchManager.shared.setNotchContent(.hidden, false)
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        
-        // Open notch when playback starts
-        Task { @MainActor in
-            WindowManager.showLockScreen()
-            
-            if self.isPlaying == true && NotchManager.shared.notchState == .hidden && !NotchManager.shared.notchDismissed {
-                if Defaults[.autoMusicGlance] {
-                    NotchManager.shared.showExtensionNotch(type: .musicGlance)
-                } else {
-                    NotchContentState.shared.notchContent = .music
-                    await NotchManager.shared.setNotchContent(.closed, false)
-                }
-            }
-        }
-        
-        if self.isPlaying == false && NotchManager.shared.notchDismissed == true {
-            NotchManager.shared.notchDismissed = false
-        }
-        
-        // Remove Nothing-Playing-Timer
-        if self.isPlaying == true && hideTimer != nil {
-            self.hideTimer?.invalidate()
-            self.hideTimer = nil
-        }
-    }
-    
-    private func collectBasicInfo() {
-
-        guard checkIfSpotifyIsRunning() else { return }
+      
+    public func collectSpotifyInfo() -> MusicTrack? {
+        guard checkIfSpotifyIsRunning() else { return nil }
                 
         let script = """
                 tell application "Spotify"
@@ -247,7 +117,6 @@ class SpotifyManager: ObservableObject {
         
         let result = executeAppleScript(script)
         if let resultString = result as? String {
-            
             let cleanedResult = resultString
                 .replacingOccurrences(of: "{", with: "")
                 .replacingOccurrences(of: "}", with: "")
@@ -258,25 +127,35 @@ class SpotifyManager: ObservableObject {
             if let last = finalResult.last, last.isEmpty {
                 finalResult.removeLast()
             }
-            
+                        
             if finalResult.count >= 10 {
-                self.isPlaying = finalResult[0] == "playing"
-                self.trackName = finalResult[1]
-                self.artistName = finalResult[2]
-                self.albumName = finalResult[3]
-                self.trackDuration = Int(Double(finalResult[4]) ?? 0)
-                self.trackPosition = Int(Double(finalResult[5]) ?? 0)
-                self.isLoved = finalResult[6] == "true"
-                self.trackId = finalResult[7]
-                self.shuffle = finalResult[8] == "true"
-                self.albumArtURL = finalResult[9]
+                let returnTrack = MusicTrack (
+                    trackName: finalResult[1],
+                    artistName: finalResult[2],
+                    albumName: finalResult[3],
+                    trackDuration: Int(Double(finalResult[4]) ?? 0),
+                    trackPosition: Int(Double(finalResult[5]) ?? 0),
+                    isPlaying: finalResult[0] == "playing",
+                    isLoved: finalResult[6] == "true",
+                    shuffle: finalResult[8] == "true",
+                )
+                                
+                if oldTrackName != returnTrack.trackName {
+                    oldTrackName = returnTrack.trackName
+                    Task { @MainActor in
+                        fetchAlbumArt(albumUrl: finalResult[9])
+                    }
+                }
                 
+                return returnTrack
                 
             } else {
                 print("Error on getting information or spotify not running")
+                return nil
             }
         } else {
             print("Fehler: Didn't get any result")
+            return nil
         }
     }
     
@@ -304,25 +183,41 @@ class SpotifyManager: ObservableObject {
         return nil
     }
     
-    private func fetchAlbumArt() {
-        guard let url = URL(string: albumArtURL) else { return }
-        URLSession.shared.dataTask(with: url) { data, _, _ in
-            guard let data = data, let image = NSImage(data: data) else { return }
-            DispatchQueue.main.async {
-                self.albumArtImage = image
-                self.getAverageColor()
-            }
-        }.resume()
-    }
+    @MainActor
+    private func fetchAlbumArt(albumUrl: String) {
+        print("fetchAlbumArt")
+         guard let url = URL(string: albumUrl) else { return }
+        print("haveURL")
+         URLSession.shared.dataTask(with: url) { data, _, _ in
+             guard let data = data, let image = NSImage(data: data) else {
+                 Task { @MainActor in
+                     self.defaultIcon()
+                 }
+                 return
+             }
+             Task { @MainActor in
+                 print("setting image")
+                 MusicManager.shared.albumArt = image
+                 print("setImage")
+                 self.getAverageColor()
+             }
+         }.resume()
+     }
+     
+     private func getAverageColor() {
+         guard let image = MusicManager.shared.albumArt else { return }
+         image.averageColor { color in
+             if let color = color {
+                 MusicManager.shared.aveColor = color
+             } else {
+                 print("Failed to get average color")
+             }
+         }
+     }
     
-    private func getAverageColor() {
-        guard let image = self.albumArtImage else { return }
-        image.averageColor { color in
-            if let color = color {
-                self.aveColor = color
-            } else {
-                print("Failed to get average color")
-            }
+    private func defaultIcon() {
+        Task { @MainActor in
+            MusicManager.shared.albumArt = NSImage(named: "no_playback")
         }
     }
 }

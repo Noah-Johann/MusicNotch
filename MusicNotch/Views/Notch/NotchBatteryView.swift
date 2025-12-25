@@ -1,5 +1,5 @@
 //
-//  ExtensionBatteryView.swift
+//  NotchBatteryView.swift
 //  MusicNotch
 //
 //  Created by Noah Johann on 03.08.25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
     
-struct ExtensionBatteryViewLeading: View {
+struct NotchBatteryViewLeading: View {
     @ObservedObject var batteryManager = BatteryManager.shared
     
     var body: some View {
@@ -21,7 +21,7 @@ struct ExtensionBatteryViewLeading: View {
     }
 }
     
-struct ExtensionBatteryViewTrailing: View {
+struct NotchBatteryViewTrailing: View {
     @ObservedObject var batteryManager = BatteryManager.shared
     
     var body: some View {

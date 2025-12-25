@@ -34,19 +34,15 @@ struct SettingsView: View {
                 SettingsExtensionView()
                 
                 SettingsLockScreenView()
-                
-                SetttingsGadgetsView()
-                
+                                
                 SettingsShortcutsView()
                 
                 SettingsPermissionView()
 
                 SettingsAboutView()
-                                
-                SettingsAcknowledgementsView()
-                
-            } .padding(.horizontal, 5)
-                .animation(.easeInOut(duration: 0.2), value: mainDisplay)
+            }
+            .padding(.horizontal, 5)
+            .animation(.easeInOut(duration: 0.2), value: mainDisplay)
         }
     }
 }

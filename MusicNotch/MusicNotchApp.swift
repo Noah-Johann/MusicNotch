@@ -18,14 +18,12 @@ struct MusicNotchApp: App {
 
     @State private var showMenuBarIcon: Bool = true
     
-    @ObservedObject var spotifyManager = SpotifyManager.shared
     
     @Default(.showMenuBarItem) private var showMenuBarItem
     
     init() {
         KeyboardShortcuts.onKeyDown(for: .toggleNotch) {
-            SpotifyManager.shared.timer = 3
-            NotchManager.shared.changeNotch()
+            NotchManager.shared.toggleNotch()
         }
         KeyboardShortcuts.onKeyDown(for: .toggleMusicGlance) {
             NotchManager.shared.showExtensionNotch(type: .musicGlance)
@@ -55,8 +53,6 @@ struct MusicNotchApp: App {
 class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     let aboutMenuHandler = AboutMenuHandler()
     
-    private let batteryManager = BatteryManager.shared
-
     
     func applicationDidFinishLaunching(_ notification: Notification) {
         if Defaults[.viewedOnboarding] == false {
@@ -103,15 +99,13 @@ private func displayCallback(
 
     if flags.contains(.addFlag) || flags.contains(.removeFlag) {
         print("Display connected or disconnected")
-        DispatchQueue.main.async {
-            Task {
-                await NotchManager.shared.setNotchContent(.hidden, true)
+            Task { @MainActor in
+                await NotchManager.shared.setNotchState(.hidden, true)
             }
-        }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            Task {
-                await NotchManager.shared.setNotchContent(.closed, true)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            Task { @MainActor in
+                await NotchManager.shared.setNotchState(.compact, true)
             }
         }
     }

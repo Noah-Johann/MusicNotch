@@ -11,7 +11,7 @@ import Defaults
 import UniversalGlass
 
 struct LockScreenPlayingView: View {
-    @ObservedObject private var spotifyManager = SpotifyManager.shared
+    @State private var musicManager = MusicManager.shared
     @ObservedObject private var volumeManager = VolumeManager.shared
     @ObservedObject private var accessibilityManager = AccessibilityManager.shared
     
@@ -36,11 +36,11 @@ struct LockScreenPlayingView: View {
                         .padding(.trailing, 4)
                         
                         VStack (alignment: .leading, spacing: 4) {
-                            Text(spotifyManager.isSpotifyRunning ? spotifyManager.trackName : "Nothing playing")
+                            Text(musicManager.music.trackName)
                                 .font(.title2.bold())
                                 .foregroundStyle(.white)
                                 .frame(height: 27, alignment: .bottom)
-                            Text(spotifyManager.isSpotifyRunning ? spotifyManager.artistName : "Start a song on Spotify")
+                            Text(musicManager.music.artistName)
                                 .font(.system(size: 14, weight: .regular))
                                 .foregroundStyle(.gray)
                                 .frame(height: 17, alignment: .top)
@@ -50,10 +50,10 @@ struct LockScreenPlayingView: View {
                         
                         if !accessibilityManager.isReduceMotion {
                             Rectangle()
-                                .fill(coloredSpect ? Color(nsColor: spotifyManager.aveColor ?? .white).gradient : Color.white.gradient)
+                                .fill(coloredSpect ? Color(nsColor: musicManager.aveColor ?? .white).gradient : Color.white.gradient)
                                 .frame(width: 35, height: 45, alignment: .center)
                                 .mask {
-                                    AudioSpectrumView(isPlaying: $spotifyManager.isPlaying)
+                                    AudioSpectrumView(isPlaying: $musicManager.music.isPlaying)
                                         .frame(width: 30, height: 30)
                                 }
                                 .padding(.bottom, 17)
@@ -73,7 +73,7 @@ struct LockScreenPlayingView: View {
                             .font(.system(size: 12))
                         
                         CustomSlider(value: $trackposition,
-                                     inRange: 0...Double(spotifyManager.trackDuration),
+                                     inRange: 0...Double(musicManager.music.trackDuration),
                                      activeFillColor: .white,
                                      fillColor: .white,
                                      emptyColor: Color(NSColor.darkGray),
@@ -85,7 +85,7 @@ struct LockScreenPlayingView: View {
                             }
                         }) .frame(width: 200, height: 10, alignment: .center)
                         
-                        Text("-\(formatTime(spotifyManager.trackDuration - Int(trackposition)))")
+                        Text("-\(formatTime(musicManager.music.trackDuration - Int(trackposition)))")
                             .frame(minWidth: 55, maxWidth: 80, minHeight: 20, alignment: .center)
                             .foregroundStyle(.gray)
                             .fontWeight(.semibold)
@@ -106,13 +106,13 @@ struct LockScreenPlayingView: View {
                                     .fontWeight(.semibold)
                                     .foregroundStyle(.secondary)
                                     .frame(width: 20, height: 20)
-                                if spotifyManager.shuffle {
+                                if musicManager.music.shuffle {
                                     Circle()
                                         .fill(Color.secondary)
                                         .frame(width: 3, height: 3)
                                 }
                             }            .transition(.opacity.combined(with: .scale))
-                                .animation(.spring(response: 0.3, dampingFraction: 0.4), value: spotifyManager.shuffle)
+                                .animation(.spring(response: 0.3, dampingFraction: 0.4), value: musicManager.music.shuffle)
                         }
                         .background(Color.clear)
                         .buttonStyle(BorderlessButtonStyle())
@@ -137,7 +137,7 @@ struct LockScreenPlayingView: View {
                         Button(action: {
                             spotifyPlayPause()
                         }) {
-                            Image(systemName: spotifyManager.isPlaying ? "pause.fill" : "play.fill")
+                            Image(systemName: musicManager.music.isPlaying ? "pause.fill" : "play.fill")
                                 .imageScale(.large)
                                 .foregroundStyle(.primary)
                                 .font(.system(size: 22, weight: .bold))
@@ -182,14 +182,14 @@ struct LockScreenPlayingView: View {
         .contentShape(RoundedRectangle(cornerRadius: 30, style: .continuous))
         .background(.clear)
         .universalGlassEffect(.ultraThin, in: RoundedRectangle(cornerRadius: 30, style: .continuous))
-        .onReceive(spotifyManager.$trackPosition) { newValue in
+        .onChange(of: musicManager.music.trackPosition) { _, newValue in
             trackposition = Double(newValue)
         }
         .onAppear {
-            trackposition = Double(spotifyManager.trackPosition)
+            trackposition = Double(musicManager.music.trackPosition)
             playbackTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
                 Task { @MainActor in
-                    if spotifyManager.isPlaying == true {
+                    if musicManager.music.isPlaying == true {
                         trackposition += 1
                     }
                 }

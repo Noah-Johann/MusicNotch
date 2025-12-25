@@ -11,8 +11,7 @@ import Defaults
 
 struct SettingsDisplayView: View {
     @Default(.mainDisplay) private var mainDisplay
-    @Default(.disableNotchOnHide) private var disableNotchOnHide
-    @Default(.noNotchScreenHide) private var noNotchScreenHide
+    @Default(.transparentNotch) private var transparentNotch
     
     var body: some View {
         LuminareSection {
@@ -20,26 +19,8 @@ struct SettingsDisplayView: View {
                 .buttonStyle(LuminareButtonStyle())
                 .frame(height: 80)
                 .padding(3)
-            if mainDisplay == true {
-                LuminareToggle(isOn: $disableNotchOnHide) {
-                    Text("Hide fake notch")
-                        .padding(.trailing, 5)
-                        .luminarePopover(attachedTo: .topTrailing) {
-                            Text("If active, the notch can't be opened when nothing is playing")
-                                .padding()
-                        }
-                        .tint(.accentColor)
-                }
-            } else {
-                LuminareToggle(isOn: $noNotchScreenHide) {
-                    Text("Disable Notch on external Screens")
-                        .padding(.trailing, 5)
-                        .luminarePopover(attachedTo: .topTrailing) {
-                            Text("Disable notch when there is no Notch Display")
-                                .padding()
-                        }
-                        .tint(.accentColor)
-                }
+            LuminareToggle(isOn: $transparentNotch) {
+                Text("Hide closed notch")
             }
         } header: {
             Text("Display")

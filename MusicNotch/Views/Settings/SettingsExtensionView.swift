@@ -13,6 +13,7 @@ struct SettingsExtensionView: View {
     @Default(.batteryExtension) private var batteryExtension
     @Default(.displayDuration) private var displayDuration
     @Default(.hudExtension) private var hudExtension
+    @Default(.hudDeviceIcons) private var hudDeviceIcons
     @Default(.accentColorHudSlider) private var accentColorHudSlider
     @Default(.gradientHudSlider) private var gradientHudSlider
     @Default(.bluetoothRecognition) private var bluetoothRecognition
@@ -49,6 +50,10 @@ struct SettingsExtensionView: View {
                 Text("Enable HUD extension")
             }
             
+            LuminareToggle(isOn: $hudDeviceIcons) {
+                Text("Use device icons")
+            }
+            
             LuminareToggle(isOn: $accentColorHudSlider) {
                 Text("Accent color slider")
             }
@@ -64,7 +69,7 @@ struct SettingsExtensionView: View {
             }
             
             LuminareToggle(isOn: $bluetoothSymbols) {
-                Text("Use device symbols")
+                Text("Use device icons")
             } .disabled(accessibilityManager.isReduceMotion)
         }
         
