@@ -21,10 +21,10 @@ struct Player: View {
     @Default(.bottomGadgets) private var bottomGadgets
     
     var body: some View {
-        VStack {
+        VStack (spacing: 12) {
             HStack {
                 ZStack {
-                    AlbumArtView(size: 80, shrink: 10, cornerRadius: 17, glow: true)
+                    AlbumArtView(size: 65, shrink: 10, cornerRadius: 12, glow: true)
 
                     
                     Button(action: {
@@ -32,31 +32,33 @@ struct Player: View {
                         NSWorkspace.shared.open(url)
                     }, label: {
                         Color.clear
-                            .frame(width: 80, height: 80)
+                            .frame(width: 65, height: 65)
                             .contentShape(Rectangle())
                     }) .buttonStyle(.plain)
-                        .frame(width: 80, height : 80)
+                        .frame(width: 65, height : 65)
                 }
                 VStack {
                     Text(musicManager.music.trackName)
                         .font(.system(size: 17, weight: .medium))
                         .foregroundStyle(.white)
-                        .frame(width: 240, alignment: .leading)
+                        .frame(width: 220, alignment: .leading)
                     Text(musicManager.music.artistName)
                         .font(.system(size: 14, weight: .regular))
                         .foregroundStyle(.gray)
-                        .frame(width: 240, alignment: .leading)
+                        .frame(width: 220, alignment: .leading)
                 }
-                .padding(.horizontal, 10)
+                .padding(.leading, 8)
                 .padding(.top, 27)
+                
+                Spacer()
                 
                 if !accessibilityManager.isReduceMotion {
                     Rectangle()
                         .fill(coloredSpect ? Color(nsColor: musicManager.aveColor ?? .white).gradient : Color.white.gradient)
-                        .frame(width: 35, alignment: .center)
+                        .frame(width: 30, alignment: .center)
                         .mask {
                             AudioSpectrumView(isPlaying: $musicManager.music.isPlaying)
-                                .frame(width: 20, height: 20)
+                                .frame(width: 15, height: 15)
                         }
                 } else {
                     Rectangle()
@@ -64,7 +66,7 @@ struct Player: View {
                         .frame(width: 35)
                 }
                 
-            } .frame(width: 300)
+            } .frame(width: 350)
                 .padding(.bottom, 8)
         
             //Progress Bar
@@ -86,7 +88,7 @@ struct Player: View {
                     if !isEditing {
                         progressChanged()
                     }
-                }) .frame(width: 280, height: 10, alignment: .center)
+                }) .frame(width: 240, height: 10, alignment: .center)
                 
                 Text("-\(formatTime(musicManager.music.trackDuration - Int(trackposition)))")
                     .frame(minWidth: 55, maxWidth: 80, minHeight: 20, alignment: .center)
@@ -117,7 +119,7 @@ struct Player: View {
             playbackTimer?.invalidate()
         }
 
-        .padding(.bottom, bottomGadgets ? 4 : 15)
+        .padding(.bottom, bottomGadgets ? 4 : 10)
         .padding(.top, 10)
         .contextMenu {
             ContextMenuView()

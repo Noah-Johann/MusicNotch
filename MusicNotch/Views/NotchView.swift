@@ -109,9 +109,9 @@ struct NotchViewExpanded: View {
             Player()
             
             if notchContentManager.notchContent == .volume {
-                NotchHUDViewExpanded(hudType: .volume, width: 390)
+                NotchHUDViewExpanded(hudType: .volume, width: 350)
             } else if notchContentManager.notchContent == .brightness {
-                NotchHUDViewExpanded(hudType: .brightness, width: 390)
+                NotchHUDViewExpanded(hudType: .brightness, width: 350)
             }
             
             if bottomGadgets && activateGadgets {
