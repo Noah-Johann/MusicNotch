@@ -58,6 +58,7 @@
       }
     },
     "Activate Gadgets" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -111,6 +112,7 @@
       }
     },
     "Battery Gadget" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -121,6 +123,7 @@
       }
     },
     "Bottom" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -389,6 +392,7 @@
       }
     },
     "Gadgets" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -965,6 +969,7 @@
       }
     },
     "Settings Gadget" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1188,6 +1193,7 @@
       }
     },
     "Top" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {

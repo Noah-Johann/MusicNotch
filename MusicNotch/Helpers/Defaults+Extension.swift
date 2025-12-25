@@ -65,15 +65,5 @@ extension Defaults.Keys {
     static let bluetoothRecognition = Key<Bool>("bluetoothRecognition", default: true)
     static let bluetoothSymbols = Key<Bool>("bluetoothSymbols", default: false)
     static let bluetoothVideos = Key<Bool>("bluetoothVideos", default: true)
-    
-    // Gadgets
-    static let activateGadgets = Key<Bool>("activateGadgets", default: true)
-    
-    static let topGadgets = Key<Bool>("topGadgets", default: true)
-    static let bottomGadgets = Key<Bool>("bottomGadgets", default: false)
-    
-    static let batteryGadget = Key<Bool>("batteryGadget", default: true)
-    static let settingsGadget = Key<Bool>("settingsGadget", default: true)
-    
 }
 
