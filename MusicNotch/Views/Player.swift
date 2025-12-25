@@ -119,7 +119,7 @@ struct Player: View {
         }
 
         .padding(.bottom, 10)
-        .padding(.top, 10)
+        .padding(.top, 15)
         .contextMenu {
             ContextMenuView()
         }
