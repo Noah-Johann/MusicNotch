@@ -22,7 +22,8 @@ struct NotchAirPodsViewLeading: View {
                 .scaledToFit()
                 .frame(width: 25, height: 25)
         } else {
-            if let url = Bundle.main.url(forResource: volumeManager.deviceVideo, withExtension: "mov") {
+            if let path = Bundle.main.path(forResource: volumeManager.deviceVideo, ofType: "mov") {
+                let url = URL(fileURLWithPath: path)
                 VideoView(url: url)
                     .frame(width: 33, height: 33)
                     .aspectRatio(contentMode: .fit)
