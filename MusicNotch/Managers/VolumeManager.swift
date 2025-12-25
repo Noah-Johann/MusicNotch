@@ -241,6 +241,7 @@ class VolumeManager: ObservableObject {
     }
 
     private func handleDeviceChange() {
+        self.disabledHUD = true
         let newDevice = defaultAudioDeviceID()
         guard newDevice != kAudioDeviceUnknown else { return }
 
@@ -257,7 +258,11 @@ class VolumeManager: ObservableObject {
         // Refresh current values
         getSystemVolume()
         getMuteStatus()
-        self.disabledHUD = false
+        Task {
+            try? await Task.sleep(nanoseconds: 1_000_000_000)
+            self.disabledHUD = false
+
+        }
     }
     
     func getAudioOutputDevice() {
