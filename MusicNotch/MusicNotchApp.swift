@@ -55,6 +55,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     
     
     func applicationDidFinishLaunching(_ notification: Notification) {
+        NotchManager.shared.createNotch()
+        
         if Defaults[.viewedOnboarding] == false {
             WindowManager.openOnboarding()
         } else {

@@ -79,7 +79,7 @@ class MusicManager {
         if music.trackName != prevMusic.trackName {
             prevMusic = music
             
-            if Defaults[.autoMusicGlance] && NotchContentState.shared.notchContent != .musicGlance {
+            if Defaults[.autoMusicGlance] && NotchManager.shared.notchContent != .musicGlance {
                 if launched == false {
                     launched = true
                 } else {
@@ -103,7 +103,7 @@ class MusicManager {
                 if Defaults[.autoMusicGlance] {
                     NotchManager.shared.showExtensionNotch(type: .musicGlance)
                 } else {
-                    NotchContentState.shared.notchContent = .music
+                    NotchManager.shared.notchContent = .music
                     Task {
                         await NotchManager.shared.setNotchState(.compact, false)
                     }
@@ -117,7 +117,7 @@ class MusicManager {
             }
             
             if hideTimer == nil {
-                if NotchContentState.shared.notchContent == .music || NotchContentState.shared.notchContent == .musicGlance {
+                if NotchManager.shared.notchContent == .music || NotchManager.shared.notchContent == .musicGlance {
                     if NotchManager.shared.notchDismissed == false && NotchManager.shared.notchState == .compact {
                         hideTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
                             guard let self = self else { return }
@@ -125,7 +125,7 @@ class MusicManager {
                                 self.stopTime += 1
                                 print(self.stopTime)
                                 if self.stopTime > Int(Defaults[.hideNotchTime]) && NotchManager.shared.notchState == .compact {
-                                    guard NotchContentState.shared.notchContent == .music || NotchContentState.shared.notchContent == .musicGlance else { return }
+                                    guard NotchManager.shared.notchContent == .music || NotchManager.shared.notchContent == .musicGlance else { return }
                                     Task {
                                         await NotchManager.shared.setNotchState(.closed, false)
                                     }
@@ -186,7 +186,7 @@ class MusicManager {
         Task { @MainActor in
             self.albumArt = NSImage(named: "no_playback")
         }
-        if NotchContentState.shared.notchContent == .musicGlance || NotchContentState.shared.notchContent == .music {
+        if NotchManager.shared.notchContent == .musicGlance || NotchManager.shared.notchContent == .music {
             Task {
                 await NotchManager.shared.setNotchState(.closed, false)
             }

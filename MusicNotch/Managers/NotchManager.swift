@@ -1,25 +1,24 @@
 //
-//  NotchMangager.swift
+//  NotchManager.swift
 //  MusicNotch
 //
 //  Created by Noah Johann on 23.04.25.
 //
 
-import Foundation
 import DynamicNotchKit
 import SwiftUI
 import Defaults
 import AppKit
 
-@MainActor
+@MainActor @Observable
 final class NotchManager {
-    
-    @Published var notchState: NotchState = .hidden
-    @Published var notchDismissed: Bool = false
-    
     static let shared = NotchManager()
     
-    let notch: DynamicNotch<NotchViewExpanded, NotchViewLeading, NotchViewTrailing>
+    var notchState: NotchState = .hidden
+    var notchContent: NotchContent = .music
+    var notchDismissed: Bool = false
+    
+    var notch: DynamicNotch<AnyView, AnyView, AnyView>
     
     private var openingTask: Task<Void, Never>?
     private var hapticTask: Task<Void, Never>?
@@ -43,12 +42,28 @@ final class NotchManager {
     
     private init() {
         notch = DynamicNotch(
-           hoverBehavior: .increaseShadow,
-           style: .notch(topCornerRadius: 25, bottomCornerRadius: 50),
-           expanded: { NotchViewExpanded() },
-           compactLeading: { NotchViewLeading() },
-           compactTrailing: { NotchViewTrailing() }
-       )
+            hoverBehavior: .increaseShadow,
+            style: .notch(topCornerRadius: 25, bottomCornerRadius: 50),
+            expanded: { AnyView(EmptyView()) },
+            compactLeading: { AnyView(EmptyView()) },
+            compactTrailing: { AnyView(EmptyView()) }
+        )
+    }
+    
+    @MainActor deinit {
+        removeScrollMonitors()
+    }
+    
+    // MARK: - Setup
+    
+    public func createNotch() {
+        notch = DynamicNotch(
+            hoverBehavior: .increaseShadow,
+            style: .notch(topCornerRadius: 25, bottomCornerRadius: 50),
+            expanded: { AnyView(NotchViewExpanded()) },
+            compactLeading: { AnyView(NotchViewLeading()) },
+            compactTrailing: { AnyView(NotchViewTrailing()) }
+        )
         notch.moveToSky()
         notch.onHoverChanged = { [weak self] isHovering in
             guard let self = self else { return }
@@ -115,10 +130,6 @@ final class NotchManager {
         }
     }
     
-    @MainActor deinit {
-        removeScrollMonitors()
-    }
-    
     // MARK: - Hover Management
 
     private func handleHoverChange(_ isHovering: Bool) {
@@ -130,7 +141,7 @@ final class NotchManager {
             self.openingTask?.cancel()
             self.hapticTask?.cancel()
             
-            guard NotchContentState.shared.notchContent != .locked && NotchContentState.shared.notchContent != .unlocked else { return }
+            guard self.notchContent != .locked && self.notchContent != .unlocked else { return }
             
             self.openingTask = Task { @MainActor in
                 // Wait for the opening delay
@@ -288,7 +299,7 @@ final class NotchManager {
         if changeDisplay == true {
             await self.notch.hide()
             self.addScrollMonitors()
-            NotchContentState.shared.notchContent = .music
+            self.notchContent = .music
         }
         
         switch state {
@@ -324,7 +335,7 @@ final class NotchManager {
             MusicManager.shared.updateMusic()
             if prevNotchState == .open {
                 withAnimation(.bouncy(duration: 0.6)) {
-                    NotchContentState.shared.notchContent = .music
+                    self.notchContent = .music
                 }
             }
             let screen = NSScreen.selectedDisplay(.compact)
@@ -354,7 +365,7 @@ final class NotchManager {
     }
     
     public func showExtensionNotch(type: NotchContent) {
-        guard NotchContentState.shared.notchContent != .locked || type == .unlocked else { return }
+        guard self.notchContent != .locked || type == .unlocked else { return }
 
         extensionRequestCounter &+= 1
         let requestToken = extensionRequestCounter
@@ -407,7 +418,7 @@ final class NotchManager {
             } else {
                 if notchState != .open {
                     await setNotchState(.closed, false)
-                    NotchContentState.shared.notchContent = .music
+                    self.notchContent = .music
                 } else {
                     setNotchContent(.music)
                 }
@@ -419,7 +430,7 @@ final class NotchManager {
     
     func setNotchContent(_ notchContent: NotchContent) {
         withAnimation(.bouncy(duration: 0.6)) {
-            NotchContentState.shared.notchContent = notchContent
+            self.notchContent = notchContent
         }
     }
 }

@@ -9,19 +9,19 @@ import SwiftUI
 import Defaults
 
 struct NotchMusicViewLeading: View {
-    @ObservedObject private var notchContentState = NotchContentState.shared
+    @State private var notchManager = NotchManager.shared
     @State private var musicManager = MusicManager.shared
     
     var body: some View {
         HStack {
             Button (action: {
-                if notchContentState.notchContent == .music {
+                if notchManager.notchContent == .music {
                     withAnimation(.bouncy(duration: 0.6)) {
-                        NotchContentState.shared.notchContent = .musicGlance
+                        NotchManager.shared.notchContent = .musicGlance
                     }
-                } else if notchContentState.notchContent == .musicGlance {
+                } else if notchManager.notchContent == .musicGlance {
                     withAnimation(.bouncy(duration: 0.6)) {
-                        NotchContentState.shared.notchContent = .music
+                        NotchManager.shared.notchContent = .music
                     }
                 } else {
                     return
@@ -34,7 +34,7 @@ struct NotchMusicViewLeading: View {
                 )
             }) .buttonStyle(.plain)
                 .padding(.leading, 3)
-            if notchContentState.notchContent == .musicGlance {
+            if notchManager.notchContent == .musicGlance {
                 Text(musicManager.music.trackName)
                     .foregroundStyle(Color(musicManager.aveColor ?? .white).gradient)
                     .frame(minWidth: 75, maxWidth: 125)
@@ -44,12 +44,12 @@ struct NotchMusicViewLeading: View {
 }
 
 struct NotchMusicViewTrailing: View {
-    @ObservedObject private var notchContentState = NotchContentState.shared
+    @State private var notchManager = NotchManager.shared
     @State private var musicManager = MusicManager.shared
 
     var body: some View {
         HStack {
-            if notchContentState.notchContent == .musicGlance {
+            if notchManager.notchContent == .musicGlance {
                 Text(musicManager.music.artistName)
                     .foregroundStyle(Color(musicManager.aveColor ?? .white).gradient)
                     .frame(minWidth: 75, maxWidth: 125)

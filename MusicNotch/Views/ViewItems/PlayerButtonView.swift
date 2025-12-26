@@ -95,13 +95,13 @@ struct ButtonView: View {
             
             //Speaker
             Button(action: {
-                if NotchContentState.shared.notchContent == .music {
+                if NotchManager.shared.notchContent == .music {
                     withAnimation(.bouncy(duration: 0.6)) {
-                        NotchContentState.shared.notchContent = .volume
+                        NotchManager.shared.notchContent = .volume
                     }
                 } else {
                     withAnimation(.bouncy(duration: 0.6)) {
-                        NotchContentState.shared.notchContent = .music
+                        NotchManager.shared.notchContent = .music
                     }
                 }
             }) {

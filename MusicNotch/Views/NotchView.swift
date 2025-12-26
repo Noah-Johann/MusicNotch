@@ -9,29 +9,29 @@ import SwiftUI
 import Defaults
 
 struct NotchViewLeading: View {
-    @ObservedObject var notchContentManager = NotchContentState.shared
+    @State var notchManager = NotchManager.shared
     
     var body: some View {
         ZStack {
-            if notchContentManager.notchContent == .music || notchContentManager.notchContent == .musicGlance {
+            if notchManager.notchContent == .music || notchManager.notchContent == .musicGlance {
                 NotchMusicViewLeading()
                     .transition(.blurReplace)
-            } else if notchContentManager.notchContent == .battery {
+            } else if notchManager.notchContent == .battery {
                 NotchBatteryViewLeading()
                     .transition(.blurReplace)
-            } else if notchContentManager.notchContent == .volume {
+            } else if notchManager.notchContent == .volume {
                 NotchHUDViewLeading(hudType: .volume)
                     .transition(.blurReplace)
-            } else if notchContentManager.notchContent == .brightness {
+            } else if notchManager.notchContent == .brightness {
                  NotchHUDViewLeading(hudType: .brightness)
                     .transition(.blurReplace)
-            } else if notchContentManager.notchContent == .locked {
+            } else if notchManager.notchContent == .locked {
                 NotchLockViewLeading(lockType: .locked)
                     .transition(.blurReplace)
-            } else if notchContentManager.notchContent == .unlocked {
+            } else if notchManager.notchContent == .unlocked {
                 NotchLockViewLeading(lockType: .unlocked)
                     .transition(.blurReplace)
-            } else if notchContentManager.notchContent == .bluetooth {
+            } else if notchManager.notchContent == .bluetooth {
                 NotchAirPodsViewLeading()
                     .transition(.blurReplace)
             }
@@ -40,29 +40,29 @@ struct NotchViewLeading: View {
 }
 
 struct NotchViewTrailing: View {
-    @ObservedObject var notchContentManager = NotchContentState.shared
+    @State var notchManager = NotchManager.shared
     
     var body: some View {
         ZStack {
-            if notchContentManager.notchContent == .music || notchContentManager.notchContent == .musicGlance {
+            if notchManager.notchContent == .music || notchManager.notchContent == .musicGlance {
                 NotchMusicViewTrailing()
                     .transition(.blurReplace)
-            } else if notchContentManager.notchContent == .battery {
+            } else if notchManager.notchContent == .battery {
                 NotchBatteryViewTrailing()
                     .transition(.blurReplace)
-            } else if notchContentManager.notchContent == .volume {
+            } else if notchManager.notchContent == .volume {
                 NotchHUDViewTrailing(hudType: .volume)
                     .transition(.blurReplace)
-            } else if notchContentManager.notchContent == .brightness {
+            } else if notchManager.notchContent == .brightness {
                 NotchHUDViewTrailing(hudType: .brightness)
                     .transition(.blurReplace)
-            } else if notchContentManager.notchContent == .locked {
+            } else if notchManager.notchContent == .locked {
                 NotchLockViewTrailing()
                     .transition(.blurReplace)
-            } else if notchContentManager.notchContent == .unlocked {
+            } else if notchManager.notchContent == .unlocked {
                 NotchLockViewTrailing()
                     .transition(.blurReplace)
-            } else if notchContentManager.notchContent == .bluetooth {
+            } else if notchManager.notchContent == .bluetooth {
                 NotchAirPodsViewTrailing()
                     .transition(.blurReplace)
             }
@@ -71,7 +71,7 @@ struct NotchViewTrailing: View {
 }
 
 struct NotchViewExpanded: View {
-    @ObservedObject var notchContentManager = NotchContentState.shared
+    @State var notchManager = NotchManager.shared
     
     @ObservedObject var batteryManager = BatteryManager.shared
     @ObservedObject var volumeManager = VolumeManager.shared
@@ -83,21 +83,12 @@ struct NotchViewExpanded: View {
         VStack {
             NotchMusicViewExpanded()
             
-            if notchContentManager.notchContent == .volume {
+            if notchManager.notchContent == .volume {
                 NotchHUDViewExpanded(hudType: .volume, width: 350)
-            } else if notchContentManager.notchContent == .brightness {
+            } else if notchManager.notchContent == .brightness {
                 NotchHUDViewExpanded(hudType: .brightness, width: 350)
             }
         } .padding(.bottom)
     }
 }
-
-
-class NotchContentState: ObservableObject {
-    static let shared = NotchContentState()
-    
-    @Published var notchContent: NotchContent = .music
-    
-}
-
 
