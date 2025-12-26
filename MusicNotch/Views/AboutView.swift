@@ -59,10 +59,9 @@ struct aboutView: View {
                         .foregroundStyle(Color(.tertiaryLabelColor))
                         .font(.body)
                 }
-            }
+            } .padding(.bottom, 20)
         }
-        .frame(width: 320, height: 400)
-        .padding(.bottom, 20)
+        .frame(width: 320, height: 410)
         .scrollDisabled(true)
     }
 }

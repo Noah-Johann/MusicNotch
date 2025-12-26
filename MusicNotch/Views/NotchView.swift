@@ -1,5 +1,5 @@
 //
-//  notchView.swift
+//  NotchView.swift
 //  MusicNotch
 //
 //  Created by Noah Johann on 07.08.25.
@@ -81,7 +81,7 @@ struct NotchViewExpanded: View {
     
     var body: some View {
         VStack {
-            Player()
+            NotchMusicViewExpanded()
             
             if notchContentManager.notchContent == .volume {
                 NotchHUDViewExpanded(hudType: .volume, width: 350)
