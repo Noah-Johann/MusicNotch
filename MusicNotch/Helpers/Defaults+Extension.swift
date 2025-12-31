@@ -23,8 +23,7 @@ extension Defaults.Keys {
     static let musicPlayer = Key<MusicApp>("musicPlayer", default: .nowPlaying)
     
     // Display
-    static let notchDisplay = Key<Bool>("notchDisplay", default: true)
-    static let mainDisplay = Key<Bool>("mainDisplay", default: false)
+    static let display = Key<Display>("display", default: .notchDisplay)
     static let transparentNotch = Key<Bool>("transparentNotch", default: false)
     
     // Appearance

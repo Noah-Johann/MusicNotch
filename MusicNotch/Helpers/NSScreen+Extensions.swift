@@ -67,7 +67,7 @@ extension NSScreen {
     }
     
     var isOnNotchScreen: Bool {
-        if Defaults[.notchDisplay] {
+        if Defaults[.display] == .notchDisplay {
             if NSScreen.screens.first(where: { $0.safeAreaInsets.top > 0 }) != nil {
                 return true
             } else {
@@ -85,7 +85,7 @@ extension NSScreen {
     static func selectedDisplay(_ notchState: NotchState) -> NSScreen? {
         let notchScreen = NSScreen.screens.first(where: { $0.safeAreaInsets.top > 0})
         
-        if Defaults[.notchDisplay] {
+        if Defaults[.display] == .notchDisplay {
             if notchScreen == nil {
                 if notchState == .closed && Defaults[.transparentNotch] {
                     return nil
@@ -94,7 +94,7 @@ extension NSScreen {
             } else {
                 return notchScreen
             }
-        } else if Defaults[.mainDisplay] {
+        } else if Defaults[.display] == .mainDisplay {
             if notchState == .closed && Defaults[.transparentNotch] {
                 return nil
             }

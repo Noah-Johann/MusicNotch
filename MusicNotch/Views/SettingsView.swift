@@ -14,8 +14,6 @@ import KeyboardShortcuts
 
 
 struct SettingsView: View {
-    @Default(.mainDisplay) private var mainDisplay
-    
     var body: some View {
         LuminarePane() {
             VStack {
@@ -42,7 +40,6 @@ struct SettingsView: View {
                 SettingsAboutView()
             }
             .padding(.horizontal, 5)
-            .animation(.easeInOut(duration: 0.2), value: mainDisplay)
         }
     }
 }
