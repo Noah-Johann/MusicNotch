@@ -136,36 +136,43 @@ final class NotchManager {
         self.isCurrentlyHovering = isHovering
         
         if isHovering {
-            guard Defaults[.openNotchOnHover] else { return }
-
-            self.openingTask?.cancel()
-            self.hapticTask?.cancel()
-            
-            guard self.notchContent != .locked && self.notchContent != .unlocked else { return }
-            
-            self.openingTask = Task { @MainActor in
-                // Wait for the opening delay
-                do {
-                    try await Task.sleep(nanoseconds: UInt64(Defaults[.openingDelay] * 1_000_000_000))
-                } catch {
-                    return
-                }
+            if Defaults[.hoverBehavior] == .expand {
+                self.openingTask?.cancel()
+                self.hapticTask?.cancel()
                 
-                guard self.isCurrentlyHovering && !Task.isCancelled else {
-                    return
-                }
+                guard self.notchContent != .locked && self.notchContent != .unlocked else { return }
                 
-                await self.setNotchState(.open, false)
-                
-                if Defaults[.hapticFeedback] && Defaults[.openingDelay] != 0 {
-                    self.hapticTask = Task { @MainActor in
-                        
-                        guard !Task.isCancelled else { return }
-                        
-                        let performer = NSHapticFeedbackManager.defaultPerformer
-                        performer.perform(.alignment, performanceTime: .now)
+                self.openingTask = Task { @MainActor in
+                    // Wait for the opening delay
+                    do {
+                        try await Task.sleep(nanoseconds: UInt64(Defaults[.openingDelay] * 1_000_000_000))
+                    } catch {
+                        return
+                    }
+                    
+                    guard self.isCurrentlyHovering && !Task.isCancelled else {
+                        return
+                    }
+                    
+                    await self.setNotchState(.open, false)
+                    
+                    if Defaults[.hapticFeedback] && Defaults[.openingDelay] != 0 {
+                        self.hapticTask = Task { @MainActor in
+                            
+                            guard !Task.isCancelled else { return }
+                            
+                            let performer = NSHapticFeedbackManager.defaultPerformer
+                            performer.perform(.alignment, performanceTime: .now)
+                        }
                     }
                 }
+            } else if Defaults[.hoverBehavior] == .musicGlance {
+                if self.notchState != .compact {
+                    Task { @MainActor in
+                        await setNotchState(.compact, false)
+                    }
+                }
+                self.setNotchContent(.musicGlance)
             }
         } else {
             self.openingTask?.cancel()
@@ -181,9 +188,10 @@ final class NotchManager {
                     }
                 }
             }
+            self.setNotchContent(.music)
         }
         
-        if Defaults[.hapticFeedback] && Defaults[.openNotchOnHover] {
+        if Defaults[.hapticFeedback] && Defaults[.hoverBehavior] == .expand {
             let performer = NSHapticFeedbackManager.defaultPerformer
             performer.perform(.alignment, performanceTime: .default)
         }

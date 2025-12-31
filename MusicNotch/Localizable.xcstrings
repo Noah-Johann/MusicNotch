@@ -153,6 +153,9 @@
         }
       }
     },
+    "Disabled" : {
+
+    },
     "Display" : {
       "localizations" : {
         "de" : {
@@ -275,6 +278,9 @@
         }
       }
     },
+    "Expand" : {
+
+    },
     "Extensions" : {
       "localizations" : {
         "de" : {
@@ -364,9 +370,6 @@
           }
         }
       }
-    },
-    "Hello, World!" : {
-
     },
     "Hide closed notch" : {
 
@@ -585,6 +588,7 @@
 
     },
     "Open Notch on hover" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {

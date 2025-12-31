@@ -28,3 +28,25 @@ enum Display: CaseIterable, Codable, Defaults.Serializable {
         }
     }
 }
+
+enum HoverBehavior: CaseIterable, Codable, Defaults.Serializable {
+    case disabled
+    case expand
+    case musicGlance
+    
+    var image: Image {
+        switch self {
+        case .disabled: Image(systemName: "nosign")
+        case .expand: Image(systemName: "chevron.left.chevron.right")
+        case .musicGlance: Image(systemName: "music.note")
+        }
+    }
+    
+    var text: LocalizedStringKey {
+        switch self {
+        case .disabled: "Disabled"
+        case .expand: "Expand"
+        case .musicGlance: "MusicGlance"
+        }
+    }
+}

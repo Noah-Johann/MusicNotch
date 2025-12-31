@@ -10,23 +10,40 @@ import Luminare
 import Defaults
 
 struct SettingsNotchView: View {
-    @Default(.openNotchOnHover) private var openNotchOnHover
+    @Default(.hoverBehavior) private var hoverBehavior
     @Default(.hapticFeedback) private var hapticFeedback
     @Default(.openingDelay) private var openingDelay
     @Default(.hideNotchTime) private var hideNotchTime
     
     var body: some View {
         LuminareSection {
-            
-            LuminareToggle(isOn: $openNotchOnHover) {
-                Text("Open Notch on hover")
+            LuminarePicker(
+                elements: HoverBehavior.allCases,
+                selection: Binding(
+                    get: { Defaults[.hoverBehavior] },
+                    set: { Defaults[.hoverBehavior] = $0 }
+                ),
+                // .animation(LuminareConstants.animation),
+                columns: 3
+            ) { option in
+                HStack(spacing: 6) {
+                    option.image
+                        .imageScale(.large)
+                        .scaledToFit()
+                        .frame(width: 30, height: 40)
+                    Text(option.text)
+                        .font(.title3)
+                }
             }
+            .buttonStyle(LuminareButtonStyle())
+            .frame(height: 50)
+            .padding(3)
             
             LuminareToggle(isOn: $hapticFeedback) {
                 Text("Haptic feedback")
             }
             
-            if openNotchOnHover == true {
+            if hoverBehavior == .expand {
                 LuminareSlider(
                     value: $openingDelay,
                     in: 0...1,

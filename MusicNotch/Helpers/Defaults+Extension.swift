@@ -31,7 +31,7 @@ extension Defaults.Keys {
     static let playerGlow = Key<Bool>("playerGlow", default: true)
     
     // Notch
-    static let openNotchOnHover = Key<Bool>("openNotchOnHover", default: false)
+    static let hoverBehavior = Key<HoverBehavior>("hoverBehavior", default: .disabled)
     static let openingDelay = Key<Double>("openingDelay", default: 0.3)
     static let hapticFeedback = Key<Bool>("hapticFeedback", default: true)
     static let hideNotchTime = Key<Double>("hideNotchTime", default: 3)

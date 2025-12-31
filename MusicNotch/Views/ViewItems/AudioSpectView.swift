@@ -13,7 +13,7 @@ struct AudioSpectView: View {
     @ObservedObject var accessibilityManager = AccessibilityManager.shared
     
     @Default(.coloredSpect) private var coloredSpect
-    @Default(.openNotchOnHover) private var openNotchOnHover
+    @Default(.hoverBehavior) private var hoverBehavior
     
     @State private var hovering: Bool = false
     
@@ -39,8 +39,7 @@ struct AudioSpectView: View {
             }
         } .onHover(perform: { isHovering in
             if isHovering {
-                guard !openNotchOnHover else { hovering = false ; return}
-                
+                guard hoverBehavior == .disabled else { hovering = false ; return}
                 hovering = true
             } else {
                 hovering = false
