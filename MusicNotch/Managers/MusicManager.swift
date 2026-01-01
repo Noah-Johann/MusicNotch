@@ -211,7 +211,3 @@ struct MusicTrack {
     var isLoved: Bool
     var shuffle: Bool
 }
-
-enum MusicApp: String, Codable, Defaults.Serializable {
-    case appleMusic, spotify, nowPlaying
-}

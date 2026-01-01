@@ -83,6 +83,9 @@
         }
       }
     },
+    "Apple Music" : {
+
+    },
     "Auto check for updates" : {
       "localizations" : {
         "de" : {
@@ -497,6 +500,9 @@
         }
       }
     },
+    "Music" : {
+
+    },
     "MusicGlance" : {
       "localizations" : {
         "de" : {
@@ -882,6 +888,9 @@
         }
       }
     },
+    "Spotify" : {
+
+    },
     "Spotify is not opened" : {
       "localizations" : {
         "de" : {
@@ -931,6 +940,9 @@
           }
         }
       }
+    },
+    "System" : {
+
     },
     "The time it takes for the notch to hide if the playback is stopped." : {
       "localizations" : {

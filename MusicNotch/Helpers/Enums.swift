@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AppKit
 import Defaults
 
 enum Display: CaseIterable, Codable, Defaults.Serializable {
@@ -50,3 +51,46 @@ enum HoverBehavior: CaseIterable, Codable, Defaults.Serializable {
         }
     }
 }
+
+enum MusicApp: CaseIterable, Codable, Defaults.Serializable {
+    case appleMusic
+    case spotify
+    case nowPlaying
+        
+    var image: Image {
+        switch self {
+        case .appleMusic:
+            if let appURL = NSWorkspace.shared.urlForApplication(withBundleIdentifier: "com.apple.Music") {
+                let nsImage = NSWorkspace.shared.icon(forFile: appURL.path)
+                nsImage.size = NSSize(width: 64, height: 64)
+                return Image(nsImage: nsImage)
+            }
+            return Image(systemName: "music.note")
+        case .spotify:
+            if let appURL = NSWorkspace.shared.urlForApplication(withBundleIdentifier: "com.spotify.client") {
+                let nsImage = NSWorkspace.shared.icon(forFile: appURL.path)
+                nsImage.size = NSSize(width: 64, height: 64)
+                return Image(nsImage: nsImage)
+            }
+            return Image(systemName: "music.note")
+        case .nowPlaying:
+            if let appURL = NSWorkspace.shared.urlForApplication(withBundleIdentifier: "com.apple.apps.launcher") {
+                let nsImage = NSWorkspace.shared.icon(forFile: appURL.path)
+                nsImage.size = NSSize(width: 64, height: 64)
+                return Image(nsImage: nsImage)
+            }
+            return Image(systemName: "music.note")
+        }
+    }
+    
+    var text: LocalizedStringKey {
+        switch self {
+        case .appleMusic: "Apple Music"
+        case .spotify: "Spotify"
+        case .nowPlaying: "System"
+        }
+    }
+    
+}
+
+

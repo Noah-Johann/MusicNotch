@@ -25,6 +25,8 @@ struct SettingsView: View {
                 
                 SettingsGesturesView()
                 
+                SettingsMusicView()
+                
                 SettingsAppearanceView()
                 
                 SettingsMusicGlanceView()
