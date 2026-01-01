@@ -188,7 +188,9 @@ final class NotchManager {
                     }
                 }
             }
-            self.setNotchContent(.music)
+            if Defaults[.hoverBehavior] == .musicGlance {
+                self.setNotchContent(.music)
+            }
         }
         
         if Defaults[.hapticFeedback] && Defaults[.hoverBehavior] == .expand {
