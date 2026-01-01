@@ -394,6 +394,9 @@
         }
       }
     },
+    "Hover Behavior" : {
+
+    },
     "If hidden, settings can be accessed via right click on the player" : {
       "localizations" : {
         "de" : {
@@ -565,6 +568,7 @@
       }
     },
     "Notch" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {

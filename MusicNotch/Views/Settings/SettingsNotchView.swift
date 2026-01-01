@@ -76,7 +76,7 @@ struct SettingsNotchView: View {
             .luminareSliderLayout(.regular)
             .padding(.bottom, 5)
         } header: {
-            Text("Notch")
+            Text("Hover Behavior")
         }
         .padding(.bottom, 14)
     }
