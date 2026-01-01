@@ -384,7 +384,7 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSAppleEventsUsageDescription = "MusicNotch needs access to apple events to show and control playback.";
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "MusicNotch needs access to Bluetooth to show connection status and battery level of devices.";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2025 Noah Johann";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 Noah Johann";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -444,7 +444,7 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSAppleEventsUsageDescription = "MusicNotch needs access to apple events to show and control playback.";
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "MusicNotch needs access to Bluetooth to show connection status and battery level of devices.";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2025 Noah Johann";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 Noah Johann";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
