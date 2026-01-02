@@ -84,7 +84,14 @@
       }
     },
     "Apple Music" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Music"
+          }
+        }
+      }
     },
     "Auto check for updates" : {
       "localizations" : {
@@ -157,7 +164,14 @@
       }
     },
     "Disabled" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deaktiviert"
+          }
+        }
+      }
     },
     "Display" : {
       "localizations" : {
@@ -501,7 +515,14 @@
       }
     },
     "Music" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Musik"
+          }
+        }
+      }
     },
     "MusicGlance" : {
       "localizations" : {
@@ -573,17 +594,6 @@
         }
       }
     },
-    "Notch" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Notch"
-          }
-        }
-      }
-    },
     "Notch display" : {
       "localizations" : {
         "de" : {
@@ -595,18 +605,7 @@
       }
     },
     "Opacity 0" : {
-
-    },
-    "Open Notch on hover" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Öffne Notch beim Hovern"
-          }
-        }
-      }
+      "shouldTranslate" : false
     },
     "Open Spotify to request permissions" : {
       "localizations" : {
@@ -889,7 +888,14 @@
       }
     },
     "Spotify" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spotify"
+          }
+        }
+      }
     },
     "Spotify is not opened" : {
       "localizations" : {
@@ -942,7 +948,14 @@
       }
     },
     "System" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "System"
+          }
+        }
+      }
     },
     "The time it takes for the notch to hide if the playback is stopped." : {
       "localizations" : {

@@ -93,9 +93,4 @@ enum MusicApp: CaseIterable, Codable, Defaults.Serializable {
     
 }
 
-enum BluetoothSymbols: CaseIterable, Codable, Defaults.Serializable {
-    case videos
-    case symbols
-}
-
 

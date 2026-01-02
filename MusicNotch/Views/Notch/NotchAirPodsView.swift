@@ -16,7 +16,7 @@ struct NotchAirPodsViewLeading: View {
     @Default(.bluetoothSymbols) private var bluetoothSymbols
 
     var body: some View {
-        if bluetoothSymbols == .symbols || accessibilityManager.isReduceMotion {
+        if bluetoothSymbols || accessibilityManager.isReduceMotion {
             Image(systemName: volumeManager.deviceIcon)
                 .resizable()
                 .scaledToFit()
