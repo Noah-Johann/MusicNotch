@@ -62,7 +62,7 @@ extension Defaults.Keys {
     static let accentColorHudSlider = Key<Bool>("accentColorHudSlider", default: false)
     
     static let bluetoothRecognition = Key<Bool>("bluetoothRecognition", default: true)
-    static let bluetoothSymbols = Key<Bool>("bluetoothSymbols", default: false)
+    static let bluetoothSymbols = Key<BluetoothSymbols>("bluetoothSymbols", default: .videos)
     static let bluetoothVideos = Key<Bool>("bluetoothVideos", default: true)
 }
 

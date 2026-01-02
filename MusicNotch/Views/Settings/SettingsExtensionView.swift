@@ -68,11 +68,39 @@ struct SettingsExtensionView: View {
                 Text("Enable Bluetooth extension")
             }
             
-            LuminareToggle(isOn: $bluetoothSymbols) {
-                Text("Use device icons")
-            } .disabled(accessibilityManager.isReduceMotion)
+
+            if !accessibilityManager.isReduceMotion && bluetoothRecognition {
+                LuminarePicker(
+                    elements: BluetoothSymbols.allCases,
+                    selection: Binding(
+                        get: { Defaults[.bluetoothSymbols] },
+                        set: { Defaults[.bluetoothSymbols] = $0 }
+                    ),
+                    // .animation(LuminareConstants.animation),
+                    columns: 2
+                ) { option in
+                    VStack(spacing: 6) {
+                        if option == .videos {
+                            if let path = Bundle.main.path(forResource: "AirPodsPro2", ofType: "mov") {
+                                let url = URL(fileURLWithPath: path)
+                                VideoView(url: url)
+                                    .frame(width: 60, height: 60)
+                                    .aspectRatio(contentMode: .fit)
+                            } else {
+                                Text("Video not found")
+                            }
+                        } else if option == .symbols {
+                            Image(systemName: "airpods.pro")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 50, height: 60)
+                        }
+                    }
+                } .frame(height: 80)
+                    .background(Color.black)
+            }
         }
-        
+        .animation(.easeInOut(duration: 0.3), value: bluetoothRecognition)
         .padding(.bottom, 14)
     }
 }
