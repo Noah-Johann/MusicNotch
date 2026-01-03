@@ -344,9 +344,7 @@ final class NotchManager {
             notchState = .compact
             MusicManager.shared.updateMusic()
             if prevNotchState == .open {
-                withAnimation(.bouncy(duration: 0.6)) {
-                    self.notchContent = .music
-                }
+                self.setNotchContent(.music)
             }
             let screen = NSScreen.selectedDisplay(.compact)
             if screen != nil {
@@ -438,8 +436,8 @@ final class NotchManager {
         }
     }
     
-    func setNotchContent(_ notchContent: NotchContent) {
-        withAnimation(.bouncy(duration: 0.6)) {
+    func setNotchContent(_ notchContent: NotchContent, duration: Double = 0.6) {
+        withAnimation(.bouncy(duration: duration)) {
             self.notchContent = notchContent
         }
     }

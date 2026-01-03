@@ -16,13 +16,9 @@ struct NotchMusicViewLeading: View {
         HStack {
             Button (action: {
                 if notchManager.notchContent == .music {
-                    withAnimation(.bouncy(duration: 0.6)) {
-                        NotchManager.shared.notchContent = .musicGlance
-                    }
+                    NotchManager.shared.setNotchContent(.musicGlance)
                 } else if notchManager.notchContent == .musicGlance {
-                    withAnimation(.bouncy(duration: 0.6)) {
-                        NotchManager.shared.notchContent = .music
-                    }
+                    NotchManager.shared.setNotchContent(.music)
                 } else {
                     return
                 }

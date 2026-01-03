@@ -96,13 +96,9 @@ struct ButtonView: View {
             //Speaker
             Button(action: {
                 if NotchManager.shared.notchContent == .music {
-                    withAnimation(.bouncy(duration: 0.6)) {
-                        NotchManager.shared.notchContent = .volume
-                    }
+                    NotchManager.shared.setNotchContent(.volume, duration: 0.4)
                 } else {
-                    withAnimation(.bouncy(duration: 0.6)) {
-                        NotchManager.shared.notchContent = .music
-                    }
+                    NotchManager.shared.setNotchContent(.music, duration: 0.4)
                 }
             }) {
                 Image(systemName: volumeManager.deviceIcon)
