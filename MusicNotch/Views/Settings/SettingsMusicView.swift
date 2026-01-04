@@ -37,6 +37,7 @@ struct SettingsMusicView: View {
         }
         .padding(.bottom, 14)
         .onChange(of: musicPlayer) {
+            SpotifyManager.shared.oldTrackName = "notrack"
             MusicManager.shared.updateMusic()
         }
     }

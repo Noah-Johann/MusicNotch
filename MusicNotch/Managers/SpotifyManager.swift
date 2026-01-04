@@ -17,7 +17,7 @@ class SpotifyManager {
                     
     public var isSpotifyRunning: Bool = false
     
-    private var oldTrackName: String = ""
+    public var oldTrackName: String = ""
     
     private init() {
         if checkIfSpotifyIsRunning() {

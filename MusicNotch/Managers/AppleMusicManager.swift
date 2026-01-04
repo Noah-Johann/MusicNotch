@@ -74,7 +74,7 @@ class AppleMusicManager {
                     end try
         
                     try
-                        set shuffle to shuffling
+                        set shuffle to shuffle enabled
                         set end of results to shuffle
                     on error
                         set end of results to false
@@ -114,6 +114,8 @@ class AppleMusicManager {
                     MusicManager.shared.getAverageColor()
                 }
                 
+                print("Duration: \(finalResult[4]), Position: \(finalResult[5])")
+                
                 return returnTrack
                 
             } else {
@@ -141,13 +143,13 @@ class AppleMusicManager {
         
         if let error = error {
             print("AppleScript Error: \(error)")
-            return nil
+            return NSImage(named: "no_playback")
         }
         
         if let artworkData = output?.data {
             return NSImage(data: artworkData)
         }
         
-        return nil
+        return NSImage(named: "no_playback")
     }
 }
