@@ -49,14 +49,6 @@ struct SettingsGeneralView: View {
             } label: {
                 Text("Show notch")
             }
-            
-            Button {
-                Task { @MainActor in
-                    NotchManager.shared.notch.windowController?.window?.alphaValue = 0.0
-                }
-            } label: {
-                Text("Opacity 0")
-            }
 #endif
             
             

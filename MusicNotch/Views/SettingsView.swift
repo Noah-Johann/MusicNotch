@@ -14,6 +14,13 @@ import KeyboardShortcuts
 
 
 struct SettingsView: View {
+    @Default(.lowPowerWarning) private var lowPowerWarning
+    @Default(.bluetoothRecognition) private var bluetoothRecognition
+    @Default(.enableGestures) private var enableGestures
+    @Default(.hoverBehavior) private var hoverBehavior
+    
+    @ObservedObject private var updateManager = UpdateManager.shared
+    
     var body: some View {
         LuminarePane() {
             VStack {
@@ -42,6 +49,13 @@ struct SettingsView: View {
                 SettingsAboutView()
             }
             .padding(.horizontal, 5)
+            .animation(.easeInOut(duration: 0.3), value: lowPowerWarning)
+            .animation(.easeInOut(duration: 0.3), value: bluetoothRecognition)
+            .animation(.easeInOut(duration: 0.3), value: enableGestures)
+            .animation(.easeInOut(duration: 0.3), value: hoverBehavior)
+            .animation(.easeInOut(duration: 0.3), value: updateManager.updateState)
+            .animation(.bouncy(duration: 0.2), value: updateManager.updateProgress)
+
         }
     }
 }

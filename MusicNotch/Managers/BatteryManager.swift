@@ -93,7 +93,7 @@ class BatteryManager: ObservableObject {
         self.isCharging = info.isPluggedIn
 
         
-        if info.showLowPower == true || Int(info.currentCapacity) <= 10 {
+        if info.showLowPower == true || Int(info.currentCapacity) <= Int(Defaults[.lowBatteryThreshold]) {
             self.batteryIconColor = .red
         } else if info.isInLowPowerMode == true {
             self.batteryIconColor = .yellow
@@ -130,7 +130,6 @@ class BatteryManager: ObservableObject {
     
     private func getBatteryInfo() -> BatteryInfo {
         do {
-            // Get power source information
             guard let snapshot = IOPSCopyPowerSourcesInfo()?.takeRetainedValue() else {
                 throw BatteryError.powerSourceUnavailable
             }
@@ -146,7 +145,6 @@ class BatteryManager: ObservableObject {
                 throw BatteryError.batteryInfoUnavailable("Could not get power source description")
             }
             
-            // Extract required battery parameters with error handling
             guard let currentCapacity = description[kIOPSCurrentCapacityKey] as? Int else {
                 throw BatteryError.batteryParameterMissing("Current capacity")
             }
@@ -162,12 +160,9 @@ class BatteryManager: ObservableObject {
             guard let powerSource = description[kIOPSPowerSourceStateKey] as? String else {
                 throw BatteryError.batteryParameterMissing("Power source state")
             }
+                                   
+            let showLowPower = currentCapacity == Int(Defaults[.lowBatteryThreshold]) ? true : false
             
-            let warningLevel = IOPSGetBatteryWarningLevel()
-                       
-            let showLowPower = (warningLevel == kIOPSLowBatteryWarningEarly || warningLevel == kIOPSLowBatteryWarningFinal)
-            
-            // Create battery info with the extracted parameters
             var batteryInfo = BatteryInfo(
                 isPluggedIn: powerSource == kIOPSACPowerValue,
                 isCharging: isCharging,
@@ -178,7 +173,6 @@ class BatteryManager: ObservableObject {
                 showLowPower: showLowPower
             )
             
-            // Optional parameters
             if let timeToFullCharge = description[kIOPSTimeToFullChargeKey] as? Int {
                 batteryInfo.timeToFullCharge = timeToFullCharge
             }

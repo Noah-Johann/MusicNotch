@@ -140,8 +140,7 @@ struct SettingsAboutView: View {
                 .buttonStyle(LuminareCosmeticButtonStyle(icon: Image(systemName: "arrow.up.right")))
                 .frame(height: 36)
             }
-        } .animation(.easeInOut(duration: 0.3), value: updateManager.updateState)
-            .animation(.bouncy(duration: 0.2), value: updateManager.updateProgress)
+        } 
             .onChange(of: updateManager.updateState) {
                 if updateManager.updateState == .noUpdates {
                     DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {

@@ -62,20 +62,38 @@ struct SettingsExtensionView: View {
                 }
             }
             
-            LuminareToggle(isOn: $lowPowerSound) {
-                HStack {
-                    Text("Play low power sound")
+            LuminareToggle(isOn: $lowPowerWarning) {
+                Text ("Warn on low battery")
+            }
+            if lowPowerWarning {
+                LuminareSlider(
+                    value: $lowBatteryThreshold,
+                    in: 5...20,
+                    step: 5,
+                    format: .number.precision(.fractionLength(0...1)),
+                    suffix: Text("%")
                     
-                    Button (action: {
-                        playSound(sound: .macLowBattery)
-                    }, label: {
-                        Image(systemName: "speaker.wave.2.circle.fill")
-                            .foregroundStyle(.secondary)
-                            .imageScale(.large)
-                    }) .buttonStyle(.plain)
+                ) {
+                    Text("Low battery threshold")
+                }
+                .luminareSliderLayout(.regular)
+                .padding(.bottom, 3)
+                
+                LuminareToggle(isOn: $lowPowerSound) {
+                    HStack {
+                        Text("Play low power sound")
+                        
+                        Button (action: {
+                            playSound(sound: .macLowBattery)
+                        }, label: {
+                            Image(systemName: "speaker.wave.2.circle.fill")
+                                .foregroundStyle(.secondary)
+                                .imageScale(.large)
+                        }) .buttonStyle(.plain)
+                    }
                 }
             }
-        }
+        } 
         
         LuminareSection {
             LuminareToggle(isOn: $hudExtension) {
@@ -104,7 +122,6 @@ struct SettingsExtensionView: View {
                 Text("Use device icons")
             }
         }
-        .animation(.easeInOut(duration: 0.3), value: bluetoothRecognition)
         .padding(.bottom, 14)
     }
 }
