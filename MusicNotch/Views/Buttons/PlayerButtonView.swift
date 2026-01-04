@@ -19,7 +19,7 @@ struct ButtonView: View {
             
             //Shuffle
             Button(action: {
-                    spotifyShuffle()
+                    toggleShuffle()
             })
             {
                 VStack (spacing: 3){

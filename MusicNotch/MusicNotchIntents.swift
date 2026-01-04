@@ -38,7 +38,7 @@ struct ToggleShuffleIntent: AppIntent {
     static var title: LocalizedStringResource = "Toggle Shuffle"
     
     func perform() async throws -> some IntentResult {
-        spotifyShuffle()
+        toggleShuffle()
         return .result()
     }
 }

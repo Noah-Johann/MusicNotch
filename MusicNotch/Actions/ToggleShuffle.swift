@@ -8,7 +8,7 @@
 import Foundation
 import Defaults
 
-func spotifyShuffle() {
+func toggleShuffle() {
     Task {
         switch Defaults[.musicPlayer] {
         case .appleMusic:

@@ -32,7 +32,7 @@ struct MusicNotchApp: App {
         let handlers: [(KeyboardShortcuts.Name, () -> Void)] = [
             (.nextTrack, nextTrack),
             (.previousTrack, lastTrack),
-            (.toggleShuffle, spotifyShuffle),
+            (.toggleShuffle, toggleShuffle),
             (.playPause, playPause),
         ]
         handlers.forEach { name, action in

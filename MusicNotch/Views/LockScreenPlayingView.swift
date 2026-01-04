@@ -96,7 +96,7 @@ struct LockScreenPlayingView: View {
                     
                     HStack {
                         Button(action: {
-                            spotifyShuffle()
+                            toggleShuffle()
                         })
                         {
                             VStack (spacing: 3){
