@@ -108,25 +108,10 @@ class AppleMusicManager {
                     isLoved: finalResult[6] == "true",
                     shuffle: finalResult[8] == "true",
                 )
-                
-                let artworkScript = """
-                tell application "Music"
-                    try
-                        if player state is playing then
-                            if (count of artworks of current track) > 0 then
-                                return data of artwork 1 of current track
-                            end if
-                        end if
-                    end try
-                    return missing value
-                end tell
-                """
-
-                if let artworkResult = AppleScriptHelper.executeAppleScript(artworkScript) as? Data {
-                    MusicManager.shared.albumArt = NSImage(data: artworkResult)
+                     
+                Task { @MainActor in
+                    MusicManager.shared.albumArt = getAlbumArtwork()
                     MusicManager.shared.getAverageColor()
-                } else {
-                    MusicManager.shared.albumArt = NSImage(named: "no_playback")
                 }
                 
                 return returnTrack
@@ -139,5 +124,30 @@ class AppleMusicManager {
             print("Error: Didn't get any result")
             return nil
         }
+    }
+    
+    func getAlbumArtwork() -> NSImage? {
+        let script = """
+        tell application "Music"
+            set currentTrack to current track
+            set artworkData to data of artwork 1 of currentTrack
+            return artworkData
+        end tell
+        """
+        
+        var error: NSDictionary?
+        let appleScript = NSAppleScript(source: script)
+        let output = appleScript?.executeAndReturnError(&error)
+        
+        if let error = error {
+            print("AppleScript Error: \(error)")
+            return nil
+        }
+        
+        if let artworkData = output?.data {
+            return NSImage(data: artworkData)
+        }
+        
+        return nil
     }
 }
