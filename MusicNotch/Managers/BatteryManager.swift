@@ -112,17 +112,20 @@ class BatteryManager: ObservableObject {
         } else if previousBattery.isPluggedIn != info.isPluggedIn {
             Task { @MainActor in
                 NotchManager.shared.showExtensionNotch(type: .battery)
-                if info.isPluggedIn {
+                if info.isPluggedIn && Defaults[.pluggedInSound] {
                     playSound(sound: .pluggedIn)
                 }
             }
             
         } else if previousBattery.showLowPower != info.showLowPower {
             guard info.showLowPower == true else { return }
+            guard Defaults[.lowPowerWarning] else { return }
             
             Task { @MainActor in
                 NotchManager.shared.showExtensionNotch(type: .battery)
-                playSound(sound: .macLowBattery)
+                if Defaults[.lowPowerSound] {
+                    playSound(sound: .macLowBattery)
+                }
             }
         }
         previousBattery = info
