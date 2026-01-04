@@ -55,6 +55,10 @@ extension Defaults.Keys {
     static let displayDuration = Key <Double>("displayDuration", default: 3.0)
     
     static let batteryExtension = Key<Bool>("batteryExtension", default: true)
+    static let lowPowerWarning = Key<Bool>("lowPowerWarning", default: true)
+    static let lowBatteryThreshold = Key<Int>("lowBatteryThreshold", default: 10)
+    static let lowPowerSound = Key<Bool>("lowPowerSound", default: true)
+    static let pluggedInSound = Key<Bool>("pluggedInSound", default: true)
     
     static let hudExtension = Key<Bool>("hudExtension", default: true)
     static let hudDeviceIcons = Key<Bool>("hudDeviceIcons", default: true)

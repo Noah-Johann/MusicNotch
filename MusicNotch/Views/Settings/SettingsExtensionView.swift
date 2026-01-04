@@ -11,6 +11,10 @@ import Defaults
 
 struct SettingsExtensionView: View {
     @Default(.batteryExtension) private var batteryExtension
+    @Default(.lowPowerSound) private var lowPowerSound
+    @Default(.pluggedInSound) private var pluggedInSound
+    @Default(.lowPowerWarning) private var lowPowerWarning
+    @Default(.lowBatteryThreshold) private var lowBatteryThreshold
     @Default(.displayDuration) private var displayDuration
     @Default(.hudExtension) private var hudExtension
     @Default(.hudDeviceIcons) private var hudDeviceIcons
@@ -42,6 +46,34 @@ struct SettingsExtensionView: View {
         LuminareSection {
             LuminareToggle(isOn: $batteryExtension) {
                 Text("Enable Battery extension")
+            }
+            
+            LuminareToggle(isOn: $pluggedInSound) {
+                HStack {
+                    Text("Play charging sound")
+                    
+                    Button (action: {
+                        playSound(sound: .pluggedIn)
+                    }, label: {
+                        Image(systemName: "speaker.wave.2.circle.fill")
+                            .foregroundStyle(.secondary)
+                            .imageScale(.large)
+                    }) .buttonStyle(.plain)
+                }
+            }
+            
+            LuminareToggle(isOn: $lowPowerSound) {
+                HStack {
+                    Text("Play low power sound")
+                    
+                    Button (action: {
+                        playSound(sound: .macLowBattery)
+                    }, label: {
+                        Image(systemName: "speaker.wave.2.circle.fill")
+                            .foregroundStyle(.secondary)
+                            .imageScale(.large)
+                    }) .buttonStyle(.plain)
+                }
             }
         }
         

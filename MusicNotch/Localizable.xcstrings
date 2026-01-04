@@ -667,6 +667,9 @@
         }
       }
     },
+    "Play charging sound" : {
+
+    },
     "Play lock sound" : {
       "localizations" : {
         "de" : {
@@ -676,6 +679,9 @@
           }
         }
       }
+    },
+    "Play low power sound" : {
+
     },
     "Play unlock sound" : {
       "localizations" : {

@@ -31,11 +31,15 @@ func playSound(sound: Sound) {
 enum Sound: String {
     case lock
     case unlock
+    case macLowBattery
+    case pluggedIn
 
     var assetName: String {
         switch self {
         case .lock: return "lock"
         case .unlock: return "AutoUnlock_Haptic"
+        case .macLowBattery: return "low_power"
+        case .pluggedIn: return "BatteryMagsafe_Haptic"
         }
     }
 }
