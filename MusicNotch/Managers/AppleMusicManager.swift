@@ -14,74 +14,26 @@ class AppleMusicManager {
     
     public func collectAppleMusicInfo() -> MusicTrack? {
         let script = """
-                tell application "Music"
-                    set results to {}
-                    
+            tell application "Music"
+                try
+                    set isPlaying to player state as string
+                    set trackName to name of current track
+                    set artistName to artist of current track
+                    set albumName to album of current track
+                    set trackDuration to duration of current track
+                    set trackPosition to player position
                     try
-                        set isPlaying to player state as String
-                        set end of results to isPlaying
+                        set isLoved to liked of current track
                     on error
-                        set end of results to "stopped"
+                        set isLoved to false
                     end try
-                    
-                    try
-                        set trackName to name of current track
-                        set end of results to trackName
-                    on error
-                        set end of results to ""
-                    end try
-                    
-                    try
-                        set artistName to artist of current track
-                        set end of results to artistName
-                    on error
-                        set end of results to ""
-                    end try
-                    
-                    try
-                        set albumName to album of current track
-                        set end of results to albumName
-                    on error
-                        set end of results to ""
-                    end try
-                    
-                    try
-                        set trackDuration to duration of current track
-                        set end of results to trackDuration
-                    on error
-                        set end of results to 0
-                    end try
-                    
-                    try
-                        set trackPosition to player position
-                        set end of results to trackPosition
-                    on error
-                        set end of results to 0
-                    end try
-                    
-                    try
-                        set isLoved to loved of current track
-                        set end of results to isLoved
-                    on error
-                        set end of results to false
-                    end try
-                    
-                    try
-                        set trackId to id of current track
-                        set end of results to trackId
-                    on error
-                        set end of results to ""
-                    end try
-        
-                    try
-                        set shuffle to shuffle enabled
-                        set end of results to shuffle
-                    on error
-                        set end of results to false
-                    end try
-                    
-                    return results
-                end tell
+                    set trackID to id of current track
+                    set shuffle to shuffle enabled
+                    return {isPlaying, trackName, artistName, albumName, trackDuration, trackPosition, isLoved, trackID, shuffle}
+                on error
+                    return {false, "", "", "", 1, 0, false, 0, false}
+                end try
+            end tell
         """
         
         let result = AppleScriptHelper.executeAppleScript(script)
@@ -108,7 +60,7 @@ class AppleMusicManager {
                     isLoved: finalResult[6] == "true",
                     shuffle: finalResult[8] == "true",
                 )
-                     
+                
                 Task { @MainActor in
                     MusicManager.shared.albumArt = getAlbumArtwork()
                     MusicManager.shared.getAverageColor()

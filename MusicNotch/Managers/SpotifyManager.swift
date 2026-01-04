@@ -38,81 +38,31 @@ class SpotifyManager {
         guard checkIfSpotifyIsRunning() else { return nil }
                 
         let script = """
-                tell application "Spotify"
-                    set results to {}
-                    
-                    try
-                        set isPlaying to player state as string
-                        set end of results to isPlaying
-                    on error
-                        set end of results to "stopped"
-                    end try
-                    
-                    try
-                        set trackName to name of current track
-                        set end of results to trackName
-                    on error
-                        set end of results to ""
-                    end try
-                    
-                    try
-                        set artistName to artist of current track
-                        set end of results to artistName
-                    on error
-                        set end of results to ""
-                    end try
-                    
-                    try
-                        set albumName to album of current track
-                        set end of results to albumName
-                    on error
-                        set end of results to ""
-                    end try
-                    
-                    try
-                        set trackDuration to duration of current track / 1000
-                        set end of results to trackDuration
-                    on error
-                        set end of results to 0
-                    end try
-                    
-                    try
-                        set trackPosition to player position
-                        set end of results to trackPosition
-                    on error
-                        set end of results to 0
-                    end try
-                    
-                    try
-                        set isLoved to loved of current track
-                        set end of results to isLoved
-                    on error
-                        set end of results to false
-                    end try
-                    
-                    try
-                        set trackId to id of current track
-                        set end of results to trackId
-                    on error
-                        set end of results to ""
-                    end try
-
-                    try
-                        set shuffle to shuffling
-                        set end of results to shuffle
-                    on error
-                        set end of results to false
-                    end try
-                    
-                    try
-                        set albumArt to artwork url of current track
-                        set end of results to albumArt
-                    on error
-                        set end of results to ""
-                    end try
-                    
-                    return results
-                end tell
+        tell application "Spotify"
+            try
+                set isPlaying to player state as string
+                set trackName to name of current track
+                set artistName to artist of current track
+                set albumName to album of current track
+                set trackDuration to duration of current track / 1000
+                set trackPosition to player position
+                try
+                    set isLoved to loved of current track
+                on error
+                    set isLoved to false
+                end try
+                set trackID to id of current track
+                set shuffle to shuffling
+                try
+                    set albumArt to artwork url of current track
+                on error
+                    set albumArt to ""
+                end try
+                return {isPlaying, trackName, artistName, albumName, trackDuration, trackPosition, isLoved, trackID, shuffle, albumArt}
+            on error
+                return {false, "", "", "", 1, 0, false, 0, false, ""}
+            end try
+        end tell
         """
         
         let result = AppleScriptHelper.executeAppleScript(script)
@@ -167,7 +117,7 @@ class SpotifyManager {
          URLSession.shared.dataTask(with: url) { data, _, _ in
              guard let data = data, let image = NSImage(data: data) else {
                  Task { @MainActor in
-                     self.defaultIcon()
+                     MusicManager.shared.albumArt = NSImage(named: "no_playback")
                  }
                  return
              }
@@ -177,12 +127,4 @@ class SpotifyManager {
              }
          }.resume()
      }
-     
-
-    
-    private func defaultIcon() {
-        Task { @MainActor in
-            MusicManager.shared.albumArt = NSImage(named: "no_playback")
-        }
-    }
 }
