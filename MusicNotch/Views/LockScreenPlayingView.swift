@@ -81,7 +81,7 @@ struct LockScreenPlayingView: View {
                                      onEditingChanged: { isEditing in
                             isDragging = isEditing
                             if !isEditing {
-                                progressChanged()
+                                setProgress(position: trackposition)
                             }
                         }) .frame(width: 200, height: 10, alignment: .center)
                         
@@ -120,7 +120,7 @@ struct LockScreenPlayingView: View {
                         
                         
                         Button(action: {
-                            spotifyLastTrack()
+                            lastTrack()
                         }) {
                             Image(systemName: "backward.fill")
                                 .imageScale(.large)
@@ -135,7 +135,7 @@ struct LockScreenPlayingView: View {
                         
                         
                         Button(action: {
-                            spotifyPlayPause()
+                            playPause()
                         }) {
                             Image(systemName: musicManager.music.isPlaying ? "pause.fill" : "play.fill")
                                 .imageScale(.large)
@@ -150,7 +150,7 @@ struct LockScreenPlayingView: View {
                         
                         
                         Button(action: {
-                            spotifyNextTrack()
+                            nextTrack()
                         }) {
                             Image(systemName: "forward.fill")
                                 .imageScale(.large)
@@ -211,23 +211,6 @@ struct LockScreenPlayingView: View {
             }
         }
     }
-    
-    private func progressChanged() {
-        //print("new value: \(trackposition)")
-        let script = """
-        tell application "Spotify"
-            set player position to \(trackposition)
-        end tell
-        """
-        
-        let appleScript = NSAppleScript(source: script)
-        var errorDict: NSDictionary?
-        appleScript?.executeAndReturnError(&errorDict)
-        
-        if let error = errorDict {
-            print("AppleScript Error: \(error)")
-        }
-    }
 }
 
 class MusicPlayerWindow: NSPanel {
@@ -266,8 +249,5 @@ class MusicPlayerWindow: NSPanel {
             .frame(width: 100, height: 300)
         
         LockScreenPlayingView()
-    }
-
-        
-        .padding()
+    } .padding()
 }

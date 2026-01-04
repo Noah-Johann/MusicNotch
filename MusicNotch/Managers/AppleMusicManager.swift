@@ -1,48 +1,24 @@
 //
-//  SpotifyManager.swift
+//  AppleMusicManager.swift
 //  MusicNotch
 //
-//  Created by Noah Johann on 14.03.25.
+//  Created by Noah Johann on 04.01.26.
 //
-
 
 import Foundation
 import AppKit
-import Defaults
-import SwiftUI
 
 @MainActor
-class SpotifyManager {
-    static let shared = SpotifyManager()
-                    
-    public var isSpotifyRunning: Bool = false
+class AppleMusicManager {
+    static let shared = AppleMusicManager()
     
-    private var oldTrackName: String = ""
-    
-    private init() {
-        if checkIfSpotifyIsRunning() {
-            isSpotifyRunning = true
-        }
-    }
-
-    
-    public func checkIfSpotifyIsRunning() -> Bool {
-        let workspace = NSWorkspace.shared
-        
-        return workspace.runningApplications.contains { app in
-            app.bundleIdentifier == "com.spotify.client"
-        }
-    }
-      
-    public func collectSpotifyInfo() -> MusicTrack? {
-        guard checkIfSpotifyIsRunning() else { return nil }
-                
+    public func collectAppleMusicInfo() -> MusicTrack? {
         let script = """
-                tell application "Spotify"
+                tell application "Music"
                     set results to {}
                     
                     try
-                        set isPlaying to player state as string
+                        set isPlaying to player state as String
                         set end of results to isPlaying
                     on error
                         set end of results to "stopped"
@@ -70,7 +46,7 @@ class SpotifyManager {
                     end try
                     
                     try
-                        set trackDuration to duration of current track / 1000
+                        set trackDuration to duration of current track
                         set end of results to trackDuration
                     on error
                         set end of results to 0
@@ -96,19 +72,12 @@ class SpotifyManager {
                     on error
                         set end of results to ""
                     end try
-
+        
                     try
                         set shuffle to shuffling
                         set end of results to shuffle
                     on error
                         set end of results to false
-                    end try
-                    
-                    try
-                        set albumArt to artwork url of current track
-                        set end of results to albumArt
-                    on error
-                        set end of results to ""
                     end try
                     
                     return results
@@ -127,8 +96,8 @@ class SpotifyManager {
             if let last = finalResult.last, last.isEmpty {
                 finalResult.removeLast()
             }
-                        
-            if finalResult.count >= 10 {
+            
+            if finalResult.count >= 9 {
                 let returnTrack = MusicTrack (
                     trackName: finalResult[1],
                     artistName: finalResult[2],
@@ -139,50 +108,36 @@ class SpotifyManager {
                     isLoved: finalResult[6] == "true",
                     shuffle: finalResult[8] == "true",
                 )
-                                
-                if oldTrackName != returnTrack.trackName {
-                    oldTrackName = returnTrack.trackName
-                    Task { @MainActor in
-                        fetchAlbumArt(albumUrl: finalResult[9])
-                    }
+                
+                let artworkScript = """
+                tell application "Music"
+                    try
+                        if player state is playing then
+                            if (count of artworks of current track) > 0 then
+                                return data of artwork 1 of current track
+                            end if
+                        end if
+                    end try
+                    return missing value
+                end tell
+                """
+
+                if let artworkResult = AppleScriptHelper.executeAppleScript(artworkScript) as? Data {
+                    MusicManager.shared.albumArt = NSImage(data: artworkResult)
+                    MusicManager.shared.getAverageColor()
+                } else {
+                    MusicManager.shared.albumArt = NSImage(named: "no_playback")
                 }
                 
                 return returnTrack
                 
             } else {
-                print("Error on getting information or spotify not running")
+                print("Error on getting information or music not running")
                 return nil
             }
         } else {
-            print("Fehler: Didn't get any result")
+            print("Error: Didn't get any result")
             return nil
-        }
-    }
-    
-    @MainActor
-    private func fetchAlbumArt(albumUrl: String) {
-        print("fetchAlbumArt")
-         guard let url = URL(string: albumUrl) else { return }
-        print("haveURL")
-         URLSession.shared.dataTask(with: url) { data, _, _ in
-             guard let data = data, let image = NSImage(data: data) else {
-                 Task { @MainActor in
-                     self.defaultIcon()
-                 }
-                 return
-             }
-             Task { @MainActor in
-                 MusicManager.shared.albumArt = image
-                 MusicManager.shared.getAverageColor()
-             }
-         }.resume()
-     }
-     
-
-    
-    private func defaultIcon() {
-        Task { @MainActor in
-            MusicManager.shared.albumArt = NSImage(named: "no_playback")
         }
     }
 }

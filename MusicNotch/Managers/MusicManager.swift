@@ -34,8 +34,6 @@ class MusicManager {
     
     init () {        
         setupObservers()
-        
-        updateMusic()
     }
     
     deinit {
@@ -52,13 +50,20 @@ class MusicManager {
                 name: NSNotification.Name("com.spotify.client.PlaybackStateChanged"),
                 object: nil,
                 suspensionBehavior: .deliverImmediately
-                
+            )
+            
+            DistributedNotificationCenter.default().addObserver(
+                self,
+                selector: #selector(appleMusicNotification),
+                name: NSNotification.Name("com.apple.Music.playerInfo"),
+                object: nil,
+                suspensionBehavior: .deliverImmediately
             )
         }
     }
     
     @objc private func spotifyNotification(_ sender: NSNotification?) {
-     //   guard Defaults[.musicPlayer] == .spotify else { return }
+        guard Defaults[.musicPlayer] == .spotify else { return }
         
         let musicAppKilled = sender?.userInfo?["Player State"] as? String == "Stopped"
         if musicAppKilled {
@@ -71,6 +76,11 @@ class MusicManager {
 
         
         guard SpotifyManager.shared.isSpotifyRunning && SpotifyManager.shared.checkIfSpotifyIsRunning() else { return }
+        updateMusic()
+    }
+    
+    @objc private func appleMusicNotification(_ sender: NSNotification?) {
+        guard Defaults[.musicPlayer] == .appleMusic else { return }
         updateMusic()
     }
     
@@ -151,7 +161,7 @@ class MusicManager {
     private func getMusicInfo() -> MusicTrack {
         switch Defaults[.musicPlayer] {
         case .appleMusic:
-            if let info = SpotifyManager.shared.collectSpotifyInfo() {
+            if let info = AppleMusicManager.shared.collectAppleMusicInfo() {
                 return info
             } else {
                 return disabledPlayback()
@@ -195,6 +205,17 @@ class MusicManager {
         WindowManager.hideLockScreen()
         
         return playback
+    }
+    
+    public func getAverageColor() {
+        guard let image = self.albumArt else { return }
+        image.averageColor { color in
+            if let color = color {
+                self.aveColor = color
+            } else {
+                print("Failed to get average color")
+            }
+        }
     }
     
 }

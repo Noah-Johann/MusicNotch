@@ -15,20 +15,20 @@ struct MenuBarExtraView: View {
     var body: some View {
         Section {
             Button {
-                spotifyPlayPause()
+                playPause()
             } label: {
                 Image(systemName: musicManager.music.isPlaying == true ? "pause.fill" : "play.fill")
                 Text(musicManager.music.isPlaying == true ? "Pause" : "Play")
             }
             
             Button {
-                spotifyNextTrack()
+                nextTrack()
             } label: {
                 Image(systemName: "forward.end.fill")
                 Text("Next")
             }
             Button {
-                spotifyLastTrack()
+                lastTrack()
             } label: {
                 Image(systemName: "backward.end.fill")
                 Text("Previous")

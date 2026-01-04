@@ -30,10 +30,10 @@ struct MusicNotchApp: App {
         }
         
         let handlers: [(KeyboardShortcuts.Name, () -> Void)] = [
-            (.nextTrack, spotifyNextTrack),
-            (.previousTrack, spotifyLastTrack),
+            (.nextTrack, nextTrack),
+            (.previousTrack, lastTrack),
             (.toggleShuffle, spotifyShuffle),
-            (.playPause, spotifyPlayPause),
+            (.playPause, playPause),
         ]
         handlers.forEach { name, action in
             KeyboardShortcuts.onKeyDown(for: name, action: action)
@@ -61,6 +61,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
             WindowManager.openOnboarding()
         } else {
             WindowManager.openSettings()
+            MusicManager.shared.updateMusic()
         }
         
         // Aboutmenu handler
