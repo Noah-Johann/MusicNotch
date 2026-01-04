@@ -18,9 +18,9 @@ extension Defaults.Keys {
     
     static let launchAtLogin = Key<Bool>("LaunchAtLogin", default: LaunchAtLogin.isEnabled)
     
-    static let autoUpdates = Key<Bool>("autoUpdates", default: true)
+    static let autoUpdates = Key<Bool>("autoUpdates", default: false)
     
-    static let musicPlayer = Key<MusicApp>("musicPlayer", default: .nowPlaying)
+    static let musicPlayer = Key<MusicApp>("musicPlayer", default: .spotify)
     
     // Display
     static let display = Key<Display>("display", default: .notchDisplay)

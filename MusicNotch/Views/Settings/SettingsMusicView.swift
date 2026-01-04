@@ -15,13 +15,12 @@ struct SettingsMusicView: View {
     var body: some View {
         LuminareSection {
             LuminarePicker(
-                elements: MusicApp.allCases,
+                elements: MusicApp.allCases.filter { $0 != .nowPlaying},
                 selection: Binding(
                     get: { Defaults[.musicPlayer] },
                     set: { Defaults[.musicPlayer] = $0 }
                 ),
-                // .animation(LuminareConstants.animation),
-                columns: 3
+                columns: 2
             ) { option in
                 VStack(spacing: 12) {
                     option.image
