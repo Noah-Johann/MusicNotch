@@ -6,11 +6,18 @@
 //
 
 import Foundation
+import Defaults
 
-func spotifyPlayPause() {
+func playPause() {
     Task {
-        try await AppleScriptHelper.run("tell application \"Spotify\" to playpause")
+        switch Defaults[.musicPlayer] {
+        case .appleMusic:
+            try await AppleScriptHelper.run("tell application \"Music\" to playpause")
+        case .spotify:
+            try await AppleScriptHelper.run("tell application \"Spotify\" to playpause")
+        case .nowPlaying:
+            break
+        }
     }
 }
-
 

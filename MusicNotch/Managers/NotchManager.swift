@@ -88,10 +88,10 @@ final class NotchManager {
             }
             switch direction {
             case .left:
-                spotifyNextTrack()
+                nextTrack()
                 print("next track")
             case .right:
-                spotifyLastTrack()
+                lastTrack()
                 print("last track")
             default:
                 break

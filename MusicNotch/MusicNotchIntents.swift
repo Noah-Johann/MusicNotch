@@ -11,7 +11,7 @@ struct TogglePlaybackIntent: AppIntent {
     static var title: LocalizedStringResource = "Toggle Playback"
     
     func perform() async throws -> some IntentResult {
-        spotifyPlayPause()
+        playPause()
         return .result()
     }
 }
@@ -20,7 +20,7 @@ struct SkipForwardIntent: AppIntent {
     static var title: LocalizedStringResource = "Skip Forward"
     
     func perform() async throws -> some IntentResult {
-        spotifyNextTrack()
+        nextTrack()
         return .result()
     }
 }
@@ -29,7 +29,7 @@ struct SkipBackwardIntent: AppIntent {
     static var title: LocalizedStringResource = "Skip Backwards"
     
     func perform() async throws -> some IntentResult {
-        spotifyLastTrack()
+        lastTrack()
         return .result()
     }
 }
@@ -38,7 +38,7 @@ struct ToggleShuffleIntent: AppIntent {
     static var title: LocalizedStringResource = "Toggle Shuffle"
     
     func perform() async throws -> some IntentResult {
-        spotifyShuffle()
+        toggleShuffle()
         return .result()
     }
 }

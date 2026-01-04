@@ -10,6 +10,8 @@ import Luminare
 import Defaults
 
 struct SettingsMusicView: View {
+    @Default(.musicPlayer) private var musicPlayer
+    
     var body: some View {
         LuminareSection {
             LuminarePicker(
@@ -34,6 +36,10 @@ struct SettingsMusicView: View {
             Text("Music")
         }
         .padding(.bottom, 14)
+        .onChange(of: musicPlayer) {
+            SpotifyManager.shared.oldTrackName = "notrack"
+            MusicManager.shared.updateMusic()
+        }
     }
 }
 

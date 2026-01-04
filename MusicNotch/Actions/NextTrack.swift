@@ -6,9 +6,17 @@
 //
 
 import Foundation
+import Defaults
 
-func spotifyNextTrack() {
+func nextTrack() {
     Task {
-        try await AppleScriptHelper.run("tell application \"Spotify\" to next track")
+        switch Defaults[.musicPlayer] {
+        case .appleMusic:
+            try await AppleScriptHelper.run("tell application \"Music\" to play next track")
+        case .spotify:
+            try await AppleScriptHelper.run("tell application \"Spotify\" to next track")
+        case .nowPlaying:
+            break
+        }
     }
 }

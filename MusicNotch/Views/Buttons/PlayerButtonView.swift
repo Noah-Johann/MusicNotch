@@ -19,7 +19,7 @@ struct ButtonView: View {
             
             //Shuffle
             Button(action: {
-                    spotifyShuffle()
+                    toggleShuffle()
             })
             {
                 VStack (spacing: 3){
@@ -46,7 +46,7 @@ struct ButtonView: View {
             
             //Skip backward
             Button(action: {
-                spotifyLastTrack()
+                lastTrack()
             }) {
                 Image(systemName: "backward.fill")
                     .imageScale(.large)
@@ -63,7 +63,7 @@ struct ButtonView: View {
             
             //Pause
             Button(action: {
-                spotifyPlayPause()
+                playPause()
             }) {
                 Image(systemName: musicManager.music.isPlaying ? "pause.fill" : "play.fill")
                     .imageScale(.large)
@@ -79,7 +79,7 @@ struct ButtonView: View {
             
             //Skip forward
             Button(action: {
-                spotifyNextTrack()
+                nextTrack()
             }) {
                 Image(systemName: "forward.fill")
                     .imageScale(.large)

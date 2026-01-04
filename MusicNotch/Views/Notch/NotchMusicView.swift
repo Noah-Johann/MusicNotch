@@ -132,7 +132,7 @@ struct NotchMusicViewExpanded: View {
                              onEditingChanged: { isEditing in
                     isDragging = isEditing
                     if !isEditing {
-                        progressChanged()
+                        setProgress(position: trackposition)
                     }
                 }) .frame(width: 240, height: 10, alignment: .center)
                 
@@ -169,23 +169,6 @@ struct NotchMusicViewExpanded: View {
         .padding(.top, 15)
         .contextMenu {
             ContextMenuView()
-        }
-    }
-    
-    private func progressChanged() {
-        //print("new value: \(trackposition)")
-        let script = """
-        tell application "Spotify"
-            set player position to \(trackposition)
-        end tell
-        """
-        
-        let appleScript = NSAppleScript(source: script)
-        var errorDict: NSDictionary?
-        appleScript?.executeAndReturnError(&errorDict)
-        
-        if let error = errorDict {
-            print("AppleScript Error: \(error)")
         }
     }
 }
