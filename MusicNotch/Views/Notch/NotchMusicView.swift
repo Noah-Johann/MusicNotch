@@ -93,6 +93,7 @@ struct NotchMusicViewExpanded: View {
                         .foregroundStyle(.gray)
                         .frame(width: 220, alignment: .leading)
                 }
+                .lineLimit(1)
                 .padding(.leading, 8)
                 .padding(.top, 27)
                 
