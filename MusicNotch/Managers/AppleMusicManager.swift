@@ -12,12 +12,6 @@ import AppKit
 class AppleMusicManager {
     static let shared = AppleMusicManager()
     
-    public var isAppleMusicRunning = false
-    
-    init() {
-        isAppleMusicRunning = checkIfMusicIsRunning()
-    }
-    
     public func checkIfMusicIsRunning() -> Bool {
         let workspace = NSWorkspace.shared
         

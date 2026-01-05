@@ -14,16 +14,9 @@ import SwiftUI
 @MainActor
 class SpotifyManager {
     static let shared = SpotifyManager()
-                    
-    public var isSpotifyRunning: Bool = false
-    
+                        
     public var oldTrackName: String = ""
-    
-    private init() {
-        isSpotifyRunning = checkIfSpotifyIsRunning()
-    }
 
-    
     public func checkIfSpotifyIsRunning() -> Bool {
         let workspace = NSWorkspace.shared
         

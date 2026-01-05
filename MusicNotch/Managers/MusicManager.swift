@@ -64,19 +64,23 @@ class MusicManager {
     
     @objc private func spotifyNotification(_ sender: NSNotification?) {
         guard Defaults[.musicPlayer] == .spotify else { return }
+        guard SpotifyManager.shared.checkIfSpotifyIsRunning() else { return }
         
         let musicAppKilled = sender?.userInfo?["Player State"] as? String == "Stopped"
         if musicAppKilled {
-            SpotifyManager.shared.isSpotifyRunning = false
-            music = disabledPlayback()
-            return
+            Task {
+                try? await Task.sleep(for: .milliseconds(1000))
+                let running = SpotifyManager.shared.checkIfSpotifyIsRunning()
+                if running {
+                    updateMusic()
+                } else {
+                    music = disabledPlayback()
+                    return
+                }
+            }
         } else {
-            SpotifyManager.shared.isSpotifyRunning = true
+            updateMusic()
         }
-
-        
-        guard SpotifyManager.shared.isSpotifyRunning && SpotifyManager.shared.checkIfSpotifyIsRunning() else { return }
-        updateMusic()
     }
     
     @objc private func appleMusicNotification(_ sender: NSNotification?) {
