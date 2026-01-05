@@ -162,7 +162,7 @@ struct NotchHUDViewExpanded: View {
                 .animation(.easeInOut(duration: 0.3), value: volumeManager.volume)
                 .animation(.bouncy(duration: 0.3), value: volumeManager.isMuted)
 
-                if musicManager.music.volume != nil {
+                if musicManager.music.volume != nil && Defaults[.musicPlayerVolume] {
                     HStack {
                         HStack {
                             Image(systemName: "music.note")
@@ -180,10 +180,9 @@ struct NotchHUDViewExpanded: View {
                     }
                     .frame(width: width, height: 30)
                     .animation(.easeInOut(duration: 0.3), value: musicManager.music.volume)
-                    .padding(.bottom, 10)
-
                 }
-            }
+            } .padding(.bottom, 10)
+
             
         case .brightness:
             HStack {

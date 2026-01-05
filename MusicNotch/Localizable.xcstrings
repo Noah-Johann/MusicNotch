@@ -836,6 +836,9 @@
         }
       }
     },
+    "Show music player volume slider" : {
+
+    },
     "Show MusicGlance" : {
       "localizations" : {
         "de" : {
