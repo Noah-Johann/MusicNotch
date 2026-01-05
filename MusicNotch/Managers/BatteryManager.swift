@@ -119,6 +119,7 @@ class BatteryManager: ObservableObject {
             
         } else if previousBattery.showLowPower != info.showLowPower {
             guard info.showLowPower == true else { return }
+            guard !info.isPluggedIn else { return }
             guard Defaults[.lowPowerWarning] else { return }
             
             Task { @MainActor in
