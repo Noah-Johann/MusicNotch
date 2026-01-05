@@ -73,9 +73,7 @@ class SpotifyManager {
             shuffle: descriptor.atIndex(9)?.booleanValue ?? false,
             volume: descriptor.atIndex(7) != nil ? CGFloat(descriptor.atIndex(7)!.doubleValue) : nil
         )
-        
-        print(returnTrack.volume)
-        
+                
         if oldTrackName != returnTrack.trackName {
             oldTrackName = returnTrack.trackName
             Task { @MainActor in

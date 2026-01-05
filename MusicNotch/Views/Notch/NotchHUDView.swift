@@ -165,7 +165,7 @@ struct NotchHUDViewExpanded: View {
                 if musicManager.music.volume != nil && Defaults[.musicPlayerVolume] {
                     HStack {
                         HStack {
-                            Image(systemName: "music.note")
+                            Image(systemName: musicManager.music.volume == 0 ? "music.note.slash" : "music.note")
                                 .font(.system(size: 17))
                         } .frame(width: 20)
                             .padding(.trailing, 5)
