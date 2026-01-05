@@ -211,7 +211,9 @@ class MusicManager {
         
         Task { @MainActor in
             self.albumArt = NSImage(named: "no_playback")
+            SpotifyManager.shared.oldTrackName = ""
         }
+        
         if NotchManager.shared.notchContent == .musicGlance || NotchManager.shared.notchContent == .music {
             Task {
                 await NotchManager.shared.setNotchState(.closed, false)
