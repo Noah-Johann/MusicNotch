@@ -12,7 +12,22 @@ import AppKit
 class AppleMusicManager {
     static let shared = AppleMusicManager()
     
+    public var isAppleMusicRunning = false
+    
+    init() {
+        isAppleMusicRunning = checkIfMusicIsRunning()
+    }
+    
+    public func checkIfMusicIsRunning() -> Bool {
+        let workspace = NSWorkspace.shared
+        
+        return workspace.runningApplications.contains { app in
+            app.bundleIdentifier == "com.apple.Music"
+        }
+    }
+    
     public func collectAppleMusicInfo() -> MusicTrack? {
+        guard checkIfMusicIsRunning() else { return nil }
         let script = """
             tell application "Music"
                 try
@@ -29,79 +44,47 @@ class AppleMusicManager {
                     end try
                     set trackID to id of current track
                     set shuffle to shuffle enabled
-                    return {isPlaying, trackName, artistName, albumName, trackDuration, trackPosition, isLoved, trackID, shuffle}
+                    try
+                        set currentTrack to current track
+                        set artworkData to data of artwork 1 of currentTrack
+                    on error
+                        set artworkData to nil
+                    end try
+                    return {isPlaying, trackName, artistName, albumName, trackDuration, trackPosition, isLoved, trackID, shuffle, artworkData}
                 on error
-                    return {false, "", "", "", 1, 0, false, 0, false}
+                    return {}
                 end try
             end tell
         """
         
         let result = AppleScriptHelper.executeAppleScript(script)
-        if let resultString = result as? String {
-            let cleanedResult = resultString
-                .replacingOccurrences(of: "{", with: "")
-                .replacingOccurrences(of: "}", with: "")
-                .split(separator: ",")
-                .map { $0.trimmingCharacters(in: .whitespacesAndNewlines).replacingOccurrences(of: "\"", with: "") }
-            
-            var finalResult = cleanedResult
-            if let last = finalResult.last, last.isEmpty {
-                finalResult.removeLast()
-            }
-            
-            if finalResult.count >= 9 {
-                let returnTrack = MusicTrack (
-                    trackName: finalResult[1],
-                    artistName: finalResult[2],
-                    albumName: finalResult[3],
-                    trackDuration: Int(Double(finalResult[4]) ?? 0),
-                    trackPosition: Int(Double(finalResult[5]) ?? 0),
-                    isPlaying: finalResult[0] == "playing",
-                    isLoved: finalResult[6] == "true",
-                    shuffle: finalResult[8] == "true",
-                )
-                
-                Task { @MainActor in
-                    MusicManager.shared.albumArt = getAlbumArtwork()
-                    MusicManager.shared.getAverageColor()
-                }
-                
-                print("Duration: \(finalResult[4]), Position: \(finalResult[5])")
-                
-                return returnTrack
-                
-            } else {
-                print("Error on getting information or music not running")
-                return nil
-            }
-        } else {
-            print("Error: Didn't get any result")
+        guard
+            let descriptor = result,
+            descriptor.numberOfItems >= 10
+        else {
+            print("Invalid AppleScript result")
             return nil
         }
-    }
-    
-    func getAlbumArtwork() -> NSImage? {
-        let script = """
-        tell application "Music"
-            set currentTrack to current track
-            set artworkData to data of artwork 1 of currentTrack
-            return artworkData
-        end tell
-        """
         
-        var error: NSDictionary?
-        let appleScript = NSAppleScript(source: script)
-        let output = appleScript?.executeAndReturnError(&error)
+        let returnTrack = MusicTrack (
+            trackName: descriptor.atIndex(2)?.stringValue ?? "",
+            artistName: descriptor.atIndex(3)?.stringValue ?? "",
+            albumName: descriptor.atIndex(4)?.stringValue ?? "",
+            trackDuration: Int(descriptor.atIndex(5)?.doubleValue ?? 0),
+            trackPosition: Int(descriptor.atIndex(6)?.doubleValue ?? 0),
+            isPlaying: descriptor.atIndex(1)?.stringValue == "playing",
+            isLoved: descriptor.atIndex(7)?.booleanValue ?? false,
+            shuffle: descriptor.atIndex(9)?.booleanValue ?? false,
+        )
         
-        if let error = error {
-            print("AppleScript Error: \(error)")
-            return NSImage(named: "no_playback")
+        if let data = descriptor.atIndex(10)?.data {
+            MusicManager.shared.albumArt = NSImage(data: data)
+            MusicManager.shared.getAverageColor()
+        } else {
+            MusicManager.shared.albumArt = NSImage(named: "no_playback")
         }
+                
+        return returnTrack
         
-        if let artworkData = output?.data {
-            return NSImage(data: artworkData)
-        }
-        
-        return NSImage(named: "no_playback")
     }
 }

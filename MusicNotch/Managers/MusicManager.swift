@@ -81,7 +81,23 @@ class MusicManager {
     
     @objc private func appleMusicNotification(_ sender: NSNotification?) {
         guard Defaults[.musicPlayer] == .appleMusic else { return }
-        updateMusic()
+        guard AppleMusicManager.shared.checkIfMusicIsRunning() else { return }
+        
+        let musicAppKilled = sender?.userInfo?["Player State"] as? String == "Stopped"
+        if musicAppKilled {
+            Task {
+                try? await Task.sleep(for: .milliseconds(2000))
+                let running = AppleMusicManager.shared.checkIfMusicIsRunning()
+                if running {
+                    updateMusic()
+                } else {
+                    music = disabledPlayback()
+                    return
+                }
+            }
+        } else {
+           updateMusic()
+        }
     }
     
     public func updateMusic() {

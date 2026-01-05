@@ -18,27 +18,18 @@ struct AppleScriptHelper {
         }.value
     }
     
-    static func executeAppleScript(_ script: String) -> Any? {
-        let task = Process()
-        task.launchPath = "/usr/bin/osascript"
-        task.arguments = ["-ss", "-e", script]
-        
-        let pipe = Pipe()
-        task.standardOutput = pipe
-        task.standardError = pipe
-        
-        do {
-            try task.run()
-            task.waitUntilExit()
-            
-            let data = pipe.fileHandleForReading.readDataToEndOfFile()
-            if let output = String(data: data, encoding: .utf8) {
-                return output
-            }
-        } catch {
-            print("AppleScript-Error: \(error)")
+    static func executeAppleScript(_ script: String) -> NSAppleEventDescriptor? {
+        let appleScript = NSAppleScript(source: script)
+        var error: NSDictionary?
+
+        let result = appleScript?.executeAndReturnError(&error)
+
+        if let error = error {
+            print("AppleScript error: \(error)")
+            return nil
         }
-        return nil
+
+        return result
     }
 }
 

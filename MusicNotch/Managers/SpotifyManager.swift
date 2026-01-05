@@ -20,9 +20,7 @@ class SpotifyManager {
     public var oldTrackName: String = ""
     
     private init() {
-        if checkIfSpotifyIsRunning() {
-            isSpotifyRunning = true
-        }
+        isSpotifyRunning = checkIfSpotifyIsRunning()
     }
 
     
@@ -36,7 +34,7 @@ class SpotifyManager {
       
     public func collectSpotifyInfo() -> MusicTrack? {
         guard checkIfSpotifyIsRunning() else { return nil }
-                
+        
         let script = """
         tell application "Spotify"
             try
@@ -60,53 +58,39 @@ class SpotifyManager {
                 end try
                 return {isPlaying, trackName, artistName, albumName, trackDuration, trackPosition, isLoved, trackID, shuffle, albumArt}
             on error
-                return {false, "", "", "", 1, 0, false, 0, false, ""}
+                return {}
             end try
         end tell
         """
         
         let result = AppleScriptHelper.executeAppleScript(script)
-        if let resultString = result as? String {
-            let cleanedResult = resultString
-                .replacingOccurrences(of: "{", with: "")
-                .replacingOccurrences(of: "}", with: "")
-                .split(separator: ",")
-                .map { $0.trimmingCharacters(in: .whitespacesAndNewlines).replacingOccurrences(of: "\"", with: "") }
-            
-            var finalResult = cleanedResult
-            if let last = finalResult.last, last.isEmpty {
-                finalResult.removeLast()
-            }
-                        
-            if finalResult.count >= 10 {
-                let returnTrack = MusicTrack (
-                    trackName: finalResult[1],
-                    artistName: finalResult[2],
-                    albumName: finalResult[3],
-                    trackDuration: Int(Double(finalResult[4]) ?? 0),
-                    trackPosition: Int(Double(finalResult[5]) ?? 0),
-                    isPlaying: finalResult[0] == "playing",
-                    isLoved: finalResult[6] == "true",
-                    shuffle: finalResult[8] == "true",
-                )
-                                
-                if oldTrackName != returnTrack.trackName {
-                    oldTrackName = returnTrack.trackName
-                    Task { @MainActor in
-                        fetchAlbumArt(albumUrl: finalResult[9])
-                    }
-                }
-                
-                return returnTrack
-                
-            } else {
-                print("Error on getting information or spotify not running")
-                return nil
-            }
-        } else {
-            print("Fehler: Didn't get any result")
+        guard
+            let descriptor = result,
+            descriptor.numberOfItems >= 10
+        else {
+            print("Invalid AppleScript result")
             return nil
         }
+        
+        
+        let returnTrack = MusicTrack (
+            trackName: descriptor.atIndex(2)?.stringValue ?? "",
+            artistName: descriptor.atIndex(3)?.stringValue ?? "",
+            albumName: descriptor.atIndex(4)?.stringValue ?? "",
+            trackDuration: Int(descriptor.atIndex(5)?.doubleValue ?? 0),
+            trackPosition: Int(descriptor.atIndex(6)?.doubleValue ?? 0),
+            isPlaying: descriptor.atIndex(1)?.stringValue == "playing",
+            isLoved: descriptor.atIndex(7)?.booleanValue ?? false,
+            shuffle: descriptor.atIndex(9)?.booleanValue ?? false,
+        )
+        
+        if oldTrackName != returnTrack.trackName {
+            oldTrackName = returnTrack.trackName
+            Task { @MainActor in
+                fetchAlbumArt(albumUrl: descriptor.atIndex(10)?.stringValue ?? "")
+            }
+        }
+        return returnTrack
     }
     
     @MainActor
