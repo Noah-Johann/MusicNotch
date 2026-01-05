@@ -8,15 +8,15 @@
 import Foundation
 import Defaults
 
-func setProgress(position: Double) {
-    Task {
-        switch Defaults[.musicPlayer] {
-        case .appleMusic:
-            try await AppleScriptHelper.run("tell application \"Music\" to set player position to \(position)")
-        case .spotify:
-            try await AppleScriptHelper.run("tell application \"Spotify\" to set player position to \(position)")
-        case .nowPlaying:
-            break
-        }
-    }
-}
+//func setProgress(position: Double) {
+//    Task {
+//        switch Defaults[.musicPlayer] {
+//        case .appleMusic:
+//            try await AppleScriptHelper.run("tell application \"Music\" to set player position to \(position)")
+//        case .spotify:
+//            try await AppleScriptHelper.run("tell application \"Spotify\" to set player position to \(position)")
+//        case .nowPlaying:
+//            break
+//        }
+//    }
+//}

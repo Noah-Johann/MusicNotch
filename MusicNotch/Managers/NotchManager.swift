@@ -88,10 +88,10 @@ final class NotchManager {
             }
             switch direction {
             case .left:
-                nextTrack()
+                MusicActions.nextTrack()
                 print("next track")
             case .right:
-                lastTrack()
+                MusicActions.lastTrack()
                 print("last track")
             default:
                 break

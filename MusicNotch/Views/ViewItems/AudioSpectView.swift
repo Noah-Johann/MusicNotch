@@ -21,7 +21,7 @@ struct AudioSpectView: View {
         ZStack {
             if hovering || accessibilityManager.isReduceMotion {
                 Button {
-                    playPause()
+                    MusicActions.playPause()
                 } label: {
                     Image(systemName: musicManager.music.isPlaying == true ? "pause.fill" : "play.fill")
                         .contentTransition(.symbolEffect(.replace))

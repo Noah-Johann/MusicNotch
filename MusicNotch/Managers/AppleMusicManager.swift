@@ -44,7 +44,8 @@ class AppleMusicManager {
                     on error
                         set artworkData to nil
                     end try
-                    return {isPlaying, trackName, artistName, albumName, trackDuration, trackPosition, isLoved, trackID, shuffle, artworkData}
+                    set currentVolume to sound volume
+                    return {isPlaying, trackName, artistName, albumName, trackDuration, trackPosition, isLoved, trackID, shuffle, artworkData, currentVolume}
                 on error
                     return {}
                 end try
@@ -54,7 +55,7 @@ class AppleMusicManager {
         let result = AppleScriptHelper.executeAppleScript(script)
         guard
             let descriptor = result,
-            descriptor.numberOfItems >= 10
+            descriptor.numberOfItems >= 11
         else {
             print("Invalid AppleScript result")
             return nil
@@ -69,6 +70,7 @@ class AppleMusicManager {
             isPlaying: descriptor.atIndex(1)?.stringValue == "playing",
             isLoved: descriptor.atIndex(7)?.booleanValue ?? false,
             shuffle: descriptor.atIndex(9)?.booleanValue ?? false,
+            volume: descriptor.atIndex(11) != nil ? CGFloat(descriptor.atIndex(11)!.doubleValue) : nil
         )
         
         if let data = descriptor.atIndex(10)?.data {

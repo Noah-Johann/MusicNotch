@@ -253,4 +253,5 @@ struct MusicTrack {
     var isPlaying: Bool
     var isLoved: Bool
     var shuffle: Bool
+    var volume: CGFloat?
 }

@@ -30,10 +30,10 @@ struct MusicNotchApp: App {
         }
         
         let handlers: [(KeyboardShortcuts.Name, () -> Void)] = [
-            (.nextTrack, nextTrack),
-            (.previousTrack, lastTrack),
-            (.toggleShuffle, toggleShuffle),
-            (.playPause, playPause),
+            (.nextTrack, MusicActions.nextTrack),
+            (.previousTrack, MusicActions.lastTrack),
+            (.toggleShuffle, MusicActions.toggleShuffle),
+            (.playPause, MusicActions.playPause),
         ]
         handlers.forEach { name, action in
             KeyboardShortcuts.onKeyDown(for: name, action: action)

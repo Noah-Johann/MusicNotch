@@ -119,6 +119,8 @@ func textWidth(_ key: String, font: NSFont) -> CGFloat {
 struct NotchHUDViewExpanded: View {
     @ObservedObject var volumeManager = VolumeManager.shared
     @ObservedObject var brightnessManager = BrightnessManager.shared
+    
+    @State private var musicManager = MusicManager.shared
 
     
     let hudType: HudType
@@ -127,39 +129,61 @@ struct NotchHUDViewExpanded: View {
     var body: some View {
         switch hudType {
         case .volume:
-            HStack {
+            VStack (spacing: 18) {
                 HStack {
-                    if volumeManager.volume == 0 || volumeManager.isMuted {
-                        Image(systemName: "speaker.slash.fill")
-                            .font(.system(size: 17))
-                    } else if volumeManager.volume < 0.4 {
-                        Image(systemName: "speaker.wave.1.fill")
-                            .font(.system(size: 17))
-                    } else if volumeManager.volume < 0.7 {
-                        Image(systemName: "speaker.wave.2.fill")
-                            .font(.system(size: 17))
-                    } else {
-                        Image(systemName: "speaker.wave.3.fill")
-                            .font(.system(size: 17))
-                    }
-                } .frame(width: 20)
-                    .padding(.trailing, 5)
-                
-                HStack {
-                    HudSlider(value: $volumeManager.volume, isExpanded: true)
+                    HStack {
+                        if volumeManager.volume == 0 || volumeManager.isMuted {
+                            Image(systemName: "speaker.slash.fill")
+                                .font(.system(size: 17))
+                        } else if volumeManager.volume < 0.4 {
+                            Image(systemName: "speaker.wave.1.fill")
+                                .font(.system(size: 17))
+                        } else if volumeManager.volume < 0.7 {
+                            Image(systemName: "speaker.wave.2.fill")
+                                .font(.system(size: 17))
+                        } else {
+                            Image(systemName: "speaker.wave.3.fill")
+                                .font(.system(size: 17))
+                        }
+                    } .frame(width: 20)
+                        .padding(.trailing, 5)
                     
-                    if volumeManager.volume == 0 || volumeManager.isMuted {
-                        Text("muted")
-                            .font(.system(size: 14))
-                            .foregroundStyle(.secondary)
+                    HStack {
+                        HudSlider(value: $volumeManager.volume, isExpanded: true)
+                        
+                        if volumeManager.volume == 0 || volumeManager.isMuted {
+                            Text("muted")
+                                .font(.system(size: 14))
+                                .foregroundStyle(.secondary)
+                        }
                     }
                 }
+                .frame(width: width, height: 30)
+                .animation(.easeInOut(duration: 0.3), value: volumeManager.volume)
+                .animation(.bouncy(duration: 0.3), value: volumeManager.isMuted)
+
+                if musicManager.music.volume != nil {
+                    HStack {
+                        HStack {
+                            Image(systemName: "music.note")
+                                .font(.system(size: 17))
+                        } .frame(width: 20)
+                            .padding(.trailing, 5)
+                        
+                        HStack {
+                            let musicVolumeBinding = Binding<CGFloat>(
+                                get: { musicManager.music.volume! / 100 },
+                                set: { newValue in musicManager.music.volume = newValue * 100}
+                            )
+                            HudSlider(value: musicVolumeBinding, isExpanded: true)
+                        }
+                    }
+                    .frame(width: width, height: 30)
+                    .animation(.easeInOut(duration: 0.3), value: musicManager.music.volume)
+                    .padding(.bottom, 10)
+
+                }
             }
-            .frame(width: width, height: 30)
-            .padding(.bottom, 10)
-            .animation(.easeInOut(duration: 0.3), value: volumeManager.volume)
-            .animation(.easeInOut(duration: 0.3), value: volumeManager.isMuted)
-            
             
         case .brightness:
             HStack {
@@ -190,3 +214,4 @@ struct NotchHUDViewExpanded: View {
         .padding()
 }
  
+

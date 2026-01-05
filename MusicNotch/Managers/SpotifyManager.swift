@@ -37,11 +37,7 @@ class SpotifyManager {
                 set albumName to album of current track
                 set trackDuration to duration of current track / 1000
                 set trackPosition to player position
-                try
-                    set isLoved to loved of current track
-                on error
-                    set isLoved to false
-                end try
+                set currentVolume to sound volume
                 set trackID to id of current track
                 set shuffle to shuffling
                 try
@@ -49,7 +45,7 @@ class SpotifyManager {
                 on error
                     set albumArt to ""
                 end try
-                return {isPlaying, trackName, artistName, albumName, trackDuration, trackPosition, isLoved, trackID, shuffle, albumArt}
+                return {isPlaying, trackName, artistName, albumName, trackDuration, trackPosition, currentVolume, trackID, shuffle, albumArt}
             on error
                 return {}
             end try
@@ -73,9 +69,12 @@ class SpotifyManager {
             trackDuration: Int(descriptor.atIndex(5)?.doubleValue ?? 0),
             trackPosition: Int(descriptor.atIndex(6)?.doubleValue ?? 0),
             isPlaying: descriptor.atIndex(1)?.stringValue == "playing",
-            isLoved: descriptor.atIndex(7)?.booleanValue ?? false,
+            isLoved: false,
             shuffle: descriptor.atIndex(9)?.booleanValue ?? false,
+            volume: descriptor.atIndex(7) != nil ? CGFloat(descriptor.atIndex(7)!.doubleValue) : nil
         )
+        
+        print(returnTrack.volume)
         
         if oldTrackName != returnTrack.trackName {
             oldTrackName = returnTrack.trackName

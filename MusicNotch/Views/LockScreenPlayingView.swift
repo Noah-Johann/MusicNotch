@@ -81,7 +81,7 @@ struct LockScreenPlayingView: View {
                                      onEditingChanged: { isEditing in
                             isDragging = isEditing
                             if !isEditing {
-                                setProgress(position: trackposition)
+                                MusicActions.setProgress(position: trackposition)
                             }
                         }) .frame(width: 200, height: 10, alignment: .center)
                         
@@ -96,7 +96,7 @@ struct LockScreenPlayingView: View {
                     
                     HStack {
                         Button(action: {
-                            toggleShuffle()
+                            MusicActions.toggleShuffle()
                         })
                         {
                             VStack (spacing: 3){
@@ -120,7 +120,7 @@ struct LockScreenPlayingView: View {
                         
                         
                         Button(action: {
-                            lastTrack()
+                            MusicActions.lastTrack()
                         }) {
                             Image(systemName: "backward.fill")
                                 .imageScale(.large)
@@ -135,7 +135,7 @@ struct LockScreenPlayingView: View {
                         
                         
                         Button(action: {
-                            playPause()
+                            MusicActions.playPause()
                         }) {
                             Image(systemName: musicManager.music.isPlaying ? "pause.fill" : "play.fill")
                                 .imageScale(.large)
@@ -150,7 +150,7 @@ struct LockScreenPlayingView: View {
                         
                         
                         Button(action: {
-                            nextTrack()
+                            MusicActions.nextTrack()
                         }) {
                             Image(systemName: "forward.fill")
                                 .imageScale(.large)

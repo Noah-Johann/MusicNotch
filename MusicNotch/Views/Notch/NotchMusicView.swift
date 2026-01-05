@@ -133,7 +133,7 @@ struct NotchMusicViewExpanded: View {
                              onEditingChanged: { isEditing in
                     isDragging = isEditing
                     if !isEditing {
-                        setProgress(position: trackposition)
+                        MusicActions.setProgress(position: trackposition)
                     }
                 }) .frame(width: 240, height: 10, alignment: .center)
                 
