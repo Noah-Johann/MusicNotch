@@ -63,6 +63,8 @@ struct NotchHUDViewLeading: View {
                 
                 Text("Brightness")
                     .font(.system(size: 12))
+                
+                Spacer()
             }
             .frame(width: 35 + textWidth("Brightness", font: .systemFont(ofSize: 12)), height: 20)
             .padding(.trailing, 4)
