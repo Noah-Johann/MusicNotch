@@ -18,6 +18,7 @@ struct SettingsExtensionView: View {
     @Default(.displayDuration) private var displayDuration
     @Default(.hudExtension) private var hudExtension
     @Default(.hudDeviceIcons) private var hudDeviceIcons
+    @Default(.hideHudLabel) private var hideHudLabel
     @Default(.accentColorHudSlider) private var accentColorHudSlider
     @Default(.gradientHudSlider) private var gradientHudSlider
     @Default(.bluetoothRecognition) private var bluetoothRecognition
@@ -102,6 +103,10 @@ struct SettingsExtensionView: View {
             
             LuminareToggle(isOn: $hudDeviceIcons) {
                 Text("Use device icons")
+            }
+            
+            LuminareToggle(isOn: $hideHudLabel) {
+                Text ("Hide labels")
             }
             
             LuminareToggle(isOn: $accentColorHudSlider) {

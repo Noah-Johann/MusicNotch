@@ -40,8 +40,10 @@ struct NotchHUDViewLeading: View {
                     }
                 } .frame(width: 20)
                 
-                Text("Volume")
-                    .font(.system(size: 12))
+                if !Defaults[.hideHudLabel] {
+                    Text("Volume")
+                        .font(.system(size: 12))
+                }
                 
                 Spacer()
             }
@@ -61,8 +63,10 @@ struct NotchHUDViewLeading: View {
                     }
                 } .frame(width: 20)
                 
-                Text("Brightness")
-                    .font(.system(size: 12))
+                if !Defaults[.hideHudLabel] {
+                    Text("Brightness")
+                        .font(.system(size: 12))
+                }
                 
                 Spacer()
             }

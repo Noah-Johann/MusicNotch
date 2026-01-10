@@ -63,6 +63,7 @@ extension Defaults.Keys {
     
     static let hudExtension = Key<Bool>("hudExtension", default: true)
     static let hudDeviceIcons = Key<Bool>("hudDeviceIcons", default: true)
+    static let hideHudLabel = Key<Bool>("hideHudLabel", default: false)
     static let gradientHudSlider = Key<Bool>("gradientHudSlider", default: true)
     static let accentColorHudSlider = Key<Bool>("accentColorHudSlider", default: false)
     
