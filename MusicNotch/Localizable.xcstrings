@@ -14,6 +14,12 @@
     "-%@" : {
       "shouldTranslate" : false
     },
+    "%" : {
+      "shouldTranslate" : false
+    },
+    "%@" : {
+      "shouldTranslate" : false
+    },
     "%lld %%" : {
       "shouldTranslate" : false
     },
@@ -57,16 +63,6 @@
         }
       }
     },
-    "Activate Gadgets" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aktiviere Gadgets"
-          }
-        }
-      }
-    },
     "All set up!" : {
       "localizations" : {
         "de" : {
@@ -77,12 +73,32 @@
         }
       }
     },
+    "Always show player" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Widget immer aktivieren"
+          }
+        }
+      }
+    },
     "Appearance" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Erscheinungsbild"
+          }
+        }
+      }
+    },
+    "Apple Music" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Music"
           }
         }
       }
@@ -107,42 +123,12 @@
         }
       }
     },
-    "Battery Gadget" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Batterie Gadget"
-          }
-        }
-      }
-    },
-    "Bottom" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unten"
-          }
-        }
-      }
-    },
     "Brightness" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Helligkeit"
-          }
-        }
-      }
-    },
-    "BSD 3-Clause" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "BSD 3-Clause"
           }
         }
       }
@@ -177,26 +163,6 @@
         }
       }
     },
-    "Custom Slider Control" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Custom Slider Control"
-          }
-        }
-      }
-    },
-    "Defaults" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Defaults"
-          }
-        }
-      }
-    },
     "Development" : {
       "localizations" : {
         "de" : {
@@ -207,22 +173,12 @@
         }
       }
     },
-    "Disable Notch on external Screens" : {
+    "Disabled" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Deaktiviere Notch auf externen Displays"
-          }
-        }
-      }
-    },
-    "Disable notch when there is no Notch Display" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Deaktiviere die Notch, wenn es kein Display mit Notch gibt."
+            "value" : "Deaktiviert"
           }
         }
       }
@@ -263,16 +219,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Update herunterladen…"
-          }
-        }
-      }
-    },
-    "DynamicNotchKit" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "DynamicNotchKit"
           }
         }
       }
@@ -359,6 +305,16 @@
         }
       }
     },
+    "Expand" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erweitern"
+          }
+        }
+      }
+    },
     "Extensions" : {
       "localizations" : {
         "de" : {
@@ -375,16 +331,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fertigstellen"
-          }
-        }
-      }
-    },
-    "Gadgets" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gadgets"
           }
         }
       }
@@ -459,12 +405,12 @@
         }
       }
     },
-    "Hide acknowledgements" : {
+    "Hide closed notch" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Schließe Danksagungen"
+            "value" : "Deaktiviere geschlossene Notch"
           }
         }
       }
@@ -479,12 +425,12 @@
         }
       }
     },
-    "Hide fake notch" : {
+    "Hide labels" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Fake Notch entfernen"
+            "value" : "Deaktiviere Texte"
           }
         }
       }
@@ -499,12 +445,12 @@
         }
       }
     },
-    "If active, the notch can't be opened when nothing is playing" : {
+    "Hover Behavior" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wenn aktiv kann die Notch nicht geöffnet werden, wenn kein Playback aktiv ist."
+            "value" : "Hover Verhalten"
           }
         }
       }
@@ -559,16 +505,6 @@
         }
       }
     },
-    "KeyboardShortcuts" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "KeyboardShortcuts"
-          }
-        }
-      }
-    },
     "Launch at login" : {
       "localizations" : {
         "de" : {
@@ -579,12 +515,12 @@
         }
       }
     },
-    "LaunchAtLogin" : {
+    "License" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "LaunchAtLogin"
+            "value" : "Lizenz"
           }
         }
       }
@@ -599,12 +535,12 @@
         }
       }
     },
-    "Luminare" : {
+    "Low battery threshold" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Luminare"
+            "value" : "Ladeerinnerung"
           }
         }
       }
@@ -629,12 +565,12 @@
         }
       }
     },
-    "MIT" : {
+    "Music" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "MIT"
+            "value" : "Musik"
           }
         }
       }
@@ -709,32 +645,12 @@
         }
       }
     },
-    "Notch" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Notch"
-          }
-        }
-      }
-    },
     "Notch display" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "MacBook Display"
-          }
-        }
-      }
-    },
-    "Open Notch on hover" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Öffne Notch beim Hovern"
           }
         }
       }
@@ -799,12 +715,32 @@
         }
       }
     },
+    "Play charging sound" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spiele Ladeton"
+          }
+        }
+      }
+    },
     "Play lock sound" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Spiele Sperrton"
+          }
+        }
+      }
+    },
+    "Play low power sound" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spiele Ladeerninngerunston"
           }
         }
       }
@@ -939,26 +875,6 @@
         }
       }
     },
-    "Settings Gadget" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Einstellungen Gadget"
-          }
-        }
-      }
-    },
-    "Show acknowledgements" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Öffne Danksagungen"
-          }
-        }
-      }
-    },
     "Show dock icon" : {
       "localizations" : {
         "de" : {
@@ -975,6 +891,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zeige Menuleisten-Symbol"
+          }
+        }
+      }
+    },
+    "Show music player volume slider" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktiviere Musikplayer Läutstarkeregler"
           }
         }
       }
@@ -1039,22 +965,12 @@
         }
       }
     },
-    "SkyLightWindow" : {
+    "Spotify" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "SkyLightWindow"
-          }
-        }
-      }
-    },
-    "Sparkle" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sparkle"
+            "value" : "Spotify"
           }
         }
       }
@@ -1109,6 +1025,16 @@
         }
       }
     },
+    "System" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "System"
+          }
+        }
+      }
+    },
     "The time it takes for the notch to hide if the playback is stopped." : {
       "localizations" : {
         "de" : {
@@ -1159,17 +1085,7 @@
         }
       }
     },
-    "Top" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Oben"
-          }
-        }
-      }
-    },
-    "Use device symbols" : {
+    "Use device icons" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1226,6 +1142,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lautstärke"
+          }
+        }
+      }
+    },
+    "Warn on low battery" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Warnung bei niedriger Batterie"
           }
         }
       }

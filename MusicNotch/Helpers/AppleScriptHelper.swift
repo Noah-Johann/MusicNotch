@@ -17,5 +17,19 @@ struct AppleScriptHelper {
             task.waitUntilExit()
         }.value
     }
+    
+    static func executeAppleScript(_ script: String) -> NSAppleEventDescriptor? {
+        let appleScript = NSAppleScript(source: script)
+        var error: NSDictionary?
+
+        let result = appleScript?.executeAndReturnError(&error)
+
+        if let error = error {
+            print("AppleScript error: \(error)")
+            return nil
+        }
+
+        return result
+    }
 }
 

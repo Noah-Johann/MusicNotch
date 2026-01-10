@@ -16,6 +16,41 @@ final class BrightnessManager: ObservableObject {
     
     @Published var brightness: CGFloat = 0
     
+    private var betterDisplay: Bool = false
+    
+    init() {
+        betterDisplay = checkIfBetterDisplay()
+        
+        if betterDisplay {
+            setupBetterDisplayObserver()
+        }
+    }
+    
+// MARK: - BetterDisplay
+    
+    private func checkIfBetterDisplay() -> Bool {
+        return NSWorkspace.shared.urlForApplication(withBundleIdentifier: "pro.betterdisplay.BetterDisplay") != nil
+    }
+    
+    private func setupBetterDisplayObserver() {
+        DistributedNotificationCenter.default.addObserver(self, selector: #selector(betterDisplayNotificaiton), name: .init("com.betterdisplay.BetterDisplay.osd"), object: nil)
+    }
+    
+    @objc private func betterDisplayNotificaiton(notification: NSNotification) {
+        guard let notificationString = notification.object as? String else {
+            return
+        }
+        do {
+            let notification = try JSONDecoder().decode(BetterDisplayNotification.self, from: Data(notificationString.utf8))
+            if let type = notification.controlTarget, type.contains("Brightness") {
+                self.brightness = (notification.value ?? 0) / (notification.maxValue ?? 0)
+                Task { @MainActor in
+                    NotchManager.shared.showExtensionNotch(type: .brightness)
+                }
+            }
+        } catch {}
+    }
+    
     public func UpBrightness() {
         
         Task { @MainActor in
@@ -120,4 +155,18 @@ final class BrightnessManager: ObservableObject {
         
         return nil
     }
+}
+
+struct BetterDisplayNotification: Codable {
+  var displayID: Int? = nil // Which display should show the OSD
+  var systemIconID: Int? = nil // 1 - brightness, 3 - volume, 4 - mute, 0 - no icon
+  var customSymbol: String? = nil // SF Symbol name if a custom icon is used
+  var text: String? = nil // Text if additional text is displayed in the OSD HUD by the app
+  var lock: Bool? = nil // Shows lock icon as well
+  var controlTarget: String? = nil // Further description of the type of control the OSD is displayed for
+  var value: Double? = nil // OSD value (scale: 0-max value)
+  var maxValue: Double? = nil // max value
+  var symbolFadeAfter: Int? = nil // If the symbol is a secondary symbol, it should be faded after this time elapsed - in milliseconds
+  var symbolSizeMultiplier: Double? = nil // Symbol size adjustment (compared to normal size)
+  var textFadeAfter: Int? = nil // Text should be faded after this time elapsed - in milliseconds
 }

@@ -14,7 +14,12 @@ import KeyboardShortcuts
 
 
 struct SettingsView: View {
-    @Default(.mainDisplay) private var mainDisplay
+    @Default(.lowPowerWarning) private var lowPowerWarning
+    @Default(.bluetoothRecognition) private var bluetoothRecognition
+    @Default(.enableGestures) private var enableGestures
+    @Default(.hoverBehavior) private var hoverBehavior
+    
+    @ObservedObject private var updateManager = UpdateManager.shared
     
     var body: some View {
         LuminarePane() {
@@ -27,6 +32,8 @@ struct SettingsView: View {
                 
                 SettingsGesturesView()
                 
+                SettingsMusicView()
+                
                 SettingsAppearanceView()
                 
                 SettingsMusicGlanceView()
@@ -34,19 +41,21 @@ struct SettingsView: View {
                 SettingsExtensionView()
                 
                 SettingsLockScreenView()
-                
-                SetttingsGadgetsView()
-                
+                                
                 SettingsShortcutsView()
                 
                 SettingsPermissionView()
 
                 SettingsAboutView()
-                                
-                SettingsAcknowledgementsView()
-                
-            } .padding(.horizontal, 5)
-                .animation(.easeInOut(duration: 0.2), value: mainDisplay)
+            }
+            .padding(.horizontal, 5)
+            .animation(.easeInOut(duration: 0.3), value: lowPowerWarning)
+            .animation(.easeInOut(duration: 0.3), value: bluetoothRecognition)
+            .animation(.easeInOut(duration: 0.3), value: enableGestures)
+            .animation(.easeInOut(duration: 0.3), value: hoverBehavior)
+            .animation(.easeInOut(duration: 0.3), value: updateManager.updateState)
+            .animation(.bouncy(duration: 0.2), value: updateManager.updateProgress)
+
         }
     }
 }

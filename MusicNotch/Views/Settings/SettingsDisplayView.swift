@@ -10,41 +10,43 @@ import Luminare
 import Defaults
 
 struct SettingsDisplayView: View {
-    @Default(.mainDisplay) private var mainDisplay
-    @Default(.disableNotchOnHide) private var disableNotchOnHide
-    @Default(.noNotchScreenHide) private var noNotchScreenHide
+    @Default(.display) private var screen
+    @Default(.transparentNotch) private var transparentNotch
     
     var body: some View {
         LuminareSection {
-            DisplayPickerView()
-                .buttonStyle(LuminareButtonStyle())
-                .frame(height: 80)
-                .padding(3)
-            if mainDisplay == true {
-                LuminareToggle(isOn: $disableNotchOnHide) {
-                    Text("Hide fake notch")
-                        .padding(.trailing, 5)
-                        .luminarePopover(attachedTo: .topTrailing) {
-                            Text("If active, the notch can't be opened when nothing is playing")
-                                .padding()
-                        }
-                        .tint(.accentColor)
+            LuminarePicker(
+                elements: Display.allCases,
+                selection: Binding(
+                    get: { Defaults[.display] },
+                    set: { Defaults[.display] = $0 }
+                ),
+                // .animation(LuminareConstants.animation),
+                columns: 2
+            ) { option in
+                VStack(spacing: 6) {
+                    option.image
+                        .scaledToFit()
+                        .frame(width: 30, height: 40)
+                    Text(option.text)
+                        .font(.title3)
                 }
-            } else {
-                LuminareToggle(isOn: $noNotchScreenHide) {
-                    Text("Disable Notch on external Screens")
-                        .padding(.trailing, 5)
-                        .luminarePopover(attachedTo: .topTrailing) {
-                            Text("Disable notch when there is no Notch Display")
-                                .padding()
-                        }
-                        .tint(.accentColor)
-                }
+            }
+            .buttonStyle(LuminareButtonStyle())
+            .frame(height: 80)
+            .padding(3)
+            LuminareToggle(isOn: $transparentNotch) {
+                Text("Hide closed notch")
             }
         } header: {
             Text("Display")
         }
         .padding(.bottom, 14)
+        .onChange(of: screen) {
+            Task { @MainActor in
+                await NotchManager.shared.setNotchState(.compact, true)
+            }
+        }
     }
 }
 

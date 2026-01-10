@@ -11,8 +11,14 @@ import Defaults
 
 struct SettingsExtensionView: View {
     @Default(.batteryExtension) private var batteryExtension
+    @Default(.lowPowerSound) private var lowPowerSound
+    @Default(.pluggedInSound) private var pluggedInSound
+    @Default(.lowPowerWarning) private var lowPowerWarning
+    @Default(.lowBatteryThreshold) private var lowBatteryThreshold
     @Default(.displayDuration) private var displayDuration
     @Default(.hudExtension) private var hudExtension
+    @Default(.hudDeviceIcons) private var hudDeviceIcons
+    @Default(.hideHudLabel) private var hideHudLabel
     @Default(.accentColorHudSlider) private var accentColorHudSlider
     @Default(.gradientHudSlider) private var gradientHudSlider
     @Default(.bluetoothRecognition) private var bluetoothRecognition
@@ -42,11 +48,65 @@ struct SettingsExtensionView: View {
             LuminareToggle(isOn: $batteryExtension) {
                 Text("Enable Battery extension")
             }
-        }
+            
+            LuminareToggle(isOn: $pluggedInSound) {
+                HStack {
+                    Text("Play charging sound")
+                    
+                    Button (action: {
+                        playSound(sound: .pluggedIn)
+                    }, label: {
+                        Image(systemName: "speaker.wave.2.circle.fill")
+                            .foregroundStyle(.secondary)
+                            .imageScale(.large)
+                    }) .buttonStyle(.plain)
+                }
+            }
+            
+            LuminareToggle(isOn: $lowPowerWarning) {
+                Text ("Warn on low battery")
+            }
+            if lowPowerWarning {
+                LuminareSlider(
+                    value: $lowBatteryThreshold,
+                    in: 5...20,
+                    step: 5,
+                    format: .number.precision(.fractionLength(0...1)),
+                    suffix: Text("%")
+                    
+                ) {
+                    Text("Low battery threshold")
+                }
+                .luminareSliderLayout(.regular)
+                .padding(.bottom, 3)
+                
+                LuminareToggle(isOn: $lowPowerSound) {
+                    HStack {
+                        Text("Play low power sound")
+                        
+                        Button (action: {
+                            playSound(sound: .macLowBattery)
+                        }, label: {
+                            Image(systemName: "speaker.wave.2.circle.fill")
+                                .foregroundStyle(.secondary)
+                                .imageScale(.large)
+                        }) .buttonStyle(.plain)
+                    }
+                }
+            }
+        } 
         
         LuminareSection {
             LuminareToggle(isOn: $hudExtension) {
                 Text("Enable HUD extension")
+            }
+            
+            LuminareToggle(isOn: $hudDeviceIcons) {
+                Text("Use device icons")
+            }
+            
+            LuminareToggle(isOn: $hideHudLabel) {
+                Text ("Hide labels")
             }
             
             LuminareToggle(isOn: $accentColorHudSlider) {
@@ -64,10 +124,9 @@ struct SettingsExtensionView: View {
             }
             
             LuminareToggle(isOn: $bluetoothSymbols) {
-                Text("Use device symbols")
-            } .disabled(accessibilityManager.isReduceMotion)
+                Text("Use device icons")
+            }
         }
-        
         .padding(.bottom, 14)
     }
 }

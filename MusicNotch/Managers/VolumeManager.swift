@@ -201,7 +201,7 @@ class VolumeManager: ObservableObject {
         }
 
         if let vol = usedVolume {
-            DispatchQueue.main.async {
+            Task { @MainActor in
                 self.volume = CGFloat(vol)
                 self.isMuted = (vol == 0) || self.isMuted
             }
@@ -228,7 +228,7 @@ class VolumeManager: ObservableObject {
             &mute
         )
         guard status == noErr else { return }
-        DispatchQueue.main.async {
+        Task { @MainActor in
             self.isMuted = (mute != 0)
         }
     }
@@ -241,6 +241,7 @@ class VolumeManager: ObservableObject {
     }
 
     private func handleDeviceChange() {
+        self.disabledHUD = true
         let newDevice = defaultAudioDeviceID()
         guard newDevice != kAudioDeviceUnknown else { return }
 
@@ -257,7 +258,11 @@ class VolumeManager: ObservableObject {
         // Refresh current values
         getSystemVolume()
         getMuteStatus()
-        self.disabledHUD = false
+        Task {
+            try? await Task.sleep(nanoseconds: 1_000_000_000)
+            self.disabledHUD = false
+
+        }
     }
     
     func getAudioOutputDevice() {
@@ -328,7 +333,7 @@ class VolumeManager: ObservableObject {
             &propSize,
             &transportType
         )
-        DispatchQueue.main.async {
+        Task { @MainActor in
             var transportString: String = "unknown"
             switch transportType {
             case kAudioDeviceTransportTypeBuiltIn:

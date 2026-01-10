@@ -15,40 +15,40 @@ class PermissionHelper {
     }
     
     static func promptUserForConsent(for appBundleID: String, completion: @escaping (PermissionStatus) -> Void) {
-        DispatchQueue.global(qos: .userInitiated).async {
+        Task {
             let script = """
             tell application "Spotify"
                 player state
             end tell
             """
-
+            
             if let appleScript = NSAppleScript(source: script) {
                 var error: NSDictionary?
                 let result = appleScript.executeAndReturnError(&error)
-
+                
                 if let error = error {
                     print("AppleScript error: \(error)")
                     let errorCode = error["NSAppleScriptErrorNumber"] as? Int ?? 0
-
+                    
                     if errorCode == -1743 {
-                        DispatchQueue.main.async {
+                        Task { @MainActor in
                             completion(.denied)
                         }
                         return
                     } else {
-                        DispatchQueue.main.async {
+                        Task { @MainActor in
                             completion(.closed)
                         }
                         return
                     }
                 }
-
+                
                 print("AppleScript result: \(result.stringValue ?? "nil")")
-                DispatchQueue.main.async {
+                Task { @MainActor in
                     completion(.granted)
                 }
             } else {
-                DispatchQueue.main.async {
+                Task { @MainActor in
                     completion(.closed)
                 }
             }
