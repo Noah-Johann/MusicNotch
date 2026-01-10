@@ -15,10 +15,10 @@
       "shouldTranslate" : false
     },
     "%" : {
-
+      "shouldTranslate" : false
     },
     "%@" : {
-
+      "shouldTranslate" : false
     },
     "%lld %%" : {
       "shouldTranslate" : false
@@ -74,7 +74,14 @@
       }
     },
     "Always show player" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Widget immer aktivieren"
+          }
+        }
+      }
     },
     "Appearance" : {
       "localizations" : {
@@ -299,7 +306,14 @@
       }
     },
     "Expand" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erweitern"
+          }
+        }
+      }
     },
     "Extensions" : {
       "localizations" : {
@@ -392,7 +406,14 @@
       }
     },
     "Hide closed notch" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deaktiviere geschlossene Notch"
+          }
+        }
+      }
     },
     "Hide delay" : {
       "localizations" : {
@@ -405,7 +426,14 @@
       }
     },
     "Hide labels" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deaktiviere Texte"
+          }
+        }
+      }
     },
     "Hide player" : {
       "localizations" : {
@@ -418,7 +446,14 @@
       }
     },
     "Hover Behavior" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hover Verhalten"
+          }
+        }
+      }
     },
     "If hidden, settings can be accessed via right click on the player" : {
       "localizations" : {
@@ -501,7 +536,14 @@
       }
     },
     "Low battery threshold" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ladeerinnerung"
+          }
+        }
+      }
     },
     "Main display" : {
       "localizations" : {
@@ -674,7 +716,14 @@
       }
     },
     "Play charging sound" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spiele Ladeton"
+          }
+        }
+      }
     },
     "Play lock sound" : {
       "localizations" : {
@@ -687,7 +736,14 @@
       }
     },
     "Play low power sound" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spiele Ladeerninngerunston"
+          }
+        }
+      }
     },
     "Play unlock sound" : {
       "localizations" : {
@@ -840,7 +896,14 @@
       }
     },
     "Show music player volume slider" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktiviere Musikplayer Läutstarkeregler"
+          }
+        }
+      }
     },
     "Show MusicGlance" : {
       "localizations" : {
@@ -1084,7 +1147,14 @@
       }
     },
     "Warn on low battery" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Warnung bei niedriger Batterie"
+          }
+        }
+      }
     },
     "Welcome" : {
       "localizations" : {
