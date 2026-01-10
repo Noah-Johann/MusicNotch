@@ -1,5 +1,5 @@
 //
-//  ButtonView.swift
+//  PlayerButtonView.swift
 //  MusicNotch
 //
 //  Created by Noah Johann on 26.04.25.
@@ -8,112 +8,45 @@
 import SwiftUI
 
 
-struct ButtonView: View {
-    
+struct PlayerButtonView: View {
     @State var musicManager = MusicManager.shared
     @ObservedObject var volumeManager = VolumeManager.shared
     
+    var enableSpeaker: Bool = true
+    
     var body: some View {
-        //Controls
         HStack {
-            
-            //Shuffle
-            Button(action: {
+            HoverEffectButton(icon: "shuffle", iconColor: .secondary, iconSize: 24, effectSize: 52, cornerRadius: 17, dot: $musicManager.music.shuffle) {
                 MusicActions.toggleShuffle()
-            })
-            {
-                VStack (spacing: 3){
-                    Image(systemName: "shuffle")
-                        .imageScale(.large)
-                        .font(.system(size: 17))
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.secondary)
-                        .frame(width: 20, height: 20)
-                    if musicManager.music.shuffle {
-                        Circle()
-                            .fill(Color.secondary)
-                            .frame(width: 3, height: 3)
-                    }
-                }            .transition(.opacity.combined(with: .scale))
-                    .animation(.spring(response: 0.3, dampingFraction: 0.4), value: musicManager.music.shuffle)
             }
-            .background(Color.clear)
-            .buttonStyle(BorderlessButtonStyle())
-            .padding(.horizontal, 17)
-
             
             
-            
-            //Skip backward
-            Button(action: {
+            HoverEffectButton(icon: "backward.fill", iconSize: 25, effectSize: 52, cornerRadius: 17, dot: .constant(false)) {
                 MusicActions.lastTrack()
-            }) {
-                Image(systemName: "backward.fill")
-                    .imageScale(.large)
-                    .foregroundStyle(.primary)
-                    .font(.system(size: 17))
-                    .frame(width: 30, height: 30)
-                
             }
-            .background(Color.clear)
-            .buttonStyle(BorderlessButtonStyle())
-            .padding(.horizontal, 5)
             
             
-            
-            //Pause
-            Button(action: {
+            HoverEffectButton(icon: musicManager.music.isPlaying ? "pause.fill" : "play.fill", iconSize: 25, effectSize: 52, cornerRadius: 17, dot: .constant(false)) {
                 MusicActions.playPause()
-            }) {
-                Image(systemName: musicManager.music.isPlaying ? "pause.fill" : "play.fill")
-                    .imageScale(.large)
-                    .foregroundStyle(.primary)
-                    .font(.system(size: 22, weight: .bold))
-                    .frame(width: 30, height: 30)
-                    .contentTransition(.symbolEffect(.replace))
             }
-            .background(Color.clear)
-            .buttonStyle(BorderlessButtonStyle())
-            .padding(.horizontal, 16)
             
             
-            //Skip forward
-            Button(action: {
+            HoverEffectButton(icon: "forward.fill", iconSize: 25, effectSize: 52, cornerRadius: 17, dot: .constant(false)) {
                 MusicActions.nextTrack()
-            }) {
-                Image(systemName: "forward.fill")
-                    .imageScale(.large)
-                    .foregroundStyle(.primary)
-                    .font(.system(size: 17))
-                    .frame(width: 30, height: 30)
-                
             }
-            .background(Color.clear)
-            .buttonStyle(BorderlessButtonStyle())
-            .padding(.horizontal, 5)
             
-            
-            //Speaker
-            Button(action: {
+            HoverEffectButton(icon: volumeManager.deviceIcon, iconColor: .secondary, iconSize: 30, effectSize: 52, cornerRadius: 15, dot: .constant(false)) {
                 if NotchManager.shared.notchContent == .music {
                     NotchManager.shared.setNotchContent(.volume, duration: 0.4)
                 } else {
                     NotchManager.shared.setNotchContent(.music, duration: 0.4)
                 }
-            }) {
-                Image(systemName: volumeManager.deviceIcon)
-                    .imageScale(.large)
-                    .foregroundStyle(.secondary)
-                    .font(.system(size: 17))
-                    .frame(width: 30, height: 30)
-                    .padding(.horizontal, 17)
-            }
-            .buttonStyle(PlainButtonStyle())
-        } .frame(height: 40)
+            } .disabled(!enableSpeaker)
+        } .frame(height: 45)
     }
 }
 
 #Preview {
-    ButtonView()
+    PlayerButtonView()
         .padding()
 }

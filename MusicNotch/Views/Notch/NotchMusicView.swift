@@ -145,7 +145,7 @@ struct NotchMusicViewExpanded: View {
             }.frame(height: 15)
                 .padding(.bottom, 6)
             
-            ButtonView()
+            PlayerButtonView()
             
         }
         .background(.black)

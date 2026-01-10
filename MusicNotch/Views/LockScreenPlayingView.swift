@@ -94,87 +94,8 @@ struct LockScreenPlayingView: View {
                         .padding(.bottom, 6)
                     
                     
-                    HStack {
-                        Button(action: {
-                            MusicActions.toggleShuffle()
-                        })
-                        {
-                            VStack (spacing: 3){
-                                Image(systemName: "shuffle")
-                                    .imageScale(.large)
-                                    .font(.system(size: 17))
-                                    .fontWeight(.semibold)
-                                    .foregroundStyle(.secondary)
-                                    .frame(width: 20, height: 20)
-                                if musicManager.music.shuffle {
-                                    Circle()
-                                        .fill(Color.secondary)
-                                        .frame(width: 3, height: 3)
-                                }
-                            }            .transition(.opacity.combined(with: .scale))
-                                .animation(.spring(response: 0.3, dampingFraction: 0.4), value: musicManager.music.shuffle)
-                        }
-                        .background(Color.clear)
-                        .buttonStyle(BorderlessButtonStyle())
-                        .padding(.horizontal, 17)
-                        
-                        
-                        Button(action: {
-                            MusicActions.lastTrack()
-                        }) {
-                            Image(systemName: "backward.fill")
-                                .imageScale(.large)
-                                .foregroundStyle(.primary)
-                                .font(.system(size: 17))
-                                .frame(width: 30, height: 30)
-                            
-                        }
-                        .background(Color.clear)
-                        .buttonStyle(BorderlessButtonStyle())
-                        .padding(.horizontal, 5)
-                        
-                        
-                        Button(action: {
-                            MusicActions.playPause()
-                        }) {
-                            Image(systemName: musicManager.music.isPlaying ? "pause.fill" : "play.fill")
-                                .imageScale(.large)
-                                .foregroundStyle(.primary)
-                                .font(.system(size: 22, weight: .bold))
-                                .frame(width: 30, height: 30)
-                                .contentTransition(.symbolEffect(.replace))
-                        }
-                        .background(Color.clear)
-                        .buttonStyle(BorderlessButtonStyle())
-                        .padding(.horizontal, 16)
-                        
-                        
-                        Button(action: {
-                            MusicActions.nextTrack()
-                        }) {
-                            Image(systemName: "forward.fill")
-                                .imageScale(.large)
-                                .foregroundStyle(.primary)
-                                .font(.system(size: 17))
-                                .frame(width: 30, height: 30)
-                            
-                        }
-                        .background(Color.clear)
-                        .buttonStyle(BorderlessButtonStyle())
-                        .padding(.horizontal, 5)
-                        
-                        
-                        
-                        Image(systemName: volumeManager.deviceIcon)
-                            .imageScale(.large)
-                            .foregroundStyle(.secondary)
-                            .font(.system(size: 17))
-                            .frame(width: 30, height: 30)
-                            .padding(.horizontal, 17)
-                        
-                    }
-                    .frame(height: 40)
-                    .padding(.bottom, 20)
+                    PlayerButtonView(enableSpeaker: false)
+                        .padding(.bottom, 20)
                 } .frame(height: 190)
             }
         }
