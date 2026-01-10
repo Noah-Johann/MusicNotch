@@ -38,13 +38,15 @@ final class BrightnessManager: ObservableObject {
     
     @objc private func betterDisplayNotificaiton(notification: NSNotification) {
         guard let notificationString = notification.object as? String else {
-          return
+            return
         }
         do {
             let notification = try JSONDecoder().decode(BetterDisplayNotification.self, from: Data(notificationString.utf8))
-            self.brightness = (notification.value ?? 0) / (notification.maxValue ?? 0)
-            Task { @MainActor in
-                NotchManager.shared.showExtensionNotch(type: .brightness)
+            if let type = notification.controlTarget, type.contains("Brightness") {
+                self.brightness = (notification.value ?? 0) / (notification.maxValue ?? 0)
+                Task { @MainActor in
+                    NotchManager.shared.showExtensionNotch(type: .brightness)
+                }
             }
         } catch {}
     }
