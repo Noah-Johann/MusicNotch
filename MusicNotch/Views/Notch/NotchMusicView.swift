@@ -74,8 +74,7 @@ struct NotchMusicViewExpanded: View {
 
                     
                     Button(action: {
-                        let url = URL(fileURLWithPath: "/Applications/Spotify.app")
-                        NSWorkspace.shared.open(url)
+                        openMusicApp()
                     }, label: {
                         Color.clear
                             .frame(width: 65, height: 65)
