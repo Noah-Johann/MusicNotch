@@ -1,0 +1,12 @@
+{
+  "data" : [
+    {
+      "filename" : "AutoUnlock_Haptic.caf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

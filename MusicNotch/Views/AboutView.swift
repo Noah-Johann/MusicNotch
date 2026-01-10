@@ -9,8 +9,9 @@ import SwiftUI
 import Luminare
 
 struct aboutView: View {
-    @Environment(\.openURL) var openURL
-    
+    private let projectURL: String = "https://github.com/Noah-Johann/MusicNotch"
+    private let licenseURL: String = "https://github.com/Noah-Johann/MusicNotch/blob/main/LICENSE"
+
     var body: some View {
         LuminarePane () {
             VStack(spacing: 0) {
@@ -36,15 +37,16 @@ struct aboutView: View {
                 .padding(.bottom, 20)
                 
                 LuminareSection {
-                    aboutButton(name: "GitHub",
-                                role: "Contribute on Github",
-                                link: URL(string: "https://github.com/Noah-Johann/MusicNotch")!,
-                                image: Image("Github")
-                    )
+                    CosmeticTwoLineButton(heading: "GitHub",
+                                          description: "Contribute on Github",
+                                          image: Image("Github"),
+                                          hoverIcon: "arrow.up.right",
+                                          circleOverlay: true)
+                    { NSWorkspace.shared.open(URL(string: projectURL)!) }
                 } .padding(.bottom, 20)
                 VStack {
                     Button {
-                        openURL(URL(string: "https://github.com/Noah-Johann/MusicNotch/blob/main/LICENSE")!)
+                        NSWorkspace.shared.open(URL(string: licenseURL)!)
                     } label: {
                         Text("GPL 3.0 License")
                             .underline()
@@ -57,10 +59,9 @@ struct aboutView: View {
                         .foregroundStyle(Color(.tertiaryLabelColor))
                         .font(.body)
                 }
-            }
+            } .padding(.bottom, 20)
         }
-        .frame(width: 320, height: 400)
-        .padding(.bottom, 20)
+        .frame(width: 320, height: 410)
         .scrollDisabled(true)
     }
 }

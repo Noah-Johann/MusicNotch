@@ -9,26 +9,26 @@ import SwiftUI
 import Luminare
 
 struct MenuBarExtraView: View {    
-    @ObservedObject var spotifyManager = SpotifyManager.shared
+    @State var musicManager = MusicManager.shared
     @ObservedObject var updateManager = UpdateManager.shared
     
     var body: some View {
         Section {
             Button {
-                spotifyPlayPause()
+                MusicActions.playPause()
             } label: {
-                Image(systemName: spotifyManager.isPlaying == true ? "pause.fill" : "play.fill")
-                Text(spotifyManager.isPlaying == true ? "Pause" : "Play")
+                Image(systemName: musicManager.music.isPlaying == true ? "pause.fill" : "play.fill")
+                Text(musicManager.music.isPlaying == true ? "Pause" : "Play")
             }
             
             Button {
-                spotifyNextTrack()
+                MusicActions.nextTrack()
             } label: {
                 Image(systemName: "forward.end.fill")
                 Text("Next")
             }
             Button {
-                spotifyLastTrack()
+                MusicActions.lastTrack()
             } label: {
                 Image(systemName: "backward.end.fill")
                 Text("Previous")

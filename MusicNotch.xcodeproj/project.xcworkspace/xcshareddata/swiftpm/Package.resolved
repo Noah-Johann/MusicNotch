@@ -1,5 +1,5 @@
 {
-  "originHash" : "30b6cea6bfab224d102d3ff05c7ae6cbd16cf2afee914a0e74a2b4c10b301c45",
+  "originHash" : "bacca27f573e40d428365d39111de298b27c0284068b7f22afe2b658f0ef9e7d",
   "pins" : [
     {
       "identity" : "defaults",
@@ -16,7 +16,7 @@
       "location" : "https://github.com/Noah-Johann/DynamicNotchKit/",
       "state" : {
         "branch" : "main",
-        "revision" : "658ed5d152ace574d961ed2b00d9bec71eff4456"
+        "revision" : "bd9ed9393cac65d13385ff185e0d028a5409a90b"
       }
     },
     {
@@ -88,6 +88,15 @@
       "location" : "https://github.com/lorenzofiamingo/swiftui-variadic-views",
       "state" : {
         "revision" : "af67d0e85bd2b499fbfb4cda834117e7c52b12b0",
+        "version" : "1.0.0"
+      }
+    },
+    {
+      "identity" : "universalglass",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Aeastr/UniversalGlass",
+      "state" : {
+        "revision" : "bb27ffe16a33c9e48d65111331ce4cfb519e0e92",
         "version" : "1.0.0"
       }
     }

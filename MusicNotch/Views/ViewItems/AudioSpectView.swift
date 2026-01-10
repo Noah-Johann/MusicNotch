@@ -9,38 +9,37 @@ import SwiftUI
 import Defaults
 
 struct AudioSpectView: View {
-    @ObservedObject var spotifyManager = SpotifyManager.shared
+    @State var musicManager = MusicManager.shared
+    @ObservedObject var accessibilityManager = AccessibilityManager.shared
     
     @Default(.coloredSpect) private var coloredSpect
-    @Default(.openNotchOnHover) private var openNotchOnHover
+    @Default(.hoverBehavior) private var hoverBehavior
     
     @State private var hovering: Bool = false
-  //  @Default(
     
     var body: some View {
         ZStack {
-            if hovering {
+            if hovering || accessibilityManager.isReduceMotion {
                 Button {
-                    spotifyPlayPause()
+                    MusicActions.playPause()
                 } label: {
-                    Image(systemName: spotifyManager.isPlaying == true ? "pause.fill" : "play.fill")
+                    Image(systemName: musicManager.music.isPlaying == true ? "pause.fill" : "play.fill")
                         .contentTransition(.symbolEffect(.replace))
                 } .buttonStyle(PlainButtonStyle())
             }
             
-            if !hovering {
+            if !hovering && !accessibilityManager.isReduceMotion {
                 Rectangle()
-                    .fill(coloredSpect ? Color(nsColor: spotifyManager.aveColor ?? .white).gradient : Color.white.gradient)
+                    .fill(coloredSpect ? Color(nsColor: musicManager.aveColor ?? .white).gradient : Color.white.gradient)
                     .frame(width: 35, alignment: .center)
                     .mask {
-                        AudioSpectrumView(isPlaying: $spotifyManager.isPlaying)
+                        AudioSpectrumView(isPlaying: $musicManager.music.isPlaying)
                             .frame(width: 15, height: 16)
                     }
             }
         } .onHover(perform: { isHovering in
             if isHovering {
-                guard !openNotchOnHover else { hovering = false ; return}
-                
+                guard hoverBehavior == .disabled else { hovering = false ; return}
                 hovering = true
             } else {
                 hovering = false

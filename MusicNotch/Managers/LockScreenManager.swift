@@ -37,15 +37,22 @@ class LockScreenManager: ObservableObject {
     
     @objc private func screenLocked() {
         Task { @MainActor in
-            guard Defaults[.lockExtension] == true else { return }
-            NotchManager.shared.showExtensionNotch(type: .locked)
+            Task.detached { if Defaults[.lockSound] { playSound(sound: .lock) } }
+            WindowManager.showLockScreenPlayer(sendFromLock: true)
+            MusicManager.shared.updateMusic()
+            if Defaults[.lockExtension] {
+                NotchManager.shared.showExtensionNotch(type: .locked)
+            }
         }
     }
     
     @objc private func screenUnlocked() {
         Task { @MainActor in
-            guard Defaults[.lockExtension] == true else { return }
-            NotchManager.shared.showExtensionNotch(type: .unlocked)
+            Task.detached { if Defaults[.unlockSound] { playSound(sound: .unlock) } }
+            WindowManager.hideLockScreen()
+            if Defaults[.lockExtension] {
+                NotchManager.shared.showExtensionNotch(type: .unlocked)
+            }
         }
     }
     

@@ -14,6 +14,7 @@ class WindowManager {
     static var onboardingWindow: LuminareWindow?
     static var settingsWindow: LuminareWindow?
     static var aboutWindow: LuminareWindow?
+    static var lockscreenWindow: MusicPlayerWindow? = nil
     
     private static func configureWindow(_ window: NSWindow?) {
         guard let window = window else { return }
@@ -115,6 +116,26 @@ class WindowManager {
         closeSettings()
         closeAbout()
         closeOnboarding()
+    }
+    
+    @MainActor static func showLockScreenPlayer(sendFromLock: Bool? = nil) {
+        if Defaults[.lockPlayer] {
+            if NotchManager.shared.notchContent == .locked || sendFromLock == true {
+                if MusicManager.shared.music.isPlaying || Defaults[.alwaysShowPlayer] {
+                    if lockscreenWindow == nil {
+                        lockscreenWindow = MusicPlayerWindow()
+                    }
+                    lockscreenWindow?.orderFrontRegardless()
+                }
+            }
+        }
+    }
+    
+    static func hideLockScreen() {
+        if Defaults[.lockPlayer] || lockscreenWindow != nil{
+            lockscreenWindow?.close()
+            lockscreenWindow = nil
+        }
     }
     
 }
