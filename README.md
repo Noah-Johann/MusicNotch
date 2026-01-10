@@ -28,7 +28,7 @@
 MusicNotch turns your MacBook's notch from just a cutout in your screen into a dynamic information center complete with music controls. Control your **Spotify** playback easily with a hover of the notch instead of opening a separate app. Get information about battery status, volume, brightness and more.  
 
 > [!NOTE]
-> MusicNotch currently only works with the official Spotify client. This will be expanded in the future.
+> MusicNotch currently works with Apple Music and the official Spotify client. A system-wide now playing integration will be added soon.
 
 
 ### Roadmap
@@ -64,7 +64,7 @@ brew install --cask Noah-Johann/MusicNotch/MusicNotch --no-quarantine
 
 MusicNotch automatically checks for updates in the background and notifies you when a new version is available. You can also check for updates manually at any time.
 
-Since MusicNotch uses the Sparkle framework, updating through [Latest](https://github.com/mangerlahn/Latest) is also supported.
+Since MusicNotch uses the Sparkle framework, updating through apps like [Latest](https://github.com/mangerlahn/Latest) is also supported.
 
 ### System Requirements
 - **macOS 14 Sonoma or later**
@@ -78,7 +78,7 @@ MusicNotch is currently localized in the following languages:
 
   
 ## License
-MusicNotch is licensed under the GNU General Public License v3.0. See [`License.md`](/LICENSE) for more details.
+MusicNotch is licensed under the GNU General Public License v3.0. See [`LICENSE`](/LICENSE) for more details.
 
 ## Acknowledgments
 To view acknowledgments, see [`Acknowledgments.md`](/Acknowledgments.md).
