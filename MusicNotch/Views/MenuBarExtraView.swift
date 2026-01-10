@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Luminare
+import Defaults
 
 struct MenuBarExtraView: View {    
     @State var musicManager = MusicManager.shared
@@ -32,6 +33,16 @@ struct MenuBarExtraView: View {
             } label: {
                 Image(systemName: "backward.end.fill")
                 Text("Previous")
+            }
+            Button {
+                openMusicApp()
+            } label: {
+                Defaults[.musicPlayer].image.imageScale(.large)
+                switch Defaults[.musicPlayer] {
+                case .appleMusic: Text("Show in Apple Music")
+                case .spotify: Text("Show in Spotify")
+                case .nowPlaying: Text("Show in Now Playing")
+                }
             }
             
         }

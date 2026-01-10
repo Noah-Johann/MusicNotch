@@ -885,6 +885,15 @@
         }
       }
     },
+    "Show in Apple Music" : {
+
+    },
+    "Show in Now Playing" : {
+
+    },
+    "Show in Spotify" : {
+
+    },
     "Show menubar item" : {
       "localizations" : {
         "de" : {
