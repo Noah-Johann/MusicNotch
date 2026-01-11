@@ -280,8 +280,10 @@ class MusicManager {
         }
         
         if NotchManager.shared.notchContent == .musicGlance || NotchManager.shared.notchContent == .music {
-            Task {
-                await NotchManager.shared.setNotchState(.closed, false)
+            if NotchManager.shared.notchState == .compact {
+                Task {
+                    await NotchManager.shared.setNotchState(.closed, false)
+                }
             }
         }
         
