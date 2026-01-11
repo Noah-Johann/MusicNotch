@@ -40,6 +40,20 @@ struct MusicActions {
         }
     }
     
+    static func secondsBackwards() {
+        Task {
+            switch Defaults[.musicPlayer] {
+            case .appleMusic:
+                break
+            case .spotify:
+                try await AppleScriptHelper.run("tell application \"Spotify\" to set player position to (player position - 15)")
+                await MusicManager.shared.updateMusic()
+            case .nowPlaying:
+                break
+            }
+        }
+    }
+    
     static func nextTrack() {
         Task {
             switch Defaults[.musicPlayer] {
@@ -49,6 +63,20 @@ struct MusicActions {
                 try await AppleScriptHelper.run("tell application \"Spotify\" to next track")
             case .nowPlaying:
                 await MusicManager.shared.NPnextTrack()
+            }
+        }
+    }
+    
+    static func secondsForwards() {
+        Task {
+            switch Defaults[.musicPlayer] {
+            case .appleMusic:
+                break
+            case .spotify:
+                try await AppleScriptHelper.run("tell application \"Spotify\" to set player position to (player position + 15)")
+                await MusicManager.shared.updateMusic()
+            case .nowPlaying:
+                break
             }
         }
     }

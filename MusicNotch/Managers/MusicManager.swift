@@ -26,6 +26,7 @@ class MusicManager {
         isPlaying: false,
         isLoved: false,
         shuffle: false,
+        type: .music,
     )
     var albumArt: NSImage? = NSImage(named: "no_playback")
     var aveColor: NSColor? = .white
@@ -35,7 +36,7 @@ class MusicManager {
     private var hideTimer: Timer? = nil
     private var stopTime = 0
     private var launched: Bool = false
-    private var prevMusic = MusicTrack(trackName: "", artistName: "", albumName: "", trackDuration: 0, trackPosition: 0, isPlaying: false, isLoved: false, shuffle: false)
+    private var prevMusic = MusicTrack(trackName: "", artistName: "", albumName: "", trackDuration: 0, trackPosition: 0, isPlaying: false, isLoved: false, shuffle: false, type: .music)
     
     init () {        
         setupObservers()
@@ -58,6 +59,7 @@ class MusicManager {
                                     isPlaying: trackInfo.payload.isPlaying ?? false,
                                     isLoved: false,
                                     shuffle: false,
+                                    type: trackInfo.payload.bundleIdentifier == "com.apple.podcasts" ? .podcast : .music,
                 )
             if trackInfo.payload.artwork != nil {
                 self.albumArt = trackInfo.payload.artwork
@@ -78,6 +80,7 @@ class MusicManager {
     
     deinit {
         DistributedNotificationCenter.default().removeObserver(self)
+        mediaController.stopListening()
     }
     
     private func setupObservers() {
@@ -260,13 +263,15 @@ class MusicManager {
             }
             print("Currently playing: \(trackInfo.payload.title ?? "Unknown")")
             self.music = MusicTrack(trackName: trackInfo.payload.title ?? "",
-                               artistName: trackInfo.payload.artist ?? "",
-                               albumName: trackInfo.payload.album ?? "",
-                               trackDuration: Int(trackInfo.payload.durationMicros ?? 1) / 1000000,
-                               trackPosition: Int(trackInfo.payload.elapsedTimeMicros ?? 0) / 1000000,
-                               isPlaying: trackInfo.payload.isPlaying ?? false,
-                               isLoved: false,
-                               shuffle: false,
+                                    artistName: trackInfo.payload.artist ?? "",
+                                    albumName: trackInfo.payload.album ?? "",
+                                    trackDuration: Int(trackInfo.payload.durationMicros ?? 1) / 1000000,
+                                    trackPosition: Int(trackInfo.payload.elapsedTimeMicros ?? 0) / 1000000,
+                                    isPlaying: trackInfo.payload.isPlaying ?? false,
+                                    isLoved: false,
+                                    shuffle: false,
+                                    type: trackInfo.payload.bundleIdentifier == "com.apple.podcasts" ? .podcast : .music,
+                                    
             )
             self.playingAppName = trackInfo.payload.applicationName
             self.playingAppBundle = trackInfo.payload.bundleIdentifier
@@ -282,6 +287,7 @@ class MusicManager {
                            isPlaying: false,
                            isLoved: false,
                            shuffle: false,
+                            type: .music,
         )
         playingAppName = nil
         playingAppBundle = nil
@@ -341,4 +347,10 @@ struct MusicTrack {
     var isLoved: Bool
     var shuffle: Bool
     var volume: CGFloat?
+    var type: PlaybackType
+}
+
+enum PlaybackType {
+    case music
+    case podcast
 }
