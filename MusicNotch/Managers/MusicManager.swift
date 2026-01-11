@@ -29,6 +29,8 @@ class MusicManager {
     )
     var albumArt: NSImage? = NSImage(named: "no_playback")
     var aveColor: NSColor? = .white
+    var playingAppName: String? = nil
+    var playingAppBundle: String? = nil
     
     private var hideTimer: Timer? = nil
     private var stopTime = 0
@@ -61,6 +63,7 @@ class MusicManager {
                 self.albumArt = trackInfo.payload.artwork
                 self.getAverageColor()
             }
+            self.playingAppBundle = trackInfo.payload.bundleIdentifier
             
             self.updateMusic(getMusic: false)
         }
@@ -227,6 +230,7 @@ class MusicManager {
         switch Defaults[.musicPlayer] {
         case .appleMusic:
             if let info = AppleMusicManager.shared.collectAppleMusicInfo() {
+                self.playingAppBundle = "com.apple.Music"
                 return info
             } else {
                 return disabledPlayback()
@@ -234,6 +238,7 @@ class MusicManager {
             
         case .spotify:
             if let info = SpotifyManager.shared.collectSpotifyInfo() {
+                self.playingAppBundle = "com.spotify.client"
                 return info
             } else {
                 return disabledPlayback()
@@ -260,6 +265,7 @@ class MusicManager {
                                isLoved: false,
                                shuffle: false,
             )
+            self.playingAppBundle = trackInfo.payload.bundleIdentifier
         }
     }
     
@@ -273,6 +279,7 @@ class MusicManager {
                            isLoved: false,
                            shuffle: false,
         )
+        playingAppBundle = nil
         
         Task { @MainActor in
             self.albumArt = NSImage(named: "no_playback")

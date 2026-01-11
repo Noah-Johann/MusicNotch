@@ -19,6 +19,10 @@ func openMusicApp() {
             NSWorkspace.shared.open(url)
         }
     case .nowPlaying:
-        break
+        Task { @MainActor in
+            if let url = MusicManager.shared.playingAppBundle, let appURL = NSWorkspace.shared.urlForApplication(withBundleIdentifier: url) {
+                NSWorkspace.shared.open(appURL)
+            }
+        }
     }
 }
