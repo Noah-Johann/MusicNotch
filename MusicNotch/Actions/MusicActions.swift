@@ -47,6 +47,7 @@ struct MusicActions {
                 break
             case .spotify:
                 try await AppleScriptHelper.run("tell application \"Spotify\" to set player position to (player position - 15)")
+                try await Task.sleep(for: .milliseconds(150))
                 await MusicManager.shared.updateMusic()
             case .nowPlaying:
                 break
@@ -74,6 +75,7 @@ struct MusicActions {
                 break
             case .spotify:
                 try await AppleScriptHelper.run("tell application \"Spotify\" to set player position to (player position + 15)")
+                try await Task.sleep(for: .milliseconds(150))
                 await MusicManager.shared.updateMusic()
             case .nowPlaying:
                 break
