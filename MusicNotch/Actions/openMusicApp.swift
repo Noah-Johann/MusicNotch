@@ -7,6 +7,7 @@
 
 import AppKit
 import Defaults
+import SwiftUI
 
 func openMusicApp() {
     switch Defaults[.musicPlayer] {
@@ -25,4 +26,13 @@ func openMusicApp() {
             }
         }
     }
+}
+
+func getMusicAppImage(bundle: String) -> Image{
+    if let appURL = NSWorkspace.shared.urlForApplication(withBundleIdentifier: bundle) {
+        let nsImage = NSWorkspace.shared.icon(forFile: appURL.path)
+        nsImage.size = NSSize(width: 64, height: 64)
+        return Image(nsImage: nsImage)
+    }
+    return Image(systemName: "music.note")
 }

@@ -63,6 +63,7 @@ class MusicManager {
                 self.albumArt = trackInfo.payload.artwork
                 self.getAverageColor()
             }
+            self.playingAppName = trackInfo.payload.applicationName
             self.playingAppBundle = trackInfo.payload.bundleIdentifier
             
             self.updateMusic(getMusic: false)
@@ -230,6 +231,7 @@ class MusicManager {
         switch Defaults[.musicPlayer] {
         case .appleMusic:
             if let info = AppleMusicManager.shared.collectAppleMusicInfo() {
+                self.playingAppName = "Music"
                 self.playingAppBundle = "com.apple.Music"
                 return info
             } else {
@@ -238,6 +240,7 @@ class MusicManager {
             
         case .spotify:
             if let info = SpotifyManager.shared.collectSpotifyInfo() {
+                self.playingAppName = "Spotify"
                 self.playingAppBundle = "com.spotify.client"
                 return info
             } else {
@@ -265,6 +268,7 @@ class MusicManager {
                                isLoved: false,
                                shuffle: false,
             )
+            self.playingAppName = trackInfo.payload.applicationName
             self.playingAppBundle = trackInfo.payload.bundleIdentifier
         }
     }
@@ -279,6 +283,7 @@ class MusicManager {
                            isLoved: false,
                            shuffle: false,
         )
+        playingAppName = nil
         playingAppBundle = nil
         
         Task { @MainActor in
