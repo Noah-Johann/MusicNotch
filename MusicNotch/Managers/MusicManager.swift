@@ -9,10 +9,13 @@ import Foundation
 import AppKit
 import SwiftUI
 import Defaults
+import MediaRemoteAdapter
 
 @MainActor @Observable
 class MusicManager {
     static let shared = MusicManager()
+    
+    let mediaController = MediaController()
         
     var music = MusicTrack(
         trackName: "",
@@ -34,6 +37,39 @@ class MusicManager {
     
     init () {        
         setupObservers()
+        
+        // Handle incoming track data (nil when no media player is active)
+        mediaController.onTrackInfoReceived = { trackInfo in
+            guard Defaults[.musicPlayer] == .nowPlaying else { return }
+            
+            guard let trackInfo = trackInfo else {
+                self.music = self.disabledPlayback()
+                return
+            }
+            print("Now Playing: \(trackInfo.payload.title ?? "N/A")")
+            print("Appname: \(trackInfo.payload.applicationName ?? "")")
+            self.music = MusicTrack(trackName: trackInfo.payload.title ?? "",
+                                    artistName: trackInfo.payload.artist ?? "",
+                                    albumName: trackInfo.payload.album ?? "",
+                                    trackDuration: Int(trackInfo.payload.durationMicros ?? 1) / 1000000,
+                                    trackPosition: Int(trackInfo.payload.elapsedTimeMicros ?? 0) / 1000000,
+                                    isPlaying: trackInfo.payload.isPlaying ?? false,
+                                    isLoved: false,
+                                    shuffle: false,
+                )
+            if trackInfo.payload.artwork != nil {
+                self.albumArt = trackInfo.payload.artwork
+                self.getAverageColor()
+            }
+            
+            self.updateMusic(getMusic: false)
+        }
+
+        // Handle listener termination
+        mediaController.onListenerTerminated = {
+            self.music = self.disabledPlayback()
+            print("Listener terminated")
+        }
     }
     
     deinit {
@@ -59,6 +95,8 @@ class MusicManager {
                 object: nil,
                 suspensionBehavior: .deliverImmediately
             )
+            
+            mediaController.startListening()
         }
     }
     
@@ -104,8 +142,15 @@ class MusicManager {
         }
     }
     
-    public func updateMusic() {
-        music = getMusicInfo()
+    public func updateMusic(getMusic: Bool = true) {
+        if getMusic && Defaults[.musicPlayer] != .nowPlaying {
+            music = getMusicInfo()
+        }
+        
+        if Defaults[.musicPlayer] == .nowPlaying {
+            getNowPlayingMusic()
+        }
+        
         if music.trackName != prevMusic.trackName {
             prevMusic = music
             
@@ -194,11 +239,27 @@ class MusicManager {
                 return disabledPlayback()
             }
         case .nowPlaying:
-            if let info = SpotifyManager.shared.collectSpotifyInfo() {
-                return info
-            } else {
-                return disabledPlayback()
+            print("Get music info with now playing")
+            return disabledPlayback()
+        }
+    }
+    
+    private func getNowPlayingMusic() {
+        mediaController.getTrackInfo { trackInfo in
+            guard let trackInfo = trackInfo else {
+                self.music = self.disabledPlayback()
+                return
             }
+            print("Currently playing: \(trackInfo.payload.title ?? "Unknown")")
+            self.music = MusicTrack(trackName: trackInfo.payload.title ?? "",
+                               artistName: trackInfo.payload.artist ?? "",
+                               albumName: trackInfo.payload.album ?? "",
+                               trackDuration: Int(trackInfo.payload.durationMicros ?? 1) / 1000000,
+                               trackPosition: Int(trackInfo.payload.elapsedTimeMicros ?? 0) / 1000000,
+                               isPlaying: trackInfo.payload.isPlaying ?? false,
+                               isLoved: false,
+                               shuffle: false,
+            )
         }
     }
     
@@ -240,6 +301,18 @@ class MusicManager {
         }
     }
     
+// MARK: - Now Playing Controls
+    
+    func NPplay() { mediaController.play() }
+    func NPpause() { mediaController.pause() }
+    func NPtogglePlayPause() { mediaController.togglePlayPause() }
+    func NPnextTrack() { mediaController.nextTrack() }
+    func NPpreviousTrack() { mediaController.previousTrack() }
+    func NPstop() { mediaController.stop() }
+    func NPseek(to seconds: Double) { mediaController.setTime(seconds: seconds) }
+
+    func NPsetShuffle(_ mode: TrackInfo.ShuffleMode) { mediaController.setShuffleMode(mode) }
+    func NPsetRepeat(_ mode: TrackInfo.RepeatMode) { mediaController.setRepeatMode(mode) }
 }
 
 // MARK: - Constants

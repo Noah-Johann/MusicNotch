@@ -7,8 +7,11 @@
 
 import Foundation
 import Defaults
+import MediaRemoteAdapter
 
 struct MusicActions {
+    let mediaController = MediaController()
+    
     static func playPause() {
         Task {
             switch Defaults[.musicPlayer] {
@@ -17,7 +20,7 @@ struct MusicActions {
             case .spotify:
                 try await AppleScriptHelper.run("tell application \"Spotify\" to playpause")
             case .nowPlaying:
-                break
+                await MusicManager.shared.NPtogglePlayPause()
             }
         }
     }
@@ -32,7 +35,7 @@ struct MusicActions {
                 try await AppleScriptHelper.run("tell application \"Spotify\" to previous track")
                 await MusicManager.shared.updateMusic()
             case .nowPlaying:
-                break
+                await MusicManager.shared.NPpreviousTrack()
             }
         }
     }
@@ -45,7 +48,7 @@ struct MusicActions {
             case .spotify:
                 try await AppleScriptHelper.run("tell application \"Spotify\" to next track")
             case .nowPlaying:
-                break
+                await MusicManager.shared.NPnextTrack()
             }
         }
     }
@@ -72,7 +75,7 @@ struct MusicActions {
             case .spotify:
                 try await AppleScriptHelper.run("tell application \"Spotify\" to set player position to \(position)")
             case .nowPlaying:
-                break
+                await MusicManager.shared.NPseek(to: position)
             }
         }
     }
