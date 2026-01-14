@@ -25,17 +25,15 @@ class VolumeManager: ObservableObject {
     @Published var deviceBattery: CGFloat = 100
     @Published var deviceVideo: String = "AirPodsPro2"
     
-    
     private var volBeforeMute: CGFloat = 0
     private var currentDeviceID: AudioDeviceID = kAudioDeviceUnknown
-    private var disabledHUD: Bool = false
     
     init() {
-        setupDeviceObserver()
+        setupDeviceChangeObserver()
         handleDeviceChange()
     }
     
-    private func defaultAudioDeviceID() -> AudioDeviceID {
+    private func getAudioDeviceID() -> AudioDeviceID {
         var defaultOutputDeviceID = AudioDeviceID(0)
          var propertySize = UInt32(MemoryLayout<AudioDeviceID>.size)
          var defaultAddress = AudioObjectPropertyAddress(
@@ -61,7 +59,7 @@ class VolumeManager: ObservableObject {
         return defaultOutputDeviceID
     }
     
-    func setupDeviceObserver() {
+    func setupDeviceChangeObserver() {
         var address = AudioObjectPropertyAddress(
             mSelector: kAudioHardwarePropertyDefaultOutputDevice,
             mScope: kAudioObjectPropertyScopeGlobal,
@@ -87,7 +85,7 @@ class VolumeManager: ObservableObject {
         }
     }
 
-    private func setupPerDeviceObservers(for deviceID: AudioDeviceID) {
+    private func setupDeviceVolumeObservers(for deviceID: AudioDeviceID) {
         var volAddress = AudioObjectPropertyAddress(
             mSelector: kAudioDevicePropertyVolumeScalar,
             mScope: kAudioDevicePropertyScopeOutput,
@@ -95,9 +93,7 @@ class VolumeManager: ObservableObject {
         )
         let volCallback: AudioObjectPropertyListenerProc = { (_, _, _, clientData) -> OSStatus in
             let manager = Unmanaged<VolumeManager>.fromOpaque(clientData!).takeUnretainedValue()
-            manager.getSystemVolume()
-            manager.getMuteStatus()
-            manager.showUpdate()
+            manager.updateVolume()
             return noErr
         }
         _ = AudioObjectAddPropertyListener(
@@ -114,9 +110,7 @@ class VolumeManager: ObservableObject {
         )
         let muteCallback: AudioObjectPropertyListenerProc = { (_, _, _, clientData) -> OSStatus in
             let manager = Unmanaged<VolumeManager>.fromOpaque(clientData!).takeUnretainedValue()
-            manager.getMuteStatus()
-            manager.getSystemVolume()
-            manager.showUpdate()
+            manager.updateVolume()
             return noErr
         }
         _ = AudioObjectAddPropertyListener(
@@ -129,7 +123,6 @@ class VolumeManager: ObservableObject {
     }
 
     private func teardownPerDeviceObservers(for deviceID: AudioDeviceID) {
-
         var volAddress = AudioObjectPropertyAddress(
             mSelector: kAudioDevicePropertyVolumeScalar,
             mScope: kAudioDevicePropertyScopeOutput,
@@ -155,13 +148,26 @@ class VolumeManager: ObservableObject {
         )
     }
     
-    func getSystemVolume() {
-        let defaultOutputDeviceID = defaultAudioDeviceID()
-        guard defaultOutputDeviceID != kAudioDeviceUnknown else {
-            print("Error getting default output device")
-            return
+    
+    func updateVolume() {
+        Task { @MainActor in
+            let prevVolume = volume
+            let prevMute = isMuted
+            
+            currentDeviceID = getAudioDeviceID()
+            guard currentDeviceID != kAudioDeviceUnknown else { return }
+            
+            volume = getVolume(device: currentDeviceID)
+            isMuted = getMuteStatus(device: currentDeviceID)
+            
+            if prevVolume != volume || prevMute != isMuted {
+                showUpdate()
+            }
         }
-
+    }
+    
+    
+    private func getVolume(device: AudioDeviceID) -> CGFloat {
         var usedVolume: Float32? = nil
         func channelVolume(_ ch: UInt32) -> Float32? {
             var addr = AudioObjectPropertyAddress(
@@ -169,10 +175,10 @@ class VolumeManager: ObservableObject {
                 mScope: kAudioDevicePropertyScopeOutput,
                 mElement: ch
             )
-            guard AudioObjectHasProperty(defaultOutputDeviceID, &addr) else { return nil }
+            guard AudioObjectHasProperty(device, &addr) else { return nil }
             var vol = Float32(0)
             var size = UInt32(MemoryLayout<Float32>.size)
-            let status = AudioObjectGetPropertyData(defaultOutputDeviceID, &addr, 0, nil, &size, &vol)
+            let status = AudioObjectGetPropertyData(device, &addr, 0, nil, &size, &vol)
             return status == noErr ? vol : nil
         }
 
@@ -190,10 +196,10 @@ class VolumeManager: ObservableObject {
                 mScope: kAudioDevicePropertyScopeOutput,
                 mElement: kAudioObjectPropertyElementMain
             )
-            if AudioObjectHasProperty(defaultOutputDeviceID, &addr) {
+            if AudioObjectHasProperty(device, &addr) {
                 var vol = Float32(0)
                 var size = UInt32(MemoryLayout<Float32>.size)
-                let status = AudioObjectGetPropertyData(defaultOutputDeviceID, &addr, 0, nil, &size, &vol)
+                let status = AudioObjectGetPropertyData(device, &addr, 0, nil, &size, &vol)
                 if status == noErr {
                     usedVolume = vol
                 }
@@ -201,17 +207,13 @@ class VolumeManager: ObservableObject {
         }
 
         if let vol = usedVolume {
-            Task { @MainActor in
-                self.volume = CGFloat(vol)
-                self.isMuted = (vol == 0) || self.isMuted
-            }
+            return CGFloat(vol)
         }
+        
+        return 0
     }
     
-    private func getMuteStatus() {
-        let deviceID = defaultAudioDeviceID()
-        guard deviceID != kAudioDeviceUnknown else { return }
-
+    private func getMuteStatus(device: AudioDeviceID) -> Bool {
         var mute: UInt32 = 0
         var propertySize = UInt32(MemoryLayout<UInt32>.size)
         var address = AudioObjectPropertyAddress(
@@ -219,60 +221,42 @@ class VolumeManager: ObservableObject {
             mScope: kAudioDevicePropertyScopeOutput,
             mElement: kAudioObjectPropertyElementMain
         )
-        let status = AudioObjectGetPropertyData(
-            deviceID,
-            &address,
-            0,
-            nil,
-            &propertySize,
-            &mute
-        )
-        guard status == noErr else { return }
-        Task { @MainActor in
-            self.isMuted = (mute != 0)
-        }
+        let status = AudioObjectGetPropertyData(device, &address, 0, nil, &propertySize, &mute)
+        
+        guard status == noErr else { return false }
+
+        return (mute != 0)
     }
     
     private func showUpdate() {
-        if Defaults[.hudExtension] && !disabledHUD {
+        if Defaults[.hudExtension] {
             print("showhud")
             NotchManager.shared.showExtensionNotch(type: .volume)
         }
     }
 
     private func handleDeviceChange() {
-        self.disabledHUD = true
-        let newDevice = defaultAudioDeviceID()
-        guard newDevice != kAudioDeviceUnknown else { return }
-
-        if currentDeviceID != kAudioDeviceUnknown && currentDeviceID != newDevice {
-            teardownPerDeviceObservers(for: currentDeviceID)
-        }
-        currentDeviceID = newDevice
-
-        // Update device info
-        getAudioOutputDevice()
-        self.disabledHUD = true
-        // Register per-device observers
-        setupPerDeviceObservers(for: newDevice)
-        // Refresh current values
-        getSystemVolume()
-        getMuteStatus()
         Task {
-            try? await Task.sleep(nanoseconds: 1_000_000_000)
-            self.disabledHUD = false
+            let newDevice = getAudioDeviceID()
+            guard newDevice != kAudioDeviceUnknown else { return }
+            
+            if currentDeviceID != kAudioDeviceUnknown && currentDeviceID != newDevice {
+                teardownPerDeviceObservers(for: currentDeviceID)
+            }
+            currentDeviceID = newDevice
+            
+            getAudioOutputDevice(device: newDevice)
+            
+            volume = getVolume(device: newDevice)
+            isMuted = getMuteStatus(device: newDevice)
+            
+            try await Task.sleep(for: .milliseconds(400))
 
+            setupDeviceVolumeObservers(for: newDevice)
         }
     }
     
-    func getAudioOutputDevice() {
-        // Get playback device
-        let defaultOutputDeviceID = defaultAudioDeviceID()
-        guard defaultOutputDeviceID != kAudioDeviceUnknown else {
-            print("No device found")
-            return
-        }
-        
+    func getAudioOutputDevice(device: AudioDeviceID) {
         var propertyAddress = AudioObjectPropertyAddress(
             mSelector: kAudioDevicePropertyDeviceNameCFString,
             mScope: kAudioObjectPropertyScopeGlobal,
@@ -289,7 +273,7 @@ class VolumeManager: ObservableObject {
         
         var nameRef: Unmanaged<CFString>?
         status = AudioObjectGetPropertyData(
-            defaultOutputDeviceID,
+            device,
             &propertyAddress,
             0,
             nil,
@@ -308,7 +292,7 @@ class VolumeManager: ObservableObject {
         
         var modelRef: Unmanaged<CFString>?
         status = AudioObjectGetPropertyData(
-            defaultOutputDeviceID,
+            device,
             &propertyAddress,
             0,
             nil,
@@ -326,7 +310,7 @@ class VolumeManager: ObservableObject {
         propSize = UInt32(MemoryLayout<UInt32>.size)
         
         _ = AudioObjectGetPropertyData(
-            defaultOutputDeviceID,
+            device,
             &propertyAddress,
             0,
             nil,
