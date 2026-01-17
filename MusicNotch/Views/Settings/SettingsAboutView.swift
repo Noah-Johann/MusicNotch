@@ -78,8 +78,9 @@ struct SettingsAboutView: View {
                         updateManager.downloadUpdate()
                     } label: {
                         HStack {
+                            Image(systemName: "square.and.arrow.down")
+                                .imageScale(.large)
                             Text("Download update")
-                            
                             Spacer()
                             
                             Text("v\(updateManager.newVersionNumber)")
