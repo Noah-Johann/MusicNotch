@@ -44,7 +44,7 @@ struct SettingsGeneralView: View {
             
             Button {
                 Task { @MainActor in
-                    await NotchManager.shared.setNotchState(.compact, true)
+                    await NotchManager.shared.setNotchState(.compact, changeDisplay: true)
                 }
             } label: {
                 Text("Show notch")

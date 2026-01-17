@@ -135,7 +135,7 @@ class MusicManager {
                 } else {
                     NotchManager.shared.notchContent = .music
                     Task {
-                        await NotchManager.shared.setNotchState(.compact, false)
+                        await NotchManager.shared.setNotchState(.compact)
                     }
                 }
             }
@@ -157,7 +157,7 @@ class MusicManager {
                                 if self.stopTime > Int(Defaults[.hideNotchTime]) && NotchManager.shared.notchState == .compact {
                                     guard NotchManager.shared.notchContent == .music || NotchManager.shared.notchContent == .musicGlance else { return }
                                     Task {
-                                        await NotchManager.shared.setNotchState(.closed, false)
+                                        await NotchManager.shared.setNotchState(.closed)
                                     }
                                     self.hideTimer?.invalidate()
                                     self.hideTimer = nil
@@ -220,7 +220,7 @@ class MusicManager {
         
         if NotchManager.shared.notchContent == .musicGlance || NotchManager.shared.notchContent == .music {
             Task {
-                await NotchManager.shared.setNotchState(.closed, false)
+                await NotchManager.shared.setNotchState(.closed)
             }
         }
         

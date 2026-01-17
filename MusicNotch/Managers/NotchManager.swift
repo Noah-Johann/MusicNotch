@@ -71,7 +71,7 @@ final class NotchManager {
             }
         }
         Task { @MainActor in
-            await self.setNotchState(.closed, false)
+            await self.setNotchState(.closed)
         }
         
         Task { @MainActor in
@@ -107,20 +107,20 @@ final class NotchManager {
                 Task {
                     if self.notchState == .open {
                         if MusicManager.shared.music.isPlaying == true {
-                            await self.setNotchState(.compact, false)
+                            await self.setNotchState(.compact)
                         } else {
-                            await self.setNotchState(.closed, false)
+                            await self.setNotchState(.closed)
                         }
                         print("notch close")
                     } else if self.notchState == .compact {
                         self.notchDismissed = true
-                        await self.setNotchState(.transparent, false)
+                        await self.setNotchState(.transparent)
                         print("dismiss notch")
                     }
                 }
             case .down:
                 Task {
-                    await self.setNotchState(.open, false)
+                    await self.setNotchState(.open)
                 }
             default:
                 break
@@ -146,7 +146,7 @@ final class NotchManager {
             if Defaults[.hoverBehavior] == .musicGlance {
                 if self.notchState != .compact {
                     Task { @MainActor in
-                        await setNotchState(.compact, false)
+                        await setNotchState(.compact)
                     }
                 }
                 self.setNotchContent(.musicGlance)
@@ -159,7 +159,7 @@ final class NotchManager {
                                                 
                         guard self.isHovering && !Task.isCancelled else { return }
                         
-                        await self.setNotchState(.open, false)
+                        await self.setNotchState(.open)
                     } catch {
                         return
                     }
@@ -171,9 +171,9 @@ final class NotchManager {
             if notchState == .open {
                 Task {
                     if MusicManager.shared.music.isPlaying {
-                        await self.setNotchState(.compact, false)
+                        await self.setNotchState(.compact)
                     } else {
-                        await self.setNotchState(.closed, false)
+                        await self.setNotchState(.closed)
                     }
                 }
             }
@@ -280,18 +280,18 @@ final class NotchManager {
         
         Task {
             if notchState == .compact {
-                await setNotchState(.open, false)
+                await setNotchState(.open)
                 
             } else if notchState == .open {
-                await setNotchState(.compact, false)
+                await setNotchState(.compact)
                 
             } else if notchState == .closed || notchState == .transparent {
-                await setNotchState(.compact, false)
+                await setNotchState(.compact)
             }
         }
     }
     
-    public func setNotchState(_ state: NotchState, _ changeDisplay: Bool) async {        
+    public func setNotchState(_ state: NotchState, changeDisplay: Bool = false) async {        
         let prevNotchState = self.notchState
                 
         if changeDisplay == true {
@@ -329,7 +329,7 @@ final class NotchManager {
             }
         case .transparent:
             if notchState != .closed {
-                await setNotchState(.closed, false)
+                await setNotchState(.closed)
             }
             notchState = .transparent
             await self.notch.transparent()
@@ -341,6 +341,7 @@ final class NotchManager {
     
     public func showExtensionNotch(type: NotchContent) {
         guard self.notchContent != .locked || type == .unlocked else { return }
+        guard type != .locked else { return }
 
         extensionRequestCounter &+= 1
         let requestToken = extensionRequestCounter
@@ -367,16 +368,11 @@ final class NotchManager {
             case .unlocked:
                 setNotchContent(.unlocked)
             case .locked:
-                setNotchContent(.locked)
-                if notchState == .closed || notchState == .transparent {
-                    await setNotchState(.compact, false)
-                }
-                self.extensionNotchTask = nil
                 return
             }
 
             if notchState == .closed || notchState == .transparent {
-                await setNotchState(.compact, false)
+                await setNotchState(.compact)
             }
 
             // Wait for display duration
@@ -392,7 +388,7 @@ final class NotchManager {
                 setNotchContent(.music)
             } else {
                 if notchState != .open {
-                    await setNotchState(.closed, false)
+                    await setNotchState(.closed)
                     self.notchContent = .music
                 } else {
                     setNotchContent(.music)
