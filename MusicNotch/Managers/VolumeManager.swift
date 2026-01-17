@@ -231,7 +231,7 @@ class VolumeManager: ObservableObject {
     private func showUpdate() {
         if Defaults[.hudExtension] {
             print("showhud")
-            NotchManager.shared.showExtensionNotch(type: .volume)
+            NotchManager.shared.showExtensionNotch(type: .volume, duration: Defaults[.displayDuration])
         }
     }
 
@@ -405,7 +405,7 @@ class VolumeManager: ObservableObject {
                                         getAirPodsInfo(device: deviceID)
                                         
                                         if Defaults[.bluetoothRecognition] {
-                                            NotchManager.shared.showExtensionNotch(type: .bluetooth)
+                                            NotchManager.shared.showExtensionNotch(type: .bluetooth, duration: Defaults[.displayDuration])
                                         }
                                     }
                                 }

@@ -26,7 +26,7 @@ struct MusicNotchApp: App {
             NotchManager.shared.toggleNotch()
         }
         KeyboardShortcuts.onKeyDown(for: .toggleMusicGlance) {
-            NotchManager.shared.showExtensionNotch(type: .musicGlance)
+            NotchManager.shared.toggleMusicGlance()
         }
         
         let handlers: [(KeyboardShortcuts.Name, () -> Void)] = [

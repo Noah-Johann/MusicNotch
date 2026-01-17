@@ -129,13 +129,13 @@ class KeyboardManager: ObservableObject {
                 Task {@MainActor in
                     BrightnessManager.shared.updateBrightness()
                     
-                    NotchManager.shared.showExtensionNotch(type: .brightness)
+                    NotchManager.shared.showExtensionNotch(type: .brightness, duration: Defaults[.displayDuration])
                 }
             case .brightnessDown:
                 Task {@MainActor in
                     BrightnessManager.shared.updateBrightness()
                     
-                    NotchManager.shared.showExtensionNotch(type: .brightness)
+                    NotchManager.shared.showExtensionNotch(type: .brightness, duration: Defaults[.displayDuration])
                 }
             }
         }

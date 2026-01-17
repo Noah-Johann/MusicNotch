@@ -291,6 +291,14 @@ final class NotchManager {
         }
     }
     
+    public func toggleMusicGlance() {
+        if notchContent == .musicGlance {
+            setNotchContent(.music)
+        } else {
+            setNotchContent(.musicGlance)
+        }
+    }
+    
     public func setNotchState(_ state: NotchState, changeDisplay: Bool = false) async {        
         let prevNotchState = self.notchState
                 
@@ -339,7 +347,7 @@ final class NotchManager {
         self.addScrollMonitors()
     }
     
-    public func showExtensionNotch(type: NotchContent) {
+    public func showExtensionNotch(type: NotchContent, duration: Double) {
         guard self.notchContent != .locked || type == .unlocked else { return }
         guard type != .locked else { return }
 
@@ -376,7 +384,7 @@ final class NotchManager {
             }
 
             // Wait for display duration
-            try? await Task.sleep(nanoseconds: UInt64(Defaults[.displayDuration] * 1_000_000_000))
+            try? await Task.sleep(for: .seconds(duration))
 
             // Only the latest request should proceed past this point
             guard requestToken == self.extensionRequestCounter, !Task.isCancelled else {

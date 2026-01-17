@@ -8,6 +8,7 @@
 import AppKit
 import IOKit
 import CoreGraphics
+import Defaults
 
 @MainActor
 final class BrightnessManager: ObservableObject {
@@ -45,7 +46,7 @@ final class BrightnessManager: ObservableObject {
             if let type = notification.controlTarget, type.contains("Brightness") {
                 self.brightness = (notification.value ?? 0) / (notification.maxValue ?? 0)
                 Task { @MainActor in
-                    NotchManager.shared.showExtensionNotch(type: .brightness)
+                    NotchManager.shared.showExtensionNotch(type: .brightness, duration: Defaults[.displayDuration])
                 }
             }
         } catch {}
@@ -54,14 +55,14 @@ final class BrightnessManager: ObservableObject {
     public func UpBrightness() {
         
         Task { @MainActor in
-            NotchManager.shared.showExtensionNotch(type: .brightness)
+            NotchManager.shared.showExtensionNotch(type: .brightness, duration: Defaults[.displayDuration])
         }
     }
     
     public func DownBrightness() {
         
         Task { @MainActor in
-            NotchManager.shared.showExtensionNotch(type: .brightness)
+            NotchManager.shared.showExtensionNotch(type: .brightness, duration: Defaults[.displayDuration])
         }
     }
     

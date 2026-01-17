@@ -113,7 +113,7 @@ class MusicManager {
                 if launched == false {
                     launched = true
                 } else {
-                    NotchManager.shared.showExtensionNotch(type: .musicGlance)
+                    NotchManager.shared.showExtensionNotch(type: .musicGlance, duration: Defaults[.musicGlanceDuration])
                 }
             }
         }
@@ -131,7 +131,7 @@ class MusicManager {
                 guard !NotchManager.shared.notchDismissed else { return }
                 
                 if Defaults[.autoMusicGlance] {
-                    NotchManager.shared.showExtensionNotch(type: .musicGlance)
+                    NotchManager.shared.showExtensionNotch(type: .musicGlance, duration: Defaults[.musicGlanceDuration])
                 } else {
                     NotchManager.shared.notchContent = .music
                     Task {

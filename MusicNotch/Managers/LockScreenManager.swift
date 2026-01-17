@@ -55,7 +55,7 @@ class LockScreenManager: ObservableObject {
             Task.detached { if Defaults[.unlockSound] { playSound(sound: .unlock) } }
             WindowManager.hideLockScreen()
             if Defaults[.lockExtension] {
-                NotchManager.shared.showExtensionNotch(type: .unlocked)
+                NotchManager.shared.showExtensionNotch(type: .unlocked, duration: 1.5)
             }
         }
     }
