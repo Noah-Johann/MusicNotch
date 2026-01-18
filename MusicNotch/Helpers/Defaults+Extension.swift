@@ -51,6 +51,7 @@ extension Defaults.Keys {
     
     // MusicGlance
     static let autoMusicGlance = Key<Bool>("autoMusicGlance", default: true)
+    static let musicGlanceDuration = Key<Double>("musicGlanceDuration", default: 5.0)
     
     // Extensions
     static let displayDuration = Key <Double>("displayDuration", default: 3.0)

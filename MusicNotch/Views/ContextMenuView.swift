@@ -17,14 +17,14 @@ func ContextMenuView() -> some View {
     
     Button("About") {
         Task {
-            await NotchManager.shared.setNotchState(.compact, false)
+            await NotchManager.shared.setNotchState(.compact)
         }
         WindowManager.openAbout()
     }
     
     Button("Settings") {
         Task {
-            await NotchManager.shared.setNotchState(.compact, false)
+            await NotchManager.shared.setNotchState(.compact)
         }
         WindowManager.openSettings()
         

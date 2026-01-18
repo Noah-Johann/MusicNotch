@@ -26,7 +26,7 @@ struct MusicNotchApp: App {
             NotchManager.shared.toggleNotch()
         }
         KeyboardShortcuts.onKeyDown(for: .toggleMusicGlance) {
-            NotchManager.shared.showExtensionNotch(type: .musicGlance)
+            NotchManager.shared.toggleMusicGlance()
         }
         
         let handlers: [(KeyboardShortcuts.Name, () -> Void)] = [
@@ -103,12 +103,12 @@ private func displayCallback(
     if flags.contains(.addFlag) || flags.contains(.removeFlag) {
         print("Display connected or disconnected")
             Task { @MainActor in
-                await NotchManager.shared.setNotchState(.hidden, true)
+                await NotchManager.shared.setNotchState(.hidden, changeDisplay: true)
             }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
             Task { @MainActor in
-                await NotchManager.shared.setNotchState(.compact, true)
+                await NotchManager.shared.setNotchState(.compact, changeDisplay: true)
             }
         }
     }

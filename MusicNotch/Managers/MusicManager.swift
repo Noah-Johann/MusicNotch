@@ -165,7 +165,7 @@ class MusicManager {
                 if launched == false {
                     launched = true
                 } else {
-                    NotchManager.shared.showExtensionNotch(type: .musicGlance)
+                    NotchManager.shared.showExtensionNotch(type: .musicGlance, duration: Defaults[.musicGlanceDuration])
                 }
             }
         }
@@ -183,11 +183,11 @@ class MusicManager {
                 guard !NotchManager.shared.notchDismissed else { return }
                 
                 if Defaults[.autoMusicGlance] {
-                    NotchManager.shared.showExtensionNotch(type: .musicGlance)
+                    NotchManager.shared.showExtensionNotch(type: .musicGlance, duration: Defaults[.musicGlanceDuration])
                 } else {
                     NotchManager.shared.notchContent = .music
                     Task {
-                        await NotchManager.shared.setNotchState(.compact, false)
+                        await NotchManager.shared.setNotchState(.compact)
                     }
                 }
             }
@@ -209,7 +209,7 @@ class MusicManager {
                                 if self.stopTime > Int(Defaults[.hideNotchTime]) && NotchManager.shared.notchState == .compact {
                                     guard NotchManager.shared.notchContent == .music || NotchManager.shared.notchContent == .musicGlance else { return }
                                     Task {
-                                        await NotchManager.shared.setNotchState(.closed, false)
+                                        await NotchManager.shared.setNotchState(.closed)
                                     }
                                     self.hideTimer?.invalidate()
                                     self.hideTimer = nil
@@ -298,10 +298,8 @@ class MusicManager {
         }
         
         if NotchManager.shared.notchContent == .musicGlance || NotchManager.shared.notchContent == .music {
-            if NotchManager.shared.notchState == .compact {
-                Task {
-                    await NotchManager.shared.setNotchState(.closed, false)
-                }
+            Task {
+                await NotchManager.shared.setNotchState(.closed)
             }
         }
         

@@ -44,7 +44,7 @@ struct SettingsDisplayView: View {
         .padding(.bottom, 14)
         .onChange(of: screen) {
             Task { @MainActor in
-                await NotchManager.shared.setNotchState(.compact, true)
+                await NotchManager.shared.setNotchState(.compact, changeDisplay: true)
             }
         }
     }
