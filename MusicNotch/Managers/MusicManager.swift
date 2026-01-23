@@ -154,25 +154,23 @@ class MusicManager {
                             Task { @MainActor in
                                 self.stopTime += 1
                                 print(self.stopTime)
-                                if self.stopTime > Int(Defaults[.hideNotchTime]) && NotchManager.shared.notchState == .compact {
-                                    guard NotchManager.shared.notchContent == .music || NotchManager.shared.notchContent == .musicGlance else { return }
-                                    Task {
+                                if NotchManager.shared.notchState == .compact {
+                                    if self.stopTime > Int(Defaults[.hideNotchTime]) {
+                                        guard NotchManager.shared.notchContent == .music || NotchManager.shared.notchContent == .musicGlance else { return }
                                         await NotchManager.shared.setNotchState(.closed)
+                                        self.hideTimer?.invalidate()
+                                        self.hideTimer = nil
+                                        self.stopTime = 0
+                                        
                                     }
+                                } else {
                                     self.hideTimer?.invalidate()
                                     self.hideTimer = nil
                                     self.stopTime = 0
-                                    
                                 }
                             }
                         }
                     }
-                }
-            } else if hideTimer != nil {
-                if NotchManager.shared.notchState == .closed || NotchManager.shared.notchState == .transparent {
-                    self.hideTimer?.invalidate()
-                    self.hideTimer = nil
-                    self.stopTime = 0
                 }
             }
         }
