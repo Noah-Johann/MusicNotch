@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Defaults
 
 
 struct PlayerButtonView: View {
@@ -18,11 +19,15 @@ struct PlayerButtonView: View {
         HStack {
             HoverEffectButton(icon: "shuffle", iconColor: .secondary, iconSize: 24, effectSize: 52, cornerRadius: 17, dot: $musicManager.music.shuffle) {
                 MusicActions.toggleShuffle()
-            }
+            } .opacity(Defaults[.musicPlayer] == .nowPlaying ? 0 : 1)
             
             
-            HoverEffectButton(icon: "backward.fill", iconSize: 25, effectSize: 52, cornerRadius: 17, dot: .constant(false)) {
-                MusicActions.lastTrack()
+            HoverEffectButton(icon: musicManager.music.type == .podcast ? "15.arrow.trianglehead.counterclockwise" : "backward.fill", iconSize: 25, effectSize: 52, cornerRadius: 17, dot: .constant(false)) {
+                if musicManager.music.type == .podcast {
+                    MusicActions.secondsBackwards()
+                } else {
+                    MusicActions.lastTrack()
+                }
             }
             
             
@@ -31,8 +36,12 @@ struct PlayerButtonView: View {
             }
             
             
-            HoverEffectButton(icon: "forward.fill", iconSize: 25, effectSize: 52, cornerRadius: 17, dot: .constant(false)) {
-                MusicActions.nextTrack()
+            HoverEffectButton(icon: musicManager.music.type == .podcast ? "15.arrow.trianglehead.clockwise" : "forward.fill", iconSize: 25, effectSize: 52, cornerRadius: 17, dot: .constant(false)) {
+                if musicManager.music.type == .podcast  {
+                    MusicActions.secondsForwards()
+                } else {
+                    MusicActions.nextTrack()
+                }
             }
             
             HoverEffectButton(icon: volumeManager.deviceIcon, iconColor: .secondary, iconSize: 30, effectSize: 52, cornerRadius: 15, dot: .constant(false)) {
