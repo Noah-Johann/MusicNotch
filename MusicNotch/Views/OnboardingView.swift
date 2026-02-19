@@ -97,8 +97,6 @@ struct OnboardingView: View {
                             } .buttonStyle(LuminareButtonStyle())
                         } else if OnboardingPage == 2 {
                             Button("Request permission") {
-                                print(AccessibilityHelper.isAuthorized(prompt: true))
-                                
                                 PermissionHelper.promptUserForConsent(for: "com.spotify.client") { consent in
                                     Task { @MainActor in
                                         print("Constent \(consent)")

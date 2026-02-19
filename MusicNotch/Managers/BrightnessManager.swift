@@ -52,19 +52,7 @@ final class BrightnessManager: ObservableObject {
         } catch {}
     }
     
-    public func UpBrightness() {
-        
-        Task { @MainActor in
-            NotchManager.shared.showExtensionNotch(type: .brightness, duration: Defaults[.displayDuration])
-        }
-    }
-    
-    public func DownBrightness() {
-        
-        Task { @MainActor in
-            NotchManager.shared.showExtensionNotch(type: .brightness, duration: Defaults[.displayDuration])
-        }
-    }
+// MARK: - Native
     
     public func updateBrightness() {
         self.brightness = CGFloat(getCurrentBrightness() ?? -1)

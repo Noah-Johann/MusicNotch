@@ -45,8 +45,6 @@ struct SettingsView: View {
                                 
                 SettingsShortcutsView()
                 
-                SettingsPermissionView()
-
                 SettingsAboutView()
             }
             .padding(.horizontal, 5)
