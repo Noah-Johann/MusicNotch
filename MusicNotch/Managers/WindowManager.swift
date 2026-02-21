@@ -38,16 +38,11 @@ class WindowManager {
             configureWindow(settingsWindow)
         }
         NSApp.activate(ignoringOtherApps: true)
-
-        settingsWindow?.makeKeyAndOrderFront(nil)
         
-        NSApp.setActivationPolicy(.regular)
+        settingsWindow?.makeKeyAndOrderFront(nil)
     }
     
     static func closeSettings() {
-        if !Defaults[.showDockItem] {
-            NSApp.setActivationPolicy(.accessory)
-        }
         settingsWindow?.orderOut(nil)
         settingsWindow?.close()
         settingsWindow = nil
@@ -65,17 +60,11 @@ class WindowManager {
             configureWindow(aboutWindow)
         }
         NSApp.activate(ignoringOtherApps: true)
-
-        aboutWindow?.makeKeyAndOrderFront(nil)
         
-        NSApp.setActivationPolicy(.regular)
-
+        aboutWindow?.makeKeyAndOrderFront(nil)
     }
     
     static func closeAbout() {
-        if !Defaults[.showDockItem] {
-            NSApp.setActivationPolicy(.accessory)
-        }
         aboutWindow?.orderOut(nil)
         aboutWindow?.close()
         aboutWindow = nil
@@ -96,17 +85,12 @@ class WindowManager {
             }
             
             NSApp.activate(ignoringOtherApps: true)
-
-            onboardingWindow?.makeKeyAndOrderFront(nil)
             
-            NSApp.setActivationPolicy(.regular)
+            onboardingWindow?.makeKeyAndOrderFront(nil)
         } else { return }
     }
     
     static func closeOnboarding() {
-        if !Defaults[.showDockItem] {
-            NSApp.setActivationPolicy(.accessory)
-        }
         onboardingWindow?.orderOut(nil)
         onboardingWindow?.close()
         onboardingWindow = nil
@@ -138,10 +122,4 @@ class WindowManager {
         }
     }
     
-}
-
-class AboutMenuHandler: NSObject {
-    @objc func showAboutMenu() {
-        WindowManager.openAbout()
-    }
 }

@@ -13,8 +13,8 @@ import LaunchAtLogin
 extension Defaults.Keys {
     // General
     static let viewedOnboarding = Key<Bool>("viewedOnboarding", default: false)
+    static let silentLaunch = Key<Bool>("silentLaunch", default: false)
     static let showMenuBarItem = Key<Bool>("showMenuBarItem", default: true)
-    static let showDockItem = Key<Bool>("showDockItem", default: false)
     
     static let launchAtLogin = Key<Bool>("LaunchAtLogin", default: LaunchAtLogin.isEnabled)
     

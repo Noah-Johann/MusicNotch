@@ -306,6 +306,9 @@
         }
       }
     },
+    "Enable silent launch" : {
+
+    },
     "Expand" : {
       "localizations" : {
         "de" : {
@@ -877,6 +880,7 @@
       }
     },
     "Show dock icon" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
