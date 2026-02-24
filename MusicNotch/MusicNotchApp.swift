@@ -65,7 +65,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         
         NSApp.setActivationPolicy(.accessory)
                 
-        CGDisplayRegisterReconfigurationCallback(displayCallback, UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque()))
+    //    CGDisplayRegisterReconfigurationCallback(displayCallback, UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque()))
     }
     
     func applicationShouldTerminateAfterLastWindowClosed(_: NSApplication) -> Bool {
@@ -75,27 +75,27 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     
     
     func applicationWillTerminate(_ aNotification: Notification) {
-        CGDisplayRemoveReconfigurationCallback(displayCallback, UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque()))
+     //   CGDisplayRemoveReconfigurationCallback(displayCallback, UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque()))
     }
 }
 
-private func displayCallback(
-    _ display: CGDirectDisplayID,
-    _ flags: CGDisplayChangeSummaryFlags,
-    _ userInfo: UnsafeMutableRawPointer?
-) {
-    guard userInfo != nil else { return }
-
-    if flags.contains(.addFlag) || flags.contains(.removeFlag) {
-        print("Display connected or disconnected")
-            Task { @MainActor in
-                await NotchManager.shared.setNotchState(.hidden, changeDisplay: true)
-            }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-            Task { @MainActor in
-                await NotchManager.shared.setNotchState(.compact, changeDisplay: true)
-            }
-        }
-    }
-}
+//private func displayCallback(
+//    _ display: CGDirectDisplayID,
+//    _ flags: CGDisplayChangeSummaryFlags,
+//    _ userInfo: UnsafeMutableRawPointer?
+//) {
+//    guard userInfo != nil else { return }
+//
+//    if flags.contains(.addFlag) || flags.contains(.removeFlag) {
+//        print("Display connected or disconnected")
+//            Task { @MainActor in
+//                await NotchManager.shared.setNotchState(.hidden, changeDisplay: true)
+//            }
+//        
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+//            Task { @MainActor in
+//                await NotchManager.shared.setNotchState(.compact, changeDisplay: true)
+//            }
+//        }
+//    }
+//}

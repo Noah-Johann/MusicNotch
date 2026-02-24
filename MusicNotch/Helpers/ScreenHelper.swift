@@ -1,0 +1,29 @@
+//
+//  ScreenHelper.swift
+//  MusicNotch
+//
+//  Created by Noah Johann on 23.02.26.
+//
+
+import AppKit
+
+class ScreenHelper {
+    init() {
+        setupScreenChange()
+    }
+    
+    @objc func screenChange() {
+        Task {
+            await NotchManager.shared.setNotchState(.hidden, changeDisplay: true)
+            try await Task.sleep(for: .seconds(2))
+            await NotchManager.shared.setNotchState(.hidden, changeDisplay: true)
+            await NotchManager.shared.setNotchState(.compact, changeDisplay: true)
+
+        }
+    }
+
+    func setupScreenChange() {
+        NotificationCenter.default.addObserver(self, selector: #selector(screenChange), name: NSApplication.didChangeScreenParametersNotification, object: nil
+        )
+    }
+}
