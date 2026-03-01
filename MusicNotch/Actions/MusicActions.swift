@@ -7,8 +7,11 @@
 
 import Foundation
 import Defaults
+import MediaRemoteAdapter
 
 struct MusicActions {
+    let mediaController = MediaController()
+    
     static func playPause() {
         Task {
             switch Defaults[.musicPlayer] {
@@ -17,7 +20,7 @@ struct MusicActions {
             case .spotify:
                 try await AppleScriptHelper.run("tell application \"Spotify\" to playpause")
             case .nowPlaying:
-                break
+                await MusicManager.shared.NPtogglePlayPause()
             }
         }
     }
@@ -32,6 +35,21 @@ struct MusicActions {
                 try await AppleScriptHelper.run("tell application \"Spotify\" to previous track")
                 await MusicManager.shared.updateMusic()
             case .nowPlaying:
+                await MusicManager.shared.NPpreviousTrack()
+            }
+        }
+    }
+    
+    static func secondsBackwards() {
+        Task {
+            switch Defaults[.musicPlayer] {
+            case .appleMusic:
+                break
+            case .spotify:
+                try await AppleScriptHelper.run("tell application \"Spotify\" to set player position to (player position - 15)")
+                try await Task.sleep(for: .milliseconds(150))
+                await MusicManager.shared.updateMusic()
+            case .nowPlaying:
                 break
             }
         }
@@ -44,6 +62,21 @@ struct MusicActions {
                 try await AppleScriptHelper.run("tell application \"Music\" to play next track")
             case .spotify:
                 try await AppleScriptHelper.run("tell application \"Spotify\" to next track")
+            case .nowPlaying:
+                await MusicManager.shared.NPnextTrack()
+            }
+        }
+    }
+    
+    static func secondsForwards() {
+        Task {
+            switch Defaults[.musicPlayer] {
+            case .appleMusic:
+                break
+            case .spotify:
+                try await AppleScriptHelper.run("tell application \"Spotify\" to set player position to (player position + 15)")
+                try await Task.sleep(for: .milliseconds(150))
+                await MusicManager.shared.updateMusic()
             case .nowPlaying:
                 break
             }
@@ -72,7 +105,7 @@ struct MusicActions {
             case .spotify:
                 try await AppleScriptHelper.run("tell application \"Spotify\" to set player position to \(position)")
             case .nowPlaying:
-                break
+                await MusicManager.shared.NPseek(to: position)
             }
         }
     }

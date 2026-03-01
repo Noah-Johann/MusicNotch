@@ -21,12 +21,10 @@ final class NotchManager {
     var notch: DynamicNotch<AnyView, AnyView, AnyView>
     
     private var openingTask: Task<Void, Never>?
-    private var hapticTask: Task<Void, Never>?
-    private var expandTask: Task<Void, Never>?
     private var extensionNotchTask: Task<Void, Never>?
     private var extensionRequestCounter: Int = 0
     
-    private var isCurrentlyHovering = false
+    private var isHovering = false
 
     private var localScrollMonitor: Any?
     private var globalScrollMonitor: Any?
@@ -73,7 +71,7 @@ final class NotchManager {
             }
         }
         Task { @MainActor in
-            await self.setNotchState(.closed, false)
+            await self.setNotchState(.closed)
         }
         
         Task { @MainActor in
@@ -109,20 +107,20 @@ final class NotchManager {
                 Task {
                     if self.notchState == .open {
                         if MusicManager.shared.music.isPlaying == true {
-                            await self.setNotchState(.compact, false)
+                            await self.setNotchState(.compact)
                         } else {
-                            await self.setNotchState(.closed, false)
+                            await self.setNotchState(.closed)
                         }
                         print("notch close")
                     } else if self.notchState == .compact {
                         self.notchDismissed = true
-                        await self.setNotchState(.transparent, false)
+                        await self.setNotchState(.transparent)
                         print("dismiss notch")
                     }
                 }
             case .down:
                 Task {
-                    await self.setNotchState(.openWithoutHover, false)
+                    await self.setNotchState(.open)
                 }
             default:
                 break
@@ -132,59 +130,50 @@ final class NotchManager {
     
     // MARK: - Hover Management
 
-    private func handleHoverChange(_ isHovering: Bool) {
-        self.isCurrentlyHovering = isHovering
+    private func handleHoverChange(_ hoverState: Bool) {
+        guard self.notchContent != .locked && self.notchContent != .unlocked else { return }
+
+        self.isHovering = hoverState
         
         if isHovering {
-            if Defaults[.hoverBehavior] == .expand {
-                self.openingTask?.cancel()
-                self.hapticTask?.cancel()
-                
-                guard self.notchContent != .locked && self.notchContent != .unlocked else { return }
-                
-                self.openingTask = Task { @MainActor in
-                    // Wait for the opening delay
-                    do {
-                        try await Task.sleep(nanoseconds: UInt64(Defaults[.openingDelay] * 1_000_000_000))
-                    } catch {
-                        return
-                    }
-                    
-                    guard self.isCurrentlyHovering && !Task.isCancelled else {
-                        return
-                    }
-                    
-                    await self.setNotchState(.open, false)
-                    
-                    if Defaults[.hapticFeedback] && Defaults[.openingDelay] != 0 {
-                        self.hapticTask = Task { @MainActor in
-                            
-                            guard !Task.isCancelled else { return }
-                            
-                            let performer = NSHapticFeedbackManager.defaultPerformer
-                            performer.perform(.alignment, performanceTime: .now)
-                        }
-                    }
+            if Defaults[.hapticFeedback] {
+                Task { @MainActor in
+                    let performer = NSHapticFeedbackManager.defaultPerformer
+                    performer.perform(.alignment, performanceTime: .now)
                 }
-            } else if Defaults[.hoverBehavior] == .musicGlance {
+            }
+            
+            if Defaults[.hoverBehavior] == .musicGlance {
                 if self.notchState != .compact {
                     Task { @MainActor in
-                        await setNotchState(.compact, false)
+                        await setNotchState(.compact)
                     }
                 }
                 self.setNotchContent(.musicGlance)
+            } else if Defaults[.hoverBehavior] == .expand {
+                self.openingTask?.cancel()
+                
+                self.openingTask = Task { @MainActor in
+                    do {
+                        try await Task.sleep(for: .seconds(Defaults[.openingDelay]))
+                                                
+                        guard self.isHovering && !Task.isCancelled else { return }
+                        
+                        await self.setNotchState(.open)
+                    } catch {
+                        return
+                    }
+                }
             }
         } else {
             self.openingTask?.cancel()
-            self.hapticTask?.cancel()
-            self.expandTask?.cancel()
             
-            if notchState == .open || self.expandTask != nil {
+            if notchState == .open {
                 Task {
                     if MusicManager.shared.music.isPlaying {
-                        await self.setNotchState(.compact, false)
+                        await self.setNotchState(.compact)
                     } else {
-                        await self.setNotchState(.closed, false)
+                        await self.setNotchState(.closed)
                     }
                 }
             }
@@ -193,13 +182,14 @@ final class NotchManager {
             }
         }
         
-        if Defaults[.hapticFeedback] && Defaults[.hoverBehavior] == .expand {
+        if Defaults[.hapticFeedback] && self.notchState == .open {
             let performer = NSHapticFeedbackManager.defaultPerformer
             performer.perform(.alignment, performanceTime: .default)
         }
     }
     
     // MARK: - Gesture monitor setup
+    
     private func addScrollMonitors() {
         guard let window = notch.windowController?.window else { return }
         if observedWindow === window { return }
@@ -230,7 +220,7 @@ final class NotchManager {
 
     private func handleScrollEvent(_ event: NSEvent) {
 
-        guard isCurrentlyHovering else { return }
+        guard isHovering else { return }
 
         let phase = event.phase
         let momentum = event.momentumPhase
@@ -287,23 +277,29 @@ final class NotchManager {
     
     public func toggleNotch() {
         openingTask?.cancel()
-        hapticTask?.cancel()
-        expandTask?.cancel()
         
         Task {
             if notchState == .compact {
-                await setNotchState(.openWithoutHover, false)
+                await setNotchState(.open)
                 
             } else if notchState == .open {
-                await setNotchState(.compact, false)
+                await setNotchState(.compact)
                 
             } else if notchState == .closed || notchState == .transparent {
-                await setNotchState(.compact, false)
+                await setNotchState(.compact)
             }
         }
     }
     
-    public func setNotchState(_ state: NotchState, _ changeDisplay: Bool) async {        
+    public func toggleMusicGlance() {
+        if notchContent == .musicGlance {
+            setNotchContent(.music)
+        } else {
+            setNotchContent(.musicGlance)
+        }
+    }
+    
+    public func setNotchState(_ state: NotchState, changeDisplay: Bool = false) async {        
         let prevNotchState = self.notchState
                 
         if changeDisplay == true {
@@ -317,29 +313,8 @@ final class NotchManager {
             notchState = .open
             MusicManager.shared.updateMusic()
             
-            self.expandTask = Task {
-                guard self.isCurrentlyHovering && !Task.isCancelled else {
-                    // User stopped hovering, go to compact instead
-                    await self.setNotchState(.compact, false)
-                    self.expandTask = nil
-                    return
-                }
-                
-                setNotchContent(.music)
-                
-                await self.notch.expand(on: NSScreen.selectedDisplay(.open)!)
-            
-                // Clear the task reference when completed
-                self.expandTask = nil
-            }
-        case .openWithoutHover:
-            notchState = .open
-            MusicManager.shared.updateMusic()
-            
             await self.notch.expand(on: NSScreen.selectedDisplay(.open)!)
             self.notch.moveToSky()
-            self.expandTask = nil
-
         case .compact:
             notchState = .compact
             MusicManager.shared.updateMusic()
@@ -362,7 +337,7 @@ final class NotchManager {
             }
         case .transparent:
             if notchState != .closed {
-                await setNotchState(.closed, false)
+                await setNotchState(.closed)
             }
             notchState = .transparent
             await self.notch.transparent()
@@ -372,8 +347,9 @@ final class NotchManager {
         self.addScrollMonitors()
     }
     
-    public func showExtensionNotch(type: NotchContent) {
+    public func showExtensionNotch(type: NotchContent, duration: Double) {
         guard self.notchContent != .locked || type == .unlocked else { return }
+        guard type != .locked else { return }
 
         extensionRequestCounter &+= 1
         let requestToken = extensionRequestCounter
@@ -400,20 +376,15 @@ final class NotchManager {
             case .unlocked:
                 setNotchContent(.unlocked)
             case .locked:
-                setNotchContent(.locked)
-                if notchState == .closed || notchState == .transparent {
-                    await setNotchState(.compact, false)
-                }
-                self.extensionNotchTask = nil
                 return
             }
 
             if notchState == .closed || notchState == .transparent {
-                await setNotchState(.compact, false)
+                await setNotchState(.compact)
             }
 
             // Wait for display duration
-            try? await Task.sleep(nanoseconds: UInt64(Defaults[.displayDuration] * 1_000_000_000))
+            try? await Task.sleep(for: .seconds(duration))
 
             // Only the latest request should proceed past this point
             guard requestToken == self.extensionRequestCounter, !Task.isCancelled else {
@@ -425,7 +396,7 @@ final class NotchManager {
                 setNotchContent(.music)
             } else {
                 if notchState != .open {
-                    await setNotchState(.closed, false)
+                    await setNotchState(.closed)
                     self.notchContent = .music
                 } else {
                     setNotchContent(.music)
@@ -446,7 +417,6 @@ final class NotchManager {
 
 enum NotchState {
     case open
-    case openWithoutHover
     case compact
     case closed
     case transparent

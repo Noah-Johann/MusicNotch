@@ -12,7 +12,7 @@ import LaunchAtLogin
 
 struct SettingsGeneralView: View {
     @Default(.showMenuBarItem) private var showMenuBarItem
-    @Default(.showDockItem) private var showDockItem
+    @Default(.silentLaunch) private var silentLaunch
     @Default(.viewedOnboarding) private var viewedOnboarding
     
     var body: some View {
@@ -35,16 +35,17 @@ struct SettingsGeneralView: View {
                     .tint(.accentColor)
             }
             
-            LuminareToggle(isOn: $showDockItem) {
-                Text("Show dock icon")
+            LuminareToggle(isOn: $silentLaunch) {
+                Text("Enable silent launch")
             }
+
             
 #if DEBUG
             LuminareToggle("Viewed Onboarding", isOn: $viewedOnboarding)
             
             Button {
                 Task { @MainActor in
-                    await NotchManager.shared.setNotchState(.compact, true)
+                    await NotchManager.shared.setNotchState(.compact, changeDisplay: true)
                 }
             } label: {
                 Text("Show notch")

@@ -18,6 +18,7 @@ struct SettingsView: View {
     @Default(.bluetoothRecognition) private var bluetoothRecognition
     @Default(.enableGestures) private var enableGestures
     @Default(.hoverBehavior) private var hoverBehavior
+    @Default(.autoMusicGlance) private var autoMusicGlance
     
     @ObservedObject private var updateManager = UpdateManager.shared
     
@@ -44,8 +45,6 @@ struct SettingsView: View {
                                 
                 SettingsShortcutsView()
                 
-                SettingsPermissionView()
-
                 SettingsAboutView()
             }
             .padding(.horizontal, 5)
@@ -53,6 +52,7 @@ struct SettingsView: View {
             .animation(.easeInOut(duration: 0.3), value: bluetoothRecognition)
             .animation(.easeInOut(duration: 0.3), value: enableGestures)
             .animation(.easeInOut(duration: 0.3), value: hoverBehavior)
+            .animation(.easeInOut(duration: 0.3), value: autoMusicGlance)
             .animation(.easeInOut(duration: 0.3), value: updateManager.updateState)
             .animation(.bouncy(duration: 0.2), value: updateManager.updateProgress)
 

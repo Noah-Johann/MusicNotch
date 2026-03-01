@@ -15,6 +15,8 @@
 		4F3441C22EF484AD00A4B26B /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F3441C12EF484AD00A4B26B /* DynamicNotchKit */; };
 		4F4DCDD92DB137F800067056 /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F4DCDD82DB137F800067056 /* DynamicNotchKit */; };
 		4F4DCDE22DB13C3100067056 /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F4DCDE12DB13C3000067056 /* DynamicNotchKit */; };
+		4F54F0552F13B2DC00681BBD /* MediaRemoteAdapter in Frameworks */ = {isa = PBXBuildFile; productRef = 4F54F0542F13B2DC00681BBD /* MediaRemoteAdapter */; };
+		4F54F0562F13B3D600681BBD /* MediaRemoteAdapter in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 4F54F0542F13B2DC00681BBD /* MediaRemoteAdapter */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		4F59E1482E4A9949005E4B75 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 4F59E1472E4A9949005E4B75 /* Sparkle */; };
 		4F67B5F82D849896001FF27A /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F67B5F72D849896001FF27A /* ScriptingBridge.framework */; };
 		4F75FABC2E86D6FB0064EF5E /* SkyLightWindow in Frameworks */ = {isa = PBXBuildFile; productRef = 4F75FABB2E86D6FB0064EF5E /* SkyLightWindow */; };
@@ -26,6 +28,20 @@
 		4FB5D9312E9A83D800997E62 /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4FB5D9302E9A83D800997E62 /* DynamicNotchKit */; };
 		4FFB0D422EDE286C0096B9FF /* UniversalGlass in Frameworks */ = {isa = PBXBuildFile; productRef = 4FFB0D412EDE286C0096B9FF /* UniversalGlass */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		4F54F0572F13B3D600681BBD /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				4F54F0562F13B3D600681BBD /* MediaRemoteAdapter in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		4F67B5F72D849896001FF27A /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
@@ -62,6 +78,7 @@
 			files = (
 				4F29BD2F2E7470EC0098A721 /* DynamicNotchKit in Frameworks */,
 				4F75FABC2E86D6FB0064EF5E /* SkyLightWindow in Frameworks */,
+				4F54F0552F13B2DC00681BBD /* MediaRemoteAdapter in Frameworks */,
 				4F8405652DB6DAE100BC97E2 /* DynamicNotchKit in Frameworks */,
 				4F4DCDD92DB137F800067056 /* DynamicNotchKit in Frameworks */,
 				4F2905DE2DB8E196004C1DA1 /* DynamicNotchKit in Frameworks */,
@@ -121,6 +138,7 @@
 				4FA87FBC2D847DD700725978 /* Sources */,
 				4FA87FBD2D847DD700725978 /* Frameworks */,
 				4FA87FBE2D847DD700725978 /* Resources */,
+				4F54F0572F13B3D600681BBD /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -147,6 +165,7 @@
 				4FFB0D412EDE286C0096B9FF /* UniversalGlass */,
 				4F3441BE2EF46D6C00A4B26B /* DynamicNotchKit */,
 				4F3441C12EF484AD00A4B26B /* DynamicNotchKit */,
+				4F54F0542F13B2DC00681BBD /* MediaRemoteAdapter */,
 			);
 			productName = MusicNotch;
 			productReference = 4FA87FC02D847DD700725978 /* MusicNotch.app */;
@@ -187,6 +206,7 @@
 				4F75FABA2E86D6FB0064EF5E /* XCRemoteSwiftPackageReference "SkyLightWindow" */,
 				4FFB0D402EDE286C0096B9FF /* XCRemoteSwiftPackageReference "UniversalGlass" */,
 				4F3441C02EF484AD00A4B26B /* XCRemoteSwiftPackageReference "DynamicNotchKit" */,
+				4F54F0532F13B2DB00681BBD /* XCRemoteSwiftPackageReference "mediaremote-adapter" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 4FA87FC12D847DD700725978 /* Products */;
@@ -364,7 +384,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CREATE_INFOPLIST_SECTION_IN_BINARY = YES;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 127;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"MusicNotch/Preview Content\"";
 				DEVELOPMENT_TEAM = C3PS85G8WX;
@@ -391,7 +411,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 0.1.6;
+				MARKETING_VERSION = 0.1.7;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.NoahJohann.MusicNotch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -425,7 +445,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CREATE_INFOPLIST_SECTION_IN_BINARY = YES;
-				CURRENT_PROJECT_VERSION = 119;
+				CURRENT_PROJECT_VERSION = 127;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"MusicNotch/Preview Content\"";
 				DEVELOPMENT_TEAM = C3PS85G8WX;
@@ -452,7 +472,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 0.1.6;
+				MARKETING_VERSION = 0.1.7;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.NoahJohann.MusicNotch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -515,6 +535,14 @@
 			repositoryURL = "https://github.com/Noah-Johann/DynamicNotchKit/";
 			requirement = {
 				branch = main;
+				kind = branch;
+			};
+		};
+		4F54F0532F13B2DB00681BBD /* XCRemoteSwiftPackageReference "mediaremote-adapter" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ejbills/mediaremote-adapter";
+			requirement = {
+				branch = master;
 				kind = branch;
 			};
 		};
@@ -595,6 +623,11 @@
 		4F4DCDE12DB13C3000067056 /* DynamicNotchKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DynamicNotchKit;
+		};
+		4F54F0542F13B2DC00681BBD /* MediaRemoteAdapter */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F54F0532F13B2DB00681BBD /* XCRemoteSwiftPackageReference "mediaremote-adapter" */;
+			productName = MediaRemoteAdapter;
 		};
 		4F59E1472E4A9949005E4B75 /* Sparkle */ = {
 			isa = XCSwiftPackageProductDependency;

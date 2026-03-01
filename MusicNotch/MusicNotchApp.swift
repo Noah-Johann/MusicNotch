@@ -26,7 +26,7 @@ struct MusicNotchApp: App {
             NotchManager.shared.toggleNotch()
         }
         KeyboardShortcuts.onKeyDown(for: .toggleMusicGlance) {
-            NotchManager.shared.showExtensionNotch(type: .musicGlance)
+            NotchManager.shared.toggleMusicGlance()
         }
         
         let handlers: [(KeyboardShortcuts.Name, () -> Void)] = [
@@ -51,35 +51,21 @@ struct MusicNotchApp: App {
 
 
 class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
-    let aboutMenuHandler = AboutMenuHandler()
-    
-    
     func applicationDidFinishLaunching(_ notification: Notification) {
         NotchManager.shared.createNotch()
         
         if Defaults[.viewedOnboarding] == false {
             WindowManager.openOnboarding()
         } else {
-            WindowManager.openSettings()
+            if Defaults[.silentLaunch] == false {
+                WindowManager.openSettings()
+            }
             MusicManager.shared.updateMusic()
         }
         
-        // Aboutmenu handler
-        if let mainMenu = NSApp.mainMenu,
-           let appMenu = mainMenu.items.first?.submenu {
-            if let aboutItem = appMenu.items.first(where: { $0.action == #selector(NSApplication.orderFrontStandardAboutPanel(_:)) }) {
-                appMenu.removeItem(aboutItem)
-            }
-            // Add your custom About menu item
-            let customAboutItem = NSMenuItem(
-                title: "About MusicNotch",
-                action: #selector(AboutMenuHandler.showAboutMenu),
-                keyEquivalent: "")
-            customAboutItem.target = aboutMenuHandler
-            appMenu.insertItem(customAboutItem, at: 0)
-        }
+        NSApp.setActivationPolicy(.accessory)
                 
-        CGDisplayRegisterReconfigurationCallback(displayCallback, UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque()))
+    //    CGDisplayRegisterReconfigurationCallback(displayCallback, UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque()))
     }
     
     func applicationShouldTerminateAfterLastWindowClosed(_: NSApplication) -> Bool {
@@ -89,27 +75,27 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     
     
     func applicationWillTerminate(_ aNotification: Notification) {
-        CGDisplayRemoveReconfigurationCallback(displayCallback, UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque()))
+     //   CGDisplayRemoveReconfigurationCallback(displayCallback, UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque()))
     }
 }
 
-private func displayCallback(
-    _ display: CGDirectDisplayID,
-    _ flags: CGDisplayChangeSummaryFlags,
-    _ userInfo: UnsafeMutableRawPointer?
-) {
-    guard userInfo != nil else { return }
-
-    if flags.contains(.addFlag) || flags.contains(.removeFlag) {
-        print("Display connected or disconnected")
-            Task { @MainActor in
-                await NotchManager.shared.setNotchState(.hidden, true)
-            }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-            Task { @MainActor in
-                await NotchManager.shared.setNotchState(.compact, true)
-            }
-        }
-    }
-}
+//private func displayCallback(
+//    _ display: CGDirectDisplayID,
+//    _ flags: CGDisplayChangeSummaryFlags,
+//    _ userInfo: UnsafeMutableRawPointer?
+//) {
+//    guard userInfo != nil else { return }
+//
+//    if flags.contains(.addFlag) || flags.contains(.removeFlag) {
+//        print("Display connected or disconnected")
+//            Task { @MainActor in
+//                await NotchManager.shared.setNotchState(.hidden, changeDisplay: true)
+//            }
+//        
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+//            Task { @MainActor in
+//                await NotchManager.shared.setNotchState(.compact, changeDisplay: true)
+//            }
+//        }
+//    }
+//}

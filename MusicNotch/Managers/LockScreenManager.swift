@@ -40,8 +40,12 @@ class LockScreenManager: ObservableObject {
             Task.detached { if Defaults[.lockSound] { playSound(sound: .lock) } }
             WindowManager.showLockScreenPlayer(sendFromLock: true)
             MusicManager.shared.updateMusic()
+            
             if Defaults[.lockExtension] {
-                NotchManager.shared.showExtensionNotch(type: .locked)
+                if NotchManager.shared.notchState == .closed || NotchManager.shared.notchState == .transparent {
+                    await NotchManager.shared.setNotchState(.compact)
+                }
+                NotchManager.shared.setNotchContent(.locked)
             }
         }
     }
@@ -51,7 +55,7 @@ class LockScreenManager: ObservableObject {
             Task.detached { if Defaults[.unlockSound] { playSound(sound: .unlock) } }
             WindowManager.hideLockScreen()
             if Defaults[.lockExtension] {
-                NotchManager.shared.showExtensionNotch(type: .unlocked)
+                NotchManager.shared.showExtensionNotch(type: .unlocked, duration: 1.5)
             }
         }
     }

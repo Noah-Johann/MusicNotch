@@ -2,55 +2,115 @@
 //  AudioSpectView.swift
 //  MusicNotch
 //
-//  Created by Noah Johann on 23.04.25.
+//  Source: https://github.com/TheBoredTeam/boring.notch/blob/dev/boringNotch/components/Music/MusicVisualizer.swift
 //
 
+import AppKit
+import Cocoa
 import SwiftUI
-import Defaults
 
-struct AudioSpectView: View {
-    @State var musicManager = MusicManager.shared
-    @ObservedObject var accessibilityManager = AccessibilityManager.shared
+class AudioSpectrum: NSView {
+    private var barLayers: [CAShapeLayer] = []
+    private var isPlaying: Bool = true
+    private var animationTimer: Timer?
     
-    @Default(.coloredSpect) private var coloredSpect
-    @Default(.hoverBehavior) private var hoverBehavior
-    
-    @State private var hovering: Bool = false
-    
-    var body: some View {
-        ZStack {
-            if hovering || accessibilityManager.isReduceMotion {
-                Button {
-                    MusicActions.playPause()
-                } label: {
-                    Image(systemName: musicManager.music.isPlaying == true ? "pause.fill" : "play.fill")
-                        .contentTransition(.symbolEffect(.replace))
-                } .buttonStyle(PlainButtonStyle())
-            }
-            
-            if !hovering && !accessibilityManager.isReduceMotion {
-                Rectangle()
-                    .fill(coloredSpect ? Color(nsColor: musicManager.aveColor ?? .white).gradient : Color.white.gradient)
-                    .frame(width: 35, alignment: .center)
-                    .mask {
-                        AudioSpectrumView(isPlaying: $musicManager.music.isPlaying)
-                            .frame(width: 15, height: 16)
-                    }
-            }
-        } .onHover(perform: { isHovering in
-            if isHovering {
-                guard hoverBehavior == .disabled else { hovering = false ; return}
-                hovering = true
-            } else {
-                hovering = false
-            }
-        })
-        .animation(.bouncy(duration: 0.4), value: hovering)
-        .frame(width: 30, height: 30)
+    override init(frame frameRect: NSRect) {
+        super.init(frame: frameRect)
+        wantsLayer = true
+        setupBars()
     }
     
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        wantsLayer = true
+        setupBars()
+    }
+
+    private func setupBars() {
+        let barWidth: CGFloat = NotchManager.shared.notchState == .open ? 2 : 1.75
+        let barCount = NotchManager.shared.notchState == .open ? 6 : 5
+        let spacing: CGFloat = barWidth
+        let totalWidth = CGFloat(barCount) * (barWidth + spacing)
+        let totalHeight: CGFloat = NotchManager.shared.notchState == .open ? 22 : 14
+        frame.size = CGSize(width: totalWidth, height: totalHeight)
+
+        for i in 0 ..< barCount {
+            let xPosition = CGFloat(i) * (barWidth + spacing)
+            let barLayer = CAShapeLayer()
+            barLayer.frame = CGRect(x: xPosition, y: 0, width: barWidth, height: totalHeight)
+            barLayer.position = CGPoint(x: xPosition + barWidth / 2, y: totalHeight / 2)
+            barLayer.fillColor = NSColor.white.cgColor
+            
+            let path = NSBezierPath(roundedRect: CGRect(x: 0, y: 0, width: barWidth, height: totalHeight),
+                                    xRadius: barWidth / 2,
+                                    yRadius: barWidth / 2)
+            barLayer.path = path.cgPath
+            
+            barLayers.append(barLayer)
+            layer?.addSublayer(barLayer)
+        }
+    }
+    
+    private func startAnimating() {
+        guard animationTimer == nil else { return }
+        animationTimer = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: true) { [weak self] _ in
+            self?.updateBars()
+        }
+    }
+    
+    private func stopAnimating() {
+        animationTimer?.invalidate()
+        animationTimer = nil
+        resetBars()
+    }
+    
+    private func updateBars() {
+        for barLayer in barLayers {
+            let animation = CABasicAnimation(keyPath: "transform.scale.y")
+            animation.fromValue = barLayer.presentation()?.value(forKeyPath: "transform.scale.y") ?? 0.35
+            animation.toValue = CGFloat.random(in: 0.35 ... 1.0)
+            animation.duration = 0.3
+            animation.autoreverses = true
+            animation.fillMode = .forwards
+            animation.isRemovedOnCompletion = false
+            
+            barLayer.add(animation, forKey: "scaleY")
+        }
+    }
+    
+    private func resetBars() {
+        for barLayer in barLayers {
+            barLayer.removeAllAnimations()
+            barLayer.transform = CATransform3DMakeScale(1, 0.35, 1)
+        }
+    }
+    
+    func setPlaying(_ playing: Bool) {
+        isPlaying = playing
+        if isPlaying {
+            startAnimating()
+        } else {
+            stopAnimating()
+        }
+    }
+}
+
+struct AudioSpectrumView: NSViewRepresentable {
+    @Binding var isPlaying: Bool
+    
+    func makeNSView(context: Context) -> AudioSpectrum {
+        let spectrum = AudioSpectrum()
+        spectrum.setPlaying(isPlaying)
+        return spectrum
+    }
+    
+    func updateNSView(_ nsView: AudioSpectrum, context: Context) {
+        nsView.setPlaying(isPlaying)
+    }
 }
 
 #Preview {
-    AudioSpectView()
+    AudioSpectrumView(isPlaying: .constant(true))
+        .frame(width: 16, height: 20)
+        .padding()
 }

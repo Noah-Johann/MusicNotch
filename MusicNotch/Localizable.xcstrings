@@ -44,6 +44,7 @@
       }
     },
     "Accessibility Permission" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -304,6 +305,9 @@
           }
         }
       }
+    },
+    "Enable silent launch" : {
+
     },
     "Expand" : {
       "localizations" : {
@@ -876,6 +880,7 @@
       }
     },
     "Show dock icon" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -884,6 +889,18 @@
           }
         }
       }
+    },
+    "Show in %@" : {
+
+    },
+    "Show in Apple Music" : {
+
+    },
+    "Show in Now Playing" : {
+
+    },
+    "Show in Spotify" : {
+
     },
     "Show menubar item" : {
       "localizations" : {
@@ -916,6 +933,7 @@
       }
     },
     "Show notch" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1127,6 +1145,7 @@
       "shouldTranslate" : false
     },
     "Viewed Onboarding" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {

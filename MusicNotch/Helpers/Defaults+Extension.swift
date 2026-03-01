@@ -13,8 +13,8 @@ import LaunchAtLogin
 extension Defaults.Keys {
     // General
     static let viewedOnboarding = Key<Bool>("viewedOnboarding", default: false)
+    static let silentLaunch = Key<Bool>("silentLaunch", default: false)
     static let showMenuBarItem = Key<Bool>("showMenuBarItem", default: true)
-    static let showDockItem = Key<Bool>("showDockItem", default: false)
     
     static let launchAtLogin = Key<Bool>("LaunchAtLogin", default: LaunchAtLogin.isEnabled)
     
@@ -51,6 +51,7 @@ extension Defaults.Keys {
     
     // MusicGlance
     static let autoMusicGlance = Key<Bool>("autoMusicGlance", default: true)
+    static let musicGlanceDuration = Key<Double>("musicGlanceDuration", default: 5.0)
     
     // Extensions
     static let displayDuration = Key <Double>("displayDuration", default: 3.0)

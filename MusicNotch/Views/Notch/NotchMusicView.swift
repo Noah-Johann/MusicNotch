@@ -42,7 +42,13 @@ struct NotchMusicViewLeading: View {
 struct NotchMusicViewTrailing: View {
     @State private var notchManager = NotchManager.shared
     @State private var musicManager = MusicManager.shared
-
+    @ObservedObject var accessibilityManager = AccessibilityManager.shared
+    
+    @Default(.coloredSpect) private var coloredSpect
+    @Default(.hoverBehavior) private var hoverBehavior
+    
+    @State private var isHovering: Bool = false
+    
     var body: some View {
         HStack {
             if notchManager.notchContent == .musicGlance {
@@ -51,7 +57,36 @@ struct NotchMusicViewTrailing: View {
                     .frame(minWidth: 75, maxWidth: 125)
             }
             
-            AudioSpectView()
+            Button {
+                MusicActions.playPause()
+            } label: {
+                ZStack {
+                    if !accessibilityManager.isReduceMotion {
+                        Rectangle()
+                            .fill(coloredSpect ? Color(nsColor: musicManager.aveColor ?? .white).gradient : Color.white.gradient)
+                            .frame(width: 30, alignment: .center)
+                            .mask {
+                                AudioSpectrumView(isPlaying: $musicManager.music.isPlaying)
+                                    .frame(width: 15, height: 15)
+                            }
+                        .blur(radius: isHovering ? 1.7 : 0)
+                    }
+                    
+                    if isHovering || accessibilityManager.isReduceMotion {
+                        Image(systemName: musicManager.music.isPlaying == true ? "pause.fill" : "play.fill")
+                            .contentTransition(.symbolEffect(.replace))
+                    }
+                } .frame(width: 30, height: 30)
+            }
+            .buttonStyle(PlainButtonStyle())
+            .onHover { hovering in
+                if hovering {
+                    guard hoverBehavior == .disabled else { isHovering = false ; return}
+                    isHovering = true
+                } else {
+                    isHovering = false
+                }
+            }
         }
     }
 }
@@ -74,8 +109,7 @@ struct NotchMusicViewExpanded: View {
 
                     
                     Button(action: {
-                        let url = URL(fileURLWithPath: "/Applications/Spotify.app")
-                        NSWorkspace.shared.open(url)
+                        openMusicApp()
                     }, label: {
                         Color.clear
                             .frame(width: 65, height: 65)
@@ -117,12 +151,12 @@ struct NotchMusicViewExpanded: View {
                 .padding(.bottom, 8)
         
             //Progress Bar
-            HStack {
+            HStack (spacing: 14){
                 Text(formatTime(Int(trackposition)))
-                    .frame(minWidth: 50, maxWidth: 80, minHeight: 20, alignment: .center)
                     .foregroundStyle(.gray)
                     .fontWeight(.semibold)
                     .font(.system(size: 12))
+                    .monospacedDigit()
                 
                 CustomSlider(value: $trackposition,
                              inRange: 0...Double(musicManager.music.trackDuration),
@@ -135,14 +169,15 @@ struct NotchMusicViewExpanded: View {
                     if !isEditing {
                         MusicActions.setProgress(position: trackposition)
                     }
-                }) .frame(width: 240, height: 10, alignment: .center)
+                }) .frame(minWidth: 160, idealWidth: .infinity, maxWidth: .infinity)
                 
                 Text("-\(formatTime(musicManager.music.trackDuration - Int(trackposition)))")
-                    .frame(minWidth: 55, maxWidth: 80, minHeight: 20, alignment: .center)
-                    .foregroundStyle(.gray)
-                    .fontWeight(.semibold)
                     .font(.system(size: 12))
-            }.frame(height: 15)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.gray)
+                    .monospacedDigit()
+                
+            }.frame(width: 350, height: 15)
                 .padding(.bottom, 6)
             
             PlayerButtonView()
@@ -155,6 +190,7 @@ struct NotchMusicViewExpanded: View {
         .onAppear {
             trackposition = Double(musicManager.music.trackPosition)
             playbackTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+                print("playback timer")
                 Task { @MainActor in
                     if musicManager.music.isPlaying == true {
                         trackposition += 1
@@ -172,6 +208,11 @@ struct NotchMusicViewExpanded: View {
             ContextMenuView()
         }
     }
+}
+
+#Preview {
+    NotchMusicViewTrailing()
+        .frame(width: 100, height: 100)
 }
 
 
