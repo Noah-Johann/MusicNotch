@@ -75,7 +75,7 @@ struct NotchViewExpanded: View {
     
     @ObservedObject var batteryManager = BatteryManager.shared
     @ObservedObject var volumeManager = VolumeManager.shared
-    @ObservedObject var brightnessManager = BrightnessManager.shared
+    @State var brightnessManager = BrightnessManager.shared
     @ObservedObject var lockScreenManager = LockScreenManager.shared
     
     var body: some View {

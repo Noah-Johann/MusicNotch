@@ -16,7 +16,7 @@ enum HudType {
 
 struct NotchHUDViewLeading: View {
     @ObservedObject var volumeManager = VolumeManager.shared
-    @ObservedObject var brightnessManager = BrightnessManager.shared
+    @State var brightnessManager = BrightnessManager.shared
     
     let hudType: HudType
     
@@ -79,7 +79,7 @@ struct NotchHUDViewLeading: View {
 
 struct NotchHUDViewTrailing: View {
     @ObservedObject var volumeManager = VolumeManager.shared
-    @ObservedObject var brightnessManager = BrightnessManager.shared
+    @State var brightnessManager = BrightnessManager.shared
     
     let hudType: HudType
     
@@ -124,7 +124,7 @@ func textWidth(_ key: String, font: NSFont) -> CGFloat {
 
 struct NotchHUDViewExpanded: View {
     @ObservedObject var volumeManager = VolumeManager.shared
-    @ObservedObject var brightnessManager = BrightnessManager.shared
+    @State var brightnessManager = BrightnessManager.shared
     
     @State private var musicManager = MusicManager.shared
 
