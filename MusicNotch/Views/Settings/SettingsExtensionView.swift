@@ -24,7 +24,7 @@ struct SettingsExtensionView: View {
     @Default(.bluetoothRecognition) private var bluetoothRecognition
     @Default(.bluetoothSymbols) private var bluetoothSymbols
     
-    @ObservedObject private var accessibilityManager = AccessibilityManager.shared
+    @State private var accessibilityManager = AccessibilityManager.shared
     
     var body: some View {
         LuminareSection {

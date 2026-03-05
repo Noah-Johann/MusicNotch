@@ -12,8 +12,8 @@ import UniversalGlass
 
 struct LockScreenPlayingView: View {
     @State private var musicManager = MusicManager.shared
-    @ObservedObject private var volumeManager = VolumeManager.shared
-    @ObservedObject private var accessibilityManager = AccessibilityManager.shared
+    @State private var volumeManager = VolumeManager.shared
+    @State private var accessibilityManager = AccessibilityManager.shared
     
     @State private var trackposition: Double = 0
     @State private var isDragging: Bool = false

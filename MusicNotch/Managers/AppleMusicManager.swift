@@ -8,7 +8,6 @@
 import Foundation
 import AppKit
 
-@MainActor
 class AppleMusicManager {
     static let shared = AppleMusicManager()
     
@@ -75,10 +74,14 @@ class AppleMusicManager {
         )
         
         if let data = descriptor.atIndex(10)?.data {
-            MusicManager.shared.albumArt = NSImage(data: data)
-            MusicManager.shared.getAverageColor()
+            Task { @MainActor in
+                MusicManager.shared.albumArt = NSImage(data: data)
+                MusicManager.shared.getAverageColor()
+            }
         } else {
-            MusicManager.shared.albumArt = NSImage(named: "no_playback")
+            Task { @MainActor in
+                MusicManager.shared.albumArt = NSImage(named: "no_playback")
+            }
         }
                 
         return returnTrack

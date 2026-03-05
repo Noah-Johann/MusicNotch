@@ -42,7 +42,7 @@ struct NotchMusicViewLeading: View {
 struct NotchMusicViewTrailing: View {
     @State private var notchManager = NotchManager.shared
     @State private var musicManager = MusicManager.shared
-    @ObservedObject var accessibilityManager = AccessibilityManager.shared
+    @State var accessibilityManager = AccessibilityManager.shared
     
     @Default(.coloredSpect) private var coloredSpect
     @Default(.hoverBehavior) private var hoverBehavior
@@ -93,7 +93,7 @@ struct NotchMusicViewTrailing: View {
 
 struct NotchMusicViewExpanded: View {
     @State var musicManager = MusicManager.shared
-    @ObservedObject var accessibilityManager = AccessibilityManager.shared
+    @State var accessibilityManager = AccessibilityManager.shared
     
     @State private var isDragging = false
     @State private var trackposition : Double = 0

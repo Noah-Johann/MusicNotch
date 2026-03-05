@@ -18,7 +18,7 @@ final class NotchManager {
     var notchContent: NotchContent = .music
     var notchDismissed: Bool = false
     
-    var notch: DynamicNotch<AnyView, AnyView, AnyView>
+    var notch: DynamicNotch<AnyView, AnyView, AnyView>?
     
     private var openingTask: Task<Void, Never>?
     private var extensionNotchTask: Task<Void, Never>?
@@ -38,16 +38,6 @@ final class NotchManager {
 
     enum SwipeDirection { case left, right, up, down }
     
-    private init() {
-        notch = DynamicNotch(
-            hoverBehavior: .increaseShadow,
-            style: .notch(topCornerRadius: 25, bottomCornerRadius: 50),
-            expanded: { AnyView(EmptyView()) },
-            compactLeading: { AnyView(EmptyView()) },
-            compactTrailing: { AnyView(EmptyView()) }
-        )
-    }
-    
     @MainActor deinit {
         removeScrollMonitors()
     }
@@ -55,6 +45,7 @@ final class NotchManager {
     // MARK: - Setup
     
     public func createNotch() {
+        notch = nil
         notch = DynamicNotch(
             hoverBehavior: .increaseShadow,
             style: .notch(topCornerRadius: 25, bottomCornerRadius: 50),
@@ -62,19 +53,20 @@ final class NotchManager {
             compactLeading: { AnyView(NotchViewLeading()) },
             compactTrailing: { AnyView(NotchViewTrailing()) }
         )
+        guard let notch = notch else { return }
         notch.moveToSky()
         notch.onHoverChanged = { [weak self] isHovering in
             guard let self = self else { return }
             
-            Task { @MainActor in
+            Task {
                 self.handleHoverChange(isHovering)
             }
         }
-        Task { @MainActor in
+        Task {
             await self.setNotchState(.closed)
         }
         
-        Task { @MainActor in
+        Task {
             self.addScrollMonitors()
         }
         
@@ -191,7 +183,7 @@ final class NotchManager {
     // MARK: - Gesture monitor setup
     
     private func addScrollMonitors() {
-        guard let window = notch.windowController?.window else { return }
+        guard let notch = notch, let window = notch.windowController?.window else { return }
         if observedWindow === window { return }
 
         removeScrollMonitors()
@@ -275,23 +267,21 @@ final class NotchManager {
     
     // MARK: - Notch control
     
-    public func toggleNotch() {
+    public func toggleNotch() async {
         openingTask?.cancel()
         
-        Task {
-            if notchState == .compact {
-                await setNotchState(.open)
-                
-            } else if notchState == .open {
-                await setNotchState(.compact)
-                
-            } else if notchState == .closed || notchState == .transparent {
-                await setNotchState(.compact)
-            }
+        if notchState == .compact {
+            await setNotchState(.open)
+            
+        } else if notchState == .open {
+            await setNotchState(.compact)
+            
+        } else if notchState == .closed || notchState == .transparent {
+            await setNotchState(.compact)
         }
     }
     
-    public func toggleMusicGlance() {
+    public func toggleMusicGlance() async {
         if notchContent == .musicGlance {
             setNotchContent(.music)
         } else {
@@ -299,11 +289,12 @@ final class NotchManager {
         }
     }
     
-    public func setNotchState(_ state: NotchState, changeDisplay: Bool = false) async {        
+    public func setNotchState(_ state: NotchState, changeDisplay: Bool = false) async {
+        guard let notch = notch else { return }
         let prevNotchState = self.notchState
                 
         if changeDisplay == true {
-            await self.notch.hide()
+            await notch.hide()
             self.addScrollMonitors()
             self.notchContent = .music
         }
@@ -313,8 +304,8 @@ final class NotchManager {
             notchState = .open
             MusicManager.shared.updateMusic()
             
-            await self.notch.expand(on: NSScreen.selectedDisplay(.open)!)
-            self.notch.moveToSky()
+            await notch.expand(on: NSScreen.selectedDisplay(.open)!)
+            notch.moveToSky()
         case .compact:
             notchState = .compact
             MusicManager.shared.updateMusic()
@@ -323,16 +314,16 @@ final class NotchManager {
             }
             let screen = NSScreen.selectedDisplay(.compact)
             if screen != nil {
-                await self.notch.compact(on: screen!)
+                await notch.compact(on: screen!)
             } else {
-                await self.notch.transparent()
+                await notch.transparent()
             }
-            self.notch.moveToSky()
+            notch.moveToSky()
         case .closed:
             notchState = .closed
-            await self.notch.close()
+            await notch.close()
             guard let _ = NSScreen.selectedDisplay(.closed) else {
-                await self.notch.transparent()
+                await notch.transparent()
                 return
             }
         case .transparent:
@@ -340,9 +331,9 @@ final class NotchManager {
                 await setNotchState(.closed)
             }
             notchState = .transparent
-            await self.notch.transparent()
+            await notch.transparent()
         case .hidden:
-            await self.notch.hide()
+            await notch.hide()
         }
         self.addScrollMonitors()
     }

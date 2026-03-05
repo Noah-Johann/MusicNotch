@@ -8,9 +8,7 @@
 import Foundation
 import Defaults
 
-class LockScreenManager: ObservableObject {
-    static let shared = LockScreenManager()
-    
+class LockScreenManager {    
     init() {
         setupObservers()
     }

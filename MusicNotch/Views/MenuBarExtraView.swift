@@ -11,7 +11,7 @@ import Defaults
 
 struct MenuBarExtraView: View {    
     @State var musicManager = MusicManager.shared
-    @ObservedObject var updateManager = UpdateManager.shared
+    @State var updateManager = UpdateManager.shared
     
     var body: some View {
         Section {

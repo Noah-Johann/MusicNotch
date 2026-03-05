@@ -15,7 +15,7 @@ class WindowManager {
     static var settingsWindow: LuminareWindow?
     static var aboutWindow: LuminareWindow?
     static var lockscreenWindow: MusicPlayerWindow? = nil
-    
+        
     private static func configureWindow(_ window: NSWindow?) {
         guard let window = window else { return }
         // Ensure the window is released when closed to avoid lingering snapshots

@@ -20,7 +20,7 @@ struct SettingsView: View {
     @Default(.hoverBehavior) private var hoverBehavior
     @Default(.autoMusicGlance) private var autoMusicGlance
     
-    @ObservedObject private var updateManager = UpdateManager.shared
+    @State private var updateManager = UpdateManager.shared
     
     var body: some View {
         LuminarePane() {

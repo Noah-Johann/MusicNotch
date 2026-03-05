@@ -11,7 +11,7 @@ import Defaults
 
 struct PlayerButtonView: View {
     @State var musicManager = MusicManager.shared
-    @ObservedObject var volumeManager = VolumeManager.shared
+    @State var volumeManager = VolumeManager.shared
     
     var enableSpeaker: Bool = true
     
