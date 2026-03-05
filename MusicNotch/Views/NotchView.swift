@@ -72,11 +72,11 @@ struct NotchViewTrailing: View {
 
 struct NotchViewExpanded: View {
     @State var notchManager = NotchManager.shared
-    
-    @ObservedObject var batteryManager = BatteryManager.shared
-    @ObservedObject var volumeManager = VolumeManager.shared
+    @State var batteryManager = BatteryManager.shared
+    @State var volumeManager = VolumeManager.shared
     @State var brightnessManager = BrightnessManager.shared
-    @ObservedObject var lockScreenManager = LockScreenManager.shared
+    private var lockManager = LockScreenManager()
+    private var screenHelper = ScreenHelper()
     
     var body: some View {
         VStack {
