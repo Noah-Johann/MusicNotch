@@ -20,6 +20,7 @@ extension Defaults.Keys {
     
     static let autoUpdates = Key<Bool>("autoUpdates", default: false)
     
+    static let autoPlayer = Key<Bool>("autoPlayer", default: true)
     static let musicPlayer = Key<MusicApp>("musicPlayer", default: .spotify)
     
     // Display

@@ -64,7 +64,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
             if Defaults[.silentLaunch] == false {
                 WindowManager.openSettings()
             }
-            MusicManager.shared.updateMusic()
+            MusicManager.shared.refreshMusic()
         }
         
         NSApp.setActivationPolicy(.accessory)

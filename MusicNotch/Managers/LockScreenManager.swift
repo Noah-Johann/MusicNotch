@@ -37,7 +37,7 @@ class LockScreenManager {
         Task { @MainActor in
             Task.detached { if Defaults[.lockSound] { playSound(sound: .lock) } }
             WindowManager.showLockScreenPlayer(sendFromLock: true)
-            MusicManager.shared.updateMusic()
+            MusicManager.shared.refreshMusic()
             
             if Defaults[.lockExtension] {
                 if NotchManager.shared.notchState == .closed || NotchManager.shared.notchState == .transparent {

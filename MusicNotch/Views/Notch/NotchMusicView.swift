@@ -96,8 +96,9 @@ struct NotchMusicViewExpanded: View {
     @State var accessibilityManager = AccessibilityManager.shared
     
     @State private var isDragging = false
-    @State private var trackposition : Double = 0
     @State private var playbackTimer: Timer?
+    
+    @State private var trackPosition: Double = 0
     
     @Default(.coloredSpect) private var coloredSpect
     
@@ -152,26 +153,28 @@ struct NotchMusicViewExpanded: View {
         
             //Progress Bar
             HStack (spacing: 14){
-                Text(formatTime(Int(trackposition)))
+                Text(formatTime(Int(trackPosition)))
                     .foregroundStyle(.gray)
                     .fontWeight(.semibold)
                     .font(.system(size: 12))
                     .monospacedDigit()
                 
-                CustomSlider(value: $trackposition,
-                             inRange: 0...Double(musicManager.music.trackDuration),
-                             activeFillColor: .white,
-                             fillColor: .white,
-                             emptyColor: Color(NSColor.darkGray),
-                             height: 8.0,
-                             onEditingChanged: { isEditing in
-                    isDragging = isEditing
-                    if !isEditing {
-                        MusicActions.setProgress(position: trackposition)
-                    }
-                }) .frame(minWidth: 160, idealWidth: .infinity, maxWidth: .infinity)
+                CustomSlider(
+                    value: $trackPosition,
+                    inRange: 0...Double(musicManager.music.trackDuration),
+                    activeFillColor: .white,
+                    fillColor: .white,
+                    emptyColor: Color(NSColor.darkGray),
+                    height: 8.0,
+                    onEditingChanged: { isEditing in
+                        isDragging = isEditing
+                        if !isEditing {
+                            MusicActions.setProgress(position: trackPosition)
+                        }
+                    },
+                ) .frame(minWidth: 160, idealWidth: .infinity, maxWidth: .infinity)
                 
-                Text("-\(formatTime(musicManager.music.trackDuration - Int(trackposition)))")
+                Text("-\(formatTime(musicManager.music.trackDuration - Int(trackPosition)))")
                     .font(.system(size: 12))
                     .fontWeight(.semibold)
                     .foregroundStyle(.gray)
@@ -185,15 +188,15 @@ struct NotchMusicViewExpanded: View {
         }
         .background(.black)
         .onChange(of: musicManager.music.trackPosition) { _, newValue in
-            trackposition = Double(newValue)
+            trackPosition = Double(newValue)
         }
         .onAppear {
-            trackposition = Double(musicManager.music.trackPosition)
+            trackPosition = Double(musicManager.music.trackPosition)
             playbackTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
                 print("playback timer")
                 Task { @MainActor in
                     if musicManager.music.isPlaying == true {
-                        trackposition += 1
+                        trackPosition += 1
                     }
                 }
             }

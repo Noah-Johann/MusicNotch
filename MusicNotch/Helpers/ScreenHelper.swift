@@ -17,7 +17,7 @@ class ScreenHelper {
 //            await NotchManager.shared.setNotchState(.hidden, changeDisplay: true)
 //            await NotchManager.shared.createNotch()
             await NotchManager.shared.setNotchState(.closed, changeDisplay: true)
-            await MusicManager.shared.updateMusic()
+            await MusicManager.shared.refreshMusic()
         }
     }
 

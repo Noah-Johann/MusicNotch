@@ -30,7 +30,48 @@ class SpotifyManager {
         return NSWorkspace.shared.urlForApplication(withBundleIdentifier: spotifyBundle) != nil
 
     }
-      
+    
+    public func setupObservers() {
+        DistributedNotificationCenter.default().addObserver(
+            self,
+            selector: #selector(spotifyNotification),
+            name: NSNotification.Name("com.spotify.client.PlaybackStateChanged"),
+            object: nil,
+            suspensionBehavior: .deliverImmediately
+        )
+    }
+    
+    @objc private func spotifyNotification(_ sender: NSNotification?) {
+        guard isSpotifyRunning() else { return }
+        
+        let musicAppKilled = sender?.userInfo?["Player State"] as? String == "Stopped"
+        if musicAppKilled {
+            Task {
+                try? await Task.sleep(for: .milliseconds(1000))
+                let running = isSpotifyRunning()
+                if running {
+                    await MusicManager.shared.updateMusic(player: .spotify)
+                } else {
+                    await MusicManager.shared.setDisabledPlayback()
+                    return
+                }
+            }
+        } else {
+            Task { @MainActor in
+                MusicManager.shared.updateMusic(player: .spotify)
+            }
+        }
+    }
+    
+    public func checkIfPlaying() -> Bool {
+        let result = AppleScriptHelper.executeAppleScript("tell application \"Spotify\" to set isPlaying to player state as string")
+        if let descriptor = result, descriptor.atIndex(1)?.stringValue == "playing" {
+            return true
+        } else {
+            return false
+        }
+    }
+          
     public func collectSpotifyInfo() -> MusicTrack? {
         guard isSpotifyRunning() else { return nil }
         

@@ -19,6 +19,7 @@ struct SettingsView: View {
     @Default(.enableGestures) private var enableGestures
     @Default(.hoverBehavior) private var hoverBehavior
     @Default(.autoMusicGlance) private var autoMusicGlance
+    @Default(.autoPlayer) private var autoPlayer
     
     @State private var updateManager = UpdateManager.shared
     
@@ -55,6 +56,7 @@ struct SettingsView: View {
             .animation(.easeInOut(duration: 0.3), value: autoMusicGlance)
             .animation(.easeInOut(duration: 0.3), value: updateManager.updateState)
             .animation(.bouncy(duration: 0.2), value: updateManager.updateProgress)
+            .animation(.bouncy(duration: 0.3), value: autoPlayer)
 
         }
     }

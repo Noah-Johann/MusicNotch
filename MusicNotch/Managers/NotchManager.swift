@@ -302,13 +302,13 @@ final class NotchManager {
         switch state {
         case .open:
             notchState = .open
-            MusicManager.shared.updateMusic()
+            MusicManager.shared.refreshMusic()
             
             await notch.expand(on: NSScreen.selectedDisplay(.open)!)
             notch.moveToSky()
         case .compact:
             notchState = .compact
-            MusicManager.shared.updateMusic()
+            MusicManager.shared.refreshMusic()
             if prevNotchState == .open {
                 self.setNotchContent(.music)
             }
