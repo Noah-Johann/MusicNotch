@@ -26,7 +26,7 @@
 		4FAD01402E7ECE06002D4794 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FAD013F2E7ECE06002D4794 /* IOKit.framework */; };
 		4FAD05212E8499BA002D4794 /* Luminare in Frameworks */ = {isa = PBXBuildFile; productRef = 4FAD05202E8499BA002D4794 /* Luminare */; };
 		4FB5D9312E9A83D800997E62 /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4FB5D9302E9A83D800997E62 /* DynamicNotchKit */; };
-		4FFB0D422EDE286C0096B9FF /* UniversalGlass in Frameworks */ = {isa = PBXBuildFile; productRef = 4FFB0D412EDE286C0096B9FF /* UniversalGlass */; };
+		4FE45B4A2F5C9CCC0082806E /* MediaRemoteAdapter in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 4FAC46D32F5C5FCB00729637 /* MediaRemoteAdapter */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -36,6 +36,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				4FE45B4A2F5C9CCC0082806E /* MediaRemoteAdapter in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -91,7 +92,6 @@
 				4FABD4852D9704BB00F8CFEA /* KeyboardShortcuts in Frameworks */,
 				4F3441C22EF484AD00A4B26B /* DynamicNotchKit in Frameworks */,
 				4FB5D9312E9A83D800997E62 /* DynamicNotchKit in Frameworks */,
-				4FFB0D422EDE286C0096B9FF /* UniversalGlass in Frameworks */,
 				4FAD01402E7ECE06002D4794 /* IOKit.framework in Frameworks */,
 				4F3441BF2EF46D6C00A4B26B /* DynamicNotchKit in Frameworks */,
 				4FAD05212E8499BA002D4794 /* Luminare in Frameworks */,
@@ -162,7 +162,6 @@
 				4FAD05202E8499BA002D4794 /* Luminare */,
 				4F75FABB2E86D6FB0064EF5E /* SkyLightWindow */,
 				4FB5D9302E9A83D800997E62 /* DynamicNotchKit */,
-				4FFB0D412EDE286C0096B9FF /* UniversalGlass */,
 				4F3441BE2EF46D6C00A4B26B /* DynamicNotchKit */,
 				4F3441C12EF484AD00A4B26B /* DynamicNotchKit */,
 				4FAC46D32F5C5FCB00729637 /* MediaRemoteAdapter */,
@@ -205,7 +204,6 @@
 				4F59E1462E4A9949005E4B75 /* XCRemoteSwiftPackageReference "Sparkle" */,
 				4FAD051F2E8499BA002D4794 /* XCRemoteSwiftPackageReference "Luminare" */,
 				4F75FABA2E86D6FB0064EF5E /* XCRemoteSwiftPackageReference "SkyLightWindow" */,
-				4FFB0D402EDE286C0096B9FF /* XCRemoteSwiftPackageReference "UniversalGlass" */,
 				4F3441C02EF484AD00A4B26B /* XCRemoteSwiftPackageReference "DynamicNotchKit" */,
 				4FAC46D52F5C721200729637 /* XCRemoteSwiftPackageReference "mediaremote-adapter" */,
 			);
@@ -385,7 +383,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CREATE_INFOPLIST_SECTION_IN_BINARY = YES;
-				CURRENT_PROJECT_VERSION = 127;
+				CURRENT_PROJECT_VERSION = 128;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"MusicNotch/Preview Content\"";
 				DEVELOPMENT_TEAM = C3PS85G8WX;
@@ -446,7 +444,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CREATE_INFOPLIST_SECTION_IN_BINARY = YES;
-				CURRENT_PROJECT_VERSION = 127;
+				CURRENT_PROJECT_VERSION = 128;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"MusicNotch/Preview Content\"";
 				DEVELOPMENT_TEAM = C3PS85G8WX;
@@ -579,14 +577,6 @@
 				kind = branch;
 			};
 		};
-		4FFB0D402EDE286C0096B9FF /* XCRemoteSwiftPackageReference "UniversalGlass" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Aeastr/UniversalGlass";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -665,11 +655,6 @@
 		4FB5D9302E9A83D800997E62 /* DynamicNotchKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DynamicNotchKit;
-		};
-		4FFB0D412EDE286C0096B9FF /* UniversalGlass */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4FFB0D402EDE286C0096B9FF /* XCRemoteSwiftPackageReference "UniversalGlass" */;
-			productName = UniversalGlass;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

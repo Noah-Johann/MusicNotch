@@ -8,7 +8,6 @@
 import SwiftUI
 import AppKit
 import Defaults
-import UniversalGlass
 
 struct LockScreenPlayingView: View {
     @State private var musicManager = MusicManager.shared
@@ -23,6 +22,10 @@ struct LockScreenPlayingView: View {
     
     var body: some View {
         ZStack {
+            RoundedRectangle(cornerRadius: 30)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .foregroundStyle(.ultraThinMaterial)
+            
             VStack {
                 VStack (){
                     HStack (alignment: .center) {
@@ -48,21 +51,21 @@ struct LockScreenPlayingView: View {
                         
                         Spacer()
                         
-                        if !accessibilityManager.isReduceMotion {
-                            Rectangle()
-                                .fill(coloredSpect ? Color(nsColor: musicManager.aveColor ?? .white).gradient : Color.white.gradient)
-                                .frame(width: 35, height: 45, alignment: .center)
-                                .mask {
-                                    AudioSpectrumView(isPlaying: $musicManager.music.isPlaying)
-                                        .frame(width: 30, height: 30)
-                                }
-                                .padding(.bottom, 17)
-                                .padding(.trailing, 10)
-                        } else {
-                            Rectangle()
-                                .fill(Color.clear)
-                                .frame(width: 35)
-                        }
+//                        if !accessibilityManager.isReduceMotion {
+//                            Rectangle()
+//                                .fill(coloredSpect ? Color(nsColor: musicManager.aveColor ?? .white).gradient : Color.white.gradient)
+//                                .frame(width: 35, height: 45, alignment: .center)
+//                                .mask {
+//                                    AudioSpectrumView(isPlaying: $musicManager.music.isPlaying)
+//                                        .frame(width: 30, height: 30)
+//                                }
+//                                .padding(.bottom, 17)
+//                                .padding(.trailing, 10)
+//                        } else {
+//                            Rectangle()
+//                                .fill(Color.clear)
+//                                .frame(width: 35)
+//                        }
                     } .frame(height: 90)
                     
                     HStack {
@@ -100,9 +103,6 @@ struct LockScreenPlayingView: View {
             }
         }
         .frame(width: 350, height: 190)
-        .contentShape(RoundedRectangle(cornerRadius: 30, style: .continuous))
-        .background(.clear)
-        .universalGlassEffect(.ultraThin, in: RoundedRectangle(cornerRadius: 30, style: .continuous))
         .onChange(of: musicManager.music.trackPosition) { _, newValue in
             trackposition = Double(newValue)
         }
