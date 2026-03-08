@@ -37,7 +37,7 @@ class WindowManager {
         if settingsController == nil {
             let window = LuminareWindow{
                 SettingsView()
-                    .frame(width: 500, height: 600)
+                    .frame(width: 625, height: 575)
             }
             
             settingsController = NSWindowController(window: window)
