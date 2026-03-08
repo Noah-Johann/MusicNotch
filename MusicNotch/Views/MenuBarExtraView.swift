@@ -13,6 +13,9 @@ struct MenuBarExtraView: View {
     @State var musicManager = MusicManager.shared
     @State var updateManager = UpdateManager.shared
     
+    @Default(.autoPlayer) private var autoPlayer
+    @Default(.musicPlayer) private var musicPlayer
+    
     var body: some View {
         Section {
             Button {
@@ -59,6 +62,20 @@ struct MenuBarExtraView: View {
             }
             
         }
+        
+        if !autoPlayer {
+            Section {
+                Picker("Source", selection: $musicPlayer) {
+                    ForEach(MusicApp.allCases, id: \.self) { app in
+                        HStack {
+                            app.image.imageScale(.large)
+                            Text(app.text)
+                        }
+                    }
+                }
+            }
+        }
+        
         Section {
             Text("Version \(Bundle.main.appVersion!)")
                 .foregroundStyle(.secondary)
