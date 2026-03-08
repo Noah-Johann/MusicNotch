@@ -25,17 +25,17 @@ enum UpdateState: Equatable {
 }
 
 
-@MainActor
-final class UpdateManager: ObservableObject {
+@MainActor @Observable
+class UpdateManager {
     static let shared = UpdateManager()
     
     private var updater: SPUUpdater!
     
-    @Published var updateState: UpdateState = .idle
-    @Published var updateSize: Double = 1.0
-    @Published var downloadedSize: Double = 0
-    @Published var newVersionNumber: String = "0.0.0"
-    @Published var updateProgress: CGFloat = 0
+    var updateState: UpdateState = .idle
+    var updateSize: Double = 1.0
+    var downloadedSize: Double = 0
+    var newVersionNumber: String = "0.0.0"
+    var updateProgress: CGFloat = 0
     
     
     

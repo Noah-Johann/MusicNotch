@@ -81,11 +81,15 @@ struct MenuBarExtraView: View {
                 .foregroundStyle(.secondary)
             
             Button("About") {
-                WindowManager.openAbout()
+                Task {
+                    WindowManager.shared.openAbout()
+                }
             }
             
             Button("Settings") {
-                WindowManager.openSettings()
+                Task {
+                    WindowManager.shared.openSettings()
+                }
             } .keyboardShortcut(.init(",", modifiers: [.command]))
         }
         

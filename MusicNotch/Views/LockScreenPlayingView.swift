@@ -12,7 +12,7 @@ import Defaults
 struct LockScreenPlayingView: View {
     @State private var musicManager = MusicManager.shared
     @State private var volumeManager = VolumeManager.shared
-    @State private var accessibilityManager = AccessibilityManager.shared
+  //  @State private var accessibilityManager = AccessibilityManager.shared
     
     @State private var trackposition: Double = 0
     @State private var isDragging: Bool = false
@@ -124,7 +124,7 @@ struct LockScreenPlayingView: View {
                 .foregroundStyle(.secondary)
             Section {
                 Button("Hide player") {
-                    WindowManager.hideLockScreen()
+                    WindowManager.shared.hideLockScreen()
                 } .keyboardShortcut("H", modifiers: .command)
                 Button("Quit") {
                     NSApp.terminate(nil)

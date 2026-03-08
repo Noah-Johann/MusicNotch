@@ -11,7 +11,7 @@ import Defaults
 
 struct SettingsAboutView: View {
     
-    @StateObject private var updateManager = UpdateManager.shared
+    @State private var updateManager = UpdateManager.shared
     
     private let profileURL: String = "https://github.com/Noah-Johann"
     private let projectURL: String = "https://github.com/Noah-Johann/MusicNotch"
@@ -25,7 +25,7 @@ struct SettingsAboutView: View {
 
     var body: some View {
         
-// MARK: About Button
+// MARK: - About Button
         LuminareSection {
             CosmeticTwoLineButton(heading: "\(Bundle.main.appName)",
                                   description: "Version: \(Bundle.main.appVersion!) (\(Bundle.main.appBuild!))",
@@ -39,7 +39,7 @@ struct SettingsAboutView: View {
         }.padding(.bottom, 7)
         
         
-// MARK: Update Button
+// MARK: - Update Button
         LuminareSection {
             LuminareToggle(isOn: $autoUpdates) {
                 Text ("Auto check for updates")
@@ -149,7 +149,8 @@ struct SettingsAboutView: View {
                     }
                 } else { return }
             }
-
+        
+// MARK: - About section
 
         LuminareSection {
             CosmeticTwoLineButton(heading: "Noah Johann",

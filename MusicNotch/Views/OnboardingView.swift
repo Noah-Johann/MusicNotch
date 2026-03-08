@@ -133,8 +133,8 @@ struct OnboardingView: View {
                         } else if OnboardingPage == 3 {
                             Button("Finish") {
                                 Defaults[.viewedOnboarding] = true
-                                WindowManager.closeOnboarding()
-                                WindowManager.openSettings()
+                                WindowManager.shared.closeOnboarding()
+                                WindowManager.shared.openSettings()
                             } .buttonStyle(LuminareProminentButtonStyle())
                         }
                     }

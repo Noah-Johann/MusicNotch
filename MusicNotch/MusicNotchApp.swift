@@ -59,10 +59,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         NotchManager.shared.createNotch()
         
         if Defaults[.viewedOnboarding] == false {
-            WindowManager.openOnboarding()
+            WindowManager.shared.openOnboarding()
         } else {
             if Defaults[.silentLaunch] == false {
-                WindowManager.openSettings()
+                WindowManager.shared.openSettings()
             }
             MusicManager.shared.refreshMusic()
         }
@@ -72,7 +72,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     }
     
     func applicationShouldTerminateAfterLastWindowClosed(_: NSApplication) -> Bool {
-        WindowManager.closeAll()
+        WindowManager.shared.closeAll()
+        print("all closed")
         return false
     }
     

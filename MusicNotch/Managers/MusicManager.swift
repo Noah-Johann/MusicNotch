@@ -142,7 +142,7 @@ class MusicManager {
         }
         
         if music.isPlaying == true {
-            WindowManager.showLockScreenPlayer()
+            WindowManager.shared.showLockScreenPlayer()
             
             if hideTimer != nil {
                 stopTime = 0
@@ -286,7 +286,7 @@ class MusicManager {
             }
         }
         
-        WindowManager.hideLockScreen()
+        WindowManager.shared.hideLockScreen()
         
         return playback
     }

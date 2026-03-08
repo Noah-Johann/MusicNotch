@@ -18,15 +18,17 @@ func ContextMenuView() -> some View {
     Button("About") {
         Task {
             await NotchManager.shared.setNotchState(.compact)
+            WindowManager.shared.openAbout()
+
         }
-        WindowManager.openAbout()
     }
     
     Button("Settings") {
         Task {
             await NotchManager.shared.setNotchState(.compact)
+            WindowManager.shared.openSettings()
+
         }
-        WindowManager.openSettings()
         
     } .keyboardShortcut(.init(",", modifiers: [.command]))
     
