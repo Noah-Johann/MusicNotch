@@ -44,9 +44,9 @@ struct SettingsMusicView: View {
                             .font(.title3)
                     }
                 }
-                .buttonStyle(LuminareButtonStyle())
+                .luminareRoundingBehavior(bottom: true)
+                .luminareBorderedStates(.none)
                 .frame(height: 110)
-                .padding(3)
             }
         } header: {
             Text("Music")

@@ -793,6 +793,7 @@
       }
     },
     "Please relaunch the app after giving permissions" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {

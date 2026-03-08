@@ -18,7 +18,7 @@ struct SettingsGesturesView: View {
             LuminareToggle(isOn: $enableGestures) {
                 Text("Enable Gesture control")
                     .padding(.trailing, 5)
-                    .luminarePopover(attachedTo: .topTrailing) {
+                    .luminareToolTip(attachedTo: .topTrailing) {
                         Text("Swipe vertical to open and close the notch.")
                             .padding()
                     }
@@ -29,7 +29,7 @@ struct SettingsGesturesView: View {
                 LuminareToggle(isOn: $mediaGestures) {
                     Text("Enable Media Gestures")
                         .padding(.trailing, 5)
-                        .luminarePopover(attachedTo: .topTrailing) {
+                        .luminareToolTip(attachedTo: .topTrailing) {
                             Text("Swipe horizontal to change the current track.")
                                 .padding()
                         }

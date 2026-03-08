@@ -30,7 +30,6 @@ struct SettingsMusicGlanceView: View {
                 ) {
                     Text("Display duration")
                 }
-                .luminareSliderLayout(.compact)
                 .padding(.vertical, 3)
             }
         } header: {

@@ -32,9 +32,10 @@ struct SettingsDisplayView: View {
                         .font(.title3)
                 }
             }
-            .buttonStyle(LuminareButtonStyle())
+            .luminareRoundingBehavior(top: true)
+            .luminareBorderedStates(.none)
+            .buttonStyle(.luminare)
             .frame(height: 80)
-            .padding(3)
             LuminareToggle(isOn: $transparentNotch) {
                 Text("Hide closed notch")
             }

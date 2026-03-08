@@ -19,6 +19,14 @@ struct SettingsAboutView: View {
     private let licenseURL: String = "https://github.com/Noah-Johann/MusicNotch/blob/main/LICENSE"
     private let acknowledgementsURL: String = "https://github.com/Noah-Johann/MusicNotch/blob/main/Acknowledgments.md"
     
+    var showReleaseNotes: Bool {
+        if updateManager.updateState == .updateAvailable || updateManager.updateState == .downloading || updateManager.updateState == .extracting {
+            return true
+        } else {
+            return false
+        }
+    }
+    
     @State private var updateProgress: CGFloat = 0
     
     @Default(.autoUpdates) private var autoUpdates
@@ -33,10 +41,8 @@ struct SettingsAboutView: View {
                                   hoverIcon: "clipboard",
                                   height: 55) {
                 copyInfo(text: "MusicNotch Version \(Bundle.main.appVersion!) (\(Bundle.main.appBuild!))")
-            }
-        } header: {
-            Text("About")
-        }.padding(.bottom, 7)
+            } .luminareRoundingBehavior(top: true, bottom: true)
+        } .padding(.bottom, 7)
         
         
 // MARK: - Update Button
@@ -59,7 +65,7 @@ struct SettingsAboutView: View {
                             Text("Check for updates")
                             Spacer()
                         } .padding()
-                    } .buttonStyle(LuminareButtonStyle())
+                    }
                     
                 case .noUpdates:
                     Button {
@@ -71,7 +77,7 @@ struct SettingsAboutView: View {
                             Text("No updates available")
                             Spacer()
                         } .padding()
-                    }  .buttonStyle(LuminareButtonStyle())
+                    }
                     
                 case .updateAvailable:
                     Button {
@@ -87,7 +93,7 @@ struct SettingsAboutView: View {
                                 .foregroundStyle(.secondary)
                                 .monospaced()
                         } .padding()
-                    }  .buttonStyle(LuminareButtonStyle())
+                    }
                     
                 case .downloading, .extracting:
                     Button {} label: {
@@ -96,7 +102,7 @@ struct SettingsAboutView: View {
                         }
                         .padding(.horizontal, 25)
                         .padding(.vertical)
-                    }  .buttonStyle(LuminareButtonStyle())
+                    }
 
                     
                 case .readyToInstall:
@@ -108,7 +114,7 @@ struct SettingsAboutView: View {
                             Text("Install update")
                             Spacer()
                         } .padding()
-                    }  .buttonStyle(LuminareButtonStyle())
+                    }
                     
                 case .installing:
                     Button {} label: {
@@ -117,16 +123,20 @@ struct SettingsAboutView: View {
                             Text("Install update")
                             Spacer()
                         }
-                    }  .buttonStyle(LuminareButtonStyle())
+                    }
                     
                 case .installed:
                     Button {} label: {
                         Text("Installed update")
-                    }  .buttonStyle(LuminareButtonStyle())
+                    }
                 }
-            } .frame(height: 36)
+            }
+            .frame(height: 36)
+            .luminareRoundingBehavior(bottom: !showReleaseNotes)
+            .luminareBorderedStates(.none)
+            .buttonStyle(.luminare)
             
-            if updateManager.updateState == .updateAvailable || updateManager.updateState == .downloading || updateManager.updateState == .extracting {
+            if showReleaseNotes {
                 Button {
                     NSWorkspace.shared.open(URL(string: releaseNotes)!)
                 } label: {
@@ -135,10 +145,13 @@ struct SettingsAboutView: View {
                             .imageScale(.large)
                         Text("Release Notes")
                         Spacer()
+                        Image(systemName: "arrow.up")
+                            .imageScale(.large)
+                            .foregroundStyle(.secondary)
                     }
                     .padding(.horizontal)
                 }
-                .buttonStyle(LuminareCosmeticButtonStyle(icon: Image(systemName: "arrow.up.right")))
+                .buttonStyle(.luminare)
                 .frame(height: 36)
             }
         } 
@@ -159,6 +172,7 @@ struct SettingsAboutView: View {
                                   hoverIcon: "arrow.up.right",
                                   circleOverlay: true)
             { NSWorkspace.shared.open(URL(string: profileURL)!) }
+                .luminareRoundingBehavior(top: true)
             
             CosmeticTwoLineButton(heading: "GitHub",
                                   description: "Contribute on Github",
@@ -166,16 +180,17 @@ struct SettingsAboutView: View {
                                   hoverIcon: "arrow.up.right",
                                   circleOverlay: true)
             { NSWorkspace.shared.open(URL(string: projectURL)!) }
+                .luminareRoundingBehavior(bottom: true)
         }
         
         LuminareSection {
             CosmeticOneLineButton(title: "License", image: Image(systemName: "list.bullet.clipboard"), hoverIcon: "arrow.up.right") {
                 NSWorkspace.shared.open(URL(string: licenseURL)!)
-            }
+            } .luminareRoundingBehavior(top: true)
             
             CosmeticOneLineButton(title: "Acknowledgements", image: Image(systemName: "heart.text.clipboard"), hoverIcon: "arrow.up.right") {
                 NSWorkspace.shared.open(URL(string: acknowledgementsURL)!)
-            }
+            } .luminareRoundingBehavior(bottom: true)
         }
         
         Text(Bundle.main.copyright)

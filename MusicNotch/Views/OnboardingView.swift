@@ -94,7 +94,7 @@ struct OnboardingView: View {
                         if OnboardingPage == 1 {
                             Button("Start setup") {
                                 OnboardingPage += 1
-                            } .buttonStyle(LuminareButtonStyle())
+                            } .buttonStyle(.luminare)
                         } else if OnboardingPage == 2 {
                             Button("Request permission") {
                                 PermissionHelper.promptUserForConsent(for: "com.spotify.client") { consent in
@@ -129,13 +129,13 @@ struct OnboardingView: View {
                                     }
                                 })
                             }
-                            .buttonStyle(LuminareButtonStyle())
+                            .buttonStyle(.luminare)
                         } else if OnboardingPage == 3 {
                             Button("Finish") {
                                 Defaults[.viewedOnboarding] = true
                                 WindowManager.shared.closeOnboarding()
                                 WindowManager.shared.openSettings()
-                            } .buttonStyle(LuminareProminentButtonStyle())
+                            } .buttonStyle(.luminare(tinted: true))
                         }
                     }
                     

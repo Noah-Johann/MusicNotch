@@ -35,9 +35,9 @@ struct SettingsNotchView: View {
                         .font(.title3)
                 }
             }
-            .buttonStyle(LuminareButtonStyle())
+            .luminareRoundingBehavior(top: true)
+            .luminareBorderedStates(.none)
             .frame(height: 50)
-            .padding(3)
             
             LuminareToggle(isOn: $hapticFeedback) {
                 Text("Haptic feedback")
@@ -67,7 +67,7 @@ struct SettingsNotchView: View {
             ) {
                 Text("Hide delay")
                     .padding(.trailing, 5)
-                    .luminarePopover(attachedTo: .topTrailing) {
+                    .luminareToolTip(attachedTo: .topTrailing) {
                         Text("The time it takes for the notch to hide if the playback is stopped.")
                             .padding()
                     }

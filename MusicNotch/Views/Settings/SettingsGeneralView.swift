@@ -28,7 +28,7 @@ struct SettingsGeneralView: View {
             LuminareToggle(isOn: $showMenuBarItem) {
                 Text("Show menubar item")
                     .padding(.trailing, 5)
-                    .luminarePopover(attachedTo: .topTrailing) {
+                    .luminareToolTip(attachedTo: .topTrailing) {
                         Text("If hidden, settings can be accessed via right click on the player")
                             .padding()
                     }
@@ -60,7 +60,11 @@ struct SettingsGeneralView: View {
                     Image(systemName: "power")
                     Text("Quit")
                 }
-            } .buttonStyle(LuminareButtonStyle())
+            }
+            .luminareRoundingBehavior(bottom: true)
+            .luminareBorderedStates(.none)
+            .buttonStyle(.luminare)
+            .frame(height: 37)
         } header: {
             Text("General")
         }
