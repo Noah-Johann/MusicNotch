@@ -188,14 +188,22 @@ struct NotchMusicViewExpanded: View {
         }
         .background(.black)
         .onChange(of: musicManager.music.trackPosition) { _, newValue in
-            trackPosition = Double(newValue)
+            if musicManager.music.trackPosition > musicManager.music.trackDuration {
+                trackPosition = Double(musicManager.music.trackDuration)
+            } else {
+                trackPosition = Double(musicManager.music.trackPosition)
+            }
         }
         .onAppear {
-            trackPosition = Double(musicManager.music.trackPosition)
+            if musicManager.music.trackPosition > musicManager.music.trackDuration {
+                trackPosition = Double(musicManager.music.trackDuration)
+            } else {
+                trackPosition = Double(musicManager.music.trackPosition)
+            }
             playbackTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
                 print("playback timer")
                 Task { @MainActor in
-                    if musicManager.music.isPlaying == true {
+                    if musicManager.music.isPlaying == true && Int(trackPosition) < musicManager.music.trackDuration {
                         trackPosition += 1
                     }
                 }
