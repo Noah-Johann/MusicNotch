@@ -127,6 +127,9 @@
         }
       }
     },
+    "Battery" : {
+
+    },
     "Brightness" : {
       "localizations" : {
         "de" : {
@@ -156,6 +159,9 @@
           }
         }
       }
+    },
+    "Connectivity" : {
+
     },
     "Contribute on Github" : {
       "localizations" : {
@@ -323,6 +329,7 @@
       }
     },
     "Extensions" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -461,6 +468,9 @@
           }
         }
       }
+    },
+    "HUD" : {
+
     },
     "If hidden, settings can be accessed via right click on the player" : {
       "localizations" : {

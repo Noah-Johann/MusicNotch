@@ -40,8 +40,10 @@ struct SettingsExtensionView: View {
             .padding(.bottom, 3)
             
         } header: {
-            Text("Extensions")
+            Text("General")
         }
+        .padding(.bottom, 14)
+
         LuminareSection {
             LuminareToggle(isOn: $batteryExtension) {
                 Text("Enable Battery extension")
@@ -92,8 +94,11 @@ struct SettingsExtensionView: View {
                     }
                 }
             }
-        } 
-        
+        } header: {
+            Text("Battery")
+        }
+        .padding(.bottom, 14)
+
         LuminareSection {
             LuminareToggle(isOn: $hudExtension) {
                 Text("Enable HUD extension")
@@ -114,7 +119,10 @@ struct SettingsExtensionView: View {
             LuminareToggle(isOn: $gradientHudSlider) {
                 Text("Gradient slider")
             }
+        } header: {
+            Text("HUD")
         }
+        .padding(.bottom, 14)
             
         LuminareSection {
             LuminareToggle(isOn: $bluetoothRecognition) {
@@ -124,6 +132,8 @@ struct SettingsExtensionView: View {
             LuminareToggle(isOn: $bluetoothSymbols) {
                 Text("Use device icons")
             }
+        } header: {
+            Text("Connectivity")
         }
         .padding(.bottom, 14)
     }
