@@ -1,5 +1,5 @@
 {
-  "originHash" : "96e91b3ce46c08cd44db1e565bb122952fba2ab6bb9dbcd7bda3008a9260ef82",
+  "originHash" : "38263909515c18e11334cab87d760c5b80e5670a0edd5d96e1eea34d7cf7922a",
   "pins" : [
     {
       "identity" : "defaults",
@@ -49,10 +49,10 @@
     {
       "identity" : "mediaremote-adapter",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Noah-Johann/mediaremote-adapter.git",
+      "location" : "https://github.com/ejbills/mediaremote-adapter",
       "state" : {
         "branch" : "master",
-        "revision" : "0c55a70438ed47f90447c42154ce6fc693936192"
+        "revision" : "a6d707dd19f1204b831531760b116b621afe7a6b"
       }
     },
     {
@@ -97,15 +97,6 @@
       "location" : "https://github.com/lorenzofiamingo/swiftui-variadic-views",
       "state" : {
         "revision" : "af67d0e85bd2b499fbfb4cda834117e7c52b12b0",
-        "version" : "1.0.0"
-      }
-    },
-    {
-      "identity" : "universalglass",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Aeastr/UniversalGlass",
-      "state" : {
-        "revision" : "bb27ffe16a33c9e48d65111331ce4cfb519e0e92",
         "version" : "1.0.0"
       }
     }
