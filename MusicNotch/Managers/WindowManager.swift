@@ -49,13 +49,6 @@ class WindowManager {
         NSApp.activate()
     }
     
-    func closeSettings() {
-        if let settingsController {
-            settingsController.close()
-            self.settingsController = nil
-        }
-    }
-    
     func openAbout() {
         if aboutController == nil {
             let window = LuminareWindow{
@@ -71,13 +64,6 @@ class WindowManager {
         aboutWindow?.orderFrontRegardless()
         
         NSApp.activate()
-    }
-    
-    func closeAbout() {
-        if let aboutController {
-            aboutController.close()
-            self.aboutController = nil
-        }
     }
     
     func openOnboarding() {
@@ -101,12 +87,6 @@ class WindowManager {
             onboardingController.close()
             self.onboardingController = nil
         }
-    }
-    
-    func closeAll() {
-        closeSettings()
-        closeAbout()
-        closeOnboarding()
     }
     
     @MainActor func showLockScreenPlayer(sendFromLock: Bool? = nil) {
