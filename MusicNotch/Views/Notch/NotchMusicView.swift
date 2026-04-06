@@ -107,7 +107,6 @@ struct NotchMusicViewExpanded: View {
             HStack {
                 ZStack {
                     AlbumArtView(size: 65, shrink: 10, cornerRadius: 12, glow: true)
-
                     
                     Button(action: {
                         openMusicApp()
@@ -120,17 +119,17 @@ struct NotchMusicViewExpanded: View {
                 }
                 VStack {
                     Text(musicManager.music.trackName)
-                        .font(.system(size: 17, weight: .medium))
+                        .fontWeight(.medium)
                         .foregroundStyle(.white)
                         .frame(width: 220, alignment: .leading)
                     Text(musicManager.music.artistName)
-                        .font(.system(size: 14, weight: .regular))
+                        .fontWeight(.light)
                         .foregroundStyle(.gray)
                         .frame(width: 220, alignment: .leading)
                 }
                 .lineLimit(1)
-                .padding(.leading, 8)
-                .padding(.top, 27)
+                .padding(.leading, 11)
+                .padding(.top, 18)
                 
                 Spacer()
                 
