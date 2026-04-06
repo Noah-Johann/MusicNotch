@@ -11,15 +11,41 @@ import Defaults
 
 struct SettingsMusicGlanceView: View {
     @Default(.autoMusicGlance) private var autoMusicGlance
+    @Default(.amMusicGlance) private var amMusicGlance
+    @Default(.spotifyMusicGlance) private var spotifyMusicGlance
+    @Default(.npMusicGlance) private var npMusicGlance
+    @Default(.globalMusicGlance) private var globalMusicGlance
     @Default(.musicGlanceDuration) private var musicGlanceDuration
+    @Default(.musicPlayer) private var musicPlayer
+    
+    @State private var localMusicGlance: Bool = false
     
     var body: some View {
         LuminareSection {
-            LuminareToggle(isOn: $autoMusicGlance) {
+            LuminareToggle(isOn: $localMusicGlance) {
                 Text("Automatic MusicGlance")
+                Spacer()
+                Button { globalMusicGlance.toggle() } label: {
+                    Image(systemName: globalMusicGlance ? "network" : "network.slash")
+                        .foregroundStyle(.secondary)
+                } .buttonStyle(.plain)
+            }
+            .onAppear { updateLocalMusicGlance() }
+            .onChange(of: globalMusicGlance) { updateLocalMusicGlance() }
+            .onChange(of: musicPlayer) { updateLocalMusicGlance() }
+            .onChange(of: localMusicGlance) { old, new in
+                if globalMusicGlance == true {
+                    autoMusicGlance = new
+                } else {
+                    switch musicPlayer {
+                    case .appleMusic: amMusicGlance = new
+                    case .spotify: spotifyMusicGlance = new
+                    case .nowPlaying: npMusicGlance = new
+                    }
+                }
             }
             
-            if Defaults[.autoMusicGlance] {
+            if localMusicGlance {
                 LuminareSlider(
                     value: $musicGlanceDuration,
                     in: 1...10,
@@ -37,6 +63,18 @@ struct SettingsMusicGlanceView: View {
             Text("MusicGlance")
         }
         .padding(.bottom, 14)
+    }
+    
+    func updateLocalMusicGlance() {
+        if globalMusicGlance {
+            localMusicGlance = autoMusicGlance
+        } else {
+            switch musicPlayer {
+            case .appleMusic: localMusicGlance = amMusicGlance
+            case .spotify: localMusicGlance = spotifyMusicGlance
+            case .nowPlaying: localMusicGlance = npMusicGlance
+            }
+        }
     }
 }
 

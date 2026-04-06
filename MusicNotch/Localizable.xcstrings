@@ -936,6 +936,7 @@
       }
     },
     "Show notch" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1150,6 +1151,7 @@
       "shouldTranslate" : false
     },
     "Viewed Onboarding" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {

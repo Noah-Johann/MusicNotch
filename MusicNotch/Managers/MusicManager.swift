@@ -43,6 +43,18 @@ class MusicManager {
     private let appleMusicManager = AppleMusicManager()
     private let spotifyManager = SpotifyManager()
     
+    private var enableMusicGlance: Bool {
+        if Defaults[.globalMusicGlance] == true {
+            return Defaults[.autoMusicGlance]
+        } else {
+            switch Defaults[.musicPlayer] {
+            case .appleMusic: return Defaults[.amMusicGlance]
+            case .spotify: return Defaults[.spotifyMusicGlance]
+            case .nowPlaying: return Defaults[.npMusicGlance]
+            }
+        }
+    }
+    
     init () {        
         appleMusicManager.setupObservers()
         spotifyManager.setupObservers()
@@ -78,7 +90,7 @@ class MusicManager {
                 if let info = updateInfo {
                     setNowPlayingInfo(trackInfo: info)
                 } else {
-                    mediaController.getTrackInfo(exactTime: true) { trackInfo in
+                    mediaController.getTrackInfo() { trackInfo in
                         self.setNowPlayingInfo(trackInfo: trackInfo)
                     }
                 }
@@ -120,7 +132,7 @@ class MusicManager {
             if let info = updateInfo {
                 setNowPlayingInfo(trackInfo: info)
             } else {
-                mediaController.getTrackInfo(exactTime: true) { trackInfo in
+                mediaController.getTrackInfo() { trackInfo in
                     guard updateInfo?.payload.bundleIdentifier != "com.spotify.client" && updateInfo?.payload.bundleIdentifier != "com.apple.Music" else { return }
                     self.setNowPlayingInfo(trackInfo: trackInfo)
                 }
@@ -132,7 +144,7 @@ class MusicManager {
         if music.trackName != prevMusic.trackName {
             prevMusic = music
             
-            if Defaults[.autoMusicGlance] && NotchManager.shared.notchContent != .musicGlance {
+            if enableMusicGlance && NotchManager.shared.notchContent != .musicGlance {
                 if launched == false {
                     launched = true
                 } else {
@@ -153,7 +165,7 @@ class MusicManager {
             if NotchManager.shared.notchState == .closed || NotchManager.shared.notchState == .transparent {
                 guard !NotchManager.shared.notchDismissed else { return }
                 
-                if Defaults[.autoMusicGlance] {
+                if enableMusicGlance {
                     NotchManager.shared.showExtensionNotch(type: .musicGlance, duration: Defaults[.musicGlanceDuration])
                 } else {
                     NotchManager.shared.notchContent = .music
@@ -239,7 +251,7 @@ class MusicManager {
                                 artistName: trackInfo.payload.artist ?? "",
                                 albumName: trackInfo.payload.album ?? "",
                                 trackDuration: Int(trackInfo.payload.durationMicros ?? 1) / 1000000,
-                                trackPosition: Int(trackInfo.payload.elapsedTimeNowMicros ?? (trackInfo.payload.elapsedTimeMicros ?? 0)) / 1000000,
+                                trackPosition: Int(trackInfo.payload.elapsedTimeMicros ?? 0) / 1000000,
                                 isPlaying: trackInfo.payload.isPlaying ?? false,
                                 isLoved: false,
                                 shuffle: false,
