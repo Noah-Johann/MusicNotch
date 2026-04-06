@@ -54,7 +54,7 @@ class AppleMusicManager {
     
     public func checkIfPlaying() -> Bool {
         let result = AppleScriptHelper.executeAppleScript("tell application \"Music\" to set isPlaying to player state as string")
-        if let descriptor = result, descriptor.atIndex(1)?.stringValue == "playing" {
+        if let stringValue = result?.stringValue, stringValue == "playing" {
             return true
         } else {
             return false
