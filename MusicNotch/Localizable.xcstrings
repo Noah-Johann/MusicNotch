@@ -379,6 +379,9 @@
         }
       }
     },
+    "Glances" : {
+
+    },
     "Got it!" : {
       "localizations" : {
         "de" : {
@@ -542,6 +545,9 @@
         }
       }
     },
+    "Lock Screen" : {
+
+    },
     "LockScreen" : {
       "localizations" : {
         "de" : {
@@ -671,6 +677,9 @@
           }
         }
       }
+    },
+    "Now Playing" : {
+
     },
     "Open Spotify to request permissions" : {
       "localizations" : {
@@ -893,6 +902,9 @@
         }
       }
     },
+    "Shortcuts" : {
+
+    },
     "Show dock icon" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -947,6 +959,7 @@
       }
     },
     "Show notch" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1161,6 +1174,7 @@
       "shouldTranslate" : false
     },
     "Viewed Onboarding" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {

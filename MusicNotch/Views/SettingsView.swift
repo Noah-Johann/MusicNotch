@@ -5,9 +5,9 @@
 //  Created by Noah Johann on 27.03.25.
 //
 
-import Foundation
 import SwiftUI
 import Luminare
+import JochexUI
 import Defaults
 import LaunchAtLogin
 import KeyboardShortcuts
@@ -23,33 +23,43 @@ struct SettingsView: View {
     
     @State private var updateManager = UpdateManager.shared
     
-    @State private var settingsTab: SettingsTab = .general
+    @State private var vm = SettingsViewManager.shared
     
     @Environment(\.luminareTitleBarHeight) private var titleBarPadding
     
     var body: some View {
-        LuminareDividedStack {
-            LuminareSidebar {
-                LuminareSidebarSection(selection: $settingsTab, items: SettingsTab.generalTabs)
-                LuminareSidebarSection(selection: $settingsTab, items: SettingsTab.middleTabs)
-                LuminareSidebarSection(selection: $settingsTab, items: SettingsTab.aboutTabs)
-            }
-            .frame(width: 220)
-            .padding(.top, titleBarPadding)
-            .luminareBackground()
-            
-            LuminarePane {
-                settingsTab.view()
-            } header: {
-                HStack {
-                    settingsTab.icon
-                    Text(settingsTab.title).font(.title2)
-                    Spacer()
-                } .drawingGroup()
-            }
+        JochexPane {
+            HStack {
+                vm.selection.icon
+                Text(vm.selection.name).font(.title2)
+            } .drawingGroup()
+        } content: {
+            vm.selection.view()
+                .padding()
         }
-        .luminareTint(overridingWith: .accentColor)
-        .ignoresSafeArea()
+        
+//        LuminareDividedStack {
+//            LuminareSidebar {
+//                LuminareSidebarSection(selection: $settingsTab, items: SettingsTab.generalTabs)
+//                LuminareSidebarSection(selection: $settingsTab, items: SettingsTab.middleTabs)
+//                LuminareSidebarSection(selection: $settingsTab, items: SettingsTab.aboutTabs)
+//            }
+//            .frame(width: 220)
+//            .padding(.top, titleBarPadding)
+//            .luminareBackground()
+//            
+//            LuminarePane {
+//                settingsTab.view()
+//            } header: {
+//                HStack {
+//                    settingsTab.icon
+//                    Text(settingsTab.title).font(.title2)
+//                    Spacer()
+//                } .drawingGroup()
+//            }
+//        }
+//        .luminareTint(overridingWith: .accentColor)
+//        .ignoresSafeArea()
         
 //        LuminarePane() {
 //            VStack {

@@ -8,9 +8,10 @@
 
 import SwiftUI
 import Luminare
+import JochexUI
 
-enum SettingsTab: CaseIterable, @MainActor LuminareTabItem {
-    
+enum SettingsTab: CaseIterable, @MainActor JochexTabItem {
+
     case general
     
     case nowPlaying
@@ -20,9 +21,9 @@ enum SettingsTab: CaseIterable, @MainActor LuminareTabItem {
     
     case about
 
-    var id: String { title }
+    var id: String { String(describing: self) }
     
-    var title: String {
+    var name: LocalizedStringKey {
         switch self {
         case .general:
             "General"
@@ -39,7 +40,7 @@ enum SettingsTab: CaseIterable, @MainActor LuminareTabItem {
         }
     }
     
-    var image: Image {
+    var icon: Image {
         switch self {
         case .general: Image(systemName: "gear")
         case .nowPlaying: Image(systemName: "play.fill")
@@ -50,28 +51,10 @@ enum SettingsTab: CaseIterable, @MainActor LuminareTabItem {
         }
     }
     
-    var color: Color {
-//        switch self {
-//        case .general:
-//            Color.accentColor
-//        case .nowPlaying:
-//            <#code#>
-//        case .glances:
-//            <#code#>
-//        case .lockscreen:
-//            <#code#>
-//        case .shortcuts:
-//            <#code#>
-//        case .about:
-//            <#code#>
-//        }
-        Color.accentColor
+    var buttonAction: () -> () {
+        return {}
     }
-    
-    var icon: some View {
-        iconView(tab: self)
-    }
-    
+
     @ViewBuilder func view() -> some View {
         switch self {
         case .general:
@@ -92,17 +75,6 @@ enum SettingsTab: CaseIterable, @MainActor LuminareTabItem {
         case .about:
             SettingsAboutView()
         }
-    }
-    
-    @ViewBuilder func iconView(tab: SettingsTab) -> some View {
-        RoundedRectangle(cornerRadius: 6)
-            .foregroundStyle(tab.color.gradient)
-            .overlay {
-                tab.image
-                    .font(.system(size: 12, weight: .medium))
-                    .foregroundStyle(Color.white)
-                    .shadow(color: .black.opacity(0.4), radius: 1)
-            } .frame(width: 22, height: 22)
     }
     
     static let generalTabs: [Self] = [.general]

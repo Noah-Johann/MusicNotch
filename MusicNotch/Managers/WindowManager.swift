@@ -8,7 +8,17 @@
 import Defaults
 import SwiftUI
 import Luminare
+import JochexUI
 import AppKit
+
+@Observable
+class SettingsViewManager {
+    static let shared = SettingsViewManager()
+    
+    var selection: SettingsTab = .general
+    var isExpanded: Bool = false
+}
+
 
 class WindowManager {
     static let shared = WindowManager()
@@ -22,27 +32,17 @@ class WindowManager {
     var onboardingWindow: NSWindow? { onboardingController?.window }
  
     var lockscreenWindow: MusicPlayerWindow? = nil
-        
-    private func configureWindow(_ window: NSWindow?) {
-        guard let window = window else { return }
-        // Ensure the window is released when closed to avoid lingering snapshots
-        window.isReleasedWhenClosed = true
-        // Prevent participation in Mission Control / Exposé
-     //   window.collectionBehavior.insert(.transient)
-        // Avoid tabbing these utility windows
-      //  window.tabbingMode = .disallowed
-    }
     
     func openSettings() {
         if settingsController == nil {
-            let window = LuminareWindow{
+            let window = JochexWindow(width: 500, height: 600) {
                 SettingsView()
-                    .frame(width: 625, height: 575)
+            } tabBar: {
+                SettingsTabBarView()
             }
             
             settingsController = NSWindowController(window: window)
         }
-        settingsWindow?.isReleasedWhenClosed = true
         settingsController?.showWindow(self)
         settingsWindow?.orderFrontRegardless()
         
@@ -67,7 +67,6 @@ class WindowManager {
  
         }
         
-        aboutWindow?.isReleasedWhenClosed = true
         aboutController?.showWindow(self)
         aboutWindow?.orderFrontRegardless()
         
@@ -91,7 +90,6 @@ class WindowManager {
             onboardingController = NSWindowController(window: window)
         }
         
-        onboardingWindow?.isReleasedWhenClosed = true
         onboardingController?.showWindow(self)
         onboardingWindow?.orderFrontRegardless()
         
