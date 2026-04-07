@@ -58,11 +58,15 @@ class MusicManager {
     init () {        
         appleMusicManager.setupObservers()
         spotifyManager.setupObservers()
-        mediaController.startListening()
+        Task {
+            mediaController.startListening()
+        }
         
         // System now playing setup
         mediaController.onTrackInfoReceived = { trackInfo in
-            self.updateMusic(player: .nowPlaying, updateInfo: trackInfo)
+            Task {
+                self.updateMusic(player: .nowPlaying, updateInfo: trackInfo)
+            }
         }
 
         mediaController.onListenerTerminated = {
@@ -144,7 +148,7 @@ class MusicManager {
         if music.trackName != prevMusic.trackName {
             prevMusic = music
             
-            if enableMusicGlance && NotchManager.shared.notchContent != .musicGlance {
+            if enableMusicGlance && music.isPlaying == true {
                 if launched == false {
                     launched = true
                 } else {
