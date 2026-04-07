@@ -94,7 +94,7 @@ struct NotchHUDViewTrailing: View {
             HStack {
                 Spacer()
                 HStack {
-                    HudSlider(value: $volumeManager.volume, isExpanded: false)
+                    HudSlider(value: $volumeManager.volume)
                     
                     if volumeManager.volume == 0 || volumeManager.isMuted {
                         Text("muted")
@@ -111,7 +111,7 @@ struct NotchHUDViewTrailing: View {
         case .brightness:
             HStack {
                 Spacer()
-                HudSlider(value: $brightnessManager.brightness, isExpanded: false)
+                HudSlider(value: $brightnessManager.brightness)
                     .frame(width: 77)
             }
             .frame(width: 32 + textWidth("Brightness", font: .systemFont(ofSize: 11)), height: 20)
@@ -165,7 +165,7 @@ struct NotchHUDViewExpanded: View {
                         .padding(.trailing, 5)
                     
                     HStack {
-                        HudSlider(value: $volumeManager.volume, isExpanded: true)
+                        HudSlider(value: $volumeManager.volume, height: 6)
                         
                         if volumeManager.volume == 0 || volumeManager.isMuted {
                             Text("muted")
@@ -191,7 +191,7 @@ struct NotchHUDViewExpanded: View {
                                 get: { musicManager.music.volume! / 100 },
                                 set: { newValue in musicManager.music.volume = newValue * 100}
                             )
-                            HudSlider(value: musicVolumeBinding, isExpanded: true)
+                            HudSlider(value: musicVolumeBinding, height: 6)
                         }
                     }
                     .frame(width: width, height: 30)
@@ -214,7 +214,7 @@ struct NotchHUDViewExpanded: View {
                     .padding(.trailing, 5)
                 
                 HStack {
-                    HudSlider(value: $brightnessManager.brightness, isExpanded: true)
+                    HudSlider(value: $brightnessManager.brightness, height: 6)
                 }
             }
             .frame(width: width, height: 30)

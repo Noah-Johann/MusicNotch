@@ -92,7 +92,7 @@ struct SettingsAboutView: View {
                 case .downloading, .extracting:
                     Button {} label: {
                         HStack {
-                            HudSlider(value: $updateManager.updateProgress, isExpanded: true)
+                            HudSlider(value: $updateManager.updateProgress, height: 6)
                         }
                         .padding(.horizontal, 25)
                         .padding(.vertical)

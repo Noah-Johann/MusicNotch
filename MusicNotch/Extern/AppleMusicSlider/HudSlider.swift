@@ -14,7 +14,7 @@ struct HudSlider: View {
     @State private var isDragging = false
     @State private var dragOffset: CGFloat = 0
     
-    let isExpanded: Bool
+    public var height: CGFloat = 5
     
     var body: some View {
         VStack {
@@ -58,7 +58,7 @@ struct HudSlider: View {
 //                        }
 //                )
             }
-            .frame(height: isExpanded ? 7 : 5)
+            .frame(height: height)
         }
     }
     
@@ -72,7 +72,7 @@ struct HudSlider: View {
 
 #Preview {
     @Previewable @State var volume: CGFloat = 0.5
-    HudSlider(value: $volume, isExpanded: false)
+    HudSlider(value: $volume)
         .frame(width: 200)
         .padding(30)
 }

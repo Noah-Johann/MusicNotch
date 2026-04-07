@@ -148,7 +148,7 @@ struct NotchMusicViewExpanded: View {
                 }
                 
             } .frame(width: 350)
-                .padding(.bottom, 8)
+                .padding(.bottom, 4)
         
             //Progress Bar
             HStack (spacing: 14){
@@ -180,7 +180,7 @@ struct NotchMusicViewExpanded: View {
                     .monospacedDigit()
                 
             }.frame(width: 350, height: 15)
-                .padding(.bottom, 6)
+                .padding(.bottom, 3)
             
             PlayerButtonView()
             
@@ -220,9 +220,9 @@ struct NotchMusicViewExpanded: View {
     }
 }
 
-#Preview {
-    NotchMusicViewTrailing()
-        .frame(width: 100, height: 100)
+#Preview(traits: .defaultLayout) {
+    NotchMusicViewExpanded()
+        .frame(height: 197)
 }
 
 

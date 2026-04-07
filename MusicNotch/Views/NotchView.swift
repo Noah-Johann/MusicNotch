@@ -83,9 +83,9 @@ struct NotchViewExpanded: View {
             NotchMusicViewExpanded()
             
             if notchManager.notchContent == .volume {
-                NotchHUDViewExpanded(hudType: .volume, width: 350)
+                NotchHUDViewExpanded(hudType: .volume, width: 330)
             } else if notchManager.notchContent == .brightness {
-                NotchHUDViewExpanded(hudType: .brightness, width: 350)
+                NotchHUDViewExpanded(hudType: .brightness, width: 330)
             }
         } .padding(.bottom)
     }
