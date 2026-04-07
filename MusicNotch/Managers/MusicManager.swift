@@ -277,6 +277,7 @@ class MusicManager {
     }
     
     private func disabledPlayback() -> MusicTrack {
+        let prevPlayback = self.music
         let playback = MusicTrack(trackName: "Nothing playing",
                            artistName: "No current playback",
                            albumName: "Nothing",
@@ -298,7 +299,9 @@ class MusicManager {
         
         if NotchManager.shared.notchContent == .musicGlance || NotchManager.shared.notchContent == .music {
             Task {
-                await NotchManager.shared.setNotchState(.closed)
+                if prevPlayback.trackName != "Nothing playing" {
+                    await NotchManager.shared.setNotchState(.closed)
+                }
             }
         }
         
