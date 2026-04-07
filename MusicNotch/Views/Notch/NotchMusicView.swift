@@ -161,10 +161,10 @@ struct NotchMusicViewExpanded: View {
                 CustomSlider(
                     value: $trackPosition,
                     inRange: 0...Double(musicManager.music.trackDuration),
-                    activeFillColor: .white,
-                    fillColor: .white,
-                    emptyColor: Color(NSColor.darkGray),
-                    height: 8.0,
+                    activeFillColor: .gray.opacity(0.8),
+                    fillColor: .gray.opacity(0.8),
+                    emptyColor: Color(NSColor.darkGray).opacity(0.6),
+                    height: 7.0,
                     onEditingChanged: { isEditing in
                         isDragging = isEditing
                         if !isEditing {
