@@ -100,13 +100,15 @@ struct NotchMusicViewExpanded: View {
     
     @State private var trackPosition: Double = 0
     
+    @Environment(NotchManager.self) private var notchManager
+    
     @Default(.coloredSpect) private var coloredSpect
     
     var body: some View {
         VStack (spacing: 12) {
             HStack {
                 ZStack {
-                    AlbumArtView(size: 65, shrink: 10, cornerRadius: 12, glow: true)
+                    AlbumArtView(size: 65, shrink: 10, cornerRadius: notchManager.notch?.usedStyle == .notch ? 12 : 10, glow: true)
                     
                     Button(action: {
                         openMusicApp()
@@ -121,15 +123,15 @@ struct NotchMusicViewExpanded: View {
                     Text(musicManager.music.trackName)
                         .fontWeight(.medium)
                         .foregroundStyle(.white)
-                        .frame(width: 220, alignment: .leading)
+                        .frame(width: notchManager.notch?.usedStyle == .notch ? 220 : 200, alignment: .leading)
                     Text(musicManager.music.artistName)
                         .fontWeight(.light)
                         .foregroundStyle(.gray)
-                        .frame(width: 220, alignment: .leading)
+                        .frame(width: notchManager.notch?.usedStyle == .notch ? 220 : 200, alignment: .leading)
                 }
                 .lineLimit(1)
                 .padding(.leading, 11)
-                .padding(.top, 18)
+                .padding(.top, notchManager.notch?.usedStyle == .notch ? 18 : 0)
                 
                 Spacer()
                 
@@ -147,8 +149,10 @@ struct NotchMusicViewExpanded: View {
                         .frame(width: 35)
                 }
                 
-            } .frame(width: 350)
-                .padding(.bottom, 4)
+            }
+            .frame(width: notchManager.notch?.usedStyle == .notch ? 350 : 335)
+            .frame(height: 65, alignment: .center)
+            .padding(.bottom, 4)
         
             //Progress Bar
             HStack (spacing: 14){
@@ -179,8 +183,9 @@ struct NotchMusicViewExpanded: View {
                     .foregroundStyle(.gray)
                     .monospacedDigit()
                 
-            }.frame(width: 350, height: 15)
-                .padding(.bottom, 3)
+            }
+            .frame(width: notchManager.notch?.usedStyle == .notch ? 350 : 335, height: 15)
+            .padding(.bottom, 9)
             
             PlayerButtonView()
             
@@ -211,9 +216,6 @@ struct NotchMusicViewExpanded: View {
         .onDisappear {
             playbackTimer?.invalidate()
         }
-
-        .padding(.bottom, 10)
-        .padding(.top, 15)
         .contextMenu {
             ContextMenuView()
         }

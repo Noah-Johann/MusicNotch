@@ -35,7 +35,7 @@ struct NotchViewLeading: View {
                 NotchAirPodsViewLeading()
                     .transition(.blurReplace)
             }
-        }
+        } .environment(notchManager)
     }
 }
 
@@ -66,7 +66,7 @@ struct NotchViewTrailing: View {
                 NotchAirPodsViewTrailing()
                     .transition(.blurReplace)
             }
-        }
+        } .environment(notchManager)
     }
 }
 
@@ -87,7 +87,7 @@ struct NotchViewExpanded: View {
             } else if notchManager.notchContent == .brightness {
                 NotchHUDViewExpanded(hudType: .brightness, width: 330)
             }
-        } .padding(.bottom)
+        } .environment(notchManager)
     }
 }
 
