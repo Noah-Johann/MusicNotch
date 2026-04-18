@@ -55,20 +55,24 @@ class MusicManager {
         }
     }
     
-    init () {        
+    init () {
+        if Defaults[.autoPlayer] {
+            self.musicPlayer = .nowPlaying
+        } else {
+            self.musicPlayer = Defaults[.musicPlayer]
+        }
+        
         appleMusicManager.setupObservers()
         spotifyManager.setupObservers()
         Task {
             mediaController.startListening()
         }
         
-        // System now playing setup
         mediaController.onTrackInfoReceived = { trackInfo in
             Task {
                 self.updateMusic(player: .nowPlaying, updateInfo: trackInfo)
             }
         }
-
         mediaController.onListenerTerminated = {
             self.music = self.disabledPlayback()
             print("Listener terminated")
@@ -80,11 +84,14 @@ class MusicManager {
         mediaController.stopListening()
     }
     
-    
+    // MARK: - Public
+
+    /// Refreshes the music info for the last playing player or selected player
     public func refreshMusic() {
         updateMusic(player: musicPlayer)
     }
     
+    /// Updates the music info for a specified player and optional updateInfo for now playing info
     public func updateMusic(player: MusicApp, updateInfo: TrackInfo? = nil) {
         if Defaults[.autoPlayer] {
             checkAutoPlayer(notificationPlayer: player, updateInfo: updateInfo)
@@ -107,7 +114,8 @@ class MusicManager {
     }
     
     // MARK: - Private
-    
+
+    /// Fetch the music and set the correct player when auto player is enabled
     private func checkAutoPlayer(notificationPlayer: MusicApp, updateInfo: TrackInfo? = nil) {
         guard Defaults[.autoPlayer] else { return }
         
@@ -195,7 +203,7 @@ class MusicManager {
                                 print(self.stopTime)
                                 if NotchManager.shared.notchState == .compact {
                                     if self.stopTime > Int(Defaults[.hideNotchTime]) {
-                                        guard NotchManager.shared.notchContent == .music || NotchManager.shared.notchContent == .musicGlance else { return }
+                                        guard NotchManager.shared.notchContent == .music else { return }
                                         await NotchManager.shared.setNotchState(.closed)
                                         self.hideTimer?.invalidate()
                                         self.hideTimer = nil
@@ -215,6 +223,7 @@ class MusicManager {
         }
     }
     
+    /// Gets the music info with AppleScript for Apple Music and Spotify
     private func getMusicInfo(player: MusicApp) -> MusicTrack {
         switch player {
         case .appleMusic:
@@ -242,14 +251,12 @@ class MusicManager {
         }
     }
 
-    
+    /// Sets the music for the now playing source
     private func setNowPlayingInfo(trackInfo: TrackInfo?) {
         guard let trackInfo = trackInfo else {
             setDisabledPlayback()
             return
         }
-//        print("Currently playing: \(trackInfo.payload.title ?? "Unknown")")
-//        print("time: \(trackInfo.payload.elapsedTimeNowMicros ?? -1000)")
         
         self.music = MusicTrack(trackName: trackInfo.payload.title ?? "",
                                 artistName: trackInfo.payload.artist ?? "",
