@@ -52,8 +52,14 @@ struct SettingsMusicView: View {
             Text("Music")
         }
         .padding(.bottom, 14)
-        .onChange(of: musicPlayer) {
+        .onChange(of: musicPlayer) { _, newPlayer in
             SpotifyManager.shared.oldTrackName = "notrack"
+            MusicManager.shared.musicPlayer = newPlayer
+            MusicManager.shared.updateMusic(player: musicPlayer)
+        }
+        .onChange(of: autoPlayer) {
+            SpotifyManager.shared.oldTrackName = "notrack"
+            MusicManager.shared.musicPlayer = musicPlayer
             MusicManager.shared.updateMusic(player: musicPlayer)
         }
     }

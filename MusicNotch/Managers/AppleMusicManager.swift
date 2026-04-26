@@ -41,6 +41,11 @@ class AppleMusicManager {
                 if running {
                     await MusicManager.shared.updateMusic(player: .appleMusic)
                 } else {
+                    if Defaults[.autoPlayer] {
+                        guard await MusicManager.shared.musicPlayer == .appleMusic else { return }
+                    } else {
+                        guard Defaults[.musicPlayer] == .appleMusic else { return }
+                    }
                     await MusicManager.shared.setDisabledPlayback()
                     return
                 }
@@ -54,7 +59,7 @@ class AppleMusicManager {
     
     public func checkIfPlaying() -> Bool {
         let result = AppleScriptHelper.executeAppleScript("tell application \"Music\" to set isPlaying to player state as string")
-        if let descriptor = result, descriptor.atIndex(1)?.stringValue == "playing" {
+        if let stringValue = result?.stringValue, stringValue == "playing" {
             return true
         } else {
             return false

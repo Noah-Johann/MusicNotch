@@ -127,9 +127,6 @@
         }
       }
     },
-    "Battery" : {
-
-    },
     "Brightness" : {
       "localizations" : {
         "de" : {
@@ -159,9 +156,6 @@
           }
         }
       }
-    },
-    "Connectivity" : {
-
     },
     "Contribute on Github" : {
       "localizations" : {
@@ -329,7 +323,6 @@
       }
     },
     "Extensions" : {
-      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -378,9 +371,6 @@
           }
         }
       }
-    },
-    "Glances" : {
-
     },
     "Got it!" : {
       "localizations" : {
@@ -472,7 +462,7 @@
         }
       }
     },
-    "HUD" : {
+    "If deactivated, settings apply only for the currently selected player." : {
 
     },
     "If hidden, settings can be accessed via right click on the player" : {
@@ -544,9 +534,6 @@
           }
         }
       }
-    },
-    "Lock Screen" : {
-
     },
     "LockScreen" : {
       "localizations" : {
@@ -677,9 +664,6 @@
           }
         }
       }
-    },
-    "Now Playing" : {
-
     },
     "Open Spotify to request permissions" : {
       "localizations" : {
@@ -812,7 +796,6 @@
       }
     },
     "Please relaunch the app after giving permissions" : {
-      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -901,9 +884,6 @@
           }
         }
       }
-    },
-    "Shortcuts" : {
-
     },
     "Show dock icon" : {
       "extractionState" : "stale",

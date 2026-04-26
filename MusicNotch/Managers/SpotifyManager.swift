@@ -52,6 +52,11 @@ class SpotifyManager {
                 if running {
                     await MusicManager.shared.updateMusic(player: .spotify)
                 } else {
+                    if Defaults[.autoPlayer] {
+                        guard await MusicManager.shared.musicPlayer == .spotify else { return }
+                    } else {
+                        guard Defaults[.musicPlayer] == .spotify else { return }
+                    }
                     await MusicManager.shared.setDisabledPlayback()
                     return
                 }
@@ -65,7 +70,7 @@ class SpotifyManager {
     
     public func checkIfPlaying() -> Bool {
         let result = AppleScriptHelper.executeAppleScript("tell application \"Spotify\" to set isPlaying to player state as string")
-        if let descriptor = result, descriptor.atIndex(1)?.stringValue == "playing" {
+        if let stringValue = result?.stringValue, stringValue == "playing" {
             return true
         } else {
             return false

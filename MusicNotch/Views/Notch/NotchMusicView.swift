@@ -107,7 +107,6 @@ struct NotchMusicViewExpanded: View {
             HStack {
                 ZStack {
                     AlbumArtView(size: 65, shrink: 10, cornerRadius: 12, glow: true)
-
                     
                     Button(action: {
                         openMusicApp()
@@ -120,17 +119,17 @@ struct NotchMusicViewExpanded: View {
                 }
                 VStack {
                     Text(musicManager.music.trackName)
-                        .font(.system(size: 17, weight: .medium))
+                        .fontWeight(.medium)
                         .foregroundStyle(.white)
                         .frame(width: 220, alignment: .leading)
                     Text(musicManager.music.artistName)
-                        .font(.system(size: 14, weight: .regular))
+                        .fontWeight(.light)
                         .foregroundStyle(.gray)
                         .frame(width: 220, alignment: .leading)
                 }
                 .lineLimit(1)
-                .padding(.leading, 8)
-                .padding(.top, 27)
+                .padding(.leading, 11)
+                .padding(.top, 18)
                 
                 Spacer()
                 
@@ -149,7 +148,7 @@ struct NotchMusicViewExpanded: View {
                 }
                 
             } .frame(width: 350)
-                .padding(.bottom, 8)
+                .padding(.bottom, 4)
         
             //Progress Bar
             HStack (spacing: 14){
@@ -162,10 +161,10 @@ struct NotchMusicViewExpanded: View {
                 CustomSlider(
                     value: $trackPosition,
                     inRange: 0...Double(musicManager.music.trackDuration),
-                    activeFillColor: .white,
-                    fillColor: .white,
-                    emptyColor: Color(NSColor.darkGray),
-                    height: 8.0,
+                    activeFillColor: .gray.opacity(0.8),
+                    fillColor: .gray.opacity(0.8),
+                    emptyColor: Color(NSColor.darkGray).opacity(0.6),
+                    height: 7.0,
                     onEditingChanged: { isEditing in
                         isDragging = isEditing
                         if !isEditing {
@@ -181,21 +180,29 @@ struct NotchMusicViewExpanded: View {
                     .monospacedDigit()
                 
             }.frame(width: 350, height: 15)
-                .padding(.bottom, 6)
+                .padding(.bottom, 3)
             
             PlayerButtonView()
             
         }
         .background(.black)
         .onChange(of: musicManager.music.trackPosition) { _, newValue in
-            trackPosition = Double(newValue)
+            if musicManager.music.trackPosition > musicManager.music.trackDuration {
+                trackPosition = Double(musicManager.music.trackDuration)
+            } else {
+                trackPosition = Double(musicManager.music.trackPosition)
+            }
         }
         .onAppear {
-            trackPosition = Double(musicManager.music.trackPosition)
+            if musicManager.music.trackPosition > musicManager.music.trackDuration {
+                trackPosition = Double(musicManager.music.trackDuration)
+            } else {
+                trackPosition = Double(musicManager.music.trackPosition)
+            }
             playbackTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
                 print("playback timer")
                 Task { @MainActor in
-                    if musicManager.music.isPlaying == true {
+                    if musicManager.music.isPlaying == true && Int(trackPosition) < musicManager.music.trackDuration {
                         trackPosition += 1
                     }
                 }
@@ -213,9 +220,9 @@ struct NotchMusicViewExpanded: View {
     }
 }
 
-#Preview {
-    NotchMusicViewTrailing()
-        .frame(width: 100, height: 100)
+#Preview(traits: .defaultLayout) {
+    NotchMusicViewExpanded()
+        .frame(height: 197)
 }
 
 
