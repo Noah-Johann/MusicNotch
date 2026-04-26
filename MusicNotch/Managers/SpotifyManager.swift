@@ -52,6 +52,11 @@ class SpotifyManager {
                 if running {
                     await MusicManager.shared.updateMusic(player: .spotify)
                 } else {
+                    if Defaults[.autoPlayer] {
+                        guard await MusicManager.shared.musicPlayer == .spotify else { return }
+                    } else {
+                        guard Defaults[.musicPlayer] == .spotify else { return }
+                    }
                     await MusicManager.shared.setDisabledPlayback()
                     return
                 }

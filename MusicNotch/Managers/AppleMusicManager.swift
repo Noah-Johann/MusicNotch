@@ -41,6 +41,11 @@ class AppleMusicManager {
                 if running {
                     await MusicManager.shared.updateMusic(player: .appleMusic)
                 } else {
+                    if Defaults[.autoPlayer] {
+                        guard await MusicManager.shared.musicPlayer == .appleMusic else { return }
+                    } else {
+                        guard Defaults[.musicPlayer] == .appleMusic else { return }
+                    }
                     await MusicManager.shared.setDisabledPlayback()
                     return
                 }
