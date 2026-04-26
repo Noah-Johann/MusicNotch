@@ -25,10 +25,7 @@
 -->
 
 ## Features
-MusicNotch turns your MacBook's notch from just a cutout in your screen into a dynamic information center complete with music controls. Control your **Spotify** playback easily with a hover of the notch instead of opening a separate app. Get information about battery status, volume, brightness and more.  
-
-> [!NOTE]
-> MusicNotch currently works with Apple Music and the official Spotify client. A system-wide now playing integration will be added soon.
+MusicNotch turns your MacBook's notch from just a cutout in your screen into a dynamic information center complete with music controls. Control your Apple Music, Spotify or global playback easily with a hover of the notch instead of opening a separate app. Get additional information about battery status, volume, brightness and more.  
 
 
 ### Roadmap
@@ -57,7 +54,7 @@ See [Releases](https://github.com/Noah-Johann/MusicNotch/releases) for the lates
 To download the app using [Homebrew](https://brew.sh), run the following command in your terminal:
 
 ```bash
-brew install --cask Noah-Johann/MusicNotch/MusicNotch --no-quarantine
+brew install --cask Noah-Johann/MusicNotch/MusicNotch
 ```
 
 ### Updates
