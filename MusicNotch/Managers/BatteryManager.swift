@@ -10,13 +10,14 @@ import IOKit.ps
 import SwiftUI
 import Defaults
 
-class BatteryManager: ObservableObject {
+@Observable
+class BatteryManager {
     static let shared = BatteryManager()
     
-    @Published var currentCapacity: Double = 0
+    var currentCapacity: Double = 0
     
-    @Published var batteryIconColor: Color = .white
-    @Published var isCharging: Bool = false
+    var batteryIconColor: Color = .white
+    var isCharging: Bool = false
     
     private var previousBattery = BatteryManager.errorBatteryInfo
     

@@ -15,8 +15,8 @@ enum HudType {
 }
 
 struct NotchHUDViewLeading: View {
-    @ObservedObject var volumeManager = VolumeManager.shared
-    @ObservedObject var brightnessManager = BrightnessManager.shared
+    @State var volumeManager = VolumeManager.shared
+    @State var brightnessManager = BrightnessManager.shared
     
     let hudType: HudType
     
@@ -38,16 +38,19 @@ struct NotchHUDViewLeading: View {
                             Image(systemName: "speaker.wave.3.fill")
                         }
                     }
-                } .frame(width: 20)
+                }
+                .font(.system(size: 12))
+                .frame(width: 15)
                 
                 if !Defaults[.hideHudLabel] {
                     Text("Volume")
-                        .font(.system(size: 12))
+                        .font(.system(size: 11))
+                        .frame(width: textWidth("Volume", font: .systemFont(ofSize: 11)))
                 }
                 
                 Spacer()
             }
-            .frame(width: 35 + textWidth("Volume", font: .systemFont(ofSize: 12)), height: 20)
+            .frame(width: 32 + textWidth("Volume", font: .systemFont(ofSize: 11)), height: 20)
             .padding(.trailing, 4)
             .animation(.easeInOut(duration: 0.4), value: volumeManager.volume)
             .animation(.easeInOut(duration: 0.4), value: volumeManager.isMuted)
@@ -61,16 +64,18 @@ struct NotchHUDViewLeading: View {
                     } else {
                         Image(systemName: "sun.max")
                     }
-                } .frame(width: 20)
+                }
+                .font(.system(size: 12))
+                .frame(width: 15)
                 
                 if !Defaults[.hideHudLabel] {
                     Text("Brightness")
-                        .font(.system(size: 12))
+                        .font(.system(size: 11))
                 }
                 
                 Spacer()
             }
-            .frame(width: 35 + textWidth("Brightness", font: .systemFont(ofSize: 12)), height: 20)
+            .frame(width: 32 + textWidth("Brightness", font: .systemFont(ofSize: 11)), height: 20)
             .padding(.trailing, 4)
             .animation(.easeInOut(duration: 0.4), value: brightnessManager.brightness)
         }
@@ -78,8 +83,8 @@ struct NotchHUDViewLeading: View {
 }
 
 struct NotchHUDViewTrailing: View {
-    @ObservedObject var volumeManager = VolumeManager.shared
-    @ObservedObject var brightnessManager = BrightnessManager.shared
+    @State var volumeManager = VolumeManager.shared
+    @State var brightnessManager = BrightnessManager.shared
     
     let hudType: HudType
     
@@ -87,24 +92,29 @@ struct NotchHUDViewTrailing: View {
         switch hudType {
         case .volume:
             HStack {
-                HudSlider(value: $volumeManager.volume, isExpanded: false)
-                
-                if volumeManager.volume == 0 || volumeManager.isMuted {
-                    Text("muted")
-                        .font(.system(size: 12))
-                        .foregroundStyle(.secondary)
-                }
+                Spacer()
+                HStack {
+                    HudSlider(value: $volumeManager.volume)
+                    
+                    if volumeManager.volume == 0 || volumeManager.isMuted {
+                        Text("muted")
+                            .font(.system(size: 10))
+                            .foregroundStyle(.secondary)
+                    }
+                } .frame(width: 77)
             }
-            .frame(width: 35 + textWidth("Volume", font: .systemFont(ofSize: 12)), height: 20)
+            .frame(width: 32 + textWidth("Volume", font: .systemFont(ofSize: 11)), height: 20)
             .padding(.leading, 4)
             .animation(.easeInOut(duration: 0.4), value: volumeManager.volume)
             .animation(.bouncy(duration: 0.4), value: volumeManager.isMuted)
             
         case .brightness:
             HStack {
-                HudSlider(value: $brightnessManager.brightness, isExpanded: false)
+                Spacer()
+                HudSlider(value: $brightnessManager.brightness)
+                    .frame(width: 77)
             }
-            .frame(width: 35 + textWidth("Brightness", font: .systemFont(ofSize: 12)), height: 20)
+            .frame(width: 32 + textWidth("Brightness", font: .systemFont(ofSize: 11)), height: 20)
             .padding(.leading, 4)
             .animation(.easeInOut(duration: 0.4), value: brightnessManager.brightness)
         }
@@ -115,16 +125,16 @@ func textWidth(_ key: String, font: NSFont) -> CGFloat {
     let localized = NSLocalizedString(key, comment: "")
     let attributes: [NSAttributedString.Key: Any] = [.font: font]
     let frameWidth = (localized as NSString).size(withAttributes: attributes).width
-    if frameWidth > 80 {
+    if frameWidth > 50 {
         return frameWidth
     } else {
-        return 80.0
+        return 50
     }
 }
 
 struct NotchHUDViewExpanded: View {
-    @ObservedObject var volumeManager = VolumeManager.shared
-    @ObservedObject var brightnessManager = BrightnessManager.shared
+    @State var volumeManager = VolumeManager.shared
+    @State var brightnessManager = BrightnessManager.shared
     
     @State private var musicManager = MusicManager.shared
 
@@ -155,7 +165,7 @@ struct NotchHUDViewExpanded: View {
                         .padding(.trailing, 5)
                     
                     HStack {
-                        HudSlider(value: $volumeManager.volume, isExpanded: true)
+                        HudSlider(value: $volumeManager.volume, height: 6)
                         
                         if volumeManager.volume == 0 || volumeManager.isMuted {
                             Text("muted")
@@ -181,7 +191,7 @@ struct NotchHUDViewExpanded: View {
                                 get: { musicManager.music.volume! / 100 },
                                 set: { newValue in musicManager.music.volume = newValue * 100}
                             )
-                            HudSlider(value: musicVolumeBinding, isExpanded: true)
+                            HudSlider(value: musicVolumeBinding, height: 6)
                         }
                     }
                     .frame(width: width, height: 30)
@@ -204,7 +214,7 @@ struct NotchHUDViewExpanded: View {
                     .padding(.trailing, 5)
                 
                 HStack {
-                    HudSlider(value: $brightnessManager.brightness, isExpanded: true)
+                    HudSlider(value: $brightnessManager.brightness, height: 6)
                 }
             }
             .frame(width: width, height: 30)

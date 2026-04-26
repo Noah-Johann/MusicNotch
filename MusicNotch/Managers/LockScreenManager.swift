@@ -8,9 +8,7 @@
 import Foundation
 import Defaults
 
-class LockScreenManager: ObservableObject {
-    static let shared = LockScreenManager()
-    
+class LockScreenManager {    
     init() {
         setupObservers()
     }
@@ -38,8 +36,8 @@ class LockScreenManager: ObservableObject {
     @objc private func screenLocked() {
         Task { @MainActor in
             Task.detached { if Defaults[.lockSound] { playSound(sound: .lock) } }
-            WindowManager.showLockScreenPlayer(sendFromLock: true)
-            MusicManager.shared.updateMusic()
+            WindowManager.shared.showLockScreenPlayer(sendFromLock: true)
+            MusicManager.shared.refreshMusic()
             
             if Defaults[.lockExtension] {
                 if NotchManager.shared.notchState == .closed || NotchManager.shared.notchState == .transparent {
@@ -53,7 +51,7 @@ class LockScreenManager: ObservableObject {
     @objc private func screenUnlocked() {
         Task { @MainActor in
             Task.detached { if Defaults[.unlockSound] { playSound(sound: .unlock) } }
-            WindowManager.hideLockScreen()
+            WindowManager.shared.hideLockScreen()
             if Defaults[.lockExtension] {
                 NotchManager.shared.showExtensionNotch(type: .unlocked, duration: 1.5)
             }

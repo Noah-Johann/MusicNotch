@@ -10,8 +10,8 @@ import AVKit
 import Defaults
 
 struct NotchAirPodsViewLeading: View {
-    @ObservedObject private var volumeManager = VolumeManager.shared
-    @ObservedObject private var accessibilityManager = AccessibilityManager.shared
+    @State private var volumeManager = VolumeManager.shared
+    @State private var accessibilityManager = AccessibilityManager.shared
     
     @Default(.bluetoothSymbols) private var bluetoothSymbols
 

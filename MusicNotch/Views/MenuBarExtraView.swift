@@ -11,7 +11,10 @@ import Defaults
 
 struct MenuBarExtraView: View {    
     @State var musicManager = MusicManager.shared
-    @ObservedObject var updateManager = UpdateManager.shared
+    @State var updateManager = UpdateManager.shared
+    
+    @Default(.autoPlayer) private var autoPlayer
+    @Default(.musicPlayer) private var musicPlayer
     
     var body: some View {
         Section {
@@ -59,16 +62,34 @@ struct MenuBarExtraView: View {
             }
             
         }
+        
+        if !autoPlayer {
+            Section {
+                Picker("Source", selection: $musicPlayer) {
+                    ForEach(MusicApp.allCases, id: \.self) { app in
+                        HStack {
+                            app.image.imageScale(.large)
+                            Text(app.text)
+                        }
+                    }
+                }
+            }
+        }
+        
         Section {
             Text("Version \(Bundle.main.appVersion!)")
                 .foregroundStyle(.secondary)
             
             Button("About") {
-                WindowManager.openAbout()
+                Task {
+                    WindowManager.shared.openAbout()
+                }
             }
             
             Button("Settings") {
-                WindowManager.openSettings()
+                Task {
+                    WindowManager.shared.openSettings()
+                }
             } .keyboardShortcut(.init(",", modifiers: [.command]))
         }
         

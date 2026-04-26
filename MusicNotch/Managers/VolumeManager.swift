@@ -12,18 +12,18 @@ import Combine
 import SwiftUI
 import Defaults
 
-@MainActor
-class VolumeManager: ObservableObject {
+@Observable
+class VolumeManager {
     static let shared = VolumeManager()
     
-    @Published var volume: CGFloat = 0
-    @Published var isMuted: Bool = false
+    var volume: CGFloat = 0
+    var isMuted: Bool = false
     
-    @Published var deviceName: String = ""
-    @Published var deviceIcon: String = "headphones"
-    @Published var deviceID: String = ""
-    @Published var deviceBattery: CGFloat = 100
-    @Published var deviceVideo: String = "AirPodsPro2"
+    var deviceName: String = ""
+    var deviceIcon: String = "headphones"
+    var deviceID: String = ""
+    var deviceBattery: CGFloat = 100
+    var deviceVideo: String = "AirPodsPro2"
     
     private var volBeforeMute: CGFloat = 0
     private var currentDeviceID: AudioDeviceID = kAudioDeviceUnknown
@@ -228,7 +228,7 @@ class VolumeManager: ObservableObject {
         return (mute != 0)
     }
     
-    private func showUpdate() {
+    @MainActor private func showUpdate() {
         if Defaults[.hudExtension] {
             print("showhud")
             NotchManager.shared.showExtensionNotch(type: .volume, duration: Defaults[.displayDuration])
@@ -360,7 +360,7 @@ class VolumeManager: ObservableObject {
         }
     }
     
-    private func getBluetoothModel (name: String) {
+    @MainActor private func getBluetoothModel (name: String) {
         let task = Process()
         task.launchPath = "/usr/sbin/system_profiler"
         task.arguments = ["SPBluetoothDataType", "-json"]

@@ -8,7 +8,7 @@
 import SwiftUI
     
 struct NotchBatteryViewLeading: View {
-    @ObservedObject var batteryManager = BatteryManager.shared
+    @State var batteryManager = BatteryManager.shared
     
     var body: some View {
         //        Image(systemName: batteryManager.batteryIconName)
@@ -22,7 +22,7 @@ struct NotchBatteryViewLeading: View {
 }
     
 struct NotchBatteryViewTrailing: View {
-    @ObservedObject var batteryManager = BatteryManager.shared
+    @State var batteryManager = BatteryManager.shared
     
     var body: some View {
         Text("\(Int(batteryManager.currentCapacity)) %")

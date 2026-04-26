@@ -72,20 +72,20 @@ struct NotchViewTrailing: View {
 
 struct NotchViewExpanded: View {
     @State var notchManager = NotchManager.shared
-    
-    @ObservedObject var batteryManager = BatteryManager.shared
-    @ObservedObject var volumeManager = VolumeManager.shared
-    @ObservedObject var brightnessManager = BrightnessManager.shared
-    @ObservedObject var lockScreenManager = LockScreenManager.shared
+    @State var batteryManager = BatteryManager.shared
+    @State var volumeManager = VolumeManager.shared
+    @State var brightnessManager = BrightnessManager.shared
+    private var lockManager = LockScreenManager()
+    private var screenHelper = ScreenHelper()
     
     var body: some View {
         VStack {
             NotchMusicViewExpanded()
             
             if notchManager.notchContent == .volume {
-                NotchHUDViewExpanded(hudType: .volume, width: 350)
+                NotchHUDViewExpanded(hudType: .volume, width: 330)
             } else if notchManager.notchContent == .brightness {
-                NotchHUDViewExpanded(hudType: .brightness, width: 350)
+                NotchHUDViewExpanded(hudType: .brightness, width: 330)
             }
         } .padding(.bottom)
     }

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct BasicBatteryIconView: View {
-    @ObservedObject var batteryManager = BatteryManager.shared
+    @State var batteryManager = BatteryManager.shared
     
     var iconWidth: CGFloat
     

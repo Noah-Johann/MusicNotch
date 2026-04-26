@@ -18,9 +18,10 @@ struct SettingsView: View {
     @Default(.bluetoothRecognition) private var bluetoothRecognition
     @Default(.enableGestures) private var enableGestures
     @Default(.hoverBehavior) private var hoverBehavior
-    @Default(.autoMusicGlance) private var autoMusicGlance
+    @Default(.globalMusicGlance) private var autoMusicGlance
+    @Default(.autoPlayer) private var autoPlayer
     
-    @ObservedObject private var updateManager = UpdateManager.shared
+    @State private var updateManager = UpdateManager.shared
     
     var body: some View {
         LuminarePane() {
@@ -55,6 +56,7 @@ struct SettingsView: View {
             .animation(.easeInOut(duration: 0.3), value: autoMusicGlance)
             .animation(.easeInOut(duration: 0.3), value: updateManager.updateState)
             .animation(.bouncy(duration: 0.2), value: updateManager.updateProgress)
+            .animation(.bouncy(duration: 0.3), value: autoPlayer)
 
         }
     }

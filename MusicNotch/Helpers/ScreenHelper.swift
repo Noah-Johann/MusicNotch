@@ -14,11 +14,10 @@ class ScreenHelper {
     
     @objc func screenChange() {
         Task {
-            await NotchManager.shared.setNotchState(.hidden, changeDisplay: true)
-            try await Task.sleep(for: .seconds(2))
-            await NotchManager.shared.setNotchState(.hidden, changeDisplay: true)
-            await NotchManager.shared.setNotchState(.compact, changeDisplay: true)
-
+//            await NotchManager.shared.setNotchState(.hidden, changeDisplay: true)
+//            await NotchManager.shared.createNotch()
+            await NotchManager.shared.setNotchState(.closed, changeDisplay: true)
+            await MusicManager.shared.refreshMusic()
         }
     }
 

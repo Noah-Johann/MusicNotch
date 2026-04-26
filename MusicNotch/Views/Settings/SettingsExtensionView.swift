@@ -23,9 +23,7 @@ struct SettingsExtensionView: View {
     @Default(.gradientHudSlider) private var gradientHudSlider
     @Default(.bluetoothRecognition) private var bluetoothRecognition
     @Default(.bluetoothSymbols) private var bluetoothSymbols
-    
-    @ObservedObject private var accessibilityManager = AccessibilityManager.shared
-    
+        
     var body: some View {
         LuminareSection {
             LuminareSlider(

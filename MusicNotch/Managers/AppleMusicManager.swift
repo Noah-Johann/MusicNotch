@@ -5,10 +5,9 @@
 //  Created by Noah Johann on 04.01.26.
 //
 
-import Foundation
+import Defaults
 import AppKit
 
-@MainActor
 class AppleMusicManager {
     static let shared = AppleMusicManager()
     
@@ -17,6 +16,53 @@ class AppleMusicManager {
         
         return workspace.runningApplications.contains { app in
             app.bundleIdentifier == "com.apple.Music"
+        }
+    }
+    
+    public func setupObservers() {
+        DistributedNotificationCenter.default().addObserver(
+            self,
+            selector: #selector(appleMusicNotification),
+            name: NSNotification.Name("com.apple.Music.playerInfo"),
+            object: nil,
+            suspensionBehavior: .deliverImmediately
+        )
+    }
+    
+    
+    @objc private func appleMusicNotification(_ sender: NSNotification?) {
+        guard AppleMusicManager.shared.checkIfMusicIsRunning() else { return }
+        
+        let musicAppKilled = sender?.userInfo?["Player State"] as? String == "Stopped"
+        if musicAppKilled {
+            Task {
+                try? await Task.sleep(for: .milliseconds(2000))
+                let running = checkIfMusicIsRunning()
+                if running {
+                    await MusicManager.shared.updateMusic(player: .appleMusic)
+                } else {
+                    if Defaults[.autoPlayer] {
+                        guard await MusicManager.shared.musicPlayer == .appleMusic else { return }
+                    } else {
+                        guard Defaults[.musicPlayer] == .appleMusic else { return }
+                    }
+                    await MusicManager.shared.setDisabledPlayback()
+                    return
+                }
+            }
+        } else {
+            Task { @MainActor in
+                MusicManager.shared.updateMusic(player: .appleMusic)
+            }
+        }
+    }
+    
+    public func checkIfPlaying() -> Bool {
+        let result = AppleScriptHelper.executeAppleScript("tell application \"Music\" to set isPlaying to player state as string")
+        if let stringValue = result?.stringValue, stringValue == "playing" {
+            return true
+        } else {
+            return false
         }
     }
     
@@ -75,10 +121,14 @@ class AppleMusicManager {
         )
         
         if let data = descriptor.atIndex(10)?.data {
-            MusicManager.shared.albumArt = NSImage(data: data)
-            MusicManager.shared.getAverageColor()
+            Task { @MainActor in
+                MusicManager.shared.albumArt = NSImage(data: data)
+                MusicManager.shared.getAverageColor()
+            }
         } else {
-            MusicManager.shared.albumArt = NSImage(named: "no_playback")
+            Task { @MainActor in
+                MusicManager.shared.albumArt = NSImage(named: "no_playback")
+            }
         }
                 
         return returnTrack

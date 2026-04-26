@@ -14,7 +14,7 @@ struct MusicActions {
     
     static func playPause() {
         Task {
-            switch Defaults[.musicPlayer] {
+            switch await MusicManager.shared.musicPlayer {
             case .appleMusic:
                 try await AppleScriptHelper.run("tell application \"Music\" to playpause")
             case .spotify:
@@ -27,13 +27,13 @@ struct MusicActions {
     
     static func lastTrack() {
         Task {
-            switch Defaults[.musicPlayer] {
+            switch await MusicManager.shared.musicPlayer {
             case .appleMusic:
                 try await AppleScriptHelper.run("tell application \"Music\" to previous track")
-                await MusicManager.shared.updateMusic()
+                await MusicManager.shared.updateMusic(player: .appleMusic)
             case .spotify:
                 try await AppleScriptHelper.run("tell application \"Spotify\" to previous track")
-                await MusicManager.shared.updateMusic()
+                await MusicManager.shared.updateMusic(player: .spotify)
             case .nowPlaying:
                 await MusicManager.shared.NPpreviousTrack()
             }
@@ -42,13 +42,13 @@ struct MusicActions {
     
     static func secondsBackwards() {
         Task {
-            switch Defaults[.musicPlayer] {
+            switch await MusicManager.shared.musicPlayer {
             case .appleMusic:
                 break
             case .spotify:
                 try await AppleScriptHelper.run("tell application \"Spotify\" to set player position to (player position - 15)")
                 try await Task.sleep(for: .milliseconds(150))
-                await MusicManager.shared.updateMusic()
+                await MusicManager.shared.updateMusic(player: .spotify)
             case .nowPlaying:
                 break
             }
@@ -57,7 +57,7 @@ struct MusicActions {
     
     static func nextTrack() {
         Task {
-            switch Defaults[.musicPlayer] {
+            switch await MusicManager.shared.musicPlayer {
             case .appleMusic:
                 try await AppleScriptHelper.run("tell application \"Music\" to play next track")
             case .spotify:
@@ -70,13 +70,13 @@ struct MusicActions {
     
     static func secondsForwards() {
         Task {
-            switch Defaults[.musicPlayer] {
+            switch await MusicManager.shared.musicPlayer {
             case .appleMusic:
                 break
             case .spotify:
                 try await AppleScriptHelper.run("tell application \"Spotify\" to set player position to (player position + 15)")
                 try await Task.sleep(for: .milliseconds(150))
-                await MusicManager.shared.updateMusic()
+                await MusicManager.shared.updateMusic(player: .spotify)
             case .nowPlaying:
                 break
             }
@@ -85,12 +85,12 @@ struct MusicActions {
 
     static func toggleShuffle() {
         Task {
-            switch Defaults[.musicPlayer] {
+            switch await MusicManager.shared.musicPlayer {
             case .appleMusic:
                 try await AppleScriptHelper.run("tell application \"Music\" to set shuffle enabled to not shuffle enabled")
             case .spotify:
                 try await AppleScriptHelper.run("tell application \"Spotify\" to set shuffling to not shuffling")
-                await MusicManager.shared.updateMusic()
+                await MusicManager.shared.updateMusic(player: .spotify)
             case .nowPlaying:
                 break
             }
@@ -99,7 +99,7 @@ struct MusicActions {
     
     static func setProgress(position: Double) {
         Task {
-            switch Defaults[.musicPlayer] {
+            switch await MusicManager.shared.musicPlayer {
             case .appleMusic:
                 try await AppleScriptHelper.run("tell application \"Music\" to set player position to \(position)")
             case .spotify:
@@ -112,7 +112,7 @@ struct MusicActions {
 
     static func setVolume(volume: Double) {
         Task {
-            switch Defaults[.musicPlayer] {
+            switch await MusicManager.shared.musicPlayer {
             case .appleMusic:
                 try await AppleScriptHelper.run("tell application \"Music\" to set sound volume to \(volume)")
             case .spotify:

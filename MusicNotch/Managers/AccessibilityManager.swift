@@ -8,10 +8,11 @@
 import Foundation
 import AppKit
 
-class AccessibilityManager: ObservableObject {
+@Observable
+class AccessibilityManager {
     static let shared = AccessibilityManager()
     
-    @Published var isReduceMotion: Bool = NSWorkspace.shared.accessibilityDisplayShouldReduceMotion
+    var isReduceMotion: Bool = NSWorkspace.shared.accessibilityDisplayShouldReduceMotion
     
     init() {
         setupObservers()

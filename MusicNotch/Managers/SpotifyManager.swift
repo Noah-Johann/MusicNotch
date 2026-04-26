@@ -11,22 +11,74 @@ import AppKit
 import Defaults
 import SwiftUI
 
-@MainActor
 class SpotifyManager {
     static let shared = SpotifyManager()
                         
     public var oldTrackName: String = ""
+    
+    private var spotifyBundle = "com.spotify.client"
 
-    public func checkIfSpotifyIsRunning() -> Bool {
+    public func isSpotifyRunning() -> Bool {
         let workspace = NSWorkspace.shared
         
         return workspace.runningApplications.contains { app in
-            app.bundleIdentifier == "com.spotify.client"
+            app.bundleIdentifier == spotifyBundle
         }
     }
-      
+
+    public func isSpotifyInstalled() -> Bool {
+        return NSWorkspace.shared.urlForApplication(withBundleIdentifier: spotifyBundle) != nil
+
+    }
+    
+    public func setupObservers() {
+        DistributedNotificationCenter.default().addObserver(
+            self,
+            selector: #selector(spotifyNotification),
+            name: NSNotification.Name("com.spotify.client.PlaybackStateChanged"),
+            object: nil,
+            suspensionBehavior: .deliverImmediately
+        )
+    }
+    
+    @objc private func spotifyNotification(_ sender: NSNotification?) {
+        guard isSpotifyRunning() else { return }
+        
+        let musicAppKilled = sender?.userInfo?["Player State"] as? String == "Stopped"
+        if musicAppKilled {
+            Task {
+                try? await Task.sleep(for: .milliseconds(1000))
+                let running = isSpotifyRunning()
+                if running {
+                    await MusicManager.shared.updateMusic(player: .spotify)
+                } else {
+                    if Defaults[.autoPlayer] {
+                        guard await MusicManager.shared.musicPlayer == .spotify else { return }
+                    } else {
+                        guard Defaults[.musicPlayer] == .spotify else { return }
+                    }
+                    await MusicManager.shared.setDisabledPlayback()
+                    return
+                }
+            }
+        } else {
+            Task { @MainActor in
+                MusicManager.shared.updateMusic(player: .spotify)
+            }
+        }
+    }
+    
+    public func checkIfPlaying() -> Bool {
+        let result = AppleScriptHelper.executeAppleScript("tell application \"Spotify\" to set isPlaying to player state as string")
+        if let stringValue = result?.stringValue, stringValue == "playing" {
+            return true
+        } else {
+            return false
+        }
+    }
+          
     public func collectSpotifyInfo() -> MusicTrack? {
-        guard checkIfSpotifyIsRunning() else { return nil }
+        guard isSpotifyRunning() else { return nil }
         
         let script = """
         tell application "Spotify"
@@ -87,11 +139,9 @@ class SpotifyManager {
         return returnTrack
     }
     
-    @MainActor
-    private func fetchAlbumArt(albumUrl: String) {
-        print("fetchAlbumArt")
+    @MainActor private func fetchAlbumArt(albumUrl: String) {
          guard let url = URL(string: albumUrl) else { return }
-        print("haveURL")
+        
          URLSession.shared.dataTask(with: url) { data, _, _ in
              guard let data = data, let image = NSImage(data: data) else {
                  Task { @MainActor in

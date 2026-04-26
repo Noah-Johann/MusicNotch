@@ -52,11 +52,13 @@ enum HoverBehavior: CaseIterable, Codable, Defaults.Serializable {
     }
 }
 
-enum MusicApp: CaseIterable, Codable, Defaults.Serializable {
+enum MusicApp: CaseIterable, Codable, Identifiable, Defaults.Serializable {
     case appleMusic
     case spotify
     case nowPlaying
         
+    var id: Self { self }
+    
     var image: Image {
         switch self {
         case .appleMusic:

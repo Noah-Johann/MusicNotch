@@ -16,6 +16,8 @@ class MusicManager {
     static let shared = MusicManager()
     
     let mediaController = MediaController()
+    
+    var musicPlayer: MusicApp = .nowPlaying
         
     var music = MusicTrack(
         trackName: "",
@@ -38,40 +40,39 @@ class MusicManager {
     private var launched: Bool = false
     private var prevMusic = MusicTrack(trackName: "", artistName: "", albumName: "", trackDuration: 0, trackPosition: 0, isPlaying: false, isLoved: false, shuffle: false, type: .music)
     
-    init () {        
-        setupObservers()
-        
-        // Handle incoming track data (nil when no media player is active)
-        mediaController.onTrackInfoReceived = { trackInfo in
-            guard Defaults[.musicPlayer] == .nowPlaying else { return }
-            
-            guard let trackInfo = trackInfo else {
-                self.music = self.disabledPlayback()
-                return
+    private let appleMusicManager = AppleMusicManager()
+    private let spotifyManager = SpotifyManager()
+    
+    private var enableMusicGlance: Bool {
+        if Defaults[.allPlayerMusicGlanceSetting] == true {
+            return Defaults[.globalMusicGlance]
+        } else {
+            switch self.musicPlayer {
+            case .appleMusic: return Defaults[.amMusicGlance]
+            case .spotify: return Defaults[.spotifyMusicGlance]
+            case .nowPlaying: return Defaults[.npMusicGlance]
             }
-            print("Now Playing: \(trackInfo.payload.title ?? "N/A")")
-            print("Appname: \(trackInfo.payload.applicationName ?? "")")
-            self.music = MusicTrack(trackName: trackInfo.payload.title ?? "",
-                                    artistName: trackInfo.payload.artist ?? "",
-                                    albumName: trackInfo.payload.album ?? "",
-                                    trackDuration: Int(trackInfo.payload.durationMicros ?? 1) / 1000000,
-                                    trackPosition: Int(trackInfo.payload.elapsedTimeMicros ?? 0) / 1000000,
-                                    isPlaying: trackInfo.payload.isPlaying ?? false,
-                                    isLoved: false,
-                                    shuffle: false,
-                                    type: trackInfo.payload.bundleIdentifier == "com.apple.podcasts" ? .podcast : .music,
-                )
-            if trackInfo.payload.artwork != nil {
-                self.albumArt = trackInfo.payload.artwork
-                self.getAverageColor()
-            }
-            self.playingAppName = trackInfo.payload.applicationName
-            self.playingAppBundle = trackInfo.payload.bundleIdentifier
-            
-            self.updateMusic(getMusic: false)
         }
-
-        // Handle listener termination
+    }
+    
+    init () {
+        if Defaults[.autoPlayer] {
+            self.musicPlayer = .nowPlaying
+        } else {
+            self.musicPlayer = Defaults[.musicPlayer]
+        }
+        
+        appleMusicManager.setupObservers()
+        spotifyManager.setupObservers()
+        Task {
+            mediaController.startListening()
+        }
+        
+        mediaController.onTrackInfoReceived = { trackInfo in
+            Task {
+                self.updateMusic(player: .nowPlaying, updateInfo: trackInfo)
+            }
+        }
         mediaController.onListenerTerminated = {
             self.music = self.disabledPlayback()
             print("Listener terminated")
@@ -83,85 +84,79 @@ class MusicManager {
         mediaController.stopListening()
     }
     
-    private func setupObservers() {
-        Task { [weak self] in
-            guard let self = self else { return }
-            
-            DistributedNotificationCenter.default().addObserver(
-                self,
-                selector: #selector(spotifyNotification),
-                name: NSNotification.Name("com.spotify.client.PlaybackStateChanged"),
-                object: nil,
-                suspensionBehavior: .deliverImmediately
-            )
-            
-            DistributedNotificationCenter.default().addObserver(
-                self,
-                selector: #selector(appleMusicNotification),
-                name: NSNotification.Name("com.apple.Music.playerInfo"),
-                object: nil,
-                suspensionBehavior: .deliverImmediately
-            )
-            
-            mediaController.startListening()
-        }
+    // MARK: - Public
+
+    /// Refreshes the music info for the last playing player or selected player
+    public func refreshMusic() {
+        updateMusic(player: musicPlayer)
     }
     
-    @objc private func spotifyNotification(_ sender: NSNotification?) {
-        guard Defaults[.musicPlayer] == .spotify else { return }
-        guard SpotifyManager.shared.checkIfSpotifyIsRunning() else { return }
-        
-        let musicAppKilled = sender?.userInfo?["Player State"] as? String == "Stopped"
-        if musicAppKilled {
-            Task {
-                try? await Task.sleep(for: .milliseconds(1000))
-                let running = SpotifyManager.shared.checkIfSpotifyIsRunning()
-                if running {
-                    updateMusic()
+    /// Updates the music info for a specified player and optional updateInfo for now playing info
+    public func updateMusic(player: MusicApp, updateInfo: TrackInfo? = nil) {
+        if Defaults[.autoPlayer] {
+            checkAutoPlayer(notificationPlayer: player, updateInfo: updateInfo)
+        } else {
+            guard player == Defaults[.musicPlayer] else { return }
+            if Defaults[.musicPlayer] == .nowPlaying {
+                if let info = updateInfo {
+                    setNowPlayingInfo(trackInfo: info)
                 } else {
-                    music = disabledPlayback()
-                    return
+                    mediaController.getTrackInfo() { trackInfo in
+                        self.setNowPlayingInfo(trackInfo: trackInfo)
+                    }
+                }
+            } else {
+                self.music = getMusicInfo(player: player)
+            }
+        }
+        
+        processMusicInfo()
+    }
+    
+    // MARK: - Private
+
+    /// Fetch the music and set the correct player when auto player is enabled
+    private func checkAutoPlayer(notificationPlayer: MusicApp, updateInfo: TrackInfo? = nil) {
+        guard Defaults[.autoPlayer] else { return }
+        
+        let prevPlayer = musicPlayer
+        
+        switch notificationPlayer {
+        case .appleMusic:
+            musicPlayer = .appleMusic
+            self.music = getMusicInfo(player: .appleMusic)
+        case .spotify:
+            musicPlayer = .spotify
+            self.music = getMusicInfo(player: .spotify)
+        case .nowPlaying:
+            if updateInfo != nil {
+                guard updateInfo?.payload.bundleIdentifier != "com.spotify.client" && updateInfo?.payload.bundleIdentifier != "com.apple.Music" else { print("supported player"); return }
+            }
+            
+            // Check if prev player is still playing
+            if prevPlayer == .appleMusic {
+                if appleMusicManager.checkIfPlaying() { print("AM running"); return }
+            } else if prevPlayer == .spotify {
+                if spotifyManager.checkIfPlaying() { print("Spotify running"); return }
+            }
+            
+            musicPlayer = .nowPlaying
+            if let info = updateInfo {
+                setNowPlayingInfo(trackInfo: info)
+            } else {
+                mediaController.getTrackInfo() { trackInfo in
+                    guard updateInfo?.payload.bundleIdentifier != "com.spotify.client" && updateInfo?.payload.bundleIdentifier != "com.apple.Music" else { return }
+                    self.setNowPlayingInfo(trackInfo: trackInfo)
                 }
             }
-        } else {
-            updateMusic()
         }
     }
     
-    @objc private func appleMusicNotification(_ sender: NSNotification?) {
-        guard Defaults[.musicPlayer] == .appleMusic else { return }
-        guard AppleMusicManager.shared.checkIfMusicIsRunning() else { return }
-        
-        let musicAppKilled = sender?.userInfo?["Player State"] as? String == "Stopped"
-        if musicAppKilled {
-            Task {
-                try? await Task.sleep(for: .milliseconds(2000))
-                let running = AppleMusicManager.shared.checkIfMusicIsRunning()
-                if running {
-                    updateMusic()
-                } else {
-                    music = disabledPlayback()
-                    return
-                }
-            }
-        } else {
-           updateMusic()
-        }
-    }
-    
-    public func updateMusic(getMusic: Bool = true) {
-        if getMusic && Defaults[.musicPlayer] != .nowPlaying {
-            music = getMusicInfo()
-        }
-        
-        if Defaults[.musicPlayer] == .nowPlaying {
-            getNowPlayingMusic()
-        }
-        
+    private func processMusicInfo() {
         if music.trackName != prevMusic.trackName {
             prevMusic = music
             
-            if Defaults[.autoMusicGlance] && NotchManager.shared.notchContent != .musicGlance {
+            if enableMusicGlance && music.isPlaying == true {
                 if launched == false {
                     launched = true
                 } else {
@@ -171,7 +166,7 @@ class MusicManager {
         }
         
         if music.isPlaying == true {
-            WindowManager.showLockScreenPlayer()
+            WindowManager.shared.showLockScreenPlayer()
             
             if hideTimer != nil {
                 stopTime = 0
@@ -182,7 +177,7 @@ class MusicManager {
             if NotchManager.shared.notchState == .closed || NotchManager.shared.notchState == .transparent {
                 guard !NotchManager.shared.notchDismissed else { return }
                 
-                if Defaults[.autoMusicGlance] {
+                if enableMusicGlance {
                     NotchManager.shared.showExtensionNotch(type: .musicGlance, duration: Defaults[.musicGlanceDuration])
                 } else {
                     NotchManager.shared.notchContent = .music
@@ -208,7 +203,7 @@ class MusicManager {
                                 print(self.stopTime)
                                 if NotchManager.shared.notchState == .compact {
                                     if self.stopTime > Int(Defaults[.hideNotchTime]) {
-                                        guard NotchManager.shared.notchContent == .music || NotchManager.shared.notchContent == .musicGlance else { return }
+                                        guard NotchManager.shared.notchContent == .music else { return }
                                         await NotchManager.shared.setNotchState(.closed)
                                         self.hideTimer?.invalidate()
                                         self.hideTimer = nil
@@ -228,12 +223,14 @@ class MusicManager {
         }
     }
     
-    private func getMusicInfo() -> MusicTrack {
-        switch Defaults[.musicPlayer] {
+    /// Gets the music info with AppleScript for Apple Music and Spotify
+    private func getMusicInfo(player: MusicApp) -> MusicTrack {
+        switch player {
         case .appleMusic:
             if let info = AppleMusicManager.shared.collectAppleMusicInfo() {
                 self.playingAppName = "Music"
                 self.playingAppBundle = "com.apple.Music"
+                self.musicPlayer = .appleMusic
                 return info
             } else {
                 return disabledPlayback()
@@ -243,6 +240,7 @@ class MusicManager {
             if let info = SpotifyManager.shared.collectSpotifyInfo() {
                 self.playingAppName = "Spotify"
                 self.playingAppBundle = "com.spotify.client"
+                self.musicPlayer = .spotify
                 return info
             } else {
                 return disabledPlayback()
@@ -252,31 +250,41 @@ class MusicManager {
             return disabledPlayback()
         }
     }
-    
-    private func getNowPlayingMusic() {
-        mediaController.getTrackInfo { trackInfo in
-            guard let trackInfo = trackInfo else {
-                self.music = self.disabledPlayback()
-                return
-            }
-            print("Currently playing: \(trackInfo.payload.title ?? "Unknown")")
-            self.music = MusicTrack(trackName: trackInfo.payload.title ?? "",
-                                    artistName: trackInfo.payload.artist ?? "",
-                                    albumName: trackInfo.payload.album ?? "",
-                                    trackDuration: Int(trackInfo.payload.durationMicros ?? 1) / 1000000,
-                                    trackPosition: Int(trackInfo.payload.elapsedTimeMicros ?? 0) / 1000000,
-                                    isPlaying: trackInfo.payload.isPlaying ?? false,
-                                    isLoved: false,
-                                    shuffle: false,
-                                    type: trackInfo.payload.bundleIdentifier == "com.apple.podcasts" ? .podcast : .music,
-                                    
-            )
-            self.playingAppName = trackInfo.payload.applicationName
-            self.playingAppBundle = trackInfo.payload.bundleIdentifier
+
+    /// Sets the music for the now playing source
+    private func setNowPlayingInfo(trackInfo: TrackInfo?) {
+        guard let trackInfo = trackInfo else {
+            setDisabledPlayback()
+            return
         }
+        
+        self.music = MusicTrack(trackName: trackInfo.payload.title ?? "",
+                                artistName: trackInfo.payload.artist ?? "",
+                                albumName: trackInfo.payload.album ?? "",
+                                trackDuration: Int(trackInfo.payload.durationMicros ?? 1) / 1000000,
+                                trackPosition: Int(trackInfo.payload.elapsedTimeMicros ?? 0) / 1000000,
+                                isPlaying: trackInfo.payload.isPlaying ?? false,
+                                isLoved: false,
+                                shuffle: false,
+                                type: trackInfo.payload.bundleIdentifier == "com.apple.podcasts" ? .podcast : .music,
+            )
+        if trackInfo.payload.artwork != nil {
+            self.albumArt = trackInfo.payload.artwork
+            self.getAverageColor()
+        }
+        
+        self.playingAppName = trackInfo.payload.applicationName
+        self.playingAppBundle = trackInfo.payload.bundleIdentifier
+    }
+    
+    // MARK: - Disabled Playback
+    
+    public func setDisabledPlayback() {
+        music = disabledPlayback()
     }
     
     private func disabledPlayback() -> MusicTrack {
+        let prevPlayback = self.music
         let playback = MusicTrack(trackName: "Nothing playing",
                            artistName: "No current playback",
                            albumName: "Nothing",
@@ -289,6 +297,7 @@ class MusicManager {
         )
         playingAppName = nil
         playingAppBundle = nil
+        musicPlayer = .nowPlaying
         
         Task { @MainActor in
             self.albumArt = NSImage(named: "no_playback")
@@ -297,11 +306,13 @@ class MusicManager {
         
         if NotchManager.shared.notchContent == .musicGlance || NotchManager.shared.notchContent == .music {
             Task {
-                await NotchManager.shared.setNotchState(.closed)
+                if prevPlayback.trackName != "Nothing playing" {
+                    await NotchManager.shared.setNotchState(.closed)
+                }
             }
         }
         
-        WindowManager.hideLockScreen()
+        WindowManager.shared.hideLockScreen()
         
         return playback
     }

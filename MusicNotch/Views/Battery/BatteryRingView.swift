@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct BatteryRingView: View {
-    @ObservedObject private var volumeManager = VolumeManager.shared
+    @State private var volumeManager = VolumeManager.shared
     
     
     var body: some View {

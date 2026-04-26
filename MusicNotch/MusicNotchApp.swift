@@ -23,10 +23,14 @@ struct MusicNotchApp: App {
     
     init() {
         KeyboardShortcuts.onKeyDown(for: .toggleNotch) {
-            NotchManager.shared.toggleNotch()
+            Task {
+                await NotchManager.shared.toggleNotch()
+            }
         }
         KeyboardShortcuts.onKeyDown(for: .toggleMusicGlance) {
-            NotchManager.shared.toggleMusicGlance()
+            Task {
+                await NotchManager.shared.toggleMusicGlance()
+            }
         }
         
         let handlers: [(KeyboardShortcuts.Name, () -> Void)] = [
@@ -55,47 +59,24 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         NotchManager.shared.createNotch()
         
         if Defaults[.viewedOnboarding] == false {
-            WindowManager.openOnboarding()
+            WindowManager.shared.openOnboarding()
         } else {
             if Defaults[.silentLaunch] == false {
-                WindowManager.openSettings()
+                WindowManager.shared.openSettings()
             }
-            MusicManager.shared.updateMusic()
+            MusicManager.shared.refreshMusic()
         }
         
         NSApp.setActivationPolicy(.accessory)
                 
-    //    CGDisplayRegisterReconfigurationCallback(displayCallback, UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque()))
     }
     
     func applicationShouldTerminateAfterLastWindowClosed(_: NSApplication) -> Bool {
-        WindowManager.closeAll()
+        WindowManager.shared.closeAll()
+        print("all closed")
         return false
     }
     
     
-    func applicationWillTerminate(_ aNotification: Notification) {
-     //   CGDisplayRemoveReconfigurationCallback(displayCallback, UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque()))
-    }
+    func applicationWillTerminate(_ aNotification: Notification) { }
 }
-
-//private func displayCallback(
-//    _ display: CGDirectDisplayID,
-//    _ flags: CGDisplayChangeSummaryFlags,
-//    _ userInfo: UnsafeMutableRawPointer?
-//) {
-//    guard userInfo != nil else { return }
-//
-//    if flags.contains(.addFlag) || flags.contains(.removeFlag) {
-//        print("Display connected or disconnected")
-//            Task { @MainActor in
-//                await NotchManager.shared.setNotchState(.hidden, changeDisplay: true)
-//            }
-//        
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-//            Task { @MainActor in
-//                await NotchManager.shared.setNotchState(.compact, changeDisplay: true)
-//            }
-//        }
-//    }
-//}
