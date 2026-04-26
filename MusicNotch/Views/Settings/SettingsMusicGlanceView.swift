@@ -10,14 +10,25 @@ import Luminare
 import Defaults
 
 struct SettingsMusicGlanceView: View {
-    @Default(.autoMusicGlance) private var autoMusicGlance
+    /// Global music glance setting
+    @Default(.globalMusicGlance) private var globalMusicGlance
+    
+    /// Player settings
     @Default(.amMusicGlance) private var amMusicGlance
     @Default(.spotifyMusicGlance) private var spotifyMusicGlance
     @Default(.npMusicGlance) private var npMusicGlance
-    @Default(.globalMusicGlance) private var globalMusicGlance
+    
+    /// Settings type: - Per player or global
+    @Default(.allPlayerMusicGlanceSetting) private var allPlayerMusicGlanceSetting
+    
     @Default(.musicGlanceDuration) private var musicGlanceDuration
+    
+    /// Music Player for manuel selection
     @Default(.musicPlayer) private var musicPlayer
     
+    @State private var musicManager = MusicManager.shared
+    
+    /// Value of the settings toggle
     @State private var localMusicGlance: Bool = false
     
     var body: some View {
@@ -25,17 +36,23 @@ struct SettingsMusicGlanceView: View {
             LuminareToggle(isOn: $localMusicGlance) {
                 Text("Automatic MusicGlance")
                 Spacer()
-                Button { globalMusicGlance.toggle() } label: {
-                    Image(systemName: globalMusicGlance ? "network" : "network.slash")
+                Button { allPlayerMusicGlanceSetting.toggle() } label: {
+                    Image(systemName: allPlayerMusicGlanceSetting ? "network" : "network.slash")
                         .foregroundStyle(.secondary)
-                } .buttonStyle(.plain)
+                }
+                .buttonStyle(.plain)
+                .luminarePopover() {
+                    Text("If deactivated, settings apply only for the currently selected player.")
+                        .padding()
+                }
             }
-            .onAppear { updateLocalMusicGlance() }
-            .onChange(of: globalMusicGlance) { updateLocalMusicGlance() }
-            .onChange(of: musicPlayer) { updateLocalMusicGlance() }
+            .onAppear { refreshMusicGlanceToggle() }
+            .onChange(of: allPlayerMusicGlanceSetting) { refreshMusicGlanceToggle() }
+            .onChange(of: musicPlayer) { refreshMusicGlanceToggle() }
+            .onChange(of: musicManager.musicPlayer) { if Defaults[.autoPlayer] { refreshMusicGlanceToggle() } }
             .onChange(of: localMusicGlance) { old, new in
-                if globalMusicGlance == true {
-                    autoMusicGlance = new
+                if allPlayerMusicGlanceSetting == true {
+                    globalMusicGlance = new
                 } else {
                     switch musicPlayer {
                     case .appleMusic: amMusicGlance = new
@@ -65,14 +82,22 @@ struct SettingsMusicGlanceView: View {
         .padding(.bottom, 14)
     }
     
-    func updateLocalMusicGlance() {
-        if globalMusicGlance {
-            localMusicGlance = autoMusicGlance
+    func refreshMusicGlanceToggle() {
+        if allPlayerMusicGlanceSetting {
+            localMusicGlance = globalMusicGlance
         } else {
-            switch musicPlayer {
-            case .appleMusic: localMusicGlance = amMusicGlance
-            case .spotify: localMusicGlance = spotifyMusicGlance
-            case .nowPlaying: localMusicGlance = npMusicGlance
+            if Defaults[.autoPlayer] {
+                switch MusicManager.shared.musicPlayer {
+                case .appleMusic: localMusicGlance = amMusicGlance
+                case .spotify: localMusicGlance = spotifyMusicGlance
+                case .nowPlaying: localMusicGlance = npMusicGlance
+                }
+            } else {
+                switch musicPlayer {
+                case .appleMusic: localMusicGlance = amMusicGlance
+                case .spotify: localMusicGlance = spotifyMusicGlance
+                case .nowPlaying: localMusicGlance = npMusicGlance
+                }
             }
         }
     }

@@ -44,10 +44,10 @@ class MusicManager {
     private let spotifyManager = SpotifyManager()
     
     private var enableMusicGlance: Bool {
-        if Defaults[.globalMusicGlance] == true {
-            return Defaults[.autoMusicGlance]
+        if Defaults[.allPlayerMusicGlanceSetting] == true {
+            return Defaults[.globalMusicGlance]
         } else {
-            switch Defaults[.musicPlayer] {
+            switch self.musicPlayer {
             case .appleMusic: return Defaults[.amMusicGlance]
             case .spotify: return Defaults[.spotifyMusicGlance]
             case .nowPlaying: return Defaults[.npMusicGlance]

@@ -462,6 +462,9 @@
         }
       }
     },
+    "If deactivated, settings apply only for the currently selected player." : {
+
+    },
     "If hidden, settings can be accessed via right click on the player" : {
       "localizations" : {
         "de" : {

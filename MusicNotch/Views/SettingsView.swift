@@ -18,7 +18,7 @@ struct SettingsView: View {
     @Default(.bluetoothRecognition) private var bluetoothRecognition
     @Default(.enableGestures) private var enableGestures
     @Default(.hoverBehavior) private var hoverBehavior
-    @Default(.autoMusicGlance) private var autoMusicGlance
+    @Default(.globalMusicGlance) private var autoMusicGlance
     @Default(.autoPlayer) private var autoPlayer
     
     @State private var updateManager = UpdateManager.shared
