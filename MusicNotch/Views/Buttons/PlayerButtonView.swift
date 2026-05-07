@@ -79,7 +79,8 @@ struct PlayerButtonView: View {
                     NotchManager.shared.setNotchContent(.music, duration: 0.4)
                 }
             } .disabled(!enableSpeaker)
-        } .frame(height: 45)
+        }
+        .frame(height: 43)
     }
 }
 

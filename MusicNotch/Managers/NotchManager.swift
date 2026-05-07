@@ -18,7 +18,7 @@ final class NotchManager {
     var notchContent: NotchContent = .music
     var notchDismissed: Bool = false
     
-    var notch: DynamicNotch<AnyView, AnyView, AnyView>?
+    var notch: DynamicNotch<NotchViewExpanded, NotchViewLeading, NotchViewTrailing>?
     
     private var openingTask: Task<Void, Never>?
     private var extensionNotchTask: Task<Void, Never>?
@@ -46,14 +46,25 @@ final class NotchManager {
     
     public func createNotch() {
         notch = nil
+//        notch = DynamicNotch(
+//            hoverBehavior: .increaseShadow,
+//            style: .notch(topCornerRadius: 25, bottomCornerRadius: 50),
+//            expanded: { AnyView(NotchViewExpanded()) },
+//            compactLeading: { AnyView(NotchViewLeading()) },
+//            compactTrailing: { AnyView(NotchViewTrailing()) }
+//        )
         notch = DynamicNotch(
             hoverBehavior: .increaseShadow,
-            style: .notch(topCornerRadius: 25, bottomCornerRadius: 50),
-            expanded: { AnyView(NotchViewExpanded()) },
-            compactLeading: { AnyView(NotchViewLeading()) },
-            compactTrailing: { AnyView(NotchViewTrailing()) }
+            style: .auto,
+            expanded: { NotchViewExpanded() },
+            compactLeading: { NotchViewLeading() },
+            compactTrailing: { NotchViewTrailing() }
         )
         guard let notch = notch else { return }
+        notch.topNotchSafeAreaInset = 15
+        notch.bottomNotchSafeAreaInset = 25
+        notch.verticalIslandSafeAreaInset = 25
+        notch.horizontalIslandSafeAreaInset = 25
         notch.moveToSky()
         notch.onHoverChanged = { [weak self] isHovering in
             guard let self = self else { return }
