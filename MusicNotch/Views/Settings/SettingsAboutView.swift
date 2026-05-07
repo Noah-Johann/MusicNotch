@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Luminare
+import JochexUI
 import Defaults
 
 struct SettingsAboutView: View {
@@ -34,7 +35,7 @@ struct SettingsAboutView: View {
     var body: some View {
         
 // MARK: - About Button
-        LuminareSection {
+        JochexSection {
             CosmeticTwoLineButton(heading: "\(Bundle.main.appName)",
                                   description: "Version: \(Bundle.main.appVersion!) (\(Bundle.main.appBuild!))",
                                   image: Image(nsImage: NSApp.applicationIconImage),
@@ -46,7 +47,7 @@ struct SettingsAboutView: View {
         
         
 // MARK: - Update Button
-        LuminareSection {
+        JochexSection {
             LuminareToggle(isOn: $autoUpdates) {
                 Text ("Auto check for updates")
             } .onChange(of: autoUpdates) {
@@ -165,7 +166,7 @@ struct SettingsAboutView: View {
         
 // MARK: - About section
 
-        LuminareSection {
+        JochexSection {
             CosmeticTwoLineButton(heading: "Noah Johann",
                                   description: "Development",
                                   image: Image("Credit"),
@@ -183,7 +184,7 @@ struct SettingsAboutView: View {
                 .luminareRoundingBehavior(bottom: true)
         }
         
-        LuminareSection {
+        JochexSection {
             CosmeticOneLineButton(title: "License", image: Image(systemName: "list.bullet.clipboard"), hoverIcon: "arrow.up.right") {
                 NSWorkspace.shared.open(URL(string: licenseURL)!)
             } .luminareRoundingBehavior(top: true)

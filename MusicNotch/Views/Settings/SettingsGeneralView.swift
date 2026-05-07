@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Luminare
+import JochexUI
 import Defaults
 import LaunchAtLogin
 
@@ -16,7 +17,7 @@ struct SettingsGeneralView: View {
     @Default(.viewedOnboarding) private var viewedOnboarding
     
     var body: some View {
-        LuminareSection {
+        JochexSection {
             LuminareToggle(
                 isOn: Binding(
                     get: { LaunchAtLogin.isEnabled },
@@ -65,10 +66,7 @@ struct SettingsGeneralView: View {
             .luminareBorderedStates(.none)
             .buttonStyle(.luminare)
             .frame(height: 37)
-        } header: {
-            Text("General")
         }
-        .padding(.bottom, 14)
     }
 }
 

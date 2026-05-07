@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Luminare
+import JochexUI
 import Defaults
 
 struct SettingsDisplayView: View {
@@ -14,7 +15,7 @@ struct SettingsDisplayView: View {
     @Default(.transparentNotch) private var transparentNotch
     
     var body: some View {
-        LuminareSection {
+        JochexSection {
             LuminarePicker(
                 elements: Display.allCases,
                 selection: Binding(
@@ -42,7 +43,6 @@ struct SettingsDisplayView: View {
         } header: {
             Text("Display")
         }
-        .padding(.bottom, 14)
         .onChange(of: screen) {
             Task { @MainActor in
                 await NotchManager.shared.setNotchState(.compact, changeDisplay: true)

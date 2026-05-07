@@ -7,12 +7,13 @@
 
 import SwiftUI
 import Luminare
+import JochexUI
 import KeyboardShortcuts
 import Defaults
 
 struct SettingsShortcutsView: View {
     var body: some View {
-        LuminareSection {
+        JochexSection {
             let items: [(String, LocalizedStringResource, KeyboardShortcuts.Name)] = [
                 ("chevron.up.chevron.down", "Toggle Notch", .toggleNotch),
                 ("chevron.left.chevron.right", "Show MusicGlance", .toggleMusicGlance),
@@ -44,7 +45,6 @@ struct SettingsShortcutsView: View {
         } header: {
             Text("Keyboard shortcuts")
         }
-        .padding(.bottom, 14)
     }
 }
 

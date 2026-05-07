@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Defaults
+import JochexUI
 import Luminare
 
 struct SettingsLockScreenView: View {
@@ -18,7 +19,7 @@ struct SettingsLockScreenView: View {
     @Default(.alwaysShowPlayer) private var alwaysShowPlayer
     
     var body: some View {
-        LuminareSection {
+        JochexSection {
             LuminareToggle(isOn: $lockExtension) {
                 Text("Enable LockScreen icon")
             }

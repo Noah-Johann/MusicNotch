@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Luminare
+import JochexUI
 import Defaults
 
 struct SettingsMusicView: View {
@@ -14,7 +15,7 @@ struct SettingsMusicView: View {
     @Default(.musicPlayer) private var musicPlayer
     
     var body: some View {
-        LuminareSection {
+        JochexSection {
             LuminareToggle(isOn: $autoPlayer) {
                 HStack {
                     Image(systemName: "music.quarternote.3")
@@ -51,7 +52,6 @@ struct SettingsMusicView: View {
         } header: {
             Text("Music")
         }
-        .padding(.bottom, 14)
         .onChange(of: musicPlayer) { _, newPlayer in
             SpotifyManager.shared.oldTrackName = "notrack"
             MusicManager.shared.musicPlayer = newPlayer

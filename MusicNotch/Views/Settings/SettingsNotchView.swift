@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Luminare
+import JochexUI
 import Defaults
 
 struct SettingsNotchView: View {
@@ -16,7 +17,7 @@ struct SettingsNotchView: View {
     @Default(.hideNotchTime) private var hideNotchTime
     
     var body: some View {
-        LuminareSection {
+        JochexSection {
             LuminarePicker(
                 elements: HoverBehavior.allCases,
                 selection: Binding(
@@ -78,7 +79,6 @@ struct SettingsNotchView: View {
         } header: {
             Text("Hover Behavior")
         }
-        .padding(.bottom, 14)
     }
 }
 

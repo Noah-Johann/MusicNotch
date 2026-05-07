@@ -43,17 +43,6 @@
         }
       }
     },
-    "Accessibility Permission" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Berechtigung für Bedinungshilfen"
-          }
-        }
-      }
-    },
     "Acknowledgements" : {
       "localizations" : {
         "de" : {
@@ -127,6 +116,9 @@
         }
       }
     },
+    "Battery" : {
+
+    },
     "Brightness" : {
       "localizations" : {
         "de" : {
@@ -156,6 +148,9 @@
           }
         }
       }
+    },
+    "Connectivity" : {
+
     },
     "Contribute on Github" : {
       "localizations" : {
@@ -322,16 +317,6 @@
         }
       }
     },
-    "Extensions" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Erweiterungen"
-          }
-        }
-      }
-    },
     "Finish" : {
       "localizations" : {
         "de" : {
@@ -371,6 +356,9 @@
           }
         }
       }
+    },
+    "Glances" : {
+
     },
     "Got it!" : {
       "localizations" : {
@@ -462,7 +450,7 @@
         }
       }
     },
-    "If deactivated, settings apply only for the currently selected player." : {
+    "HUD" : {
 
     },
     "If hidden, settings can be accessed via right click on the player" : {
@@ -534,6 +522,9 @@
           }
         }
       }
+    },
+    "Lock Screen" : {
+
     },
     "LockScreen" : {
       "localizations" : {
@@ -665,6 +656,9 @@
         }
       }
     },
+    "Now Playing" : {
+
+    },
     "Open Spotify to request permissions" : {
       "localizations" : {
         "de" : {
@@ -795,16 +789,6 @@
         }
       }
     },
-    "Please relaunch the app after giving permissions" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bitte die App neustarten, nachdem Berechtigungen erteilt wurden"
-          }
-        }
-      }
-    },
     "Position adjustment" : {
       "localizations" : {
         "de" : {
@@ -885,16 +869,8 @@
         }
       }
     },
-    "Show dock icon" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zeige App Icon im Dock"
-          }
-        }
-      }
+    "Shortcuts" : {
+
     },
     "Show in %@" : {
 
@@ -934,17 +910,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zeige MusicGlance"
-          }
-        }
-      }
-    },
-    "Show notch" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zeige Notch"
           }
         }
       }
@@ -1152,17 +1117,6 @@
     },
     "Video not found" : {
       "shouldTranslate" : false
-    },
-    "Viewed Onboarding" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Viewed Onboarding"
-          }
-        }
-      }
     },
     "Volume" : {
       "localizations" : {

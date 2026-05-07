@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Luminare
+import JochexUI
 import Defaults
 
 struct SettingsAppearanceView: View {
@@ -15,7 +16,7 @@ struct SettingsAppearanceView: View {
     @Default(.musicPlayerVolume) private var musicPlayerVolume
     
     var body: some View {
-        LuminareSection {
+        JochexSection {
             LuminareToggle(isOn: $coloredSpect) {
                 Text("Colored spectogram")
             }
@@ -31,7 +32,6 @@ struct SettingsAppearanceView: View {
         } header: {
             Text("Appearance")
         }
-        .padding(.bottom, 14)
     }
 }
 

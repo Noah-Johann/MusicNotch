@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Luminare
+import JochexUI
 import Defaults
 
 struct SettingsGesturesView: View {
@@ -14,7 +15,7 @@ struct SettingsGesturesView: View {
     @Default(.mediaGestures) private var mediaGestures
  
     var body: some View {
-        LuminareSection {
+        JochexSection {
             LuminareToggle(isOn: $enableGestures) {
                 Text("Enable Gesture control")
                     .padding(.trailing, 5)
@@ -39,7 +40,6 @@ struct SettingsGesturesView: View {
         } header: {
             Text("Gestures")
         }
-        .padding(.bottom, 14)
     }
 }
 

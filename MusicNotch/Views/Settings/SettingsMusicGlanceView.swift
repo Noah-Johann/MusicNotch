@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Luminare
+import JochexUI
 import Defaults
 
 struct SettingsMusicGlanceView: View {
@@ -32,7 +33,7 @@ struct SettingsMusicGlanceView: View {
     @State private var localMusicGlance: Bool = false
     
     var body: some View {
-        LuminareSection {
+        JochexSection {
             LuminareToggle(isOn: $localMusicGlance) {
                 Text("Automatic MusicGlance")
                 Spacer()
@@ -41,10 +42,10 @@ struct SettingsMusicGlanceView: View {
                         .foregroundStyle(.secondary)
                 }
                 .buttonStyle(.plain)
-                .luminarePopover() {
-                    Text("If deactivated, settings apply only for the currently selected player.")
-                        .padding()
-                }
+//                .luminarePopover() {
+//                    Text("If deactivated, settings apply only for the currently selected player.")
+//                        .padding()
+//                }
             }
             .onAppear { refreshMusicGlanceToggle() }
             .onChange(of: allPlayerMusicGlanceSetting) { refreshMusicGlanceToggle() }
@@ -78,7 +79,6 @@ struct SettingsMusicGlanceView: View {
         } header: {
             Text("MusicGlance")
         }
-        .padding(.bottom, 14)
     }
     
     func refreshMusicGlanceToggle() {

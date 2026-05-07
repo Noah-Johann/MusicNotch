@@ -35,8 +35,7 @@ struct SettingsView: View {
             } .drawingGroup()
         } content: {
             vm.selection.view()
-                .padding()
-        }
+        } .jochexUseGlassIfAvailable(true)
         
 //        LuminareDividedStack {
 //            LuminareSidebar {

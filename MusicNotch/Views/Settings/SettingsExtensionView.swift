@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Luminare
+import JochexUI
 import Defaults
 
 struct SettingsExtensionView: View {
@@ -25,7 +26,7 @@ struct SettingsExtensionView: View {
     @Default(.bluetoothSymbols) private var bluetoothSymbols
         
     var body: some View {
-        LuminareSection {
+        JochexSection {
             LuminareSlider(
                 value: $displayDuration,
                 in: 1...10,
@@ -42,9 +43,8 @@ struct SettingsExtensionView: View {
         } header: {
             Text("General")
         }
-        .padding(.bottom, 14)
 
-        LuminareSection {
+        JochexSection {
             LuminareToggle(isOn: $batteryExtension) {
                 Text("Enable Battery extension")
             }
@@ -97,9 +97,8 @@ struct SettingsExtensionView: View {
         } header: {
             Text("Battery")
         }
-        .padding(.bottom, 14)
 
-        LuminareSection {
+        JochexSection {
             LuminareToggle(isOn: $hudExtension) {
                 Text("Enable HUD extension")
             }
@@ -122,9 +121,8 @@ struct SettingsExtensionView: View {
         } header: {
             Text("HUD")
         }
-        .padding(.bottom, 14)
             
-        LuminareSection {
+        JochexSection {
             LuminareToggle(isOn: $bluetoothRecognition) {
                 Text("Enable Bluetooth extension")
             }
@@ -135,7 +133,6 @@ struct SettingsExtensionView: View {
         } header: {
             Text("Connectivity")
         }
-        .padding(.bottom, 14)
     }
 }
 
