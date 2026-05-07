@@ -1,9 +1,5 @@
 {
-<<<<<<< HEAD
-  "originHash" : "af81575fbc522fae021531ff8c913d19533fe26b7326c426c3a29692bdb9f647",
-=======
   "originHash" : "ca92f35f40abf2650cf2ee794a207bc171657d68a3ac906655a19e30e19238b9",
->>>>>>> island
   "pins" : [
     {
       "identity" : "defaults",
