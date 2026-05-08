@@ -15,6 +15,9 @@ struct PlayerButtonView: View {
     
     var enableSpeaker: Bool = true
     
+    @State var forwardArrowName: String = "arrow.clockwise"
+    @State var backwardArrowName: String = "arrow.counterclockwise"
+    
     var body: some View {
         HStack {
             HoverEffectButton(
@@ -29,7 +32,7 @@ struct PlayerButtonView: View {
             } .opacity(musicManager.musicPlayer == .nowPlaying ? 0 : 1)
             
             HoverEffectButton(
-                icon: musicManager.music.type == .podcast ? "15.arrow.trianglehead.counterclockwise" : "backward.fill",
+                icon: musicManager.music.type == .podcast ? backwardArrowName : "backward.fill",
                 iconSize: 25,
                 effectSize: 52,
                 cornerRadius: 17,
@@ -53,7 +56,7 @@ struct PlayerButtonView: View {
             }
             
             HoverEffectButton(
-                icon: musicManager.music.type == .podcast ? "15.arrow.trianglehead.clockwise" : "forward.fill",
+                icon: musicManager.music.type == .podcast ? forwardArrowName : "forward.fill",
                 iconSize: 25,
                 effectSize: 52,
                 cornerRadius: 17,
@@ -79,7 +82,14 @@ struct PlayerButtonView: View {
                     NotchManager.shared.setNotchContent(.music, duration: 0.4)
                 }
             } .disabled(!enableSpeaker)
-        } .frame(height: 45)
+        }
+        .frame(height: 45)
+        .onAppear {
+            if #available(macOS 15, *) {
+                forwardArrowName = "15.arrow.trianglehead.clockwise"
+                backwardArrowName = "15.arrow.trianglehead.counterclockwise"
+            }
+        }
     }
 }
 

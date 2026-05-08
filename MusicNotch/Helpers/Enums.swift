@@ -38,7 +38,7 @@ enum HoverBehavior: CaseIterable, Codable, Defaults.Serializable {
     var image: Image {
         switch self {
         case .disabled: Image(systemName: "nosign")
-        case .expand: Image(systemName: "chevron.left.chevron.right")
+        case .expand: Image(systemName: "arrow.uturn.down")
         case .musicGlance: Image(systemName: "music.note")
         }
     }
