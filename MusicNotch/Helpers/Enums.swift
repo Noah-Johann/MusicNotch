@@ -76,10 +76,18 @@ enum MusicApp: CaseIterable, Codable, Identifiable, Defaults.Serializable {
             }
             return Image(systemName: "music.note")
         case .nowPlaying:
-            if let appURL = NSWorkspace.shared.urlForApplication(withBundleIdentifier: "com.apple.apps.launcher") {
-                let nsImage = NSWorkspace.shared.icon(forFile: appURL.path)
-                nsImage.size = NSSize(width: 64, height: 64)
-                return Image(nsImage: nsImage)
+            if #available(macOS 26, *) {
+                if let appURL = NSWorkspace.shared.urlForApplication(withBundleIdentifier: "com.apple.apps.launcher") {
+                    let nsImage = NSWorkspace.shared.icon(forFile: appURL.path)
+                    nsImage.size = NSSize(width: 64, height: 64)
+                    return Image(nsImage: nsImage)
+                }
+            } else {
+                if let appURL = NSWorkspace.shared.urlForApplication(withBundleIdentifier: "com.apple.launchpad.launcher") {
+                    let nsImage = NSWorkspace.shared.icon(forFile: appURL.path)
+                    nsImage.size = NSSize(width: 64, height: 64)
+                    return Image(nsImage: nsImage)
+                }
             }
             return Image(systemName: "music.note")
         }
