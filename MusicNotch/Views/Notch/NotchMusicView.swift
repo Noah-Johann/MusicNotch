@@ -26,7 +26,6 @@ struct NotchMusicViewLeading: View {
                 AlbumArtView(size: (NSScreen.main?.isOnNotchScreen ?? false) ? 30.0 : 20.0,
                              shrink: 5,
                              cornerRadius: (NSScreen.main?.isOnNotchScreen ?? false) ? 6 : 4,
-                             glow: false,
                 )
             }) .buttonStyle(.plain)
                 .padding(.leading, 3)
@@ -106,7 +105,7 @@ struct NotchMusicViewExpanded: View {
         VStack (spacing: 12) {
             HStack {
                 ZStack {
-                    AlbumArtView(size: 65, shrink: 10, cornerRadius: 12, glow: true)
+                    AlbumArtView(size: 65, shrink: 10, cornerRadius: 12)
                     
                     Button(action: {
                         openMusicApp()

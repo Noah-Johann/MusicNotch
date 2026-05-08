@@ -43,17 +43,6 @@
         }
       }
     },
-    "Accessibility Permission" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Berechtigung für Bedinungshilfen"
-          }
-        }
-      }
-    },
     "Acknowledgements" : {
       "localizations" : {
         "de" : {
@@ -775,16 +764,6 @@
         }
       }
     },
-    "Player glow" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hintergrund-Glow"
-          }
-        }
-      }
-    },
     "Please go to System Settings > Privacy & Security > Automation, and toggle Spotify under MusicNotch" : {
       "localizations" : {
         "de" : {
@@ -885,17 +864,6 @@
         }
       }
     },
-    "Show dock icon" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zeige App Icon im Dock"
-          }
-        }
-      }
-    },
     "Show in %@" : {
 
     },
@@ -934,17 +902,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zeige MusicGlance"
-          }
-        }
-      }
-    },
-    "Show notch" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zeige Notch"
           }
         }
       }
@@ -1152,17 +1109,6 @@
     },
     "Video not found" : {
       "shouldTranslate" : false
-    },
-    "Viewed Onboarding" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Viewed Onboarding"
-          }
-        }
-      }
     },
     "Volume" : {
       "localizations" : {
