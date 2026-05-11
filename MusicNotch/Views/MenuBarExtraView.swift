@@ -126,12 +126,33 @@ struct MenuBarExtraView: View {
                 updateManager.updateState = .idle
             }
         }
-        
         Section {
-            Button("Quit", role: .destructive) {
-                NSApp.terminate(nil)
-            } .keyboardShortcut("Q", modifiers: .command)
-            
+            if #available(macOS 15, *) {
+                Button("Quit", role: .destructive) {
+                    NSApp.terminate(nil)
+                }
+                .keyboardShortcut("Q", modifiers: .command)
+                .modifierKeyAlternate(.option) {
+                    Button("Restart", role: .destructive) {
+                        guard let bundleIdentifier = Bundle.main.bundleIdentifier else { return }
+
+                        let workspace = NSWorkspace.shared
+
+                        guard let appURL = workspace.urlForApplication(withBundleIdentifier: bundleIdentifier) else { return }
+
+                        let configuration = NSWorkspace.OpenConfiguration()
+                        configuration.createsNewApplicationInstance = true
+
+                        workspace.openApplication(at: appURL, configuration: configuration, completionHandler: nil)
+                        NSApplication.shared.terminate(nil)
+                    }
+                }
+            }
+            else {
+                Button("Quit", role: .destructive) {
+                    NSApp.terminate(nil)
+                } .keyboardShortcut("Q", modifiers: .command)
+            }
         }
     }
 }
