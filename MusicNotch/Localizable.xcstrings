@@ -655,6 +655,7 @@
       }
     },
     "Open Spotify to request permissions" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -685,6 +686,7 @@
       }
     },
     "Permission denied" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -765,6 +767,7 @@
       }
     },
     "Please go to System Settings > Privacy & Security > Automation, and toggle Spotify under MusicNotch" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -963,6 +966,7 @@
       }
     },
     "Spotify is not opened" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1144,6 +1148,7 @@
       }
     },
     "You are all set up!" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
