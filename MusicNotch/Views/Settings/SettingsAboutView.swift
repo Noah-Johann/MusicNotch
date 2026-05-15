@@ -34,16 +34,32 @@ struct SettingsAboutView: View {
 
     var body: some View {
         
-// MARK: - About Button
-        JochexSection {
-            CosmeticTwoLineButton(heading: "\(Bundle.main.appName)",
-                                  description: "Version: \(Bundle.main.appVersion!) (\(Bundle.main.appBuild!))",
-                                  image: Image(nsImage: NSApp.applicationIconImage),
-                                  hoverIcon: "clipboard",
-                                  height: 55) {
-                copyInfo(text: "MusicNotch Version \(Bundle.main.appVersion!) (\(Bundle.main.appBuild!))")
-            } .luminareRoundingBehavior(top: true, bottom: true)
-        } .padding(.bottom, 7)
+// MARK: - About Section
+        VStack(spacing: 0) {
+            Button {
+                copyInfo(text: "MusicNotch Version \(Bundle.main.appVersion ?? "0") (\(Bundle.main.appBuild ?? 0))")
+            } label: {
+                Image(nsImage: NSApp.applicationIconImage)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 160, height: 160)
+                    .padding(-3)
+            }
+            
+            VStack(spacing: 0) {
+                Text(Bundle.main.appName)
+                    .blur(radius: 0)
+                    .foregroundStyle(.primary)
+                    .font(.system(size: 29, weight: .bold))
+                Text("Version \(Bundle.main.appVersion ?? "0") (\(Bundle.main.appBuild ?? 0))")
+                    .foregroundStyle(Color(.tertiaryLabelColor))
+                    .font(.body)
+                    .padding(.top, 5)
+            }
+            .padding(.horizontal)
+            .padding(.bottom, 10)
+            
+        }
         
         
 // MARK: - Update Button

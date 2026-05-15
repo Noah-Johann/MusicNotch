@@ -17,9 +17,6 @@
     "%" : {
       "shouldTranslate" : false
     },
-    "%@" : {
-      "shouldTranslate" : false
-    },
     "%lld %%" : {
       "shouldTranslate" : false
     },
@@ -1099,17 +1096,6 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Version %1$@ (%2$lld)"
-          }
-        }
-      },
-      "shouldTranslate" : false
-    },
-    "Version: %@ (%lld)" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Version: %1$@ (%2$lld)"
           }
         }
       },
