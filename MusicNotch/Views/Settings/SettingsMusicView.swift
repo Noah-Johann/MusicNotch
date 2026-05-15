@@ -31,12 +31,12 @@ struct SettingsMusicView: View {
             }
             if !autoPlayer {
                 LuminarePicker(
-                    elements: MusicApp.allCases,
+                    elements: SpotifyManager.shared.isSpotifyInstalled() ? MusicApp.allCases : [MusicApp.appleMusic, MusicApp.nowPlaying],
                     selection: Binding(
                         get: { Defaults[.musicPlayer] },
                         set: { Defaults[.musicPlayer] = $0 }
                     ),
-                    columns: 3
+                    columns: SpotifyManager.shared.isSpotifyInstalled() ? 3 : 2
                 ) { option in
                     VStack(spacing: 12) {
                         option.image
@@ -52,6 +52,11 @@ struct SettingsMusicView: View {
             Text("Music")
         }
         .padding(.bottom, 14)
+        .onAppear {
+            if SpotifyManager.shared.isSpotifyInstalled() == false && Defaults[.musicPlayer] == .spotify {
+                Defaults[.musicPlayer] = .nowPlaying
+            }
+        }
         .onChange(of: musicPlayer) { _, newPlayer in
             SpotifyManager.shared.oldTrackName = "notrack"
             MusicManager.shared.musicPlayer = newPlayer
