@@ -29,7 +29,6 @@ extension Defaults.Keys {
     
     // Appearance
     static let coloredSpect = Key<Bool>("coloredSpect", default: true)
-    static let playerGlow = Key<Bool>("playerGlow", default: true)
     static let musicPlayerVolume = Key<Bool>("musicPlayerVolume", default: true)
     
     // Notch

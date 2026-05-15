@@ -32,7 +32,6 @@ struct LockScreenPlayingView: View {
                         AlbumArtView(size: 70,
                                      shrink: 8,
                                      cornerRadius: 13,
-                                     glow: false,
                         )
                         .padding(.top, 10)
                         .padding(.leading, 17)

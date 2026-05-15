@@ -9,6 +9,8 @@ import SwiftUI
 import AppKit
 import Defaults
 
+// MARK: - Display
+
 enum Display: CaseIterable, Codable, Defaults.Serializable {
     case notchDisplay
     case mainDisplay
@@ -30,6 +32,8 @@ enum Display: CaseIterable, Codable, Defaults.Serializable {
     }
 }
 
+// MARK: - HoverBehavior
+
 enum HoverBehavior: CaseIterable, Codable, Defaults.Serializable {
     case disabled
     case expand
@@ -38,7 +42,7 @@ enum HoverBehavior: CaseIterable, Codable, Defaults.Serializable {
     var image: Image {
         switch self {
         case .disabled: Image(systemName: "nosign")
-        case .expand: Image(systemName: "chevron.left.chevron.right")
+        case .expand: Image(systemName: "arrow.uturn.down")
         case .musicGlance: Image(systemName: "music.note")
         }
     }
@@ -52,6 +56,8 @@ enum HoverBehavior: CaseIterable, Codable, Defaults.Serializable {
     }
 }
 
+// MARK: - MusicApp
+
 enum MusicApp: CaseIterable, Codable, Identifiable, Defaults.Serializable {
     case appleMusic
     case spotify
@@ -61,27 +67,9 @@ enum MusicApp: CaseIterable, Codable, Identifiable, Defaults.Serializable {
     
     var image: Image {
         switch self {
-        case .appleMusic:
-            if let appURL = NSWorkspace.shared.urlForApplication(withBundleIdentifier: "com.apple.Music") {
-                let nsImage = NSWorkspace.shared.icon(forFile: appURL.path)
-                nsImage.size = NSSize(width: 64, height: 64)
-                return Image(nsImage: nsImage)
-            }
-            return Image(systemName: "music.note")
-        case .spotify:
-            if let appURL = NSWorkspace.shared.urlForApplication(withBundleIdentifier: "com.spotify.client") {
-                let nsImage = NSWorkspace.shared.icon(forFile: appURL.path)
-                nsImage.size = NSSize(width: 64, height: 64)
-                return Image(nsImage: nsImage)
-            }
-            return Image(systemName: "music.note")
-        case .nowPlaying:
-            if let appURL = NSWorkspace.shared.urlForApplication(withBundleIdentifier: "com.apple.apps.launcher") {
-                let nsImage = NSWorkspace.shared.icon(forFile: appURL.path)
-                nsImage.size = NSSize(width: 64, height: 64)
-                return Image(nsImage: nsImage)
-            }
-            return Image(systemName: "music.note")
+        case .appleMusic: Self.appleMusicImage
+        case .spotify: Self.spotifyImage
+        case .nowPlaying: Self.nowPlayingImage
         }
     }
     
@@ -95,4 +83,41 @@ enum MusicApp: CaseIterable, Codable, Identifiable, Defaults.Serializable {
     
 }
 
+private extension MusicApp {
+    static let appleMusicImage = appIcon(
+        bundleIdentifier: "com.apple.Music",
+        fallbackAssetName: "Music_AppIcon"
+    )
+    
+    static let spotifyImage = appIcon(
+        bundleIdentifier: "com.spotify.client",
+        fallbackAssetName: "Spotify_AppIcon"
+    )
+    
+    static let nowPlayingImage: Image = {
+        if #available(macOS 26, *) {
+            return appIcon(bundleIdentifier: "com.apple.apps.launcher")
+        } else {
+            return appIcon(bundleIdentifier: "com.apple.launchpad.launcher")
+        }
+    }()
+    
+    static func appIcon(bundleIdentifier: String, fallbackAssetName: String? = nil) -> Image {
+        if let appURL = NSWorkspace.shared.urlForApplication(withBundleIdentifier: bundleIdentifier) {
+            return Image(nsImage: resizedIcon(NSWorkspace.shared.icon(forFile: appURL.path)))
+        }
+        
+        if let fallbackAssetName, let nsImage = NSImage(named: fallbackAssetName) {
+            return Image(nsImage: resizedIcon(nsImage))
+        }
+        
+        return Image(systemName: "music.note")
+    }
+    
+    static func resizedIcon(_ image: NSImage) -> NSImage {
+        let copy = image.copy() as? NSImage ?? image
+        copy.size = NSSize(width: 64, height: 64)
+        return copy
+    }
+}
 

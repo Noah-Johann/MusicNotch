@@ -13,7 +13,6 @@ struct AlbumArtView: View {
     var size: Double
     var shrink: Double
     var cornerRadius: Double
-    var glow: Bool
     
     @State var musicManager = MusicManager.shared
 
@@ -29,7 +28,6 @@ struct AlbumArtView: View {
                            height: artworkSize)
                     .cornerRadius(cornerRadius)
                     .animation(.easeInOut(duration: 0.3), value: artworkSize)
-                    .shadow(color: glow && Defaults[.playerGlow] ? (musicManager.aveColor.map { Color(nsColor: $0) } ?? .clear).opacity(1) : .clear, radius: 50, x: 5, y: 10)
             }
         }
         .frame(width: size, height: size)
@@ -43,6 +41,6 @@ struct AlbumArtView: View {
 }
 
 #Preview {
-    AlbumArtView(size: 80, shrink: 10, cornerRadius: 20, glow: true)
+    AlbumArtView(size: 80, shrink: 10, cornerRadius: 20)
         .padding(60)
 }

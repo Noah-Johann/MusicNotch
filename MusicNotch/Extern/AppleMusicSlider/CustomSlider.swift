@@ -44,10 +44,7 @@ struct CustomSlider<T: BinaryFloatingPoint>: View {
                     }
                     .frame(width: isActive ? bounds.size.width * 1.04 : bounds.size.width, alignment: .center)
                 }
-//                .shadow(color: .black.opacity(0.1), radius: isActive ? 20 : 0, x: 0, y: 0)
                 .animation(animation, value: isActive)
-                .shadow(color: Defaults[.playerGlow] ? (musicManager.aveColor.map { Color(nsColor: $0) } ?? .clear).opacity(0.9) : .clear, radius: 20, x: 3)
-
             }
             .frame(width: bounds.size.width, height: bounds.size.height, alignment: .center)
             .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .local)

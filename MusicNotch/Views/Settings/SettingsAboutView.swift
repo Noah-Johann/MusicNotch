@@ -205,7 +205,7 @@ struct SettingsAboutView: View {
                 NSWorkspace.shared.open(URL(string: licenseURL)!)
             } .luminareRoundingBehavior(top: true)
             
-            CosmeticOneLineButton(title: "Acknowledgements", image: Image(systemName: "heart.text.clipboard"), hoverIcon: "arrow.up.right") {
+            CosmeticOneLineButton(title: "Acknowledgements", image: Image(systemName: "list.bullet.clipboard"), hoverIcon: "arrow.up.right") {
                 NSWorkspace.shared.open(URL(string: acknowledgementsURL)!)
             } .luminareRoundingBehavior(bottom: true)
         }

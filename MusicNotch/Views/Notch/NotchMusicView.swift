@@ -26,9 +26,8 @@ struct NotchMusicViewLeading: View {
                 AlbumArtView(size: (NSScreen.main?.isOnNotchScreen ?? false) ? 30.0 : 20.0,
                              shrink: 5,
                              cornerRadius: (NSScreen.main?.isOnNotchScreen ?? false) ? 6 : 4,
-                             glow: false,
                 )
-            }) .buttonStyle(.plain)
+            }) .buttonStyle(ScalingPlainButtonStyle(downScale: 0.85))
                 .padding(.leading, 3)
             if notchManager.notchContent == .musicGlance {
                 Text(musicManager.music.trackName)
@@ -107,18 +106,14 @@ struct NotchMusicViewExpanded: View {
     var body: some View {
         VStack (spacing: 12) {
             HStack {
-                ZStack {
-                    AlbumArtView(size: 65, shrink: 10, cornerRadius: notchManager.notch?.usedStyle == .notch ? 12 : 10, glow: true)
-                    
-                    Button(action: {
-                        openMusicApp()
-                    }, label: {
-                        Color.clear
-                            .frame(width: 65, height: 65)
-                            .contentShape(Rectangle())
-                    }) .buttonStyle(.plain)
-                        .frame(width: 65, height : 65)
+                Button {
+                    openMusicApp()
+                } label: {
+                    AlbumArtView(size: 65, shrink: 10, cornerRadius: 12)
                 }
+                .frame(width: 65, height: 65)
+                .buttonStyle(ScalingPlainButtonStyle(downScale: 0.85))
+                
                 VStack {
                     Text(musicManager.music.trackName)
                         .fontWeight(.medium)

@@ -358,6 +358,7 @@
 
     },
     "Got it!" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -554,6 +555,7 @@
       }
     },
     "Message" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -657,6 +659,7 @@
 
     },
     "Open Spotify to request permissions" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -687,6 +690,7 @@
       }
     },
     "Permission denied" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -766,17 +770,8 @@
         }
       }
     },
-    "Player glow" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hintergrund-Glow"
-          }
-        }
-      }
-    },
     "Please go to System Settings > Privacy & Security > Automation, and toggle Spotify under MusicNotch" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -845,6 +840,9 @@
           }
         }
       }
+    },
+    "Restart" : {
+
     },
     "s" : {
       "localizations" : {
@@ -965,6 +963,7 @@
       }
     },
     "Spotify is not opened" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1035,6 +1034,7 @@
       }
     },
     "Title" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1135,6 +1135,7 @@
       }
     },
     "You are all set up!" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {

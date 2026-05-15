@@ -106,7 +106,9 @@ class MusicManager {
                     }
                 }
             } else {
-                self.music = getMusicInfo(player: player)
+                withAnimation(.bouncy(duration: 0.4)) {
+                    self.music = getMusicInfo(player: player)
+                }
             }
         }
         
@@ -124,10 +126,14 @@ class MusicManager {
         switch notificationPlayer {
         case .appleMusic:
             musicPlayer = .appleMusic
-            self.music = getMusicInfo(player: .appleMusic)
+            withAnimation(.bouncy(duration: 0.4)) {
+                self.music = getMusicInfo(player: .appleMusic)
+            }
         case .spotify:
             musicPlayer = .spotify
-            self.music = getMusicInfo(player: .spotify)
+            withAnimation(.bouncy(duration: 0.4)) {
+                self.music = getMusicInfo(player: .spotify)
+            }
         case .nowPlaying:
             if updateInfo != nil {
                 guard updateInfo?.payload.bundleIdentifier != "com.spotify.client" && updateInfo?.payload.bundleIdentifier != "com.apple.Music" else { print("supported player"); return }
@@ -258,16 +264,19 @@ class MusicManager {
             return
         }
         
-        self.music = MusicTrack(trackName: trackInfo.payload.title ?? "",
-                                artistName: trackInfo.payload.artist ?? "",
-                                albumName: trackInfo.payload.album ?? "",
-                                trackDuration: Int(trackInfo.payload.durationMicros ?? 1) / 1000000,
-                                trackPosition: Int(trackInfo.payload.elapsedTimeMicros ?? 0) / 1000000,
-                                isPlaying: trackInfo.payload.isPlaying ?? false,
-                                isLoved: false,
-                                shuffle: false,
-                                type: trackInfo.payload.bundleIdentifier == "com.apple.podcasts" ? .podcast : .music,
+        withAnimation(.bouncy(duration: 0.4)) {
+            self.music = MusicTrack(trackName: trackInfo.payload.title ?? "",
+                                    artistName: trackInfo.payload.artist ?? "",
+                                    albumName: trackInfo.payload.album ?? "",
+                                    trackDuration: Int(trackInfo.payload.durationMicros ?? 1) / 1000000,
+                                    trackPosition: Int(trackInfo.payload.elapsedTimeMicros ?? 0) / 1000000,
+                                    isPlaying: trackInfo.payload.isPlaying ?? false,
+                                    isLoved: false,
+                                    shuffle: false,
+                                    type: trackInfo.payload.bundleIdentifier == "com.apple.podcasts" ? .podcast : .music,
             )
+        }
+        
         if trackInfo.payload.artwork != nil {
             self.albumArt = trackInfo.payload.artwork
             self.getAverageColor()
@@ -280,21 +289,23 @@ class MusicManager {
     // MARK: - Disabled Playback
     
     public func setDisabledPlayback() {
-        music = disabledPlayback()
+        withAnimation(.bouncy(duration: 0.4)) {
+            music = disabledPlayback()
+        }
     }
     
     private func disabledPlayback() -> MusicTrack {
         let prevPlayback = self.music
-        let playback = MusicTrack(trackName: "Nothing playing",
-                           artistName: "No current playback",
-                           albumName: "Nothing",
-                           trackDuration: 1,
-                           trackPosition: 0,
-                           isPlaying: false,
-                           isLoved: false,
-                           shuffle: false,
-                            type: .music,
-        )
+            let playback = MusicTrack(trackName: "Nothing playing",
+                                      artistName: "No current playback",
+                                      albumName: "Nothing",
+                                      trackDuration: 1,
+                                      trackPosition: 0,
+                                      isPlaying: false,
+                                      isLoved: false,
+                                      shuffle: false,
+                                      type: .music,
+            )
         playingAppName = nil
         playingAppBundle = nil
         musicPlayer = .nowPlaying
