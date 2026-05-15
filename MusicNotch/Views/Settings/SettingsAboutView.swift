@@ -44,7 +44,7 @@ struct SettingsAboutView: View {
                     .scaledToFit()
                     .frame(width: 160, height: 160)
                     .padding(-3)
-            }
+            } .buttonStyle(ScalingPlainButtonStyle(downScale: 0.9))
             
             VStack(spacing: 0) {
                 Text(Bundle.main.appName)
