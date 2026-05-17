@@ -274,6 +274,7 @@ class MusicManager {
                                     isLoved: false,
                                     shuffle: false,
                                     type: trackInfo.payload.bundleIdentifier == "com.apple.podcasts" ? .podcast : .music,
+                                    isLive: trackInfo.payload.isLiveStream == true,
             )
         }
         
@@ -366,6 +367,7 @@ struct MusicTrack {
     var shuffle: Bool
     var volume: CGFloat?
     var type: PlaybackType
+    var isLive: Bool = false
 }
 
 enum PlaybackType {

@@ -525,6 +525,9 @@
         }
       }
     },
+    "LIVE" : {
+
+    },
     "LockScreen" : {
       "localizations" : {
         "de" : {
