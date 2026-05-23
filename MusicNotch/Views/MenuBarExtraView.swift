@@ -40,18 +40,18 @@ struct MenuBarExtraView: View {
             Button {
                 openMusicApp()
             } label: {
-                switch Defaults[.musicPlayer] {
+                switch MusicManager.shared.musicPlayer {
                 case .appleMusic:
-                    Defaults[.musicPlayer].image.imageScale(.large)
+                    MusicManager.shared.musicPlayer.image.imageScale(.large)
                     Text("Show in Apple Music")
                 case .spotify:
-                    Defaults[.musicPlayer].image.imageScale(.large)
+                    MusicManager.shared.musicPlayer.image.imageScale(.large)
                     Text("Show in Spotify")
                 case .nowPlaying:
                     if MusicManager.shared.playingAppBundle != nil {
                         getMusicAppImage(bundle: MusicManager.shared.playingAppBundle!).imageScale(.large)
                     } else {
-                        Defaults[.musicPlayer].image.imageScale(.large)
+                        MusicManager.shared.musicPlayer.image.imageScale(.large)
                     }
                     if MusicManager.shared.playingAppName != nil {
                         Text("Show in \(MusicManager.shared.playingAppName ?? "Now Playing")")
