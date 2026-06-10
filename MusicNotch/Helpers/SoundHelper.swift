@@ -9,24 +9,29 @@ import Foundation
 import AVFoundation
 import AppKit
 
-var soundPlayer: AVAudioPlayer?
+class SoundHelper {
+    static let shared = SoundHelper()
+    
+    var soundPlayer = AVAudioPlayer()
+    
+    func playSound(sound: Sound) {
+        let name = sound.assetName
 
-func playSound(sound: Sound) {
-    let name = sound.assetName
+        guard let asset = NSDataAsset(name: name) else {
+            print("Sound asset not found: \(name)")
+            return
+        }
 
-    guard let asset = NSDataAsset(name: name) else {
-        print("Sound asset not found: \(name)")
-        return
-    }
-
-    do {
-        soundPlayer = try AVAudioPlayer(data: asset.data)
-        soundPlayer?.prepareToPlay()
-        soundPlayer?.play()
-    } catch {
-        print("Failed to play sound: \(error)")
+        do {
+            soundPlayer = try AVAudioPlayer(data: asset.data)
+            soundPlayer.prepareToPlay()
+            soundPlayer.play()
+        } catch {
+            print("Failed to play sound: \(error)")
+        }
     }
 }
+
 
 enum Sound: String {
     case lock
