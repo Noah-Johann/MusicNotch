@@ -1120,9 +1120,6 @@
       },
       "shouldTranslate" : false
     },
-    "Video not found" : {
-      "shouldTranslate" : false
-    },
     "Volume" : {
       "localizations" : {
         "de" : {
