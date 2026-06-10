@@ -268,8 +268,8 @@ class MusicManager {
             self.music = MusicTrack(trackName: trackInfo.payload.title ?? "",
                                     artistName: trackInfo.payload.artist ?? "",
                                     albumName: trackInfo.payload.album ?? "",
-                                    trackDuration: Int(trackInfo.payload.durationMicros ?? 1) / 1000000,
-                                    trackPosition: Int(trackInfo.payload.elapsedTimeMicros ?? 0) / 1000000,
+                                    trackDuration: Double(trackInfo.payload.durationMicros ?? 1) / 1000000,
+                                    trackPosition: Double(trackInfo.payload.currentElapsedTime ?? 0),
                                     isPlaying: trackInfo.payload.isPlaying ?? false,
                                     isLoved: false,
                                     shuffle: false,
@@ -360,8 +360,8 @@ struct MusicTrack {
     var trackName: String
     var artistName: String
     var albumName: String
-    var trackDuration: Int
-    var trackPosition: Int
+    var trackDuration: Double
+    var trackPosition: Double
     var isPlaying: Bool
     var isLoved: Bool
     var shuffle: Bool

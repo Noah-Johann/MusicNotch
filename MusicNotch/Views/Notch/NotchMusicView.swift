@@ -195,7 +195,7 @@ struct NotchMusicViewExpanded: View {
                 .frame(height: 10)
                 
                 if !musicManager.music.isLive {
-                    Text("-\(formatTime(musicManager.music.trackDuration - Int(trackPosition)))")
+                    Text("-\(formatTime(Int(musicManager.music.trackDuration - trackPosition)))")
                         .font(.system(size: 12))
                         .fontWeight(.semibold)
                         .foregroundStyle(.gray)
@@ -224,7 +224,7 @@ struct NotchMusicViewExpanded: View {
             playbackTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
                 print("playback timer")
                 Task { @MainActor in
-                    if musicManager.music.isPlaying == true && Int(trackPosition) < musicManager.music.trackDuration {
+                    if musicManager.music.isPlaying == true && trackPosition < musicManager.music.trackDuration {
                         trackPosition += 1
                     }
                 }
@@ -246,4 +246,3 @@ struct NotchMusicViewExpanded: View {
     NotchMusicViewExpanded()
         .frame(height: 197)
 }
-
