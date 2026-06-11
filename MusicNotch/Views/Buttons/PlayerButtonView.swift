@@ -18,18 +18,32 @@ struct PlayerButtonView: View {
     @State var forwardArrowName: String = "arrow.clockwise"
     @State var backwardArrowName: String = "arrow.counterclockwise"
     
+    var actionIcon: String {
+        if musicManager.musicPlayer == .nowPlaying {
+            return "arrow.up.right"
+        } else {
+            return "shuffle"
+        }
+    }
+    
+    @State private var showDot: Bool = false
+    
     var body: some View {
         HStack {
             HoverEffectButton(
-                icon: "shuffle",
+                icon: actionIcon,
                 iconColor: .secondary,
-                iconSize: 24,
+                iconSize: musicManager.musicPlayer == .nowPlaying ? 17 : 24,
                 effectSize: 52,
                 cornerRadius: 17,
-                dot: $musicManager.music.shuffle
+                dot: musicManager.musicPlayer == .nowPlaying ? .constant(false) : $musicManager.music.shuffle
             ) {
-                MusicActions.toggleShuffle()
-            } .opacity(musicManager.musicPlayer == .nowPlaying ? 0 : 1)
+                if musicManager.musicPlayer == .nowPlaying {
+                    openMusicApp()
+                } else {
+                    MusicActions.toggleShuffle()
+                }
+            } // .opacity(musicManager.musicPlayer == .nowPlaying ? 0 : 1)
             
             HoverEffectButton(
                 icon: musicManager.music.type == .podcast ? backwardArrowName : "backward.fill",
