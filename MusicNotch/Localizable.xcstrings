@@ -402,6 +402,9 @@
         }
       }
     },
+    "Hello, World!" : {
+
+    },
     "Hide closed notch" : {
       "localizations" : {
         "de" : {
@@ -578,6 +581,9 @@
           }
         }
       }
+    },
+    "Music Action" : {
+
     },
     "MusicGlance" : {
       "localizations" : {
@@ -842,6 +848,9 @@
         }
       }
     },
+    "Repeat" : {
+
+    },
     "Request permission" : {
       "localizations" : {
         "de" : {
@@ -916,6 +925,9 @@
           }
         }
       }
+    },
+    "Shuffle" : {
+
     },
     "Skip Backwards" : {
       "localizations" : {

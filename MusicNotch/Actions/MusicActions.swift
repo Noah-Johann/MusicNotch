@@ -97,6 +97,30 @@ struct MusicActions {
         }
     }
     
+    static func toggleRepeat() {
+        Task {
+            switch await MusicManager.shared.musicPlayer {
+                case .appleMusic:
+                    try await AppleScriptHelper.run("""
+                        tell application "Music"
+                            if song repeat is off then
+                                set song repeat to all
+                            else if song repeat is all then
+                                set song repeat to one
+                            else
+                                set song repeat to off
+                            end if
+                        end tell
+                        """)
+                case .spotify:
+                    try await AppleScriptHelper.run("tell application \"Spotify\" to set repeating to not repeating")
+                    await MusicManager.shared.updateMusic(player: .spotify)
+                case .nowPlaying:
+                    break
+            }
+        }
+    }
+    
     static func setProgress(position: Double) {
         Task {
             switch await MusicManager.shared.musicPlayer {

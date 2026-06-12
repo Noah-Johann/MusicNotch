@@ -22,12 +22,14 @@ struct PlayerButtonView: View {
         if musicManager.musicPlayer == .nowPlaying {
             return "arrow.up.right"
         } else {
-            return "shuffle"
+            switch Defaults[.musicAction] {
+                case .shuffle: return "shuffle"
+                case .repeating: return musicManager.music.repeating == .one ? "repeat.1" : "repeat"
+            }
         }
     }
     
-    @State private var showDot: Bool = false
-    
+        
     var body: some View {
         HStack {
             HoverEffectButton(
@@ -36,14 +38,25 @@ struct PlayerButtonView: View {
                 iconSize: musicManager.musicPlayer == .nowPlaying ? 17 : 24,
                 effectSize: 52,
                 cornerRadius: 17,
-                dot: musicManager.musicPlayer == .nowPlaying ? .constant(false) : $musicManager.music.shuffle
+                dot: musicManager.musicPlayer == .nowPlaying ? .constant(false) : Binding(
+                    get: {
+                        switch Defaults[.musicAction] {
+                            case .shuffle: return musicManager.music.shuffle
+                            case .repeating: return musicManager.music.repeating != .off
+                        }
+                    },
+                    set: { _ = $0 }
+                )
             ) {
                 if musicManager.musicPlayer == .nowPlaying {
                     openMusicApp()
                 } else {
-                    MusicActions.toggleShuffle()
+                    switch Defaults[.musicAction] {
+                        case .shuffle: MusicActions.toggleShuffle()
+                        case .repeating: MusicActions.toggleRepeat()
+                    }
                 }
-            } // .opacity(musicManager.musicPlayer == .nowPlaying ? 0 : 1)
+            }
             
             HoverEffectButton(
                 icon: musicManager.music.type == .podcast ? backwardArrowName : "backward.fill",

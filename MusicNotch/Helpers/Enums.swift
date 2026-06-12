@@ -121,3 +121,25 @@ private extension MusicApp {
     }
 }
 
+// MARK: - MusicAction
+
+enum MusicAction: Codable, CaseIterable, Defaults.Serializable {
+    case shuffle
+    case repeating
+    
+    var image: Image {
+        switch self {
+            case .shuffle: return Image(systemName: "shuffle").resizable()
+            case .repeating: return Image(systemName: "repeat").resizable()
+        }
+    }
+    
+    var title: LocalizedStringKey {
+        switch self {
+            case .shuffle: return "Shuffle"
+            case .repeating: return "Repeat"
+        }
+    }
+}
+
+

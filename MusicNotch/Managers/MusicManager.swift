@@ -28,6 +28,7 @@ class MusicManager {
         isPlaying: false,
         isLoved: false,
         shuffle: false,
+        repeating: .off,
         type: .music,
     )
     var albumArt: NSImage? = NSImage(named: "no_playback")
@@ -38,7 +39,7 @@ class MusicManager {
     private var hideTimer: Timer? = nil
     private var stopTime = 0
     private var launched: Bool = false
-    private var prevMusic = MusicTrack(trackName: "", artistName: "", albumName: "", trackDuration: 0, trackPosition: 0, isPlaying: false, isLoved: false, shuffle: false, type: .music)
+    private var prevMusic = MusicTrack(trackName: "", artistName: "", albumName: "", trackDuration: 0, trackPosition: 0, isPlaying: false, isLoved: false, shuffle: false, repeating: .off, type: .music)
     
     private let appleMusicManager = AppleMusicManager()
     private let spotifyManager = SpotifyManager()
@@ -273,6 +274,7 @@ class MusicManager {
                                     isPlaying: trackInfo.payload.isPlaying ?? false,
                                     isLoved: false,
                                     shuffle: false,
+                                    repeating: .off,
                                     type: trackInfo.payload.bundleIdentifier == "com.apple.podcasts" ? .podcast : .music,
                                     isLive: trackInfo.payload.isLiveStream == true,
             )
@@ -305,6 +307,7 @@ class MusicManager {
                                       isPlaying: false,
                                       isLoved: false,
                                       shuffle: false,
+                                      repeating: .off,
                                       type: .music,
             )
         playingAppName = nil
@@ -356,7 +359,7 @@ class MusicManager {
 
 // MARK: - Constants
 
-struct MusicTrack {
+struct MusicTrack: Equatable {
     var trackName: String
     var artistName: String
     var albumName: String
@@ -365,6 +368,7 @@ struct MusicTrack {
     var isPlaying: Bool
     var isLoved: Bool
     var shuffle: Bool
+    var repeating: RepeatingMode
     var volume: CGFloat?
     var type: PlaybackType
     var isLive: Bool = false
@@ -373,4 +377,8 @@ struct MusicTrack {
 enum PlaybackType {
     case music
     case podcast
+}
+
+enum RepeatingMode {
+    case off, one, all
 }

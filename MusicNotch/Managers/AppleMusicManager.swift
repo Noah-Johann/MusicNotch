@@ -84,6 +84,7 @@ class AppleMusicManager {
                     end try
                     set trackID to id of current track
                     set shuffle to shuffle enabled
+                    set repeatMode to song repeat as string
                     try
                         set currentTrack to current track
                         set artworkData to data of artwork 1 of currentTrack
@@ -91,7 +92,7 @@ class AppleMusicManager {
                         set artworkData to nil
                     end try
                     set currentVolume to sound volume
-                    return {isPlaying, trackName, artistName, albumName, trackDuration, trackPosition, isLoved, trackID, shuffle, artworkData, currentVolume}
+                    return {isPlaying, trackName, artistName, albumName, trackDuration, trackPosition, isLoved, trackID, shuffle, repeatMode, artworkData, currentVolume}
                 on error
                     return {}
                 end try
@@ -101,7 +102,7 @@ class AppleMusicManager {
         let result = AppleScriptHelper.executeAppleScript(script)
         guard
             let descriptor = result,
-            descriptor.numberOfItems >= 11
+            descriptor.numberOfItems >= 12
         else {
             print("Invalid AppleScript result")
             return nil
@@ -116,11 +117,21 @@ class AppleMusicManager {
             isPlaying: descriptor.atIndex(1)?.stringValue == "playing",
             isLoved: descriptor.atIndex(7)?.booleanValue ?? false,
             shuffle: descriptor.atIndex(9)?.booleanValue ?? false,
-            volume: descriptor.atIndex(11) != nil ? CGFloat(descriptor.atIndex(11)!.doubleValue) : nil,
+            repeating: {
+                switch descriptor.atIndex(10)?.stringValue {
+                case "all":
+                    return .all
+                case "one":
+                    return .one
+                default:
+                    return .off
+                }
+            }(),
+            volume: descriptor.atIndex(12) != nil ? CGFloat(descriptor.atIndex(12)!.doubleValue) : nil,
             type: .music
         )
         
-        if let data = descriptor.atIndex(10)?.data {
+        if let data = descriptor.atIndex(11)?.data {
             Task { @MainActor in
                 MusicManager.shared.albumArt = NSImage(data: data)
                 MusicManager.shared.getAverageColor()
