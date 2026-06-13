@@ -129,8 +129,7 @@ class SpotifyManager {
             volume: descriptor.atIndex(7) != nil ? CGFloat(descriptor.atIndex(7)!.doubleValue) : nil,
             type: (descriptor.atIndex(11)?.stringValue ?? "").contains("episode") ? .podcast : .music
         )
-        print(descriptor.atIndex(11)?.stringValue ?? "")
-        print(returnTrack.type)
+        print("Spotify Playback Type: \(returnTrack.type)")
                 
         if oldTrackName != returnTrack.trackName {
             oldTrackName = returnTrack.trackName
@@ -153,7 +152,9 @@ class SpotifyManager {
              }
              Task { @MainActor in
                  MusicManager.shared.albumArt = image
-                 MusicManager.shared.getAverageColor()
+                 image.averageColor { color in
+                     MusicManager.shared.aveColor = color
+                 }
              }
          }.resume()
      }

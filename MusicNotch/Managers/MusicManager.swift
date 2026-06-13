@@ -272,9 +272,11 @@ class MusicManager {
                                 isLive: trackInfo.payload.isLiveStream == true,
         )
         
-        if trackInfo.payload.artwork != nil {
-            self.albumArt = trackInfo.payload.artwork
-            self.getAverageColor()
+        if let image = trackInfo.payload.artwork {
+            self.albumArt = image
+            image.averageColor { color in
+                self.aveColor = color
+            }
         }
         
         self.playingAppName = trackInfo.payload.applicationName
@@ -311,7 +313,7 @@ class MusicManager {
         
         if NotchManager.shared.notchContent == .musicGlance || NotchManager.shared.notchContent == .music {
             Task {
-                if prevPlayback.trackName != "Nothing playing" {
+                if prevPlayback.trackName != "Nothing playing" { // Prevent closing notch on opening update
                     await NotchManager.shared.setNotchState(.closed)
                 }
             }
@@ -321,17 +323,7 @@ class MusicManager {
         
         return playback
     }
-    
-    public func getAverageColor() {
-        guard let image = self.albumArt else { return }
-        image.averageColor { color in
-            if let color = color {
-                self.aveColor = color
-            } else {
-                print("Failed to get average color")
-            }
-        }
-    }
+
     
 // MARK: - Now Playing Controls
     

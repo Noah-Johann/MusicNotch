@@ -93,7 +93,7 @@ struct OnboardingView: View {
                         } else if OnboardingPage == 2 {
                             Button("Request permission") {
                                 PermissionHelper.checkForAutomationPermission(appBundle: "com.apple.Music") { consent in
-                                    print("Spotify Permission \(consent)")
+                                    print("Apple Music Permission \(consent)")
                                 }
                                 PermissionHelper.checkForAutomationPermission(appBundle: "com.spotify.client") { consent in
                                     print("Spotify Permission \(consent)")

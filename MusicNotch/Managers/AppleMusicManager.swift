@@ -134,7 +134,9 @@ class AppleMusicManager {
         if let data = descriptor.atIndex(11)?.data {
             Task { @MainActor in
                 MusicManager.shared.albumArt = NSImage(data: data)
-                MusicManager.shared.getAverageColor()
+                NSImage(data: data)?.averageColor { color in
+                    MusicManager.shared.aveColor = color
+                }
             }
         } else {
             Task { @MainActor in
