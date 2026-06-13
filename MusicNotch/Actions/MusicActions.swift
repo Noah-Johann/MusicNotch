@@ -9,7 +9,7 @@ import Foundation
 
 struct MusicActions {
     static func playPause() {
-        Task {
+        Task.detached(priority: .userInitiated) {
             switch await MusicManager.shared.musicPlayer {
             case .appleMusic:
                 try await AppleScriptHelper.run("tell application \"Music\" to playpause")
@@ -22,7 +22,7 @@ struct MusicActions {
     }
     
     static func lastTrack() {
-        Task {
+        Task.detached(priority: .userInitiated) {
             switch await MusicManager.shared.musicPlayer {
             case .appleMusic:
                 try await AppleScriptHelper.run("tell application \"Music\" to previous track")
@@ -37,7 +37,7 @@ struct MusicActions {
     }
     
     static func secondsBackwards() {
-        Task {
+        Task.detached(priority: .userInitiated) {
             switch await MusicManager.shared.musicPlayer {
             case .appleMusic:
                 break
@@ -52,7 +52,7 @@ struct MusicActions {
     }
     
     static func nextTrack() {
-        Task {
+        Task.detached(priority: .userInitiated) {
             switch await MusicManager.shared.musicPlayer {
             case .appleMusic:
                 try await AppleScriptHelper.run("tell application \"Music\" to play next track")
@@ -65,7 +65,7 @@ struct MusicActions {
     }
     
     static func secondsForwards() {
-        Task {
+        Task.detached(priority: .userInitiated) {
             switch await MusicManager.shared.musicPlayer {
             case .appleMusic:
                 break
@@ -80,8 +80,9 @@ struct MusicActions {
     }
 
     static func toggleShuffle() {
-        Task {
+        Task.detached(priority: .userInitiated) {
             await MainActor.run { MusicManager.shared.music.shuffle.toggle() }
+            
             switch await MusicManager.shared.musicPlayer {
             case .appleMusic:
                 try await AppleScriptHelper.run("tell application \"Music\" to set shuffle enabled to not shuffle enabled")
@@ -95,24 +96,15 @@ struct MusicActions {
     }
     
     static func toggleRepeat() {
-        Task {
+        Task.detached(priority: .userInitiated) {
+            await MainActor.run { MusicManager.shared.music.repeating.toggle() }
+
             switch await MusicManager.shared.musicPlayer {
                 case .appleMusic:
-                    await MainActor.run {
-                        if MusicManager.shared.music.repeating == .off {
-                            MusicManager.shared.music.repeating = .all
-                        } else if MusicManager.shared.music.repeating == .all {
-                            MusicManager.shared.music.repeating = .one
-                        } else {
-                            MusicManager.shared.music.repeating = .off
-                        }
-                    }
                     try await AppleScriptHelper.run("""
                         tell application "Music"
                             if song repeat is off then
                                 set song repeat to all
-                            else if song repeat is all then
-                                set song repeat to one
                             else
                                 set song repeat to off
                             end if
@@ -120,13 +112,6 @@ struct MusicActions {
                         """)
                     await MusicManager.shared.updateMusic(player: .appleMusic)
                 case .spotify:
-                    await MainActor.run {
-                        if MusicManager.shared.music.repeating == .off {
-                            MusicManager.shared.music.repeating = .all
-                        } else {
-                            MusicManager.shared.music.repeating = .off
-                        }
-                    }
                     try await AppleScriptHelper.run("tell application \"Spotify\" to set repeating to not repeating")
                     await MusicManager.shared.updateMusic(player: .spotify)
                 case .nowPlaying:
@@ -136,7 +121,7 @@ struct MusicActions {
     }
     
     static func setProgress(position: Double) {
-        Task {
+        Task.detached(priority: .userInitiated) {
             switch await MusicManager.shared.musicPlayer {
             case .appleMusic:
                 try await AppleScriptHelper.run("tell application \"Music\" to set player position to \(position)")
@@ -149,7 +134,7 @@ struct MusicActions {
     }
 
     static func setVolume(volume: Double) {
-        Task {
+        Task.detached(priority: .userInitiated) {
             switch await MusicManager.shared.musicPlayer {
             case .appleMusic:
                 try await AppleScriptHelper.run("tell application \"Music\" to set sound volume to \(volume)")

@@ -117,16 +117,7 @@ class AppleMusicManager {
             isPlaying: descriptor.atIndex(1)?.stringValue == "playing",
             isLoved: descriptor.atIndex(7)?.booleanValue ?? false,
             shuffle: descriptor.atIndex(9)?.booleanValue ?? false,
-            repeating: {
-                switch descriptor.atIndex(10)?.stringValue {
-                case "all":
-                    return .all
-                case "one":
-                    return .one
-                default:
-                    return .off
-                }
-            }(),
+            repeating: descriptor.atIndex(10)?.stringValue != "off",
             volume: descriptor.atIndex(12) != nil ? CGFloat(descriptor.atIndex(12)!.doubleValue) : nil,
             type: .music
         )

@@ -125,7 +125,7 @@ class SpotifyManager {
             isPlaying: descriptor.atIndex(1)?.stringValue == "playing",
             isLoved: false,
             shuffle: descriptor.atIndex(9)?.booleanValue ?? false,
-            repeating: descriptor.atIndex(10)?.stringValue == "true" ? .all : .off,
+            repeating: descriptor.atIndex(10)?.stringValue == "true",
             volume: descriptor.atIndex(7) != nil ? CGFloat(descriptor.atIndex(7)!.doubleValue) : nil,
             type: (descriptor.atIndex(11)?.stringValue ?? "").contains("episode") ? .podcast : .music
         )

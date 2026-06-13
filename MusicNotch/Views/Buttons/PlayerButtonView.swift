@@ -18,13 +18,40 @@ struct PlayerButtonView: View {
     @State var forwardArrowName: String = "arrow.clockwise"
     @State var backwardArrowName: String = "arrow.counterclockwise"
     
-    var actionIcon: String {
+    var actionItem: MusicActionItem {
         if musicManager.musicPlayer == .nowPlaying {
-            return "arrow.up.right"
+            return .open
         } else {
             switch Defaults[.musicAction] {
+                case .shuffle: return .shuffle
+                case .repeating: return .repeating
+            }
+        }
+    }
+    
+    var showDot: Bool {
+        switch actionItem {
+            case .shuffle: return musicManager.music.shuffle
+            case .repeating: return musicManager.music.repeating
+            case .open: return false
+        }
+    }
+    
+    enum MusicActionItem {
+        case shuffle, repeating, open
+        
+        var iconName: String {
+            switch self {
                 case .shuffle: return "shuffle"
-                case .repeating: return musicManager.music.repeating == .one ? "repeat.1" : "repeat"
+                case .repeating: return "repeat"
+                case .open: return "arrow.up.right"
+            }
+        }
+        
+        var iconSize: CGFloat {
+            switch self {
+                case .open: return 16
+                default: return 24
             }
         }
     }
@@ -32,23 +59,8 @@ struct PlayerButtonView: View {
         
     var body: some View {
         HStack {
-            HoverEffectButton(
-                icon: actionIcon,
-                iconColor: .secondary,
-                iconSize: musicManager.musicPlayer == .nowPlaying ? 16 : 24,
-                effectSize: 52,
-                cornerRadius: 17,
-                dot: musicManager.musicPlayer == .nowPlaying ? .constant(false) : Binding(
-                    get: {
-                        switch Defaults[.musicAction] {
-                            case .shuffle: return musicManager.music.shuffle
-                            case .repeating: return musicManager.music.repeating != .off
-                        }
-                    },
-                    set: { _ = $0 }
-                ),
-                contentTransition: .symbolEffect(.replace.offUp)
-            ) {
+            // MusicAction
+            Button {
                 if musicManager.musicPlayer == .nowPlaying {
                     openMusicApp()
                 } else {
@@ -57,64 +69,85 @@ struct PlayerButtonView: View {
                         case .repeating: MusicActions.toggleRepeat()
                     }
                 }
-            } .buttonStyle(ScalingPlainButtonStyle(downScale: 0.8))
+            } label: {
+                VStack(spacing: 3) {
+                    Image(systemName: actionItem.iconName)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .foregroundStyle(.secondary)
+                        .frame(width: actionItem.iconSize, height: actionItem.iconSize)
+                    
+                    if showDot {
+                        Circle()
+                            .fill(.secondary)
+                            .frame(width: 3, height: 3)
+                    }
+                } .animation(.spring(response: 0.3, dampingFraction: 0.4), value: showDot)
+            } .buttonStyle(ScalingHoverButtonStyle(downScale: 0.8, effectSize: 52))
             
-            HoverEffectButton(
-                icon: musicManager.music.type == .podcast ? backwardArrowName : "backward.fill",
-                iconSize: 25,
-                effectSize: 52,
-                cornerRadius: 17,
-                dot: .constant(false)
-            ) {
-                if musicManager.music.type == .podcast {
+            
+            // Backward Skip
+            Button {
+                if musicManager.music.type == .podcast  {
                     MusicActions.secondsBackwards()
                 } else {
                     MusicActions.lastTrack()
                 }
-            } .buttonStyle(ScalingPlainButtonStyle(downScale: 0.8))
+            } label: {
+                Image(systemName: musicManager.music.type == .podcast ? backwardArrowName : "backward.fill")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .contentTransition(.symbolEffect(.replace))
+                    .frame(width: 25, height: 25)
+            } .buttonStyle(ScalingHoverButtonStyle(downScale: 0.8, effectSize: 52))
             
-            HoverEffectButton(
-                icon: musicManager.music.isPlaying ? "pause.fill" : "play.fill",
-                iconSize: 25,
-                effectSize: 52,
-                cornerRadius: 17,
-                dot: .constant(false)
-            ) {
-                MusicActions.playPause()
-            } .buttonStyle(ScalingPlainButtonStyle(downScale: 0.8))
             
-            HoverEffectButton(
-                icon: musicManager.music.type == .podcast ? forwardArrowName : "forward.fill",
-                iconSize: 25,
-                effectSize: 52,
-                cornerRadius: 17,
-                dot: .constant(false)
-            ) {
+            // PlayPause
+            Button { MusicActions.playPause() } label: {
+                Image(systemName: musicManager.music.isPlaying ? "pause.fill" : "play.fill")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .contentTransition(.symbolEffect(.replace))
+                    .frame(width: 25, height: 25)
+            } .buttonStyle(ScalingHoverButtonStyle(downScale: 0.8, effectSize: 52))
+            
+            
+            // Forward Skip
+            Button {
                 if musicManager.music.type == .podcast  {
                     MusicActions.secondsForwards()
                 } else {
                     MusicActions.nextTrack()
                 }
-            } .buttonStyle(ScalingPlainButtonStyle(downScale: 0.8))
+            } label: {
+                Image(systemName: musicManager.music.type == .podcast ? forwardArrowName : "forward.fill")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .contentTransition(.symbolEffect(.replace))
+                    .frame(width: 25, height: 25)
+            } .buttonStyle(ScalingHoverButtonStyle(downScale: 0.8, effectSize: 52))
             
-            HoverEffectButton(
-                icon: volumeManager.deviceIcon,
-                iconColor: .secondary, iconSize: 30,
-                effectSize: 52,
-                cornerRadius: 15,
-                dot: .constant(false)
-            ) {
+            
+            // Output Device
+            Button {
                 if NotchManager.shared.notchContent == .music {
                     NotchManager.shared.setNotchContent(.volume, duration: 0.4)
                 } else {
                     NotchManager.shared.setNotchContent(.music, duration: 0.4)
                 }
+            } label: {
+                Image(systemName: volumeManager.deviceIcon)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .contentTransition(.symbolEffect(.replace))
+                    .foregroundStyle(.secondary)
+                    .frame(width: 30, height: 30)
             }
-            .buttonStyle(ScalingPlainButtonStyle(downScale: enableSpeaker ? 0.8 : 0))
+            .buttonStyle(ScalingHoverButtonStyle(downScale: 0.8, effectSize: 52, cornerRadius: 15))
             .disabled(!enableSpeaker)
         }
         .frame(height: 45)
-        .onAppear {
+        .task {
             if #available(macOS 15, *) {
                 forwardArrowName = "15.arrow.trianglehead.clockwise"
                 backwardArrowName = "15.arrow.trianglehead.counterclockwise"
@@ -122,6 +155,7 @@ struct PlayerButtonView: View {
         }
     }
 }
+
 
 #Preview {
     PlayerButtonView()
