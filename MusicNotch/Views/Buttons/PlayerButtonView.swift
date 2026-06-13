@@ -35,7 +35,7 @@ struct PlayerButtonView: View {
             HoverEffectButton(
                 icon: actionIcon,
                 iconColor: .secondary,
-                iconSize: musicManager.musicPlayer == .nowPlaying ? 17 : 24,
+                iconSize: musicManager.musicPlayer == .nowPlaying ? 16 : 24,
                 effectSize: 52,
                 cornerRadius: 17,
                 dot: musicManager.musicPlayer == .nowPlaying ? .constant(false) : Binding(
@@ -46,7 +46,8 @@ struct PlayerButtonView: View {
                         }
                     },
                     set: { _ = $0 }
-                )
+                ),
+                contentTransition: .symbolEffect(.replace.offUp)
             ) {
                 if musicManager.musicPlayer == .nowPlaying {
                     openMusicApp()
@@ -56,7 +57,7 @@ struct PlayerButtonView: View {
                         case .repeating: MusicActions.toggleRepeat()
                     }
                 }
-            }
+            } .buttonStyle(ScalingPlainButtonStyle(downScale: 0.8))
             
             HoverEffectButton(
                 icon: musicManager.music.type == .podcast ? backwardArrowName : "backward.fill",
@@ -70,7 +71,7 @@ struct PlayerButtonView: View {
                 } else {
                     MusicActions.lastTrack()
                 }
-            }
+            } .buttonStyle(ScalingPlainButtonStyle(downScale: 0.8))
             
             HoverEffectButton(
                 icon: musicManager.music.isPlaying ? "pause.fill" : "play.fill",
@@ -80,7 +81,7 @@ struct PlayerButtonView: View {
                 dot: .constant(false)
             ) {
                 MusicActions.playPause()
-            }
+            } .buttonStyle(ScalingPlainButtonStyle(downScale: 0.8))
             
             HoverEffectButton(
                 icon: musicManager.music.type == .podcast ? forwardArrowName : "forward.fill",
@@ -94,7 +95,7 @@ struct PlayerButtonView: View {
                 } else {
                     MusicActions.nextTrack()
                 }
-            }
+            } .buttonStyle(ScalingPlainButtonStyle(downScale: 0.8))
             
             HoverEffectButton(
                 icon: volumeManager.deviceIcon,
@@ -108,7 +109,9 @@ struct PlayerButtonView: View {
                 } else {
                     NotchManager.shared.setNotchContent(.music, duration: 0.4)
                 }
-            } .disabled(!enableSpeaker)
+            }
+            .buttonStyle(ScalingPlainButtonStyle(downScale: enableSpeaker ? 0.8 : 0))
+            .disabled(!enableSpeaker)
         }
         .frame(height: 45)
         .onAppear {

@@ -14,8 +14,8 @@ struct HoverEffectButton: View {
     var effectSize: CGFloat
     var cornerRadius: CGFloat
     @Binding var dot: Bool
+    var contentTransition: ContentTransition = .symbolEffect
     var action: () -> Void
-    var contentTransition: ContentTransition = .symbolEffect;
     
     @State private var isHovering = false
     
@@ -46,7 +46,6 @@ struct HoverEffectButton: View {
                         }
                 }
         }
-        .buttonStyle(PlainButtonStyle())
         .onHover { hovering in
             withAnimation(.smooth(duration: 0.3)) {
                 isHovering = hovering

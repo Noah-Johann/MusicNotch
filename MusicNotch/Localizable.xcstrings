@@ -402,9 +402,6 @@
         }
       }
     },
-    "Hello, World!" : {
-
-    },
     "Hide closed notch" : {
       "localizations" : {
         "de" : {
