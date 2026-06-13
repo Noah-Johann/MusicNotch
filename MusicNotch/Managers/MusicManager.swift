@@ -107,9 +107,7 @@ class MusicManager {
                     }
                 }
             } else {
-                withAnimation(.bouncy(duration: 0.4)) {
-                    self.music = getMusicInfo(player: player)
-                }
+                self.music = getMusicInfo(player: player)
             }
         }
         
@@ -127,14 +125,10 @@ class MusicManager {
         switch notificationPlayer {
         case .appleMusic:
             musicPlayer = .appleMusic
-            withAnimation(.bouncy(duration: 0.4)) {
-                self.music = getMusicInfo(player: .appleMusic)
-            }
+            self.music = getMusicInfo(player: .appleMusic)
         case .spotify:
             musicPlayer = .spotify
-            withAnimation(.bouncy(duration: 0.4)) {
-                self.music = getMusicInfo(player: .spotify)
-            }
+            self.music = getMusicInfo(player: .spotify)
         case .nowPlaying:
             if updateInfo != nil {
                 guard updateInfo?.payload.bundleIdentifier != "com.spotify.client" && updateInfo?.payload.bundleIdentifier != "com.apple.Music" else { print("supported player"); return }
@@ -265,20 +259,18 @@ class MusicManager {
             return
         }
         
-        withAnimation(.bouncy(duration: 0.4)) {
-            self.music = MusicTrack(trackName: trackInfo.payload.title ?? "",
-                                    artistName: trackInfo.payload.artist ?? "",
-                                    albumName: trackInfo.payload.album ?? "",
-                                    trackDuration: Double(trackInfo.payload.durationMicros ?? 1) / 1000000,
-                                    trackPosition: Double(trackInfo.payload.currentElapsedTime ?? 0),
-                                    isPlaying: trackInfo.payload.isPlaying ?? false,
-                                    isLoved: false,
-                                    shuffle: false,
-                                    repeating: .off,
-                                    type: trackInfo.payload.bundleIdentifier == "com.apple.podcasts" ? .podcast : .music,
-                                    isLive: trackInfo.payload.isLiveStream == true,
-            )
-        }
+        self.music = MusicTrack(trackName: trackInfo.payload.title ?? "",
+                                artistName: trackInfo.payload.artist ?? "",
+                                albumName: trackInfo.payload.album ?? "",
+                                trackDuration: Double(trackInfo.payload.durationMicros ?? 1) / 1000000,
+                                trackPosition: Double(trackInfo.payload.currentElapsedTime ?? 0),
+                                isPlaying: trackInfo.payload.isPlaying ?? false,
+                                isLoved: false,
+                                shuffle: false,
+                                repeating: .off,
+                                type: trackInfo.payload.bundleIdentifier == "com.apple.podcasts" ? .podcast : .music,
+                                isLive: trackInfo.payload.isLiveStream == true,
+        )
         
         if trackInfo.payload.artwork != nil {
             self.albumArt = trackInfo.payload.artwork
@@ -292,9 +284,7 @@ class MusicManager {
     // MARK: - Disabled Playback
     
     public func setDisabledPlayback() {
-        withAnimation(.bouncy(duration: 0.4)) {
-            music = disabledPlayback()
-        }
+        music = disabledPlayback()
     }
     
     private func disabledPlayback() -> MusicTrack {

@@ -12,6 +12,8 @@ struct NotchMusicViewLeading: View {
     @State private var notchManager = NotchManager.shared
     @State private var musicManager = MusicManager.shared
     
+    @State private var localTrackName: String = ""
+    
     var body: some View {
         HStack {
             Button (action: {
@@ -30,11 +32,22 @@ struct NotchMusicViewLeading: View {
             }) .buttonStyle(ScalingPlainButtonStyle(downScale: 0.85))
                 .padding(.leading, 3)
             if notchManager.notchContent == .musicGlance {
-                Text(musicManager.music.trackName)
+                Text(localTrackName)
                     .foregroundStyle(Color(musicManager.aveColor ?? .white).gradient)
                     .frame(minWidth: 75, maxWidth: 125)
             }
         }
+        .onAppear {
+            withAnimation(.bouncy(duration: 0.4)) {
+                localTrackName = musicManager.music.artistName
+            }
+        }
+        .onChange(of: musicManager.music.trackName) { _, newValue in
+            withAnimation(.bouncy(duration: 0.4)) {
+                localTrackName = newValue
+            }
+        }
+
     }
 }
 
@@ -48,10 +61,12 @@ struct NotchMusicViewTrailing: View {
     
     @State private var isHovering: Bool = false
     
+    @State private var localArtistName: String = "Artist"
+    
     var body: some View {
         HStack {
             if notchManager.notchContent == .musicGlance {
-                Text(musicManager.music.artistName)
+                Text(localArtistName)
                     .foregroundStyle(Color(musicManager.aveColor ?? .white).gradient)
                     .frame(minWidth: 75, maxWidth: 125)
             }
@@ -85,6 +100,16 @@ struct NotchMusicViewTrailing: View {
                 } else {
                     isHovering = false
                 }
+            }
+        }
+        .onAppear {
+            withAnimation(.bouncy(duration: 0.4)) {
+                localArtistName = musicManager.music.artistName
+            }
+        }
+        .onChange(of: musicManager.music.artistName) { _, newValue in
+            withAnimation(.bouncy(duration: 0.4)) {
+                localArtistName = newValue
             }
         }
     }
