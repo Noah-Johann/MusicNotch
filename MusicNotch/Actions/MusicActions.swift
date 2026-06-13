@@ -6,12 +6,8 @@
 //
 
 import Foundation
-import Defaults
-import MediaRemoteAdapter
 
 struct MusicActions {
-    let mediaController = MediaController()
-    
     static func playPause() {
         Task {
             switch await MusicManager.shared.musicPlayer {
@@ -85,6 +81,7 @@ struct MusicActions {
 
     static func toggleShuffle() {
         Task {
+            await MainActor.run { MusicManager.shared.music.shuffle.toggle() }
             switch await MusicManager.shared.musicPlayer {
             case .appleMusic:
                 try await AppleScriptHelper.run("tell application \"Music\" to set shuffle enabled to not shuffle enabled")
@@ -101,6 +98,15 @@ struct MusicActions {
         Task {
             switch await MusicManager.shared.musicPlayer {
                 case .appleMusic:
+                    await MainActor.run {
+                        if MusicManager.shared.music.repeating == .off {
+                            MusicManager.shared.music.repeating = .all
+                        } else if MusicManager.shared.music.repeating == .all {
+                            MusicManager.shared.music.repeating = .one
+                        } else {
+                            MusicManager.shared.music.repeating = .off
+                        }
+                    }
                     try await AppleScriptHelper.run("""
                         tell application "Music"
                             if song repeat is off then
@@ -112,7 +118,15 @@ struct MusicActions {
                             end if
                         end tell
                         """)
+                    await MusicManager.shared.updateMusic(player: .appleMusic)
                 case .spotify:
+                    await MainActor.run {
+                        if MusicManager.shared.music.repeating == .off {
+                            MusicManager.shared.music.repeating = .all
+                        } else {
+                            MusicManager.shared.music.repeating = .off
+                        }
+                    }
                     try await AppleScriptHelper.run("tell application \"Spotify\" to set repeating to not repeating")
                     await MusicManager.shared.updateMusic(player: .spotify)
                 case .nowPlaying:

@@ -222,7 +222,6 @@ struct NotchMusicViewExpanded: View {
                 trackPosition = Double(musicManager.music.trackPosition)
             }
             playbackTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
-                print("playback timer")
                 Task { @MainActor in
                     if musicManager.music.isPlaying == true && trackPosition < musicManager.music.trackDuration {
                         trackPosition += 1
