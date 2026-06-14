@@ -19,7 +19,7 @@ struct SettingsLockScreenView: View {
     @Default(.alwaysShowPlayer) private var alwaysShowPlayer
     
     var body: some View {
-        JochexSection {
+        LuminareSection {
             LuminareToggle(isOn: $lockExtension) {
                 Text("Enable LockScreen icon")
             }

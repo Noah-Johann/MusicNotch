@@ -15,7 +15,7 @@ struct SettingsMusicView: View {
     @Default(.musicPlayer) private var musicPlayer
     
     var body: some View {
-        JochexSection {
+        LuminareSection {
             LuminareToggle(isOn: $autoPlayer) {
                 HStack {
                     Image(systemName: "music.quarternote.3")
@@ -46,7 +46,7 @@ struct SettingsMusicView: View {
                     }
                 }
                 .luminareRoundingBehavior(bottom: true)
-                .luminareBorderedStates(.none)
+                .luminareBorderedStates(.hovering)
                 .frame(height: 110)
             }
         } header: {

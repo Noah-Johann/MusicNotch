@@ -17,7 +17,7 @@ struct SettingsGeneralView: View {
     @Default(.viewedOnboarding) private var viewedOnboarding
     
     var body: some View {
-        JochexSection {
+        LuminareSection {
             LuminareToggle(
                 isOn: Binding(
                     get: { LaunchAtLogin.isEnabled },
@@ -63,7 +63,7 @@ struct SettingsGeneralView: View {
                 }
             }
             .luminareRoundingBehavior(bottom: true)
-            .luminareBorderedStates(.none)
+            .luminareBorderedStates(.hovering)
             .buttonStyle(.luminare)
             .frame(height: 37)
         }

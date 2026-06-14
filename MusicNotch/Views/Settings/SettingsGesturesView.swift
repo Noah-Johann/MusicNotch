@@ -15,7 +15,7 @@ struct SettingsGesturesView: View {
     @Default(.mediaGestures) private var mediaGestures
  
     var body: some View {
-        JochexSection {
+        LuminareSection {
             LuminareToggle(isOn: $enableGestures) {
                 Text("Enable Gesture control")
                     .padding(.trailing, 5)

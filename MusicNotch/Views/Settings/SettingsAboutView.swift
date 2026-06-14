@@ -63,7 +63,7 @@ struct SettingsAboutView: View {
         
         
 // MARK: - Update Button
-        JochexSection {
+        LuminareSection {
             LuminareToggle(isOn: $autoUpdates) {
                 Text ("Auto check for updates")
             } .onChange(of: autoUpdates) {
@@ -150,7 +150,7 @@ struct SettingsAboutView: View {
             }
             .frame(height: 36)
             .luminareRoundingBehavior(bottom: !showReleaseNotes)
-            .luminareBorderedStates(.none)
+            .luminareBorderedStates(.hovering)
             .buttonStyle(.luminare)
             
             if showReleaseNotes {
@@ -182,7 +182,7 @@ struct SettingsAboutView: View {
         
 // MARK: - About section
 
-        JochexSection {
+        LuminareSection {
             CosmeticTwoLineButton(heading: "Noah Johann",
                                   description: "Development",
                                   image: Image("Credit"),
@@ -200,7 +200,7 @@ struct SettingsAboutView: View {
                 .luminareRoundingBehavior(bottom: true)
         }
         
-        JochexSection {
+        LuminareSection {
             CosmeticOneLineButton(title: "License", image: Image(systemName: "list.bullet.clipboard"), hoverIcon: "arrow.up.right") {
                 NSWorkspace.shared.open(URL(string: licenseURL)!)
             } .luminareRoundingBehavior(top: true)

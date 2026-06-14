@@ -15,7 +15,7 @@ struct SettingsAppearanceView: View {
     @Default(.musicPlayerVolume) private var musicPlayerVolume
     
     var body: some View {
-        JochexSection {
+        LuminareSection {
             LuminareToggle(isOn: $coloredSpect) {
                 Text("Colored spectogram")
             }

@@ -39,7 +39,7 @@ struct NotchMusicViewLeading: View {
         }
         .onAppear {
             withAnimation(.bouncy(duration: 0.4)) {
-                localTrackName = musicManager.music.artistName
+                localTrackName = musicManager.music.trackName
             }
         }
         .onChange(of: musicManager.music.trackName) { _, newValue in

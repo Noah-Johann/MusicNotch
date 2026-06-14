@@ -13,7 +13,7 @@ import Defaults
 
 struct SettingsShortcutsView: View {
     var body: some View {
-        JochexSection {
+        LuminareSection {
             let items: [(String, LocalizedStringResource, KeyboardShortcuts.Name)] = [
                 ("chevron.up.chevron.down", "Toggle Notch", .toggleNotch),
                 ("music.note.list", "Show MusicGlance", .toggleMusicGlance),

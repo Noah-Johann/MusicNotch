@@ -26,7 +26,7 @@ struct SettingsExtensionView: View {
     @Default(.bluetoothSymbols) private var bluetoothSymbols
         
     var body: some View {
-        JochexSection {
+        LuminareSection {
             LuminareSlider(
                 value: $displayDuration,
                 in: 1...10,
@@ -44,7 +44,7 @@ struct SettingsExtensionView: View {
             Text("General")
         }
 
-        JochexSection {
+        LuminareSection {
             LuminareToggle(isOn: $batteryExtension) {
                 Text("Enable Battery extension")
             }
@@ -98,7 +98,7 @@ struct SettingsExtensionView: View {
             Text("Battery")
         }
 
-        JochexSection {
+        LuminareSection {
             LuminareToggle(isOn: $hudExtension) {
                 Text("Enable HUD extension")
             }
@@ -122,7 +122,7 @@ struct SettingsExtensionView: View {
             Text("HUD")
         }
             
-        JochexSection {
+        LuminareSection {
             LuminareToggle(isOn: $bluetoothRecognition) {
                 Text("Enable Bluetooth extension")
             }

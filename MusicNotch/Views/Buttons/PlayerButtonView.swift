@@ -29,14 +29,6 @@ struct PlayerButtonView: View {
         }
     }
     
-    var showDot: Bool {
-        switch actionItem {
-            case .shuffle: return musicManager.music.shuffle
-            case .repeating: return musicManager.music.repeating
-            case .open: return false
-        }
-    }
-    
     enum MusicActionItem {
         case shuffle, repeating, open
         
@@ -77,12 +69,19 @@ struct PlayerButtonView: View {
                         .foregroundStyle(.secondary)
                         .frame(width: actionItem.iconSize, height: actionItem.iconSize)
                     
-                    if showDot {
+                    if (Defaults[.musicAction] == .repeating && musicManager.music.repeating) || (Defaults[.musicAction] == .shuffle && musicManager.music.shuffle) {
                         Circle()
                             .fill(.secondary)
                             .frame(width: 3, height: 3)
+                        //    .transition(.scale(scale: 0).combined(with: .opacity))
+                            .id("DotIndicator")
                     }
-                } .animation(.spring(response: 0.3, dampingFraction: 0.4), value: showDot)
+                }
+                .frame(height: 35)
+                .animation(.smooth(duration: 0.4), value: musicManager.music.repeating)
+                .animation(.smooth(duration: 0.4), value: musicManager.music.shuffle)
+
+              //   .animation(.spring(response: 0.3, dampingFraction: 1), value: showDot)
             } .buttonStyle(ScalingHoverButtonStyle(downScale: 0.8, effectSize: 52))
             
             

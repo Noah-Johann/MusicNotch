@@ -66,6 +66,7 @@ enum SettingsTab: CaseIterable, @MainActor JochexTabItem {
             SettingsMusicView()
             SettingsAppearanceView()
             SettingsMusicGlanceView()
+            SettingsMusicActionView()
         case .glances:
             SettingsExtensionView()
         case .lockscreen:

@@ -15,7 +15,7 @@ struct SettingsDisplayView: View {
     @Default(.transparentNotch) private var transparentNotch
     
     var body: some View {
-        JochexSection {
+        LuminareSection {
             LuminarePicker(
                 elements: Display.allCases,
                 selection: Binding(
@@ -34,7 +34,7 @@ struct SettingsDisplayView: View {
                 }
             }
             .luminareRoundingBehavior(top: true)
-            .luminareBorderedStates(.none)
+            .luminareBorderedStates(.hovering)
             .buttonStyle(.luminare)
             .frame(height: 80)
             LuminareToggle(isOn: $transparentNotch) {

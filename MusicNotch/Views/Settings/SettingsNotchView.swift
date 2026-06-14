@@ -17,7 +17,7 @@ struct SettingsNotchView: View {
     @Default(.hideNotchTime) private var hideNotchTime
     
     var body: some View {
-        JochexSection {
+        LuminareSection {
             LuminarePicker(
                 elements: HoverBehavior.allCases,
                 selection: Binding(
@@ -37,7 +37,7 @@ struct SettingsNotchView: View {
                 }
             }
             .luminareRoundingBehavior(top: true)
-            .luminareBorderedStates(.none)
+            .luminareBorderedStates(.hovering)
             .frame(height: 50)
             
             LuminareToggle(isOn: $hapticFeedback) {

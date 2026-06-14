@@ -46,7 +46,7 @@ func CosmeticTwoLineButton(heading: LocalizedStringKey, description: LocalizedSt
         }
         .padding(12)
     }
-    .luminareBorderedStates(.none)
+    .luminareBorderedStates(.hovering)
     .frame(height: 70)
     .buttonStyle(.luminare)
 }

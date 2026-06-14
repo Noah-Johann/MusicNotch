@@ -24,7 +24,7 @@ func CosmeticOneLineButton(title: LocalizedStringKey, image: Image, hoverIcon: S
         }
         .padding(.horizontal, 14)
     }
-    .luminareBorderedStates(.none)
+    .luminareBorderedStates(.hovering)
     .buttonStyle(.luminare)
     .frame(height: 40)
 }
