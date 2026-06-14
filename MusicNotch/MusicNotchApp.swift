@@ -73,7 +73,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     
     func applicationShouldTerminateAfterLastWindowClosed(_: NSApplication) -> Bool {
         WindowManager.shared.closeAll()
-        print("all closed")
         return false
     }
     

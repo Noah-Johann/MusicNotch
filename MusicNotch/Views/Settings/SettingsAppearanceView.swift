@@ -11,7 +11,6 @@ import Defaults
 
 struct SettingsAppearanceView: View {
     @Default(.coloredSpect) private var coloredSpect
-    @Default(.playerGlow) private var playerGlow
     @Default(.musicPlayerVolume) private var musicPlayerVolume
     
     var body: some View {
@@ -19,11 +18,7 @@ struct SettingsAppearanceView: View {
             LuminareToggle(isOn: $coloredSpect) {
                 Text("Colored spectogram")
             }
-            
-            LuminareToggle(isOn: $playerGlow) {
-                Text ("Player glow")
-            }
-            
+
             LuminareToggle(isOn: $musicPlayerVolume) {
                 Text("Show music player volume slider")
             }

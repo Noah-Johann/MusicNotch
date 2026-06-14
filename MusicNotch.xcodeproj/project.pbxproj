@@ -7,13 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4F2813832F71DB8D0000AB0F /* MediaRemoteAdapter in Frameworks */ = {isa = PBXBuildFile; productRef = 4F2813822F71DB8D0000AB0F /* MediaRemoteAdapter */; };
 		4F2905DE2DB8E196004C1DA1 /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F2905DD2DB8E196004C1DA1 /* DynamicNotchKit */; };
 		4F29BD2F2E7470EC0098A721 /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F29BD2E2E7470EC0098A721 /* DynamicNotchKit */; };
 		4F33DF812D9EDF9A008F0182 /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 4F33DF802D9EDF9A008F0182 /* LaunchAtLogin */; };
 		4F33DF842D9EE522008F0182 /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 4F33DF832D9EE522008F0182 /* Defaults */; };
 		4F3441BF2EF46D6C00A4B26B /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F3441BE2EF46D6C00A4B26B /* DynamicNotchKit */; };
 		4F3441C22EF484AD00A4B26B /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F3441C12EF484AD00A4B26B /* DynamicNotchKit */; };
+		4F4CF33F2FB8AA5F003041AA /* MediaRemoteAdapter in Frameworks */ = {isa = PBXBuildFile; productRef = 4F4CF33E2FB8AA5F003041AA /* MediaRemoteAdapter */; };
+		4F4CF3422FBA3B81003041AA /* MediaRemoteAdapter in Frameworks */ = {isa = PBXBuildFile; productRef = 4F4CF3412FBA3B81003041AA /* MediaRemoteAdapter */; };
 		4F4DCDD92DB137F800067056 /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F4DCDD82DB137F800067056 /* DynamicNotchKit */; };
 		4F4DCDE22DB13C3100067056 /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F4DCDE12DB13C3000067056 /* DynamicNotchKit */; };
 		4F59E1482E4A9949005E4B75 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 4F59E1472E4A9949005E4B75 /* Sparkle */; };
@@ -78,7 +79,8 @@
 			files = (
 				4F29BD2F2E7470EC0098A721 /* DynamicNotchKit in Frameworks */,
 				4F75FABC2E86D6FB0064EF5E /* SkyLightWindow in Frameworks */,
-				4F2813832F71DB8D0000AB0F /* MediaRemoteAdapter in Frameworks */,
+				4F4CF33F2FB8AA5F003041AA /* MediaRemoteAdapter in Frameworks */,
+				4F4CF3422FBA3B81003041AA /* MediaRemoteAdapter in Frameworks */,
 				4FAC46D42F5C5FCB00729637 /* MediaRemoteAdapter in Frameworks */,
 				4F8405652DB6DAE100BC97E2 /* DynamicNotchKit in Frameworks */,
 				4F4DCDD92DB137F800067056 /* DynamicNotchKit in Frameworks */,
@@ -165,7 +167,8 @@
 				4F3441BE2EF46D6C00A4B26B /* DynamicNotchKit */,
 				4F3441C12EF484AD00A4B26B /* DynamicNotchKit */,
 				4FAC46D32F5C5FCB00729637 /* MediaRemoteAdapter */,
-				4F2813822F71DB8D0000AB0F /* MediaRemoteAdapter */,
+				4F4CF33E2FB8AA5F003041AA /* MediaRemoteAdapter */,
+				4F4CF3412FBA3B81003041AA /* MediaRemoteAdapter */,
 			);
 			productName = MusicNotch;
 			productReference = 4FA87FC02D847DD700725978 /* MusicNotch.app */;
@@ -205,7 +208,7 @@
 				4FAD051F2E8499BA002D4794 /* XCRemoteSwiftPackageReference "Luminare" */,
 				4F75FABA2E86D6FB0064EF5E /* XCRemoteSwiftPackageReference "SkyLightWindow" */,
 				4F3441C02EF484AD00A4B26B /* XCRemoteSwiftPackageReference "DynamicNotchKit" */,
-				4F2813812F71DB8D0000AB0F /* XCRemoteSwiftPackageReference "mediaremote-adapter" */,
+				4F4CF3402FBA3B81003041AA /* XCRemoteSwiftPackageReference "mediaremote-adapter" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 4FA87FC12D847DD700725978 /* Products */;
@@ -383,7 +386,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CREATE_INFOPLIST_SECTION_IN_BINARY = YES;
-				CURRENT_PROJECT_VERSION = 138;
+				CURRENT_PROJECT_VERSION = 152;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"MusicNotch/Preview Content\"";
 				DEVELOPMENT_TEAM = C3PS85G8WX;
@@ -410,7 +413,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 0.1.8;
+				MARKETING_VERSION = 0.1.9;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.NoahJohann.MusicNotch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -444,7 +447,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CREATE_INFOPLIST_SECTION_IN_BINARY = YES;
-				CURRENT_PROJECT_VERSION = 138;
+				CURRENT_PROJECT_VERSION = 152;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"MusicNotch/Preview Content\"";
 				DEVELOPMENT_TEAM = C3PS85G8WX;
@@ -471,7 +474,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 0.1.8;
+				MARKETING_VERSION = 0.1.9;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.NoahJohann.MusicNotch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -513,14 +516,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		4F2813812F71DB8D0000AB0F /* XCRemoteSwiftPackageReference "mediaremote-adapter" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/ejbills/mediaremote-adapter";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
 		4F33DF7F2D9EDF9A008F0182 /* XCRemoteSwiftPackageReference "LaunchAtLogin-Modern" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sindresorhus/LaunchAtLogin-Modern";
@@ -542,6 +537,14 @@
 			repositoryURL = "https://github.com/Noah-Johann/DynamicNotchKit/";
 			requirement = {
 				branch = main;
+				kind = branch;
+			};
+		};
+		4F4CF3402FBA3B81003041AA /* XCRemoteSwiftPackageReference "mediaremote-adapter" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Noah-Johann/mediaremote-adapter.git";
+			requirement = {
+				branch = master;
 				kind = branch;
 			};
 		};
@@ -580,11 +583,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		4F2813822F71DB8D0000AB0F /* MediaRemoteAdapter */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4F2813812F71DB8D0000AB0F /* XCRemoteSwiftPackageReference "mediaremote-adapter" */;
-			productName = MediaRemoteAdapter;
-		};
 		4F2905DD2DB8E196004C1DA1 /* DynamicNotchKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DynamicNotchKit;
@@ -611,6 +609,15 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4F3441C02EF484AD00A4B26B /* XCRemoteSwiftPackageReference "DynamicNotchKit" */;
 			productName = DynamicNotchKit;
+		};
+		4F4CF33E2FB8AA5F003041AA /* MediaRemoteAdapter */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MediaRemoteAdapter;
+		};
+		4F4CF3412FBA3B81003041AA /* MediaRemoteAdapter */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F4CF3402FBA3B81003041AA /* XCRemoteSwiftPackageReference "mediaremote-adapter" */;
+			productName = MediaRemoteAdapter;
 		};
 		4F4DCDD82DB137F800067056 /* DynamicNotchKit */ = {
 			isa = XCSwiftPackageProductDependency;

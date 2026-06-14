@@ -22,13 +22,15 @@ struct NotchAirPodsViewLeading: View {
                 .scaledToFit()
                 .frame(width: 25, height: 25)
         } else {
-            if let path = Bundle.main.path(forResource: volumeManager.deviceVideo, ofType: "mp4") {
-                let url = URL(fileURLWithPath: path)
+            if let url = Bundle.main.url(forResource: volumeManager.deviceVideo, withExtension: "mp4") {
                 VideoView(url: url)
                     .frame(width: 33, height: 33)
-                    .aspectRatio(contentMode: .fit)
+                    .allowsHitTesting(false)
             } else {
-                Text("Video not found")
+                Image(systemName: volumeManager.deviceIcon)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 25, height: 25)
             }
         }
     }
@@ -41,56 +43,93 @@ struct NotchAirPodsViewTrailing: View {
     }
 }
 
-//#Preview {
-//
-//}
-
-struct VideoView: NSViewRepresentable {
+private struct VideoView: NSViewRepresentable {
     let url: URL
 
-    final class PlayerHostingView: NSView {
-        let player: AVPlayer
-        let playerLayer: AVPlayerLayer
-        init(url: URL) {
-            self.player = AVPlayer(url: url)
-            self.player.isMuted = true
-            self.playerLayer = AVPlayerLayer(player: player)
-            self.playerLayer.videoGravity = .resizeAspect
-            super.init(frame: .zero)
-            self.wantsLayer = true
-            self.layer = CALayer()
-            self.playerLayer.frame = self.bounds
-            self.playerLayer.autoresizingMask = [.layerWidthSizable, .layerHeightSizable]
-            self.layer?.addSublayer(self.playerLayer)
-        }
-        @available(*, unavailable)
-        required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+    func makeCoordinator() -> Coordinator {
+        Coordinator()
+    }
+
+    func makeNSView(context: Context) -> PlayerView {
+        let view = PlayerView()
+        view.configure(with: url, coordinator: context.coordinator)
+        return view
+    }
+
+    func updateNSView(_ nsView: PlayerView, context: Context) {
+        nsView.configure(with: url, coordinator: context.coordinator)
+    }
+
+    static func dismantleNSView(_ nsView: PlayerView, coordinator: Coordinator) {
+        coordinator.removeEndObserver()
+        nsView.player.pause()
+        nsView.playerLayer.player = nil
     }
 
     final class Coordinator {
-        var endObserver: Any?
+        private var endObserver: Any?
+
+        func loop(_ item: AVPlayerItem, player: AVPlayer) {
+            removeEndObserver()
+            endObserver = NotificationCenter.default.addObserver(
+                forName: .AVPlayerItemDidPlayToEndTime,
+                object: item,
+                queue: .main
+            ) { [weak player] _ in
+                player?.seek(to: .zero)
+                player?.play()
+            }
+        }
+
+        func removeEndObserver() {
+            if let endObserver {
+                NotificationCenter.default.removeObserver(endObserver)
+                self.endObserver = nil
+            }
+        }
+
         deinit {
-            if let endObserver { NotificationCenter.default.removeObserver(endObserver) }
+            removeEndObserver()
         }
     }
 
-    func makeCoordinator() -> Coordinator { Coordinator() }
+    final class PlayerView: NSView {
+        let player = AVPlayer()
+        let playerLayer = AVPlayerLayer()
+        private var currentURL: URL?
 
-    func makeNSView(context: Context) -> NSView {
-        let hostingView = PlayerHostingView(url: url)
-        hostingView.player.play()
-        context.coordinator.endObserver = NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime,
-                                                                                 object: hostingView.player.currentItem,
-                                                                                 queue: .main) { _ in
-            hostingView.player.seek(to: .zero)
-            hostingView.player.play()
+        override init(frame frameRect: NSRect) {
+            super.init(frame: frameRect)
+            wantsLayer = true
+            layer = CALayer()
+            player.isMuted = true
+            player.actionAtItemEnd = .none
+            playerLayer.player = player
+            playerLayer.videoGravity = .resizeAspect
+            layer?.addSublayer(playerLayer)
         }
-        return hostingView
-    }
 
-    func updateNSView(_ nsView: NSView, context: Context) {
-        if let hostingView = nsView as? PlayerHostingView {
-            hostingView.playerLayer.frame = hostingView.bounds
+        @available(*, unavailable)
+        required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+
+        override func layout() {
+            super.layout()
+            playerLayer.frame = bounds
+        }
+
+        func configure(with url: URL, coordinator: Coordinator) {
+            guard currentURL != url else {
+                player.play()
+                return
+            }
+
+            currentURL = url
+            let item = AVPlayerItem(url: url)
+            player.replaceCurrentItem(with: item)
+            coordinator.loop(item, player: player)
+            player.play()
         }
     }
 }

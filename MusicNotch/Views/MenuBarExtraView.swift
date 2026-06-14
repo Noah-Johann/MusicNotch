@@ -40,18 +40,18 @@ struct MenuBarExtraView: View {
             Button {
                 openMusicApp()
             } label: {
-                switch Defaults[.musicPlayer] {
+                switch MusicManager.shared.musicPlayer {
                 case .appleMusic:
-                    Defaults[.musicPlayer].image.imageScale(.large)
+                    MusicManager.shared.musicPlayer.image.imageScale(.large)
                     Text("Show in Apple Music")
                 case .spotify:
-                    Defaults[.musicPlayer].image.imageScale(.large)
+                    MusicManager.shared.musicPlayer.image.imageScale(.large)
                     Text("Show in Spotify")
                 case .nowPlaying:
                     if MusicManager.shared.playingAppBundle != nil {
                         getMusicAppImage(bundle: MusicManager.shared.playingAppBundle!).imageScale(.large)
                     } else {
-                        Defaults[.musicPlayer].image.imageScale(.large)
+                        MusicManager.shared.musicPlayer.image.imageScale(.large)
                     }
                     if MusicManager.shared.playingAppName != nil {
                         Text("Show in \(MusicManager.shared.playingAppName ?? "Now Playing")")
@@ -126,12 +126,33 @@ struct MenuBarExtraView: View {
                 updateManager.updateState = .idle
             }
         }
-        
         Section {
-            Button("Quit", role: .destructive) {
-                NSApp.terminate(nil)
-            } .keyboardShortcut("Q", modifiers: .command)
-            
+            if #available(macOS 15, *) {
+                Button("Quit", role: .destructive) {
+                    NSApp.terminate(nil)
+                }
+                .keyboardShortcut("Q", modifiers: .command)
+                .modifierKeyAlternate(.option) {
+                    Button("Restart", role: .destructive) {
+                        guard let bundleIdentifier = Bundle.main.bundleIdentifier else { return }
+
+                        let workspace = NSWorkspace.shared
+
+                        guard let appURL = workspace.urlForApplication(withBundleIdentifier: bundleIdentifier) else { return }
+
+                        let configuration = NSWorkspace.OpenConfiguration()
+                        configuration.createsNewApplicationInstance = true
+
+                        workspace.openApplication(at: appURL, configuration: configuration, completionHandler: nil)
+                        NSApplication.shared.terminate(nil)
+                    }
+                }
+            }
+            else {
+                Button("Quit", role: .destructive) {
+                    NSApp.terminate(nil)
+                } .keyboardShortcut("Q", modifiers: .command)
+            }
         }
     }
 }

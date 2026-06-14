@@ -43,17 +43,6 @@
         }
       }
     },
-    "Accessibility Permission" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Berechtigung für Bedinungshilfen"
-          }
-        }
-      }
-    },
     "Acknowledgements" : {
       "localizations" : {
         "de" : {
@@ -373,6 +362,7 @@
       }
     },
     "Got it!" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -535,6 +525,9 @@
         }
       }
     },
+    "LIVE" : {
+
+    },
     "LockScreen" : {
       "localizations" : {
         "de" : {
@@ -566,6 +559,7 @@
       }
     },
     "Message" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -584,6 +578,9 @@
           }
         }
       }
+    },
+    "Music Action" : {
+
     },
     "MusicGlance" : {
       "localizations" : {
@@ -666,6 +663,7 @@
       }
     },
     "Open Spotify to request permissions" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -696,6 +694,7 @@
       }
     },
     "Permission denied" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -775,17 +774,8 @@
         }
       }
     },
-    "Player glow" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hintergrund-Glow"
-          }
-        }
-      }
-    },
     "Please go to System Settings > Privacy & Security > Automation, and toggle Spotify under MusicNotch" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -855,6 +845,9 @@
         }
       }
     },
+    "Repeat" : {
+
+    },
     "Request permission" : {
       "localizations" : {
         "de" : {
@@ -864,6 +857,9 @@
           }
         }
       }
+    },
+    "Restart" : {
+
     },
     "s" : {
       "localizations" : {
@@ -881,17 +877,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Einstellungen"
-          }
-        }
-      }
-    },
-    "Show dock icon" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zeige App Icon im Dock"
           }
         }
       }
@@ -938,16 +923,8 @@
         }
       }
     },
-    "Show notch" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zeige Notch"
-          }
-        }
-      }
+    "Shuffle" : {
+
     },
     "Skip Backwards" : {
       "localizations" : {
@@ -1003,6 +980,7 @@
       }
     },
     "Spotify is not opened" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1073,6 +1051,7 @@
       }
     },
     "Title" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1150,20 +1129,6 @@
       },
       "shouldTranslate" : false
     },
-    "Video not found" : {
-      "shouldTranslate" : false
-    },
-    "Viewed Onboarding" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Viewed Onboarding"
-          }
-        }
-      }
-    },
     "Volume" : {
       "localizations" : {
         "de" : {
@@ -1195,6 +1160,7 @@
       }
     },
     "You are all set up!" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {

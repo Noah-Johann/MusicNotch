@@ -36,6 +36,8 @@ struct SettingsView: View {
                 
                 SettingsMusicView()
                 
+                SettingsMusicActionView()
+                
                 SettingsAppearanceView()
                 
                 SettingsMusicGlanceView()

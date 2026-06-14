@@ -14,11 +14,6 @@ struct OnboardingView: View {
     
     @State private var OnboardingPage: Int = 1
     
-    @State private var alertTitle = Text("Title")
-    @State private var alertMessage = Text("Message")
-    @State private var showAlert = false
-    @State private var success = false
-    
     @Default(.launchAtLogin) private var launchAtLogin
     
     
@@ -97,37 +92,14 @@ struct OnboardingView: View {
                             } .buttonStyle(LuminareButtonStyle())
                         } else if OnboardingPage == 2 {
                             Button("Request permission") {
-                                PermissionHelper.promptUserForConsent(for: "com.spotify.client") { consent in
-                                    Task { @MainActor in
-                                        print("Constent \(consent)")
-                                        switch consent {
-                                        case .granted:
-                                            alertTitle = Text("You are all set up!")
-                                            alertMessage = Text("Start playing a song!")
-                                            success = true
-                                            showAlert = true
-                                        case .closed:
-                                            alertTitle = Text("Spotify is not opened")
-                                            alertMessage = Text("Open Spotify to request permissions")
-                                            showAlert = true
-                                            success = false
-                                        case .denied:
-                                            alertTitle = Text("Permission denied")
-                                            alertMessage = Text("Please go to System Settings > Privacy & Security > Automation, and toggle Spotify under MusicNotch")
-                                            showAlert = true
-                                            success = false
-                                        case .notPrompted:
-                                            return
-                                        }
-                                    }
+                                PermissionHelper.checkForAutomationPermission(appBundle: "com.apple.Music") { consent in
+                                    print("Apple Music Permission \(consent)")
                                 }
-                            }
-                            .alert(isPresented: $showAlert) {
-                                Alert(title: alertTitle, message: alertMessage, dismissButton: .default(Text("Got it!")) {
-                                    if success {
-                                        OnboardingPage = 3
-                                    }
-                                })
+                                PermissionHelper.checkForAutomationPermission(appBundle: "com.spotify.client") { consent in
+                                    print("Spotify Permission \(consent)")
+                                }
+                                
+                                OnboardingPage = 3
                             }
                             .buttonStyle(LuminareButtonStyle())
                         } else if OnboardingPage == 3 {

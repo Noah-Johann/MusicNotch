@@ -15,7 +15,7 @@ struct SettingsShortcutsView: View {
         LuminareSection {
             let items: [(String, LocalizedStringResource, KeyboardShortcuts.Name)] = [
                 ("chevron.up.chevron.down", "Toggle Notch", .toggleNotch),
-                ("chevron.left.chevron.right", "Show MusicGlance", .toggleMusicGlance),
+                ("music.note.list", "Show MusicGlance", .toggleMusicGlance),
                 ("play", "Play/Pause", .playPause),
                 ("forward", "Skip to Next Track", .nextTrack),
                 ("backward", "Skip to Previous Track", .previousTrack),
