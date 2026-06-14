@@ -35,7 +35,7 @@ class LockScreenManager {
     
     @objc private func screenLocked() {
         Task { @MainActor in
-            Task.detached { if Defaults[.lockSound] { playSound(sound: .lock) } }
+            if Defaults[.lockSound] { SoundHelper.shared.playSound(sound: .lock) }
             WindowManager.shared.showLockScreenPlayer(sendFromLock: true)
             MusicManager.shared.refreshMusic()
             
@@ -50,7 +50,7 @@ class LockScreenManager {
     
     @objc private func screenUnlocked() {
         Task { @MainActor in
-            Task.detached { if Defaults[.unlockSound] { playSound(sound: .unlock) } }
+            if Defaults[.unlockSound] { SoundHelper.shared.playSound(sound: .unlock) } 
             WindowManager.shared.hideLockScreen()
             if Defaults[.lockExtension] {
                 NotchManager.shared.showExtensionNotch(type: .unlocked, duration: 1.5)

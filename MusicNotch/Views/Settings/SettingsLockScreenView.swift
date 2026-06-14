@@ -29,7 +29,7 @@ struct SettingsLockScreenView: View {
                     Text("Play lock sound")
                     
                     Button(action: {
-                        playSound(sound: .lock)
+                        SoundHelper.shared.playSound(sound: .lock)
                     }, label: {
                         Image(systemName: "speaker.wave.2.circle.fill")
                             .foregroundStyle(.secondary)
@@ -43,7 +43,7 @@ struct SettingsLockScreenView: View {
                     Text("Play unlock sound")
                     
                     Button (action: {
-                        playSound(sound: .unlock)
+                        SoundHelper.shared.playSound(sound: .unlock)
                     }, label: {
                         Image(systemName: "speaker.wave.2.circle.fill")
                             .foregroundStyle(.secondary)

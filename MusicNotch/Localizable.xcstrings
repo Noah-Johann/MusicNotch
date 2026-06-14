@@ -521,7 +521,7 @@
         }
       }
     },
-    "Lock Screen" : {
+    "LIVE" : {
 
     },
     "LockScreen" : {
@@ -574,6 +574,9 @@
           }
         }
       }
+    },
+    "Music Action" : {
+
     },
     "MusicGlance" : {
       "localizations" : {
@@ -831,6 +834,9 @@
         }
       }
     },
+    "Repeat" : {
+
+    },
     "Request permission" : {
       "localizations" : {
         "de" : {
@@ -908,6 +914,9 @@
           }
         }
       }
+    },
+    "Shuffle" : {
+
     },
     "Skip Backwards" : {
       "localizations" : {
@@ -1101,7 +1110,19 @@
       },
       "shouldTranslate" : false
     },
+<<<<<<< HEAD
     "Video not found" : {
+=======
+    "Version: %@ (%lld)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Version: %1$@ (%2$lld)"
+          }
+        }
+      },
+>>>>>>> dev
       "shouldTranslate" : false
     },
     "Volume" : {

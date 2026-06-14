@@ -100,6 +100,8 @@ struct NotchHUDViewTrailing: View {
                         Text("muted")
                             .font(.system(size: 10))
                             .foregroundStyle(.secondary)
+                            .transition(.scale(scale: 0.2).combined(with: .opacity))
+                            .id("volume-label")
                     }
                 } .frame(width: 77)
             }
@@ -107,6 +109,7 @@ struct NotchHUDViewTrailing: View {
             .padding(.leading, 4)
             .animation(.easeInOut(duration: 0.4), value: volumeManager.volume)
             .animation(.bouncy(duration: 0.4), value: volumeManager.isMuted)
+            .animation(.spring(response: 0.3, dampingFraction: 0.65), value: Defaults[.hideHudLabel])
             
         case .brightness:
             HStack {

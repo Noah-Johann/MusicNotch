@@ -22,6 +22,7 @@ extension Defaults.Keys {
     
     static let autoPlayer = Key<Bool>("autoPlayer", default: true)
     static let musicPlayer = Key<MusicApp>("musicPlayer", default: .spotify)
+    static let musicAction = Key<MusicAction>("musicAction", default: .shuffle)
     
     // Display
     static let display = Key<Display>("display", default: .notchDisplay)

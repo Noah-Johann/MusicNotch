@@ -114,7 +114,7 @@ class BatteryManager {
             Task { @MainActor in
                 NotchManager.shared.showExtensionNotch(type: .battery, duration: Defaults[.displayDuration])
                 if info.isPluggedIn && Defaults[.pluggedInSound] {
-                    playSound(sound: .pluggedIn)
+                    SoundHelper.shared.playSound(sound: .pluggedIn)
                 }
             }
             
@@ -126,7 +126,7 @@ class BatteryManager {
             Task { @MainActor in
                 NotchManager.shared.showExtensionNotch(type: .battery, duration: Defaults[.displayDuration])
                 if Defaults[.lowPowerSound] {
-                    playSound(sound: .macLowBattery)
+                    SoundHelper.shared.playSound(sound: .macLowBattery)
                 }
             }
         }

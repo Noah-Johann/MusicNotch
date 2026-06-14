@@ -92,13 +92,14 @@ class SpotifyManager {
                 set currentVolume to sound volume
                 set trackID to id of current track
                 set shuffle to shuffling
+                set repeatVar to repeating
                 set typeURL to spotify url of current track
                 try
                     set albumArt to artwork url of current track
                 on error
                     set albumArt to ""
                 end try
-                return {isPlaying, trackName, artistName, albumName, trackDuration, trackPosition, currentVolume, trackID, shuffle, typeURL, albumArt}
+                return {isPlaying, trackName, artistName, albumName, trackDuration, trackPosition, currentVolume, trackID, shuffle, repeatVar, typeURL, albumArt}
             on error
                 return {}
             end try
@@ -108,7 +109,7 @@ class SpotifyManager {
         let result = AppleScriptHelper.executeAppleScript(script)
         guard
             let descriptor = result,
-            descriptor.numberOfItems >= 11
+            descriptor.numberOfItems >= 12
         else {
             print("Invalid AppleScript result")
             return nil
@@ -119,21 +120,21 @@ class SpotifyManager {
             trackName: descriptor.atIndex(2)?.stringValue ?? "",
             artistName: descriptor.atIndex(3)?.stringValue ?? "",
             albumName: descriptor.atIndex(4)?.stringValue ?? "",
-            trackDuration: Int(descriptor.atIndex(5)?.doubleValue ?? 0),
-            trackPosition: Int(descriptor.atIndex(6)?.doubleValue ?? 0),
+            trackDuration: descriptor.atIndex(5)?.doubleValue ?? 1,
+            trackPosition: descriptor.atIndex(6)?.doubleValue ?? 0,
             isPlaying: descriptor.atIndex(1)?.stringValue == "playing",
             isLoved: false,
             shuffle: descriptor.atIndex(9)?.booleanValue ?? false,
+            repeating: descriptor.atIndex(10)?.stringValue == "true",
             volume: descriptor.atIndex(7) != nil ? CGFloat(descriptor.atIndex(7)!.doubleValue) : nil,
-            type: (descriptor.atIndex(10)?.stringValue ?? "").contains("episode") ? .podcast : .music
+            type: (descriptor.atIndex(11)?.stringValue ?? "").contains("episode") ? .podcast : .music
         )
-        print(descriptor.atIndex(10)?.stringValue ?? "")
-        print(returnTrack.type)
+        print("Spotify Playback Type: \(returnTrack.type)")
                 
         if oldTrackName != returnTrack.trackName {
             oldTrackName = returnTrack.trackName
             Task { @MainActor in
-                fetchAlbumArt(albumUrl: descriptor.atIndex(11)?.stringValue ?? "")
+                fetchAlbumArt(albumUrl: descriptor.atIndex(12)?.stringValue ?? "")
             }
         }
         return returnTrack
@@ -151,7 +152,9 @@ class SpotifyManager {
              }
              Task { @MainActor in
                  MusicManager.shared.albumArt = image
-                 MusicManager.shared.getAverageColor()
+                 image.averageColor { color in
+                     MusicManager.shared.aveColor = color
+                 }
              }
          }.resume()
      }

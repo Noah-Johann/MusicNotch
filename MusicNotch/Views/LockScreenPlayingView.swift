@@ -14,7 +14,7 @@ struct LockScreenPlayingView: View {
     @State private var volumeManager = VolumeManager.shared
   //  @State private var accessibilityManager = AccessibilityManager.shared
     
-    @State private var trackposition: Double = 0
+    @State private var trackPosition: Double = 0
     @State private var isDragging: Bool = false
     @State private var playbackTimer: Timer?
         
@@ -68,13 +68,13 @@ struct LockScreenPlayingView: View {
                     } .frame(height: 90)
                     
                     HStack {
-                        Text(formatTime(Int(trackposition)))
+                        Text(formatTime(Int(trackPosition)))
                             .frame(minWidth: 50, maxWidth: 80, minHeight: 20, alignment: .center)
                             .foregroundStyle(.gray)
                             .fontWeight(.semibold)
                             .font(.system(size: 12))
                         
-                        CustomSlider(value: $trackposition,
+                        CustomSlider(value: $trackPosition,
                                      inRange: 0...Double(musicManager.music.trackDuration),
                                      activeFillColor: .white,
                                      fillColor: .white,
@@ -83,11 +83,11 @@ struct LockScreenPlayingView: View {
                                      onEditingChanged: { isEditing in
                             isDragging = isEditing
                             if !isEditing {
-                                MusicActions.setProgress(position: trackposition)
+                                MusicActions.setProgress(position: trackPosition)
                             }
                         }) .frame(width: 200, height: 10, alignment: .center)
                         
-                        Text("-\(formatTime(musicManager.music.trackDuration - Int(trackposition)))")
+                        Text("-\(formatTime(Int(musicManager.music.trackDuration - trackPosition)))")
                             .frame(minWidth: 55, maxWidth: 80, minHeight: 20, alignment: .center)
                             .foregroundStyle(.gray)
                             .fontWeight(.semibold)
@@ -103,14 +103,14 @@ struct LockScreenPlayingView: View {
         }
         .frame(width: 350, height: 190)
         .onChange(of: musicManager.music.trackPosition) { _, newValue in
-            trackposition = Double(newValue)
+            trackPosition = Double(newValue)
         }
         .onAppear {
-            trackposition = Double(musicManager.music.trackPosition)
+            trackPosition = Double(musicManager.music.trackPosition)
             playbackTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
                 Task { @MainActor in
                     if musicManager.music.isPlaying == true {
-                        trackposition += 1
+                        trackPosition += 1
                     }
                 }
             }

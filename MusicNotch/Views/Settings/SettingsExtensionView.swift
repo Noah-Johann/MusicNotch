@@ -54,7 +54,7 @@ struct SettingsExtensionView: View {
                     Text("Play charging sound")
                     
                     Button (action: {
-                        playSound(sound: .pluggedIn)
+                        SoundHelper.shared.playSound(sound: .pluggedIn)
                     }, label: {
                         Image(systemName: "speaker.wave.2.circle.fill")
                             .foregroundStyle(.secondary)
@@ -85,7 +85,7 @@ struct SettingsExtensionView: View {
                         Text("Play low power sound")
                         
                         Button (action: {
-                            playSound(sound: .macLowBattery)
+                            SoundHelper.shared.playSound(sound: .macLowBattery)
                         }, label: {
                             Image(systemName: "speaker.wave.2.circle.fill")
                                 .foregroundStyle(.secondary)

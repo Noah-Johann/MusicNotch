@@ -81,10 +81,14 @@ class BetterDisplayManager {
         do {
             let notification = try JSONDecoder().decode(BetterDisplayNotification.self, from: Data(notificationString.utf8))
             if let type = notification.controlTarget, type.contains("Brightness") {
-                
                 BrightnessManager.shared.brightness = (notification.value ?? 0) / (notification.maxValue ?? 0)
                 Task { @MainActor in
                     NotchManager.shared.showExtensionNotch(type: .brightness, duration: Defaults[.displayDuration])
+                }
+            } else if let type = notification.controlTarget, type.contains("volume") {
+                VolumeManager.shared.volume = (notification.value ?? 0) / (notification.maxValue ?? 0)
+                Task { @MainActor in
+                    NotchManager.shared.showExtensionNotch(type: .volume, duration: Defaults[.displayDuration])
                 }
             }
         } catch {}

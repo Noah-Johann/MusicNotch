@@ -28,6 +28,7 @@ class MusicManager {
         isPlaying: false,
         isLoved: false,
         shuffle: false,
+        repeating: false,
         type: .music,
     )
     var albumArt: NSImage? = NSImage(named: "no_playback")
@@ -38,7 +39,7 @@ class MusicManager {
     private var hideTimer: Timer? = nil
     private var stopTime = 0
     private var launched: Bool = false
-    private var prevMusic = MusicTrack(trackName: "", artistName: "", albumName: "", trackDuration: 0, trackPosition: 0, isPlaying: false, isLoved: false, shuffle: false, type: .music)
+    private var prevMusic = MusicTrack(trackName: "", artistName: "", albumName: "", trackDuration: 0, trackPosition: 0, isPlaying: false, isLoved: false, shuffle: false, repeating: false, type: .music)
     
     private let appleMusicManager = AppleMusicManager()
     private let spotifyManager = SpotifyManager()
@@ -106,9 +107,7 @@ class MusicManager {
                     }
                 }
             } else {
-                withAnimation(.bouncy(duration: 0.4)) {
-                    self.music = getMusicInfo(player: player)
-                }
+                self.music = getMusicInfo(player: player)
             }
         }
         
@@ -126,14 +125,10 @@ class MusicManager {
         switch notificationPlayer {
         case .appleMusic:
             musicPlayer = .appleMusic
-            withAnimation(.bouncy(duration: 0.4)) {
-                self.music = getMusicInfo(player: .appleMusic)
-            }
+            self.music = getMusicInfo(player: .appleMusic)
         case .spotify:
             musicPlayer = .spotify
-            withAnimation(.bouncy(duration: 0.4)) {
-                self.music = getMusicInfo(player: .spotify)
-            }
+            self.music = getMusicInfo(player: .spotify)
         case .nowPlaying:
             if updateInfo != nil {
                 guard updateInfo?.payload.bundleIdentifier != "com.spotify.client" && updateInfo?.payload.bundleIdentifier != "com.apple.Music" else { print("supported player"); return }
@@ -264,22 +259,24 @@ class MusicManager {
             return
         }
         
-        withAnimation(.bouncy(duration: 0.4)) {
-            self.music = MusicTrack(trackName: trackInfo.payload.title ?? "",
-                                    artistName: trackInfo.payload.artist ?? "",
-                                    albumName: trackInfo.payload.album ?? "",
-                                    trackDuration: Int(trackInfo.payload.durationMicros ?? 1) / 1000000,
-                                    trackPosition: Int(trackInfo.payload.elapsedTimeMicros ?? 0) / 1000000,
-                                    isPlaying: trackInfo.payload.isPlaying ?? false,
-                                    isLoved: false,
-                                    shuffle: false,
-                                    type: trackInfo.payload.bundleIdentifier == "com.apple.podcasts" ? .podcast : .music,
-            )
-        }
+        self.music = MusicTrack(trackName: trackInfo.payload.title ?? "",
+                                artistName: trackInfo.payload.artist ?? "",
+                                albumName: trackInfo.payload.album ?? "",
+                                trackDuration: Double(trackInfo.payload.durationMicros ?? 1) / 1000000,
+                                trackPosition: Double(trackInfo.payload.currentElapsedTime ?? 0),
+                                isPlaying: trackInfo.payload.isPlaying ?? false,
+                                isLoved: false,
+                                shuffle: false,
+                                repeating: false,
+                                type: trackInfo.payload.bundleIdentifier == "com.apple.podcasts" ? .podcast : .music,
+                                isLive: trackInfo.payload.isLiveStream == true,
+        )
         
-        if trackInfo.payload.artwork != nil {
-            self.albumArt = trackInfo.payload.artwork
-            self.getAverageColor()
+        if let image = trackInfo.payload.artwork {
+            self.albumArt = image
+            image.averageColor { color in
+                self.aveColor = color
+            }
         }
         
         self.playingAppName = trackInfo.payload.applicationName
@@ -289,9 +286,7 @@ class MusicManager {
     // MARK: - Disabled Playback
     
     public func setDisabledPlayback() {
-        withAnimation(.bouncy(duration: 0.4)) {
-            music = disabledPlayback()
-        }
+        music = disabledPlayback()
     }
     
     private func disabledPlayback() -> MusicTrack {
@@ -304,6 +299,7 @@ class MusicManager {
                                       isPlaying: false,
                                       isLoved: false,
                                       shuffle: false,
+                                      repeating: false,
                                       type: .music,
             )
         playingAppName = nil
@@ -317,7 +313,7 @@ class MusicManager {
         
         if NotchManager.shared.notchContent == .musicGlance || NotchManager.shared.notchContent == .music {
             Task {
-                if prevPlayback.trackName != "Nothing playing" {
+                if prevPlayback.trackName != "Nothing playing" { // Prevent closing notch on opening update
                     await NotchManager.shared.setNotchState(.closed)
                 }
             }
@@ -327,17 +323,7 @@ class MusicManager {
         
         return playback
     }
-    
-    public func getAverageColor() {
-        guard let image = self.albumArt else { return }
-        image.averageColor { color in
-            if let color = color {
-                self.aveColor = color
-            } else {
-                print("Failed to get average color")
-            }
-        }
-    }
+
     
 // MARK: - Now Playing Controls
     
@@ -355,17 +341,19 @@ class MusicManager {
 
 // MARK: - Constants
 
-struct MusicTrack {
+struct MusicTrack: Equatable {
     var trackName: String
     var artistName: String
     var albumName: String
-    var trackDuration: Int
-    var trackPosition: Int
+    var trackDuration: Double
+    var trackPosition: Double
     var isPlaying: Bool
     var isLoved: Bool
     var shuffle: Bool
+    var repeating: Bool
     var volume: CGFloat?
     var type: PlaybackType
+    var isLive: Bool = false
 }
 
 enum PlaybackType {
