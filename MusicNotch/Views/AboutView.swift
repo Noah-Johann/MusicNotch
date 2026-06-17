@@ -11,15 +11,15 @@ import Luminare
 struct aboutView: View {
     private let projectURL: String = "https://github.com/Noah-Johann/MusicNotch"
     private let licenseURL: String = "https://github.com/Noah-Johann/MusicNotch/blob/main/LICENSE"
-
+    
     var body: some View {
-        LuminarePane () {
+        VStack(spacing: 20) {
             VStack(spacing: 0) {
                 Image(nsImage: NSApp.applicationIconImage)
                     .resizable()
-                    .frame(width: 150, height: 150)
+                    .frame(width: 160, height: 160)
                     .padding(.bottom, 7)
-
+                
                 VStack(spacing: 0) {
                     Text(Bundle.main.appName)
                         .blur(radius: 0)
@@ -33,36 +33,37 @@ struct aboutView: View {
                         .font(.body)
                         .padding(.top, 5)
                 }
-                .padding(.horizontal)
-                .padding(.bottom, 20)
-                
-                LuminareSection {
-                    CosmeticTwoLineButton(heading: "GitHub",
-                                          description: "Contribute on Github",
-                                          image: Image("Github"),
-                                          hoverIcon: "arrow.up.right",
-                                          circleOverlay: true)
-                    { NSWorkspace.shared.open(URL(string: projectURL)!) }
-                } .padding(.bottom, 20)
-                VStack {
-                    Button {
-                        NSWorkspace.shared.open(URL(string: licenseURL)!)
-                    } label: {
-                        Text("GPL 3.0 License")
-                            .underline()
-                    } .buttonStyle(.plain)
-                        .foregroundStyle(.tertiary)
-                        .padding(.top, 5)
+            }
+            
+            
+            LuminareSection {
+                CosmeticTwoLineButton(
+                    heading: "GitHub",
+                    description: "Contribute on Github",
+                    image: Image("Github"),
+                    hoverIcon: "arrow.up.right",
+                    circleOverlay: true
+                ) {
+                    NSWorkspace.shared.open(URL(string: projectURL)!)
+                }.luminareRoundingBehavior(top: true, bottom: true)
+            }
 
-                    
-                    Text(Bundle.main.copyright)
-                        .foregroundStyle(Color(.tertiaryLabelColor))
-                        .font(.body)
+            VStack(spacing: 10) {
+                Button {
+                    NSWorkspace.shared.open(URL(string: licenseURL)!)
+                } label: {
+                    Text("GPL 3.0 License")
+                        .underline()
                 }
-            } .padding(.bottom, 20)
-        }
-        .frame(width: 320, height: 410)
-        .scrollDisabled(true)
+                .buttonStyle(.plain)
+                .foregroundStyle(.tertiary)
+                
+                
+                Text(Bundle.main.copyright)
+                    .foregroundStyle(Color(.tertiaryLabelColor))
+                    .font(.body)
+            }
+        } .padding(.horizontal)
     }
 }
 

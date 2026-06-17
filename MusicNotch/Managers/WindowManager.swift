@@ -51,9 +51,8 @@ class WindowManager {
     
     func openAbout() {
         if aboutController == nil {
-            let window = LuminareWindow{
+            let window = JochexPlainWindow(windowWidth: 315, windowHeight: 380) {
                 aboutView()
-                    .frame(width: 320, height: 405)
             }
             
             aboutController = NSWindowController(window: window)
