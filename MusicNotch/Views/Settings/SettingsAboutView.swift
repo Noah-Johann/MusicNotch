@@ -11,6 +11,7 @@ import JochexUI
 import Defaults
 
 struct SettingsAboutView: View {
+    @Environment(\.colorScheme) private var colorScheme
     
     @State private var updateManager = UpdateManager.shared
     
@@ -193,7 +194,7 @@ struct SettingsAboutView: View {
             
             CosmeticTwoLineButton(heading: "GitHub",
                                   description: "Contribute on Github",
-                                  image: Image("Github"),
+                                  image: Image(colorScheme == .dark ? "Github" : "Github_Black"),
                                   hoverIcon: "arrow.up.right",
                                   circleOverlay: true)
             { NSWorkspace.shared.open(URL(string: projectURL)!) }

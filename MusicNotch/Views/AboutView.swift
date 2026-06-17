@@ -9,6 +9,8 @@ import SwiftUI
 import Luminare
 
 struct aboutView: View {
+    @Environment(\.colorScheme) private var colorScheme
+    
     private let projectURL: String = "https://github.com/Noah-Johann/MusicNotch"
     private let licenseURL: String = "https://github.com/Noah-Johann/MusicNotch/blob/main/LICENSE"
     
@@ -40,7 +42,7 @@ struct aboutView: View {
                 CosmeticTwoLineButton(
                     heading: "GitHub",
                     description: "Contribute on Github",
-                    image: Image("Github"),
+                    image: Image(colorScheme == .dark ? "Github": "Github_Black"),
                     hoverIcon: "arrow.up.right",
                     circleOverlay: true
                 ) {
