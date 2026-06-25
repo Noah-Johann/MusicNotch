@@ -25,16 +25,17 @@ struct NotchMusicViewLeading: View {
                     return
                 }
             }, label: {
-                AlbumArtView(size: (NSScreen.main?.isOnNotchScreen ?? false) ? 30.0 : 20.0,
+                AlbumArtView(size: (NSScreen.main?.isOnNotchScreen ?? false) ? 27.0 : 18.0,
                              shrink: 5,
-                             cornerRadius: (NSScreen.main?.isOnNotchScreen ?? false) ? 6 : 4,
+                             cornerRadius: (NSScreen.main?.isOnNotchScreen ?? false) ? 5.5 : 4,
                 )
             }) .buttonStyle(ScalingPlainButtonStyle(downScale: 0.85))
-                .padding(.leading, 3)
+                .padding(.leading, 1)
             if notchManager.notchContent == .musicGlance {
                 Text(localTrackName)
                     .foregroundStyle(Color(musicManager.aveColor ?? .white).gradient)
-                    .frame(minWidth: 75, maxWidth: 125)
+                    .padding(.leading, 5)
+                    .frame(minWidth: 75, maxWidth: 125, alignment: .leading)
             }
         }
         .onAppear {
@@ -68,7 +69,7 @@ struct NotchMusicViewTrailing: View {
             if notchManager.notchContent == .musicGlance {
                 Text(localArtistName)
                     .foregroundStyle(Color(musicManager.aveColor ?? .white).gradient)
-                    .frame(minWidth: 75, maxWidth: 125)
+                    .frame(minWidth: 75, maxWidth: 125, alignment: .trailing)
             }
             
             Button {
