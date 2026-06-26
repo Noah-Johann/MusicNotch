@@ -67,11 +67,8 @@ struct SettingsNotchView: View {
                 
             ) {
                 Text("Hide delay")
-                    .padding(.trailing, 5)
-                    .luminareToolTip(attachedTo: .topTrailing) {
-                        Text("The time it takes for the notch to hide if the playback is stopped.")
-                            .padding()
-                    }
+                Spacer()
+                SettingsInfoItemView { Text("The time it takes for the notch to hide if the playback is stopped.") }
                 
             }
             .luminareSliderLayout(.regular)

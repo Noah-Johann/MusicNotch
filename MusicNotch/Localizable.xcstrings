@@ -528,6 +528,7 @@
 
     },
     "LockScreen" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {

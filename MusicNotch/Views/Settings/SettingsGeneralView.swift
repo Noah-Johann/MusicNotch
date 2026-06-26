@@ -15,6 +15,7 @@ struct SettingsGeneralView: View {
     @Default(.showMenuBarItem) private var showMenuBarItem
     @Default(.silentLaunch) private var silentLaunch
     @Default(.viewedOnboarding) private var viewedOnboarding
+    @State var bool: Bool = false
     
     var body: some View {
         LuminareSection {
@@ -28,12 +29,8 @@ struct SettingsGeneralView: View {
             }
             LuminareToggle(isOn: $showMenuBarItem) {
                 Text("Show menubar item")
-                    .padding(.trailing, 5)
-                    .luminareToolTip(attachedTo: .topTrailing) {
-                        Text("If hidden, settings can be accessed via right click on the player")
-                            .padding()
-                    }
-                    .tint(.accentColor)
+                Spacer()
+                SettingsInfoItemView { Text("If hidden, settings can be accessed via right click on the player") }
             }
             
             LuminareToggle(isOn: $silentLaunch) {

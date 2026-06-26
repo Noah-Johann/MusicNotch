@@ -68,6 +68,8 @@ struct SettingsMusicGlanceView: View {
                 Button { allPlayerMusicGlanceSetting.toggle() } label: {
                     Image(systemName: allPlayerMusicGlanceSetting ? "network" : "network.slash")
                         .foregroundStyle(.secondary)
+                        .imageScale(.large)
+                        .contentTransition(.symbolEffect(.replace))
                 }
                 .buttonStyle(.plain)
 //                .luminarePopover() {

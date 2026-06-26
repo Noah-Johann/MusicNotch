@@ -37,7 +37,9 @@ struct NotchMusicViewLeading: View {
             if notchManager.notchContent == .musicGlance {
                 Text(localTrackName)
                     .foregroundStyle(Color(musicManager.aveColor ?? .white).gradient)
+                    .lineLimit(1)
                     .padding(.leading, 5)
+                    .transition(.scale(scale: 0.2, anchor: .leading).combined(with: .opacity))
                     .frame(minWidth: 75, maxWidth: 125, alignment: .leading)
             }
         }
@@ -51,7 +53,6 @@ struct NotchMusicViewLeading: View {
                 localTrackName = newValue
             }
         }
-
     }
 }
 
@@ -72,6 +73,8 @@ struct NotchMusicViewTrailing: View {
             if notchManager.notchContent == .musicGlance {
                 Text(localArtistName)
                     .foregroundStyle(Color(musicManager.aveColor ?? .white).gradient)
+                    .lineLimit(1)
+                    .transition(.scale(scale: 0.2, anchor: .trailing).combined(with: .opacity))
                     .frame(minWidth: 75, maxWidth: 125, alignment: .trailing)
             }
             

@@ -21,38 +21,30 @@ struct SettingsLockScreenView: View {
     var body: some View {
         LuminareSection {
             LuminareToggle(isOn: $lockExtension) {
+                Image(systemName: "lock.fill")
+                    .bold()
+                    .foregroundStyle(lockExtension ? Color.accentColor : .secondary)
                 Text("Enable LockScreen icon")
             }
             
             LuminareToggle(isOn: $lockSound) {
-                HStack {
-                    Text("Play lock sound")
-                    
-                    Button(action: {
-                        SoundHelper.shared.playSound(sound: .lock)
-                    }, label: {
-                        Image(systemName: "speaker.wave.2.circle.fill")
-                            .foregroundStyle(.secondary)
-                            .imageScale(.large)
-                    }) .buttonStyle(.plain)
-                }
+                Text("Play lock sound")
+                Spacer()
+                SettingsSoundItemView(sound: .lock)
             }
             
             LuminareToggle(isOn: $unlockSound) {
-                HStack {
-                    Text("Play unlock sound")
-                    
-                    Button (action: {
-                        SoundHelper.shared.playSound(sound: .unlock)
-                    }, label: {
-                        Image(systemName: "speaker.wave.2.circle.fill")
-                            .foregroundStyle(.secondary)
-                            .imageScale(.large)
-                    }) .buttonStyle(.plain)
-                }
+                Text("Play unlock sound")
+                Spacer()
+                SettingsSoundItemView(sound: .unlock)
             }
-            
+        }
+        
+        LuminareSection {
             LuminareToggle(isOn: $lockPlayer) {
+                Image(systemName: "lock.rectangle.on.rectangle.fill")
+                    .bold()
+                    .foregroundStyle(lockPlayer ? Color.accentColor : .secondary)
                 Text("Enable LockScreen player")
             }
             
@@ -72,11 +64,7 @@ struct SettingsLockScreenView: View {
             LuminareToggle(isOn: $alwaysShowPlayer) {
                 Text("Always show player")
             }
-            
-        } header: {
-            Text("LockScreen")
         }
-    
     }
 }
 
