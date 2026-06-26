@@ -25,9 +25,12 @@ struct NotchMusicViewLeading: View {
                     return
                 }
             }, label: {
-                AlbumArtView(size: (NSScreen.main?.isOnNotchScreen ?? false) ? 27.0 : 18.0,
-                             shrink: 5,
-                             cornerRadius: (NSScreen.main?.isOnNotchScreen ?? false) ? 5.5 : 4,
+                AlbumArtView(
+                    playing: $musicManager.music.isPlaying,
+                    size: (NSScreen.main?.isOnNotchScreen ?? false) ? 27.0 : 16.0,
+                    shrink: (NSScreen.main?.isOnNotchScreen ?? false) ? 5 : 3,
+                    cornerRadius: (NSScreen.main?.isOnNotchScreen ?? false) ? 5.5 : 4,
+                    nsImage: musicManager.albumArt ?? NSImage(named: "no_playback")!,
                 )
             }) .buttonStyle(ScalingPlainButtonStyle(downScale: 0.85))
                 .padding(.leading, 1)
@@ -135,7 +138,7 @@ struct NotchMusicViewExpanded: View {
                 Button {
                     openMusicApp()
                 } label: {
-                    AlbumArtView(size: 65, shrink: 10, cornerRadius: 12)
+                    AlbumArtView(playing: $musicManager.music.isPlaying, size: 65, shrink: 10, cornerRadius: 12, nsImage: musicManager.albumArt ?? NSImage(named: "no_playback")!)
                 }
                 .frame(width: 65, height: 65)
                 .buttonStyle(ScalingPlainButtonStyle(downScale: 0.85))

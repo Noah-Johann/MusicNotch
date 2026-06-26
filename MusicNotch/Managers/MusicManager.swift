@@ -110,7 +110,7 @@ class MusicManager {
                 }
             }
             
-            await processMusicInfo()
+            processMusicInfo()
         }
     }
     
@@ -153,7 +153,7 @@ class MusicManager {
         }
     }
     
-    private func processMusicInfo() async {
+    private func processMusicInfo() {
         if music.trackName != prevMusic.trackName {
             prevMusic = music
             
