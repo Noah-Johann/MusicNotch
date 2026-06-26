@@ -8,26 +8,24 @@
 import Foundation
 
 struct AppleScriptHelper {
-    static func run(_ script: String) async throws {
-        let task = Process()
-        task.launchPath = "/usr/bin/osascript"
-        task.arguments = ["-e", script]
-        try task.run()
-        task.waitUntilExit()
+    static func run(_ script: NSAppleScript) async throws {
+        _ = await executeAppleScript(script)
     }
     
-    static func executeAppleScript(_ script: String) -> NSAppleEventDescriptor? {
-        let appleScript = NSAppleScript(source: script)
-        var error: NSDictionary?
+    static func executeAppleScript(_ script: NSAppleScript) async -> NSAppleEventDescriptor? {
+        await withCheckedContinuation { continuation in
+            Task.detached(priority: .userInitiated) {
+                var error: NSDictionary?
 
-        let result = appleScript?.executeAndReturnError(&error)
+                let result = script.executeAndReturnError(&error)
 
-        if let error = error {
-            print("AppleScript error: \(error)")
-            return nil
+                if let error {
+                    print("AppleScript error: \(error)")
+                }
+
+                continuation.resume(returning: result)
+            }
         }
-
-        return result
     }
 }
 

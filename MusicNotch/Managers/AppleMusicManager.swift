@@ -52,13 +52,15 @@ class AppleMusicManager {
             }
         } else {
             Task { @MainActor in
+                try? await Task.sleep(for: .milliseconds(150))
                 MusicManager.shared.updateMusic(player: .appleMusic)
             }
         }
     }
     
-    public func checkIfPlaying() -> Bool {
-        let result = AppleScriptHelper.executeAppleScript("tell application \"Music\" to set isPlaying to player state as string")
+    public func checkIfPlaying() async -> Bool {
+        guard let script = NSAppleScript(source: "tell application \"Music\" to set isPlaying to player state as string") else { return false }
+        let result = await AppleScriptHelper.executeAppleScript(script)
         if let stringValue = result?.stringValue, stringValue == "playing" {
             return true
         } else {
@@ -66,9 +68,9 @@ class AppleMusicManager {
         }
     }
     
-    public func collectAppleMusicInfo() -> MusicTrack? {
+    public func collectAppleMusicInfo() async -> MusicTrack? {
         guard checkIfMusicIsRunning() else { return nil }
-        let script = """
+        guard let script = NSAppleScript(source: """
             tell application "Music"
                 try
                     set isPlaying to player state as string
@@ -98,8 +100,8 @@ class AppleMusicManager {
                 end try
             end tell
         """
-        
-        let result = AppleScriptHelper.executeAppleScript(script)
+        ) else { return nil }
+        let result = await AppleScriptHelper.executeAppleScript(script)
         guard
             let descriptor = result,
             descriptor.numberOfItems >= 12
@@ -121,6 +123,8 @@ class AppleMusicManager {
             volume: descriptor.atIndex(12) != nil ? CGFloat(descriptor.atIndex(12)!.doubleValue) : nil,
             type: .music
         )
+        
+        print("Music playstate \(descriptor.atIndex(1)?.stringValue)")
         
         if let data = descriptor.atIndex(11)?.data {
             Task { @MainActor in

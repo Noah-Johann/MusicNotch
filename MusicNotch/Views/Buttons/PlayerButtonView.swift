@@ -62,7 +62,7 @@ struct PlayerButtonView: View {
                     }
                 }
             } label: {
-                VStack(spacing: 3) {
+                VStack(spacing: 2) {
                     Image(systemName: actionItem.iconName)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
@@ -78,8 +78,8 @@ struct PlayerButtonView: View {
                     }
                 }
                 .frame(height: 35)
-                .animation(.smooth(duration: 0.4), value: musicManager.music.repeating)
-                .animation(.smooth(duration: 0.4), value: musicManager.music.shuffle)
+                .animation(.smooth(duration: 0.2), value: musicManager.music.repeating)
+                .animation(.smooth(duration: 0.2), value: musicManager.music.shuffle)
 
               //   .animation(.spring(response: 0.3, dampingFraction: 1), value: showDot)
             } .buttonStyle(ScalingHoverButtonStyle(downScale: 0.8, effectSize: 52))
