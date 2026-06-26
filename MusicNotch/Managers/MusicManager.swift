@@ -75,13 +75,11 @@ class MusicManager {
             }
         }
         mediaController.onListenerTerminated = {
-            self.music = self.disabledPlayback()
-            print("Listener terminated")
+            self.setDisabledPlayback()
         }
     }
     
     deinit {
-        DistributedNotificationCenter.default().removeObserver(self)
         mediaController.stopListening()
     }
     
@@ -112,7 +110,7 @@ class MusicManager {
                 }
             }
             
-            processMusicInfo()
+            await processMusicInfo()
         }
     }
     
@@ -133,14 +131,14 @@ class MusicManager {
             self.music = await getMusicInfo(player: .spotify)
         case .nowPlaying:
             if updateInfo != nil {
-                guard updateInfo?.payload.bundleIdentifier != "com.spotify.client" && updateInfo?.payload.bundleIdentifier != "com.apple.Music" else { print("supported player"); return }
+                guard updateInfo?.payload.bundleIdentifier != "com.spotify.client" && updateInfo?.payload.bundleIdentifier != "com.apple.Music" else { return }
             }
             
             // Check if prev player is still playing
             if prevPlayer == .appleMusic {
-                if await appleMusicManager.checkIfPlaying() { print("AM running"); return }
+                if await appleMusicManager.checkIfPlaying() { return }
             } else if prevPlayer == .spotify {
-                if await spotifyManager.checkIfPlaying() { print("Spotify running"); return }
+                if await spotifyManager.checkIfPlaying() { return }
             }
             
             musicPlayer = .nowPlaying
@@ -155,7 +153,7 @@ class MusicManager {
         }
     }
     
-    private func processMusicInfo() {
+    private func processMusicInfo() async {
         if music.trackName != prevMusic.trackName {
             prevMusic = music
             
@@ -293,25 +291,23 @@ class MusicManager {
     
     private func disabledPlayback() -> MusicTrack {
         let prevPlayback = self.music
-            let playback = MusicTrack(trackName: "Nothing playing",
-                                      artistName: "No current playback",
-                                      albumName: "Nothing",
-                                      trackDuration: 1,
-                                      trackPosition: 0,
-                                      isPlaying: false,
-                                      isLoved: false,
-                                      shuffle: false,
-                                      repeating: false,
-                                      type: .music,
-            )
+        let playback = MusicTrack(trackName: "Nothing playing",
+                                  artistName: "No current playback",
+                                  albumName: "Nothing",
+                                  trackDuration: 1,
+                                  trackPosition: 0,
+                                  isPlaying: false,
+                                  isLoved: false,
+                                  shuffle: false,
+                                  repeating: false,
+                                  type: .music,
+        )
         playingAppName = nil
         playingAppBundle = nil
         musicPlayer = .nowPlaying
         
-        Task { @MainActor in
-            self.albumArt = NSImage(named: "no_playback")
-            SpotifyManager.shared.oldTrackName = ""
-        }
+        self.albumArt = NSImage(named: "no_playback")
+        SpotifyManager.shared.oldTrackName = ""
         
         if NotchManager.shared.notchContent == .musicGlance || NotchManager.shared.notchContent == .music {
             Task {
