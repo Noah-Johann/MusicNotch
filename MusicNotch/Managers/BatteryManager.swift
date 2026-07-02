@@ -16,6 +16,8 @@ class BatteryManager {
     
     var currentCapacity: Double = 0
     
+    var updateType: BatteryUpdate = .charging
+    
     var batteryIconColor: Color = .white
     var isCharging: Bool = false
     
@@ -105,17 +107,17 @@ class BatteryManager {
         }
         
         
-        if previousBattery.isInLowPowerMode != info.isInLowPowerMode {
+        if previousBattery.isInLowPowerMode != info.isInLowPowerMode && info.isInLowPowerMode == true {
+            self.updateType = .lowPowerMode
             Task { @MainActor in
                 NotchManager.shared.showExtensionNotch(type: .battery, duration: Defaults[.displayDuration])
             }
             
-        } else if previousBattery.isPluggedIn != info.isPluggedIn {
+        } else if previousBattery.isPluggedIn != info.isPluggedIn, info.isPluggedIn == true {
+            self.updateType = .charging
             Task { @MainActor in
                 NotchManager.shared.showExtensionNotch(type: .battery, duration: Defaults[.displayDuration])
-                if info.isPluggedIn && Defaults[.pluggedInSound] {
-                    SoundHelper.shared.playSound(sound: .pluggedIn)
-                }
+                SoundHelper.shared.playSound(sound: .pluggedIn)
             }
             
         } else if previousBattery.showLowPower != info.showLowPower {
@@ -123,6 +125,7 @@ class BatteryManager {
             guard !info.isPluggedIn else { return }
             guard Defaults[.lowPowerWarning] else { return }
             
+            self.updateType = .lowBattery
             Task { @MainActor in
                 NotchManager.shared.showExtensionNotch(type: .battery, duration: Defaults[.displayDuration])
                 if Defaults[.lowPowerSound] {
@@ -208,4 +211,10 @@ struct BatteryInfo {
     var isInLowPowerMode: Bool
     var timeToFullCharge: Int
     var showLowPower: Bool
+}
+
+enum BatteryUpdate {
+    case lowPowerMode
+    case lowBattery
+    case charging
 }

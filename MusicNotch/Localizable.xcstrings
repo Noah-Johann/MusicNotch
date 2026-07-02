@@ -17,8 +17,8 @@
     "%" : {
       "shouldTranslate" : false
     },
-    "%lld %%" : {
-      "shouldTranslate" : false
+    "%lld" : {
+
     },
     "About" : {
       "localizations" : {
