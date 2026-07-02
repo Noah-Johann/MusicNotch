@@ -11,7 +11,7 @@ struct SettingsSoundItemView: View {
     var sound: Sound
     
     var body: some View {
-        Image(systemName: "speaker.wave.2.circle.fill")
+        Image(systemName: "speaker.wave.2.circle")
             .foregroundStyle(.secondary)
             .imageScale(.large)
             .onTapGesture { SoundHelper.shared.playSound(sound: sound)}
