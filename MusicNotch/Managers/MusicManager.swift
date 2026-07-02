@@ -161,7 +161,9 @@ class MusicManager {
                 if launched == false {
                     launched = true
                 } else {
-                    NotchManager.shared.showExtensionNotch(type: .musicGlance, duration: Defaults[.musicGlanceDuration])
+                    if HideManager.shared.isFullScreen == false {
+                        NotchManager.shared.showExtensionNotch(type: .musicGlance, duration: Defaults[.musicGlanceDuration])
+                    }
                 }
             }
         }
@@ -177,6 +179,7 @@ class MusicManager {
             
             if NotchManager.shared.notchState == .closed || NotchManager.shared.notchState == .transparent {
                 guard !NotchManager.shared.notchDismissed else { return }
+                guard HideManager.shared.isFullScreen == false else { return }
                 
                 if enableMusicGlance {
                     NotchManager.shared.showExtensionNotch(type: .musicGlance, duration: Defaults[.musicGlanceDuration])

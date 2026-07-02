@@ -37,6 +37,7 @@ extension Defaults.Keys {
     static let openingDelay = Key<Double>("openingDelay", default: 0.3)
     static let hapticFeedback = Key<Bool>("hapticFeedback", default: true)
     static let hideNotchTime = Key<Double>("hideNotchTime", default: 3)
+    static let hideInFullScreen = Key<Bool>("hideInFullScreen", default: true)
     
     // Gestures
     static let enableGestures = Key<Bool>("enableGestures", default: true)

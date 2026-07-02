@@ -173,7 +173,7 @@ final class NotchManager {
             
             if notchState == .open {
                 Task {
-                    if MusicManager.shared.music.isPlaying {
+                    if MusicManager.shared.music.isPlaying && HideManager.shared.isFullScreen == false {
                         await self.setNotchState(.compact)
                     } else {
                         await self.setNotchState(.closed)
@@ -181,7 +181,12 @@ final class NotchManager {
                 }
             }
             if Defaults[.hoverBehavior] == .musicGlance {
-                self.setNotchContent(.music)
+                Task {
+                    if HideManager.shared.isFullScreen {
+                        await self.setNotchState(.closed)
+                    }
+                    self.setNotchContent(.music)
+                }
             }
         }
         
@@ -285,10 +290,18 @@ final class NotchManager {
             await setNotchState(.open)
             
         } else if notchState == .open {
-            await setNotchState(.compact)
+            if HideManager.shared.isFullScreen {
+                await setNotchState(.closed)
+            } else {
+                await setNotchState(.compact)
+            }
             
         } else if notchState == .closed || notchState == .transparent {
-            await setNotchState(.compact)
+            if HideManager.shared.isFullScreen {
+                await setNotchState(.open)
+            } else {
+                await setNotchState(.compact)
+            }
         }
     }
     
@@ -395,6 +408,9 @@ final class NotchManager {
             }
 
             if MusicManager.shared.music.isPlaying {
+                if HideManager.shared.isFullScreen {
+                    await setNotchState(.closed)
+                }
                 setNotchContent(.music)
             } else {
                 if notchState != .open {

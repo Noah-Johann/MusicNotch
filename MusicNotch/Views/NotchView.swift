@@ -77,6 +77,7 @@ struct NotchViewExpanded: View {
     @State var brightnessManager = BrightnessManager.shared
     private var lockManager = LockScreenManager()
     private var screenHelper = ScreenHelper()
+    private var hideManager = HideManager.shared
     
     var body: some View {
         VStack {
