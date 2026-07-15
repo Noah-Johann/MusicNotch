@@ -24,7 +24,7 @@ struct NotchBatteryViewLeading: View {
                 .font(.system(size: 12))
                 .padding(.leading, 4)
             Spacer()
-        } .frame(width: 75)
+        } .frame(width: 90)
     }
 }
     
@@ -42,18 +42,23 @@ struct NotchBatteryViewTrailing: View {
                 Text("\(Int(batteryManager.currentCapacity))")
                     .font(.system(size: 12))
                 Text("%")
-                    .font(.system(size: 10))
+                    .font(.system(size: 11))
             } .foregroundColor(batteryManager.batteryIconColor)
             
             BatteryIconView(width: 26, iconColor: batteryManager.batteryIconColor, percent: batteryManager.currentCapacity / 100)
         }
         .padding(.trailing, 4)
-        .frame(width: 75)
+        .frame(width: 90)
     }
 }
 
 #Preview {
-    NotchBatteryViewTrailing()
-        .padding(20)
+    HStack {
+        NotchBatteryViewLeading()
+            .background(Color.red)
+        NotchBatteryViewTrailing()
+            .background(Color.blue)
+    }
+    .padding()
 }
 
