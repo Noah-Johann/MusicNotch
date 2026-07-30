@@ -140,7 +140,7 @@ struct PlayerButtonView: View {
                     .aspectRatio(contentMode: .fit)
                     .contentTransition(.symbolEffect(.replace))
                     .foregroundStyle(.secondary)
-                    .frame(width: 30, height: 30)
+                    .frame(width: 31, height: 25)
             }
             .buttonStyle(ScalingHoverButtonStyle(downScale: 0.8, effectSize: 52, cornerRadius: 15))
             .disabled(!enableSpeaker)
