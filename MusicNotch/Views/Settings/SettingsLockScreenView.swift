@@ -38,7 +38,7 @@ struct SettingsLockScreenView: View {
                 Spacer()
                 SettingsSoundItemView(sound: .unlock)
             }
-        }
+        } .padding(.bottom, 14)
         
         LuminareSection {
             LuminareToggle(isOn: $lockPlayer) {

@@ -42,8 +42,6 @@ struct SettingsShortcutsView: View {
                 .padding(.vertical, 6)
             }
             
-        } header: {
-            Text("Keyboard shortcuts")
         }
     }
 }

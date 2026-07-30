@@ -49,10 +49,7 @@ struct SettingsMusicView: View {
                 .luminareBorderedStates(.hovering)
                 .frame(height: 110)
             }
-        } header: {
-            Text("Music")
         }
-        .padding(.bottom, 14)
         .onAppear {
             if SpotifyManager.shared.isSpotifyInstalled() == false && Defaults[.musicPlayer] == .spotify {
                 Defaults[.musicPlayer] = .nowPlaying

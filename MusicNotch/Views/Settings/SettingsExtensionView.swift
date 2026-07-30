@@ -40,10 +40,8 @@ struct SettingsExtensionView: View {
             .luminareSliderLayout(.regular)
             .padding(.bottom, 3)
             
-        } header: {
-            Text("General")
         }
-
+        
         LuminareSection {
             LuminareToggle(isOn: $batteryExtension) {
                 Image(systemName: "bolt.fill")
