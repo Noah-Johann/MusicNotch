@@ -2,6 +2,7 @@
   "sourceLanguage" : "en",
   "strings" : {
     " Thank you for downloading MusicNotch!\n\n Let's set up the App." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -586,6 +587,7 @@
       }
     },
     "MusicNotch needs access to Spotify to work properly." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -594,6 +596,9 @@
           }
         }
       }
+    },
+    "MusicNotch needs permission to control your music player." : {
+
     },
     "muted" : {
       "localizations" : {
@@ -1019,6 +1024,9 @@
         }
       }
     },
+    "Thank you for downloading MusicNotch!\n    \nLet's set up the App." : {
+
+    },
     "The time it takes for the notch to hide if the playback is stopped." : {
       "localizations" : {
         "de" : {
@@ -1118,6 +1126,7 @@
       }
     },
     "Welcome" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1126,6 +1135,9 @@
           }
         }
       }
+    },
+    "Welcome!" : {
+
     },
     "You are all set up!" : {
       "extractionState" : "stale",

@@ -67,9 +67,8 @@ class WindowManager {
     
     func openOnboarding() {
         if onboardingController == nil {
-            let window = LuminareWindow {
+            let window = JochexPlainWindow(windowWidth: 600, windowHeight: 350) {
                 OnboardingView()
-                    .frame(width: 600, height: 350)
             }
             
             onboardingController = NSWindowController(window: window)
