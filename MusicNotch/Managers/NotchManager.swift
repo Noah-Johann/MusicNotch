@@ -25,18 +25,25 @@ final class NotchManager {
     private var extensionRequestCounter: Int = 0
     
     private var isHovering = false
-
-    private var localScrollMonitor: Any?
+    
     private var globalScrollMonitor: Any?
-    private weak var observedWindow: NSWindow?
-
+    
     private var isHorizontalGestureActive = false
     private var isVerticalGestureActive = false
-
+    
     var onHorizontalSwipe: ((SwipeDirection) -> Void)?
     var onVerticalSwipe: ((SwipeDirection) -> Void)?
-
-    enum SwipeDirection { case left, right, up, down }
+    
+    var horizontalSwipeDelta: CGFloat = 0  // positive = +x, negative = -x
+    var verticalSwipeDelta: CGFloat = 0    // positive = -y, negative = +y
+    
+    var horizontalSwipeThreshold: CGFloat = 200
+    var verticalSwipeThreshold: CGFloat = 200
+    
+    var swipeDirection: SwipeDirection = .vertical
+    
+    enum SwipeDirection { case horizontal, vertical }
+    
     
     @MainActor deinit {
         removeScrollMonitors()
@@ -46,13 +53,6 @@ final class NotchManager {
     
     public func createNotch() {
         notch = nil
-//        notch = DynamicNotch(
-//            hoverBehavior: .increaseShadow,
-//            style: .notch(topCornerRadius: 25, bottomCornerRadius: 50),
-//            expanded: { AnyView(NotchViewExpanded()) },
-//            compactLeading: { AnyView(NotchViewLeading()) },
-//            compactTrailing: { AnyView(NotchViewTrailing()) }
-//        )
         notch = DynamicNotch(
             hoverBehavior: .increaseShadow,
             style: .auto,
@@ -80,62 +80,13 @@ final class NotchManager {
         Task {
             self.addScrollMonitors()
         }
-        
-        self.onHorizontalSwipe = { direction in
-            guard Defaults[.enableGestures] && Defaults[.mediaGestures] else { return }
-            if Defaults[.hapticFeedback] {
-                let performer = NSHapticFeedbackManager.defaultPerformer
-                performer.perform(.alignment, performanceTime: .default)
-            }
-            switch direction {
-            case .left:
-                MusicActions.nextTrack()
-                print("next track")
-            case .right:
-                MusicActions.lastTrack()
-                print("last track")
-            default:
-                break
-            }
-        }
-        self.onVerticalSwipe = { [weak self] direction in
-            guard Defaults[.enableGestures] else { return }
-            guard let self else { return }
-            if Defaults[.hapticFeedback] {
-                let performer = NSHapticFeedbackManager.defaultPerformer
-                performer.perform(.alignment, performanceTime: .default)
-            }
-            switch direction {
-            case .up:
-                Task {
-                    if self.notchState == .open {
-                        if MusicManager.shared.music.isPlaying == true {
-                            await self.setNotchState(.compact)
-                        } else {
-                            await self.setNotchState(.closed)
-                        }
-                        print("notch close")
-                    } else if self.notchState == .compact {
-                        self.notchDismissed = true
-                        await self.setNotchState(.transparent)
-                        print("dismiss notch")
-                    }
-                }
-            case .down:
-                Task {
-                    await self.setNotchState(.open)
-                }
-            default:
-                break
-            }
-        }
     }
     
     // MARK: - Hover Management
-
+    
     private func handleHoverChange(_ hoverState: Bool) {
         guard self.notchContent != .locked && self.notchContent != .unlocked else { return }
-
+        
         self.isHovering = hoverState
         
         if isHovering {
@@ -159,7 +110,7 @@ final class NotchManager {
                 self.openingTask = Task { @MainActor in
                     do {
                         try await Task.sleep(for: .seconds(Defaults[.openingDelay]))
-                                                
+                        
                         guard self.isHovering && !Task.isCancelled else { return }
                         
                         await self.setNotchState(.open)
@@ -198,86 +149,104 @@ final class NotchManager {
     
     // MARK: - Gesture monitor setup
     
-    private func addScrollMonitors() {
-        guard let notch = notch, let window = notch.windowController?.window else { return }
-        if observedWindow === window { return }
-
-        removeScrollMonitors()
-
-        observedWindow = window
-
-        localScrollMonitor = NSEvent.addLocalMonitorForEvents(matching: [.scrollWheel]) { [weak self] event in
-            self?.handleScrollEvent(event)
-            return event
+    private func handleScrollSubmit() {
+        switch swipeDirection {
+            case .horizontal:
+                guard Defaults[.mediaGestures] else { return }
+                guard abs(horizontalSwipeDelta) > horizontalSwipeThreshold else { return }
+                if horizontalSwipeDelta > 0 {
+                    MusicActions.nextTrack()
+                } else {
+                    MusicActions.lastTrack()
+                }
+            case .vertical:
+                guard Defaults[.enableGestures] else { return }
+                guard abs(verticalSwipeDelta) > verticalSwipeThreshold else { return }
+                if verticalSwipeDelta < 0 {
+                    Task {
+                        if self.notchState == .open {
+                            if MusicManager.shared.music.isPlaying == true {
+                                await self.setNotchState(.compact)
+                            } else {
+                                await self.setNotchState(.closed)
+                            }
+                            print("notch close")
+                        } else if self.notchState == .compact {
+                            self.notchDismissed = true
+                            await self.setNotchState(.transparent)
+                            print("dismiss notch")
+                        }
+                    }
+                } else {
+                    Task {
+                        await self.setNotchState(.open)
+                    }
+                }
         }
-
+        
+    }
+    
+    private func handleScrollThresholdCross() {
+        if Defaults[.hapticFeedback] {
+            let performer = NSHapticFeedbackManager.defaultPerformer
+            performer.perform(.alignment, performanceTime: .default)
+        }
+    }
+    
+    private func addScrollMonitors() {
+        removeScrollMonitors()
+        
         globalScrollMonitor = NSEvent.addGlobalMonitorForEvents(matching: [.scrollWheel]) { [weak self] event in
             self?.handleScrollEvent(event)
         }
     }
-
+    
     private func removeScrollMonitors() {
-        if let localScrollMonitor { NSEvent.removeMonitor(localScrollMonitor) }
         if let globalScrollMonitor { NSEvent.removeMonitor(globalScrollMonitor) }
-        localScrollMonitor = nil
         globalScrollMonitor = nil
-        observedWindow = nil
         isHorizontalGestureActive = false
         isVerticalGestureActive = false
     }
-
+    
     private func handleScrollEvent(_ event: NSEvent) {
-
         guard isHovering else { return }
-
+        guard event.hasPreciseScrollingDeltas else { return }
+        
         let phase = event.phase
-        let momentum = event.momentumPhase
-
+        
         let dx = event.scrollingDeltaX
         let dy = event.scrollingDeltaY
-
-        let inverted = event.isDirectionInvertedFromDevice
-
-        let absX = abs(dx)
-        let absY = abs(dy)
-        let horizontalDominant = absX > absY
-
-        let began = phase.contains(.began) || momentum.contains(.began)
-        let ended = momentum.contains(.ended)
-
-        if began {
-            if horizontalDominant {
-                if !isHorizontalGestureActive {
-                    isHorizontalGestureActive = true
-                    let direction: SwipeDirection = {
-                        if inverted {
-                            return dx > 0 ? .left : .right
-                        } else {
-                            return dx > 0 ? .right : .left
-                        }
-                    }()
-                    onHorizontalSwipe?(direction)
-                }
-                isVerticalGestureActive = false
+        
+        if phase.contains(.began) {
+            if abs(dx) > abs(dy) {
+                swipeDirection = .horizontal
             } else {
-                if !isVerticalGestureActive {
-                    isVerticalGestureActive = true
-                    let direction: SwipeDirection = {
-                        if inverted {
-                            return dy > 0 ? .down : .up
-                        } else {
-                            return dy > 0 ? .up : .down
-                        }
-                    }()
-                    onVerticalSwipe?(direction)
-                }
-                isHorizontalGestureActive = false
+                swipeDirection = .vertical
             }
-        }
-
-        if ended {
+            print("\(dx), \(dy)")
+        } else if phase.contains(.changed) {
+            if swipeDirection == .horizontal {
+                self.horizontalSwipeDelta += dx
+             //   print("horizontal\(horizontalSwipeDelta)")
+                self.swipeDirection = .horizontal
+//                if abs(horizontalSwipeDelta) > horizontalSwipeThreshold {
+//                    handleScrollThresholdCross()
+//                }
+            } else {
+                self.verticalSwipeDelta += dy
+             //   print("vertical \(verticalSwipeDelta)")
+                self.swipeDirection = .vertical
+//                if abs(verticalSwipeDelta) > verticalSwipeThreshold {
+//                    handleScrollThresholdCross()
+//                }
+            }
+        } else if phase.contains(.ended) {
+            print("Scroll ended")
             isHorizontalGestureActive = false
             isVerticalGestureActive = false
+            handleScrollSubmit()
+            verticalSwipeDelta = 0
+            horizontalSwipeDelta = 0
         }
     }
     
