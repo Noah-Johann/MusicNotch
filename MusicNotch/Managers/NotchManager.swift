@@ -13,7 +13,7 @@ import AppKit
 @MainActor @Observable
 final class NotchManager {
     static let shared = NotchManager()
-    
+        
     var notchState: NotchState = .hidden
     var notchContent: NotchContent = .music
     var notchDismissed: Bool = false
@@ -24,30 +24,11 @@ final class NotchManager {
     private var extensionNotchTask: Task<Void, Never>?
     private var extensionRequestCounter: Int = 0
     
-    private var isHovering = false
+    var isHovering = false
     
-    private var globalScrollMonitor: Any?
-    
-    private var isHorizontalGestureActive = false
-    private var isVerticalGestureActive = false
-    
-    var onHorizontalSwipe: ((SwipeDirection) -> Void)?
-    var onVerticalSwipe: ((SwipeDirection) -> Void)?
-    
-    var horizontalSwipeDelta: CGFloat = 0  // positive = +x, negative = -x
-    var verticalSwipeDelta: CGFloat = 0    // positive = -y, negative = +y
-    
-    var horizontalSwipeThreshold: CGFloat = 200
-    var verticalSwipeThreshold: CGFloat = 200
-    
-    var swipeDirection: SwipeDirection = .vertical
-    
-    enum SwipeDirection { case horizontal, vertical }
-    
-    
-    @MainActor deinit {
-        removeScrollMonitors()
-    }
+//    @MainActor deinit {
+//        removeScrollMonitors()
+//    }
     
     // MARK: - Setup
     
@@ -77,9 +58,7 @@ final class NotchManager {
             await self.setNotchState(.closed)
         }
         
-        Task {
-            self.addScrollMonitors()
-        }
+        GestureManager.shared.addScrollMonitors()
     }
     
     // MARK: - Hover Management
@@ -147,108 +126,6 @@ final class NotchManager {
         }
     }
     
-    // MARK: - Gesture monitor setup
-    
-    private func handleScrollSubmit() {
-        switch swipeDirection {
-            case .horizontal:
-                guard Defaults[.mediaGestures] else { return }
-                guard abs(horizontalSwipeDelta) > horizontalSwipeThreshold else { return }
-                if horizontalSwipeDelta > 0 {
-                    MusicActions.nextTrack()
-                } else {
-                    MusicActions.lastTrack()
-                }
-            case .vertical:
-                guard Defaults[.enableGestures] else { return }
-                guard abs(verticalSwipeDelta) > verticalSwipeThreshold else { return }
-                if verticalSwipeDelta < 0 {
-                    Task {
-                        if self.notchState == .open {
-                            if MusicManager.shared.music.isPlaying == true {
-                                await self.setNotchState(.compact)
-                            } else {
-                                await self.setNotchState(.closed)
-                            }
-                            print("notch close")
-                        } else if self.notchState == .compact {
-                            self.notchDismissed = true
-                            await self.setNotchState(.transparent)
-                            print("dismiss notch")
-                        }
-                    }
-                } else {
-                    Task {
-                        await self.setNotchState(.open)
-                    }
-                }
-        }
-        
-    }
-    
-    private func handleScrollThresholdCross() {
-        if Defaults[.hapticFeedback] {
-            let performer = NSHapticFeedbackManager.defaultPerformer
-            performer.perform(.alignment, performanceTime: .default)
-        }
-    }
-    
-    private func addScrollMonitors() {
-        removeScrollMonitors()
-        
-        globalScrollMonitor = NSEvent.addGlobalMonitorForEvents(matching: [.scrollWheel]) { [weak self] event in
-            self?.handleScrollEvent(event)
-        }
-    }
-    
-    private func removeScrollMonitors() {
-        if let globalScrollMonitor { NSEvent.removeMonitor(globalScrollMonitor) }
-        globalScrollMonitor = nil
-        isHorizontalGestureActive = false
-        isVerticalGestureActive = false
-    }
-    
-    private func handleScrollEvent(_ event: NSEvent) {
-        guard isHovering else { return }
-        guard event.hasPreciseScrollingDeltas else { return }
-        
-        let phase = event.phase
-        
-        let dx = event.scrollingDeltaX
-        let dy = event.scrollingDeltaY
-        
-        if phase.contains(.began) {
-            if abs(dx) > abs(dy) {
-                swipeDirection = .horizontal
-            } else {
-                swipeDirection = .vertical
-            }
-            print("\(dx), \(dy)")
-        } else if phase.contains(.changed) {
-            if swipeDirection == .horizontal {
-                self.horizontalSwipeDelta += dx
-             //   print("horizontal\(horizontalSwipeDelta)")
-                self.swipeDirection = .horizontal
-//                if abs(horizontalSwipeDelta) > horizontalSwipeThreshold {
-//                    handleScrollThresholdCross()
-//                }
-            } else {
-                self.verticalSwipeDelta += dy
-             //   print("vertical \(verticalSwipeDelta)")
-                self.swipeDirection = .vertical
-//                if abs(verticalSwipeDelta) > verticalSwipeThreshold {
-//                    handleScrollThresholdCross()
-//                }
-            }
-        } else if phase.contains(.ended) {
-            print("Scroll ended")
-            isHorizontalGestureActive = false
-            isVerticalGestureActive = false
-            handleScrollSubmit()
-            verticalSwipeDelta = 0
-            horizontalSwipeDelta = 0
-        }
-    }
     
     // MARK: - Notch control
     
@@ -288,7 +165,7 @@ final class NotchManager {
                 
         if changeDisplay == true {
             await notch.hide()
-            self.addScrollMonitors()
+            GestureManager.shared.addScrollMonitors()
             self.notchContent = .music
         }
         
@@ -328,7 +205,6 @@ final class NotchManager {
         case .hidden:
             await notch.hide()
         }
-        self.addScrollMonitors()
     }
     
     public func showExtensionNotch(type: NotchContent, duration: Double) {
