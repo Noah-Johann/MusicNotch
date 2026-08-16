@@ -50,28 +50,49 @@ class HideManager {
         }
     }
     
-    // Source: https://stackoverflow.com/a/79707276
-    public func CheckForFullScreen() -> Bool {
-        guard let windows = CGWindowListCopyWindowInfo(.optionOnScreenOnly, kCGNullWindowID) else {
-            return false
-        }
+    // Source: https://stackoverflow.com/a/79922931
+    func CheckForFullScreen() -> Bool {
+       guard
+         let windows = CGWindowListCopyWindowInfo(
+           .optionOnScreenOnly,
+           kCGNullWindowID
+         ) as? [[String: Any]]
+       else {
+         return false
+       }
+       guard let screen = NSScreen.main?.frame else {
+         return false
+       }
+       for window in windows {
+         guard
+           let windowBounds = maybeCast(
+             window["kCGWindowBounds"],
+             to: CFDictionary.self
+           )
+         else { continue }
+         let bounds = CGRect(dictionaryRepresentation: windowBounds)
+         let height = bounds?.size.height ?? 0
+         let width = bounds?.size.width ?? 0
+         if window["kCGWindowOwnerName"] as? String == "Dock"
+           && window["kCGWindowLayer"] as? Int64 == -2_147_483_622
+           && height == screen.height && width == screen.width
+         {
+           return true
+         }
+       }
+       return false
+     }
+}
 
-        var dockCount = 0
-        for window in windows as NSArray
-        {
-            guard let winInfo = window as? NSDictionary else { continue }
-            if winInfo["kCGWindowOwnerName"] as? String == "Dock"
-            {
-                let windowLayer = winInfo["kCGWindowLayer"]
-                if let layerValue = windowLayer as? Int64, layerValue < 0 {
-                    dockCount += 1
-                    if dockCount > 1 {
-                        return true
-                    }
-                }
-            }
-        }
-        
-        return false
-    }
+protocol CFTypeProtocol {
+  static var typeID: CFTypeID { get }
+}
+func maybeCast<T, U: CFTypeProtocol>(_ value: T, to cfType: U.Type) -> U? {
+  guard CFGetTypeID(value as CFTypeRef) == cfType.typeID else {
+    return nil
+  }
+  return (value as! U)
+}
+extension CFDictionary: CFTypeProtocol {
+  static var typeID: CFTypeID { return CFDictionaryGetTypeID() }
 }
