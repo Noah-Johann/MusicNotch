@@ -10,7 +10,7 @@ import SwiftUI
 import Defaults
 import AppKit
 
-@MainActor @Observable
+@Observable
 final class NotchManager {
     static let shared = NotchManager()
         
@@ -32,7 +32,7 @@ final class NotchManager {
     
     // MARK: - Setup
     
-    public func createNotch() {
+    @MainActor public func createNotch() {
         notch = nil
         notch = DynamicNotch(
             hoverBehavior: .increaseShadow,
@@ -103,7 +103,7 @@ final class NotchManager {
             
             if notchState == .open {
                 Task {
-                    if MusicManager.shared.music.isPlaying && HideManager.shared.isFullScreen == false {
+                    if await MusicManager.shared.music.isPlaying && HideManager.shared.isFullScreen == false {
                         await self.setNotchState(.compact)
                     } else {
                         await self.setNotchState(.closed)
@@ -159,7 +159,7 @@ final class NotchManager {
         }
     }
     
-    public func setNotchState(_ state: NotchState, changeDisplay: Bool = false) async {
+    @MainActor public func setNotchState(_ state: NotchState, changeDisplay: Bool = false) async {
         guard let notch = notch else { return }
         let prevNotchState = self.notchState
                 

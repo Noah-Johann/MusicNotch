@@ -13,14 +13,35 @@ class GestureManager {
     static var shared = GestureManager()
     
     private var globalScrollMonitor: Any?
+    private var localScrollMonitor: Any?
     
     var horizontalSwipeDelta: CGFloat = 0  // positive = +x, negative = -x
     var verticalSwipeDelta: CGFloat = 0    // positive = -y, negative = +y
     
     var horizontalSwipeThreshold: CGFloat = 200
     var verticalSwipeThreshold: CGFloat = 200
+    var horizontalThresholdCrossed: Bool = false
+    var verticalThresholdCrossed: Bool = false
     
     var swipeDirection: SwipeDirection = .vertical
+    
+    var horizontalGestureRelative: CGFloat {
+        guard horizontalSwipeDelta < 0 else { return 0 }
+        let relative = abs(horizontalSwipeDelta) / horizontalSwipeThreshold
+        if relative > 1 {
+            return 1
+        }
+        return relative
+    }
+    
+    var verticalGestureRelative: CGFloat {
+        guard verticalSwipeDelta < 0 else { return 0 }
+        let relative = abs(verticalSwipeDelta) / verticalSwipeDelta
+        if relative > 1 {
+            return 1
+        }
+        return relative
+    }
     
     enum SwipeDirection { case horizontal, vertical }
     
@@ -65,7 +86,11 @@ class GestureManager {
         
     }
     
-    private func handleScrollThresholdCross() {
+    private func handleScrollThresholdCross(direction: SwipeDirection) {
+        switch direction {
+            case .horizontal: horizontalThresholdCrossed = true
+            case .vertical: verticalThresholdCrossed = true
+        }
         if Defaults[.hapticFeedback] {
             let performer = NSHapticFeedbackManager.defaultPerformer
             performer.perform(.alignment, performanceTime: .default)
@@ -75,17 +100,25 @@ class GestureManager {
     public func addScrollMonitors() {
         removeScrollMonitors()
         
+        localScrollMonitor = NSEvent.addLocalMonitorForEvents(matching: [.scrollWheel]) { [weak self] event in
+            self?.handleScrollEvent(event)
+            return event
+        }
+        
         globalScrollMonitor = NSEvent.addGlobalMonitorForEvents(matching: [.scrollWheel]) { [weak self] event in
             self?.handleScrollEvent(event)
         }
     }
     
     public func removeScrollMonitors() {
+        if let localScrollMonitor { NSEvent.removeMonitor(localScrollMonitor) }
         if let globalScrollMonitor { NSEvent.removeMonitor(globalScrollMonitor) }
+        localScrollMonitor = nil
         globalScrollMonitor = nil
+        
     }
     
-    @MainActor private func handleScrollEvent(_ event: NSEvent) {
+    private func handleScrollEvent(_ event: NSEvent) {
         guard NotchManager.shared.isHovering else { return }
         guard event.hasPreciseScrollingDeltas else { return }
         
@@ -106,22 +139,24 @@ class GestureManager {
                 self.horizontalSwipeDelta += dx
              //   print("horizontal\(horizontalSwipeDelta)")
                 self.swipeDirection = .horizontal
-//                if abs(horizontalSwipeDelta) > horizontalSwipeThreshold {
-//                    handleScrollThresholdCross()
-//                }
+                if abs(horizontalSwipeDelta) > horizontalSwipeThreshold && horizontalThresholdCrossed == false {
+                    handleScrollThresholdCross(direction: .horizontal)
+                }
             } else {
                 self.verticalSwipeDelta += dy
              //   print("vertical \(verticalSwipeDelta)")
                 self.swipeDirection = .vertical
-//                if abs(verticalSwipeDelta) > verticalSwipeThreshold {
-//                    handleScrollThresholdCross()
-//                }
+                if abs(verticalSwipeDelta) > verticalSwipeThreshold && verticalThresholdCrossed == false{
+                    handleScrollThresholdCross(direction: .vertical)
+                }
             }
         } else if phase.contains(.ended) {
             print("Scroll ended")
             handleScrollSubmit()
             verticalSwipeDelta = 0
             horizontalSwipeDelta = 0
+            horizontalThresholdCrossed = false
+            verticalThresholdCrossed = false
         }
     }
 
