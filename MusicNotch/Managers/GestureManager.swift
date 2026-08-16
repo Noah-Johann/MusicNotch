@@ -15,19 +15,31 @@ class GestureManager {
     private var globalScrollMonitor: Any?
     private var localScrollMonitor: Any?
     
-    var horizontalSwipeDelta: CGFloat = 0  // positive = +x, negative = -x
-    var verticalSwipeDelta: CGFloat = 0    // positive = -y, negative = +y
+    private var horizontalSwipeDelta: CGFloat = 0  // positive = +x, negative = -x
+    private var verticalSwipeDelta: CGFloat = 0    // positive = -y, negative = +y
     
     var horizontalSwipeThreshold: CGFloat = 200
     var verticalSwipeThreshold: CGFloat = 200
-    var horizontalThresholdCrossed: Bool = false
-    var verticalThresholdCrossed: Bool = false
+    private var horizontalThresholdCrossed: Bool = false
+    private var verticalThresholdCrossed: Bool = false
     
     var swipeDirection: SwipeDirection = .vertical
+    var horizontalType: HorizontalType = .right
+    var verticalType: VerticalType = .up
     
     var horizontalGestureRelative: CGFloat {
-        guard horizontalSwipeDelta < 0 else { return 0 }
-        let relative = abs(horizontalSwipeDelta) / horizontalSwipeThreshold
+        if horizontalSwipeDelta > 0 {
+            horizontalType = .right
+        } else if horizontalSwipeDelta < 0 {
+            horizontalType = .left
+        }
+        
+        let absDelta = abs(horizontalSwipeDelta)
+        guard absDelta > 0 else { return 0 }
+        let relative = absDelta / horizontalSwipeThreshold
+        if relative < 0.1 {
+            return 0
+        }
         if relative > 1 {
             return 1
         }
@@ -35,8 +47,18 @@ class GestureManager {
     }
     
     var verticalGestureRelative: CGFloat {
-        guard verticalSwipeDelta < 0 else { return 0 }
-        let relative = abs(verticalSwipeDelta) / verticalSwipeDelta
+        if verticalSwipeDelta > 0 {
+            verticalType = .down
+        } else if verticalSwipeDelta < 0 {
+            verticalType = .up
+        }
+        
+        let absDelta = abs(verticalSwipeDelta)
+        guard absDelta > 0 else { return 0 }
+        let relative = absDelta / verticalSwipeDelta
+        if relative < 0.1 {
+            return 0
+        }
         if relative > 1 {
             return 1
         }
@@ -44,6 +66,8 @@ class GestureManager {
     }
     
     enum SwipeDirection { case horizontal, vertical }
+    enum HorizontalType { case left, right }
+    enum VerticalType { case up, down }
     
     deinit {
         removeScrollMonitors()

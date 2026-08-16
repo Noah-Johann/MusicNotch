@@ -12,6 +12,7 @@ import Defaults
 struct PlayerButtonView: View {
     @State var musicManager = MusicManager.shared
     @State var volumeManager = VolumeManager.shared
+    @State var gestureManager = GestureManager.shared
     
     var enableSpeaker: Bool = true
     
@@ -97,6 +98,9 @@ struct PlayerButtonView: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .contentTransition(.symbolEffect(.replace))
+                    .foregroundStyle(gestureManager.horizontalType == .right && gestureManager.horizontalGestureRelative == 1 ? .secondary : .primary)
+                    .offset(x: gestureManager.horizontalType == .left && gestureManager.horizontalGestureRelative == 1 ? -5 : 0)
+                    .scaleEffect(gestureManager.horizontalType == .left && gestureManager.horizontalGestureRelative == 1 ? 1.1 : 1)
                     .frame(width: 25, height: 25)
             } .buttonStyle(ScalingHoverButtonStyle(downScale: 0.8, effectSize: 52))
             
@@ -107,8 +111,10 @@ struct PlayerButtonView: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .contentTransition(.symbolEffect(.replace))
+                    .foregroundStyle(gestureManager.horizontalGestureRelative == 1 ? .secondary : .primary)
                     .frame(width: 25, height: 25)
-            } .buttonStyle(ScalingHoverButtonStyle(downScale: 0.8, effectSize: 52))
+            }
+            .buttonStyle(ScalingHoverButtonStyle(downScale: 0.8, effectSize: 52))
             
             
             // Forward Skip
@@ -123,6 +129,9 @@ struct PlayerButtonView: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .contentTransition(.symbolEffect(.replace))
+                    .foregroundStyle(gestureManager.horizontalType == .left && gestureManager.horizontalGestureRelative == 1 ? .secondary : .primary)
+                    .offset(x: gestureManager.horizontalType == .right && gestureManager.horizontalGestureRelative == 1 ? 5 : 0)
+                    .scaleEffect(gestureManager.horizontalType == .right && gestureManager.horizontalGestureRelative == 1 ? 1.1 : 1)
                     .frame(width: 25, height: 25)
             } .buttonStyle(ScalingHoverButtonStyle(downScale: 0.8, effectSize: 52))
             
@@ -146,6 +155,7 @@ struct PlayerButtonView: View {
             .disabled(!enableSpeaker)
         }
         .frame(height: 45)
+        .animation(.smooth, value: gestureManager.horizontalGestureRelative)
         .task {
             if #available(macOS 15, *) {
                 forwardArrowName = "15.arrow.trianglehead.clockwise"
