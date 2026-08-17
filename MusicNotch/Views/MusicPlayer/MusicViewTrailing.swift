@@ -27,7 +27,7 @@ struct MusicViewTrailing: View {
         if let notchScreen = NSScreen.main?.isOnNotchScreen, notchScreen == true {
             offset = 15
         } else {
-            offset = 2
+            offset = 4
         }
         if notchManager.notchContent == .musicGlance {
             offset += 120
@@ -62,7 +62,7 @@ struct MusicViewTrailing: View {
         if let notchScreen = NSScreen.main?.isOnNotchScreen, notchScreen == true {
             width += 28
         } else {
-            width += 18
+            width += 20
         }
         if gestureManager.horizontalType == .right {
             width += gestureManager.horizontalGestureRelative * 27
@@ -90,10 +90,11 @@ struct MusicViewTrailing: View {
                     if !accessibilityManager.isReduceMotion {
                         Rectangle()
                             .fill(coloredSpect ? Color(nsColor: musicManager.aveColor ?? .white).gradient : Color.white.gradient)
-                            .frame(width: 30, alignment: .center)
+                            .padding(.trailing, 3)
+                            .frame(width: (NSScreen.main?.isOnNotchScreen ?? false) ? 30 : 20, alignment: .center)
                             .mask {
                                 AudioSpectrumView(isPlaying: $musicManager.music.isPlaying)
-                                    .frame(width: 15, height: 15)
+                                    .frame(width: (NSScreen.main?.isOnNotchScreen ?? false) ? 15 : 9, height: (NSScreen.main?.isOnNotchScreen ?? false) ? 15 : 12)
                             }
                         .blur(radius: isHovering ? 1.7 : 0)
                     }
@@ -102,7 +103,7 @@ struct MusicViewTrailing: View {
                         Image(systemName: musicManager.music.isPlaying == true ? "pause.fill" : "play.fill")
                             .contentTransition(.symbolEffect(.replace))
                     }
-                } .frame(width: 30, height: 30)
+                } .frame(width: (NSScreen.main?.isOnNotchScreen ?? false) ? 30 : 20, height: (NSScreen.main?.isOnNotchScreen ?? false) ? 30 : 20)
             }
             .buttonStyle(PlainButtonStyle())
             .onHover { hovering in

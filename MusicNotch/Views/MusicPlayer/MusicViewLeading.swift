@@ -20,7 +20,7 @@ struct MusicViewLeading: View {
         if let notchScreen = NSScreen.main?.isOnNotchScreen, notchScreen == true {
             offset = -15
         } else {
-            offset = -2
+            offset = -4
         }
         if notchManager.notchContent == .musicGlance {
             offset -= 120
@@ -55,7 +55,7 @@ struct MusicViewLeading: View {
         if let notchScreen = NSScreen.main?.isOnNotchScreen, notchScreen == true {
             width += 28
         } else {
-            width += 18
+            width += 20
         }
         
         if gestureManager.horizontalType == .left {

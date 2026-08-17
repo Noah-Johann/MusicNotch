@@ -27,11 +27,30 @@ class AudioSpectrum: NSView {
     }
 
     private func setupBars() {
-        let barWidth: CGFloat = NotchManager.shared.notchState == .open ? 2 : 1.75
+        var barWidth: CGFloat = 0
+        if NotchManager.shared.notchState == .open {
+            barWidth = 2
+        } else {
+            if let notchScreen = NSScreen.main?.isOnNotchScreen, notchScreen == true {
+                barWidth = 1.75
+            } else {
+                barWidth = 1.65
+            }
+        }
         let barCount = NotchManager.shared.notchState == .open ? 6 : 5
         let spacing: CGFloat = barWidth
         let totalWidth = CGFloat(barCount) * (barWidth + spacing)
-        let totalHeight: CGFloat = NotchManager.shared.notchState == .open ? 22 : 14
+        
+        var totalHeight: CGFloat = 0
+        if NotchManager.shared.notchState == .open {
+            totalHeight = 22
+        } else {
+            if let notchScreen = NSScreen.main?.isOnNotchScreen, notchScreen == true {
+                totalHeight = 14
+            } else {
+                totalHeight = 11
+            }
+        }
         frame.size = CGSize(width: totalWidth, height: totalHeight)
 
         for i in 0 ..< barCount {
