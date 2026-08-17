@@ -62,7 +62,7 @@ class GestureManager {
         if relative > 1 {
             return 1
         }
-        return relative
+        return (relative * 100).rounded() / 100
     }
     
     enum SwipeDirection { case horizontal, vertical }
