@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4F17E0AD2F8A8E0B002B1893 /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F17E0AC2F8A8E0B002B1893 /* DynamicNotchKit */; };
 		4F33DF812D9EDF9A008F0182 /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 4F33DF802D9EDF9A008F0182 /* LaunchAtLogin */; };
 		4F33DF842D9EE522008F0182 /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 4F33DF832D9EE522008F0182 /* Defaults */; };
+		4F4B405A302E0E6E0077EC6E /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F4B4059302E0E6E0077EC6E /* DynamicNotchKit */; };
+		4F4B405D302E0E890077EC6E /* JochexUI in Frameworks */ = {isa = PBXBuildFile; productRef = 4F4B405C302E0E890077EC6E /* JochexUI */; };
 		4F59E1482E4A9949005E4B75 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 4F59E1472E4A9949005E4B75 /* Sparkle */; };
 		4F67B5F82D849896001FF27A /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F67B5F72D849896001FF27A /* ScriptingBridge.framework */; };
-		4F686EEA2F83C13000696BBE /* JochexUI in Frameworks */ = {isa = PBXBuildFile; productRef = 4F686EE92F83C13000696BBE /* JochexUI */; };
 		4F75FABC2E86D6FB0064EF5E /* SkyLightWindow in Frameworks */ = {isa = PBXBuildFile; productRef = 4F75FABB2E86D6FB0064EF5E /* SkyLightWindow */; };
 		4FABD4852D9704BB00F8CFEA /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 4FABD4842D9704BB00F8CFEA /* KeyboardShortcuts */; };
 		4FAC46D72F5C721200729637 /* MediaRemoteAdapter in Frameworks */ = {isa = PBXBuildFile; productRef = 4FAC46D62F5C721200729637 /* MediaRemoteAdapter */; };
@@ -68,13 +68,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4F17E0AD2F8A8E0B002B1893 /* DynamicNotchKit in Frameworks */,
 				4F75FABC2E86D6FB0064EF5E /* SkyLightWindow in Frameworks */,
 				4FAC46D72F5C721200729637 /* MediaRemoteAdapter in Frameworks */,
+				4F4B405A302E0E6E0077EC6E /* DynamicNotchKit in Frameworks */,
 				4F33DF842D9EE522008F0182 /* Defaults in Frameworks */,
 				4F67B5F82D849896001FF27A /* ScriptingBridge.framework in Frameworks */,
-				4F686EEA2F83C13000696BBE /* JochexUI in Frameworks */,
 				4F59E1482E4A9949005E4B75 /* Sparkle in Frameworks */,
+				4F4B405D302E0E890077EC6E /* JochexUI in Frameworks */,
 				4F33DF812D9EDF9A008F0182 /* LaunchAtLogin in Frameworks */,
 				4FABD4852D9704BB00F8CFEA /* KeyboardShortcuts in Frameworks */,
 				4FAD01402E7ECE06002D4794 /* IOKit.framework in Frameworks */,
@@ -133,15 +133,15 @@
 			);
 			name = MusicNotch;
 			packageProductDependencies = (
-				4F17E0AC2F8A8E0B002B1893 /* DynamicNotchKit */,
 				4FABD4842D9704BB00F8CFEA /* KeyboardShortcuts */,
 				4F33DF802D9EDF9A008F0182 /* LaunchAtLogin */,
 				4F33DF832D9EE522008F0182 /* Defaults */,
 				4F59E1472E4A9949005E4B75 /* Sparkle */,
 				4FAD05202E8499BA002D4794 /* Luminare */,
 				4F75FABB2E86D6FB0064EF5E /* SkyLightWindow */,
-				4F686EE92F83C13000696BBE /* JochexUI */,
 				4FAC46D62F5C721200729637 /* MediaRemoteAdapter */,
+				4F4B4059302E0E6E0077EC6E /* DynamicNotchKit */,
+				4F4B405C302E0E890077EC6E /* JochexUI */,
 			);
 			productName = MusicNotch;
 			productReference = 4FA87FC02D847DD700725978 /* MusicNotch.app */;
@@ -180,9 +180,9 @@
 				4F59E1462E4A9949005E4B75 /* XCRemoteSwiftPackageReference "Sparkle" */,
 				4FAD051F2E8499BA002D4794 /* XCRemoteSwiftPackageReference "Luminare" */,
 				4F75FABA2E86D6FB0064EF5E /* XCRemoteSwiftPackageReference "SkyLightWindow" */,
-				4F686EE82F83C13000696BBE /* XCLocalSwiftPackageReference "../JochexUI" */,
 				4FAC46D52F5C721200729637 /* XCRemoteSwiftPackageReference "mediaremote-adapter" */,
-				4F17E0AB2F8A8E0B002B1893 /* XCLocalSwiftPackageReference "../Development/DynamicNotchKit" */,
+				4F4B4058302E0E6E0077EC6E /* XCLocalSwiftPackageReference "../Dev/DynamicNotchKit" */,
+				4F4B405B302E0E890077EC6E /* XCLocalSwiftPackageReference "../Dev/JochexUI" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 4FA87FC12D847DD700725978 /* Products */;
@@ -360,7 +360,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CREATE_INFOPLIST_SECTION_IN_BINARY = YES;
-				CURRENT_PROJECT_VERSION = 211;
+				CURRENT_PROJECT_VERSION = 233;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"MusicNotch/Preview Content\"";
 				DEVELOPMENT_TEAM = C3PS85G8WX;
@@ -386,7 +386,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 0.2.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.NoahJohann.MusicNotch;
@@ -421,7 +421,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CREATE_INFOPLIST_SECTION_IN_BINARY = YES;
-				CURRENT_PROJECT_VERSION = 211;
+				CURRENT_PROJECT_VERSION = 233;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"MusicNotch/Preview Content\"";
 				DEVELOPMENT_TEAM = C3PS85G8WX;
@@ -447,7 +447,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 0.2.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.NoahJohann.MusicNotch;
@@ -490,13 +490,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		4F17E0AB2F8A8E0B002B1893 /* XCLocalSwiftPackageReference "../Development/DynamicNotchKit" */ = {
+		4F4B4058302E0E6E0077EC6E /* XCLocalSwiftPackageReference "../Dev/DynamicNotchKit" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = ../Development/DynamicNotchKit;
+			relativePath = ../Dev/DynamicNotchKit;
 		};
-		4F686EE82F83C13000696BBE /* XCLocalSwiftPackageReference "../JochexUI" */ = {
+		4F4B405B302E0E890077EC6E /* XCLocalSwiftPackageReference "../Dev/JochexUI" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = ../JochexUI;
+			relativePath = ../Dev/JochexUI;
 		};
 /* End XCLocalSwiftPackageReference section */
 
@@ -560,11 +560,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		4F17E0AC2F8A8E0B002B1893 /* DynamicNotchKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4F17E0AB2F8A8E0B002B1893 /* XCLocalSwiftPackageReference "../Development/DynamicNotchKit" */;
-			productName = DynamicNotchKit;
-		};
 		4F33DF802D9EDF9A008F0182 /* LaunchAtLogin */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4F33DF7F2D9EDF9A008F0182 /* XCRemoteSwiftPackageReference "LaunchAtLogin-Modern" */;
@@ -575,15 +570,18 @@
 			package = 4F33DF822D9EE522008F0182 /* XCRemoteSwiftPackageReference "Defaults" */;
 			productName = Defaults;
 		};
+		4F4B4059302E0E6E0077EC6E /* DynamicNotchKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DynamicNotchKit;
+		};
+		4F4B405C302E0E890077EC6E /* JochexUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = JochexUI;
+		};
 		4F59E1472E4A9949005E4B75 /* Sparkle */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4F59E1462E4A9949005E4B75 /* XCRemoteSwiftPackageReference "Sparkle" */;
 			productName = Sparkle;
-		};
-		4F686EE92F83C13000696BBE /* JochexUI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4F686EE82F83C13000696BBE /* XCLocalSwiftPackageReference "../JochexUI" */;
-			productName = JochexUI;
 		};
 		4F75FABB2E86D6FB0064EF5E /* SkyLightWindow */ = {
 			isa = XCSwiftPackageProductDependency;
