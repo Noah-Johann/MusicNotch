@@ -160,18 +160,34 @@ class GestureManager {
             print("\(dx), \(dy)")
         } else if phase.contains(.changed) {
             if swipeDirection == .horizontal {
-                self.horizontalSwipeDelta += dx
-             //   print("horizontal\(horizontalSwipeDelta)")
+                if self.horizontalSwipeDelta + dx > horizontalSwipeThreshold * 1.1 {
+                    self.horizontalSwipeDelta = horizontalSwipeThreshold * 1.1
+                } else {
+                    self.horizontalSwipeDelta += dx
+                }
                 self.swipeDirection = .horizontal
-                if abs(horizontalSwipeDelta) > horizontalSwipeThreshold && horizontalThresholdCrossed == false {
+                
+                let absDelta = abs(horizontalSwipeDelta)
+                if absDelta > horizontalSwipeThreshold && horizontalThresholdCrossed == false {
                     handleScrollThresholdCross(direction: .horizontal)
                 }
+                if absDelta < horizontalSwipeThreshold * 0.8 && horizontalThresholdCrossed == true {
+                    horizontalThresholdCrossed = false
+                }
             } else {
-                self.verticalSwipeDelta += dy
-             //   print("vertical \(verticalSwipeDelta)")
+                if self.verticalSwipeDelta + dy > verticalSwipeThreshold * 1.1 {
+                    self.verticalSwipeDelta = verticalSwipeThreshold * 1.1
+                } else {
+                    self.verticalSwipeDelta += dy
+                }
                 self.swipeDirection = .vertical
-                if abs(verticalSwipeDelta) > verticalSwipeThreshold && verticalThresholdCrossed == false{
+                
+                let absDelta = abs(verticalSwipeDelta)
+                if absDelta > verticalSwipeThreshold && verticalThresholdCrossed == false {
                     handleScrollThresholdCross(direction: .vertical)
+                }
+                if absDelta < verticalSwipeDelta * 0.8 && verticalThresholdCrossed == true {
+                    verticalThresholdCrossed = false
                 }
             }
         } else if phase.contains(.ended) {
