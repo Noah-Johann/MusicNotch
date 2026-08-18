@@ -10,7 +10,7 @@ import SwiftUI
 struct NotchBatteryViewLeading: View {
     @State var batteryManager = BatteryManager.shared
     
-    var infoText: String {
+    var infoText: LocalizedStringKey {
         switch batteryManager.updateType {
             case .lowPowerMode: return "Low Power"
             case .lowBattery: return "Low Battery"

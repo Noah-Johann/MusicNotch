@@ -55,7 +55,7 @@ class GestureManager {
         
         let absDelta = abs(verticalSwipeDelta)
         guard absDelta > 0 else { return 0 }
-        let relative = absDelta / verticalSwipeDelta
+        let relative = absDelta / horizontalSwipeThreshold
         if relative < 0.1 {
             return 0
         }
@@ -186,13 +186,14 @@ class GestureManager {
                 if absDelta > verticalSwipeThreshold && verticalThresholdCrossed == false {
                     handleScrollThresholdCross(direction: .vertical)
                 }
-                if absDelta < verticalSwipeDelta * 0.8 && verticalThresholdCrossed == true {
+                if absDelta < verticalSwipeThreshold * 0.8 && verticalThresholdCrossed == true {
                     verticalThresholdCrossed = false
                 }
             }
-        } else if phase.contains(.ended) {
-            print("Scroll ended")
-            handleScrollSubmit()
+        } else if phase.contains(.ended) || phase.contains(.cancelled) {
+            if phase.contains(.ended) {
+                handleScrollSubmit()
+            }
             verticalSwipeDelta = 0
             horizontalSwipeDelta = 0
             horizontalThresholdCrossed = false

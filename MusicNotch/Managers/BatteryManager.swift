@@ -117,13 +117,15 @@ class BatteryManager {
             self.updateType = .charging
             Task { @MainActor in
                 NotchManager.shared.showExtensionNotch(type: .battery, duration: Defaults[.displayDuration])
-                SoundHelper.shared.playSound(sound: .pluggedIn)
+                if Defaults[.pluggedInSound] {
+                    SoundHelper.shared.playSound(sound: .pluggedIn)
+                }
             }
             
         } else if previousBattery.showLowPower != info.showLowPower {
-            guard info.showLowPower == true else { return }
-            guard !info.isPluggedIn else { return }
-            guard Defaults[.lowPowerWarning] else { return }
+            guard info.showLowPower == true else { previousBattery = info; return }
+            guard !info.isPluggedIn else { previousBattery = info; return }
+            guard Defaults[.lowPowerWarning] else { previousBattery = info; return }
             
             self.updateType = .lowBattery
             Task { @MainActor in

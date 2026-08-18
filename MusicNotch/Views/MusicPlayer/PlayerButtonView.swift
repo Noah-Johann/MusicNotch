@@ -69,20 +69,18 @@ struct PlayerButtonView: View {
                         .aspectRatio(contentMode: .fit)
                         .foregroundStyle(.secondary)
                         .frame(width: actionItem.iconSize, height: actionItem.iconSize)
-                    
-                    if (Defaults[.musicAction] == .repeating && musicManager.music.repeating) || (Defaults[.musicAction] == .shuffle && musicManager.music.shuffle) {
-                        Circle()
-                            .fill(.secondary)
-                            .frame(width: 3, height: 3)
-                        //    .transition(.scale(scale: 0).combined(with: .opacity))
-                            .id("DotIndicator")
+                    if musicManager.musicPlayer != .nowPlaying {
+                        if (Defaults[.musicAction] == .repeating && musicManager.music.repeating) || (Defaults[.musicAction] == .shuffle && musicManager.music.shuffle) {
+                            Circle()
+                                .fill(.secondary)
+                                .frame(width: 3, height: 3)
+                                .id("DotIndicator")
+                        }
                     }
                 }
                 .frame(height: 35)
                 .animation(.smooth(duration: 0.2), value: musicManager.music.repeating)
                 .animation(.smooth(duration: 0.2), value: musicManager.music.shuffle)
-
-              //   .animation(.spring(response: 0.3, dampingFraction: 1), value: showDot)
             } .buttonStyle(ScalingHoverButtonStyle(downScale: 0.8, effectSize: 52))
             
             

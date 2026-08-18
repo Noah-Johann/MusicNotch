@@ -127,6 +127,9 @@
         }
       }
     },
+    "Charging" : {
+
+    },
     "Check for updates" : {
       "localizations" : {
         "de" : {
@@ -521,6 +524,9 @@
     "Lock Screen" : {
 
     },
+    "Low Battery" : {
+
+    },
     "Low battery threshold" : {
       "localizations" : {
         "de" : {
@@ -530,6 +536,9 @@
           }
         }
       }
+    },
+    "Low Power" : {
+
     },
     "Main display" : {
       "localizations" : {

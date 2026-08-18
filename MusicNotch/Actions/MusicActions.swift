@@ -110,7 +110,6 @@ struct MusicActions {
                         try await AppleScriptHelper.run(script)
                         await MusicManager.shared.updateMusic(player: .spotify)
                     }
-                    await MusicManager.shared.updateMusic(player: .spotify)
                 case .nowPlaying:
                     break
             }
