@@ -9,13 +9,11 @@
 /* Begin PBXBuildFile section */
 		4F33DF812D9EDF9A008F0182 /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 4F33DF802D9EDF9A008F0182 /* LaunchAtLogin */; };
 		4F33DF842D9EE522008F0182 /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 4F33DF832D9EE522008F0182 /* Defaults */; };
-		4F4B405A302E0E6E0077EC6E /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F4B4059302E0E6E0077EC6E /* DynamicNotchKit */; };
-		4F4B405D302E0E890077EC6E /* JochexUI in Frameworks */ = {isa = PBXBuildFile; productRef = 4F4B405C302E0E890077EC6E /* JochexUI */; };
 		4F59E1482E4A9949005E4B75 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 4F59E1472E4A9949005E4B75 /* Sparkle */; };
 		4F67B5F82D849896001FF27A /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F67B5F72D849896001FF27A /* ScriptingBridge.framework */; };
 		4F75FABC2E86D6FB0064EF5E /* SkyLightWindow in Frameworks */ = {isa = PBXBuildFile; productRef = 4F75FABB2E86D6FB0064EF5E /* SkyLightWindow */; };
-		4F7BAC893034B07D0078CD93 /* JochexUI in Frameworks */ = {isa = PBXBuildFile; productRef = 4F7BAC883034B07D0078CD93 /* JochexUI */; };
-		4F7BAC8C3034B0AA0078CD93 /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F7BAC8B3034B0AA0078CD93 /* DynamicNotchKit */; };
+		4F7BAC8F3034C4C80078CD93 /* DynamicNotchKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F7BAC8E3034C4C80078CD93 /* DynamicNotchKit */; };
+		4F7BAC923034C4FC0078CD93 /* JochexUI in Frameworks */ = {isa = PBXBuildFile; productRef = 4F7BAC913034C4FC0078CD93 /* JochexUI */; };
 		4FABD4852D9704BB00F8CFEA /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 4FABD4842D9704BB00F8CFEA /* KeyboardShortcuts */; };
 		4FAC46D72F5C721200729637 /* MediaRemoteAdapter in Frameworks */ = {isa = PBXBuildFile; productRef = 4FAC46D62F5C721200729637 /* MediaRemoteAdapter */; };
 		4FAD01402E7ECE06002D4794 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FAD013F2E7ECE06002D4794 /* IOKit.framework */; };
@@ -71,14 +69,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F75FABC2E86D6FB0064EF5E /* SkyLightWindow in Frameworks */,
-				4F7BAC8C3034B0AA0078CD93 /* DynamicNotchKit in Frameworks */,
 				4FAC46D72F5C721200729637 /* MediaRemoteAdapter in Frameworks */,
-				4F4B405A302E0E6E0077EC6E /* DynamicNotchKit in Frameworks */,
+				4F7BAC8F3034C4C80078CD93 /* DynamicNotchKit in Frameworks */,
 				4F33DF842D9EE522008F0182 /* Defaults in Frameworks */,
 				4F67B5F82D849896001FF27A /* ScriptingBridge.framework in Frameworks */,
 				4F59E1482E4A9949005E4B75 /* Sparkle in Frameworks */,
-				4F4B405D302E0E890077EC6E /* JochexUI in Frameworks */,
-				4F7BAC893034B07D0078CD93 /* JochexUI in Frameworks */,
+				4F7BAC923034C4FC0078CD93 /* JochexUI in Frameworks */,
 				4F33DF812D9EDF9A008F0182 /* LaunchAtLogin in Frameworks */,
 				4FABD4852D9704BB00F8CFEA /* KeyboardShortcuts in Frameworks */,
 				4FAD01402E7ECE06002D4794 /* IOKit.framework in Frameworks */,
@@ -146,8 +142,8 @@
 				4FAC46D62F5C721200729637 /* MediaRemoteAdapter */,
 				4F4B4059302E0E6E0077EC6E /* DynamicNotchKit */,
 				4F4B405C302E0E890077EC6E /* JochexUI */,
-				4F7BAC883034B07D0078CD93 /* JochexUI */,
-				4F7BAC8B3034B0AA0078CD93 /* DynamicNotchKit */,
+				4F7BAC8E3034C4C80078CD93 /* DynamicNotchKit */,
+				4F7BAC913034C4FC0078CD93 /* JochexUI */,
 			);
 			productName = MusicNotch;
 			productReference = 4FA87FC02D847DD700725978 /* MusicNotch.app */;
@@ -187,8 +183,8 @@
 				4FAD051F2E8499BA002D4794 /* XCRemoteSwiftPackageReference "Luminare" */,
 				4F75FABA2E86D6FB0064EF5E /* XCRemoteSwiftPackageReference "SkyLightWindow" */,
 				4FAC46D52F5C721200729637 /* XCRemoteSwiftPackageReference "mediaremote-adapter" */,
-				4F7BAC873034B07D0078CD93 /* XCRemoteSwiftPackageReference "JochexUI" */,
-				4F7BAC8A3034B0AA0078CD93 /* XCRemoteSwiftPackageReference "DynamicNotchKit" */,
+				4F7BAC8D3034C4C80078CD93 /* XCRemoteSwiftPackageReference "DynamicNotchKit" */,
+				4F7BAC903034C4FC0078CD93 /* XCRemoteSwiftPackageReference "JochexUI" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 4FA87FC12D847DD700725978 /* Products */;
@@ -528,17 +524,17 @@
 				minimumVersion = 1.0.0;
 			};
 		};
-		4F7BAC873034B07D0078CD93 /* XCRemoteSwiftPackageReference "JochexUI" */ = {
+		4F7BAC8D3034C4C80078CD93 /* XCRemoteSwiftPackageReference "DynamicNotchKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Noah-Johann/JochexUI";
+			repositoryURL = "https://github.com/Noah-Johann/DynamicNotchKit";
 			requirement = {
 				branch = main;
 				kind = branch;
 			};
 		};
-		4F7BAC8A3034B0AA0078CD93 /* XCRemoteSwiftPackageReference "DynamicNotchKit" */ = {
+		4F7BAC903034C4FC0078CD93 /* XCRemoteSwiftPackageReference "JochexUI" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Noah-Johann/DynamicNotchKit";
+			repositoryURL = "https://github.com/Noah-Johann/JochexUI";
 			requirement = {
 				branch = main;
 				kind = branch;
@@ -599,15 +595,15 @@
 			package = 4F75FABA2E86D6FB0064EF5E /* XCRemoteSwiftPackageReference "SkyLightWindow" */;
 			productName = SkyLightWindow;
 		};
-		4F7BAC883034B07D0078CD93 /* JochexUI */ = {
+		4F7BAC8E3034C4C80078CD93 /* DynamicNotchKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4F7BAC873034B07D0078CD93 /* XCRemoteSwiftPackageReference "JochexUI" */;
-			productName = JochexUI;
-		};
-		4F7BAC8B3034B0AA0078CD93 /* DynamicNotchKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4F7BAC8A3034B0AA0078CD93 /* XCRemoteSwiftPackageReference "DynamicNotchKit" */;
+			package = 4F7BAC8D3034C4C80078CD93 /* XCRemoteSwiftPackageReference "DynamicNotchKit" */;
 			productName = DynamicNotchKit;
+		};
+		4F7BAC913034C4FC0078CD93 /* JochexUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F7BAC903034C4FC0078CD93 /* XCRemoteSwiftPackageReference "JochexUI" */;
+			productName = JochexUI;
 		};
 		4FABD4842D9704BB00F8CFEA /* KeyboardShortcuts */ = {
 			isa = XCSwiftPackageProductDependency;
