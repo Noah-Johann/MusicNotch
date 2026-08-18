@@ -1,5 +1,5 @@
 {
-  "originHash" : "175388d7679231a074eeef4da4c684a4388b3c3de71e7c91112799871fef78bb",
+  "originHash" : "8019cc598a5acdb1ac2b744aa871361939f80756bfbb567e1fe60430aed0d9fe",
   "pins" : [
     {
       "identity" : "defaults",
@@ -7,16 +7,25 @@
       "location" : "https://github.com/sindresorhus/Defaults",
       "state" : {
         "branch" : "main",
-        "revision" : "752bcb9eb2e110fa9d82826c99857b0e9a76fb1d"
+        "revision" : "00a7465a0668a87fa159e779b9d80f1f9652357e"
       }
     },
     {
       "identity" : "dynamicnotchkit",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Noah-Johann/DynamicNotchKit/",
+      "location" : "https://github.com/Noah-Johann/DynamicNotchKit.git",
+      "state" : {
+        "branch" : "dev",
+        "revision" : "fc13adc56acd2ca5e0483d8c538773ce6a670b41"
+      }
+    },
+    {
+      "identity" : "jochexui",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Noah-Johann/JochexUI",
       "state" : {
         "branch" : "main",
-        "revision" : "bd9ed9393cac65d13385ff185e0d028a5409a90b"
+        "revision" : "0ca944f08b901bdb8679c5ad5a093b45a1a877df"
       }
     },
     {
@@ -25,7 +34,7 @@
       "location" : "https://github.com/sindresorhus/KeyboardShortcuts",
       "state" : {
         "branch" : "main",
-        "revision" : "1aef85578fdd4f9eaeeb8d53b7b4fc31bf08fe27"
+        "revision" : "49c3fc04ea827f816df67843bfcc57286b47ff06"
       }
     },
     {
@@ -43,7 +52,7 @@
       "location" : "https://github.com/MrKai77/Luminare",
       "state" : {
         "branch" : "main",
-        "revision" : "820333b428bf191b27935cc7765e2ea0a8bea0ff"
+        "revision" : "befaaa264d7bc65e0f85b76509f267d22be4da39"
       }
     },
     {
@@ -69,8 +78,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/sparkle-project/Sparkle",
       "state" : {
-        "revision" : "5581748cef2bae787496fe6d61139aebe0a451f6",
-        "version" : "2.8.1"
+        "revision" : "d46d456107feacc80711b21847b82b07bd9fb46e",
+        "version" : "2.9.3"
       }
     },
     {
@@ -78,8 +87,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/swiftlang/swift-syntax",
       "state" : {
-        "revision" : "4799286537280063c85a32f09884cfbca301b1a1",
-        "version" : "602.0.0"
+        "revision" : "79e4b74a295b6eb74a8b585e3a39d29e70c1dbd1",
+        "version" : "603.0.2"
       }
     },
     {

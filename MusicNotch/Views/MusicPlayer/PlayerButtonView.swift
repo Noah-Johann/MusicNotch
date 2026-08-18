@@ -12,6 +12,7 @@ import Defaults
 struct PlayerButtonView: View {
     @State var musicManager = MusicManager.shared
     @State var volumeManager = VolumeManager.shared
+    @State var gestureManager = GestureManager.shared
     
     var enableSpeaker: Bool = true
     
@@ -26,14 +27,6 @@ struct PlayerButtonView: View {
                 case .shuffle: return .shuffle
                 case .repeating: return .repeating
             }
-        }
-    }
-    
-    var showDot: Bool {
-        switch actionItem {
-            case .shuffle: return musicManager.music.shuffle
-            case .repeating: return musicManager.music.repeating
-            case .open: return false
         }
     }
     
@@ -70,19 +63,24 @@ struct PlayerButtonView: View {
                     }
                 }
             } label: {
-                VStack(spacing: 3) {
+                VStack(spacing: 2) {
                     Image(systemName: actionItem.iconName)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .foregroundStyle(.secondary)
                         .frame(width: actionItem.iconSize, height: actionItem.iconSize)
-                    
-                    if showDot {
-                        Circle()
-                            .fill(.secondary)
-                            .frame(width: 3, height: 3)
+                    if musicManager.musicPlayer != .nowPlaying {
+                        if (Defaults[.musicAction] == .repeating && musicManager.music.repeating) || (Defaults[.musicAction] == .shuffle && musicManager.music.shuffle) {
+                            Circle()
+                                .fill(.secondary)
+                                .frame(width: 3, height: 3)
+                                .id("DotIndicator")
+                        }
                     }
-                } .animation(.spring(response: 0.3, dampingFraction: 0.4), value: showDot)
+                }
+                .frame(height: 35)
+                .animation(.smooth(duration: 0.2), value: musicManager.music.repeating)
+                .animation(.smooth(duration: 0.2), value: musicManager.music.shuffle)
             } .buttonStyle(ScalingHoverButtonStyle(downScale: 0.8, effectSize: 52))
             
             
@@ -98,6 +96,9 @@ struct PlayerButtonView: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .contentTransition(.symbolEffect(.replace))
+                    .foregroundStyle(Color.white.opacity(gestureManager.horizontalType == .right ? 1 - (gestureManager.horizontalGestureRelative / 2) : 1))
+                    .offset(x: gestureManager.horizontalType == .left ? gestureManager.horizontalGestureRelative * -5 : 0)
+                    .scaleEffect(gestureManager.horizontalType == .left ? 1 + (gestureManager.horizontalGestureRelative * 0.1) : 1)
                     .frame(width: 25, height: 25)
             } .buttonStyle(ScalingHoverButtonStyle(downScale: 0.8, effectSize: 52))
             
@@ -108,8 +109,10 @@ struct PlayerButtonView: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .contentTransition(.symbolEffect(.replace))
+                    .foregroundStyle(Color.white.opacity(1 - (gestureManager.horizontalGestureRelative / 2)))
                     .frame(width: 25, height: 25)
-            } .buttonStyle(ScalingHoverButtonStyle(downScale: 0.8, effectSize: 52))
+            }
+            .buttonStyle(ScalingHoverButtonStyle(downScale: 0.8, effectSize: 52))
             
             
             // Forward Skip
@@ -124,6 +127,9 @@ struct PlayerButtonView: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .contentTransition(.symbolEffect(.replace))
+                    .foregroundStyle(Color.white.opacity(gestureManager.horizontalType == .left ? 1 - (gestureManager.horizontalGestureRelative / 2) : 1))
+                    .offset(x: gestureManager.horizontalType == .right ? gestureManager.horizontalGestureRelative * 5 : 0)
+                    .scaleEffect(gestureManager.horizontalType == .right ? 1 + (gestureManager.horizontalGestureRelative * 0.1) : 1)
                     .frame(width: 25, height: 25)
             } .buttonStyle(ScalingHoverButtonStyle(downScale: 0.8, effectSize: 52))
             
@@ -141,12 +147,13 @@ struct PlayerButtonView: View {
                     .aspectRatio(contentMode: .fit)
                     .contentTransition(.symbolEffect(.replace))
                     .foregroundStyle(.secondary)
-                    .frame(width: 30, height: 30)
+                    .frame(width: 31, height: 25)
             }
             .buttonStyle(ScalingHoverButtonStyle(downScale: 0.8, effectSize: 52, cornerRadius: 15))
             .disabled(!enableSpeaker)
         }
         .frame(height: 45)
+        .animation(.smooth, value: gestureManager.horizontalGestureRelative)
         .task {
             if #available(macOS 15, *) {
                 forwardArrowName = "15.arrow.trianglehead.clockwise"

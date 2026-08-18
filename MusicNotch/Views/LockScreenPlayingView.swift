@@ -29,9 +29,12 @@ struct LockScreenPlayingView: View {
             VStack {
                 VStack (){
                     HStack (alignment: .center) {
-                        AlbumArtView(size: 70,
-                                     shrink: 8,
-                                     cornerRadius: 13,
+                        AlbumArtView(
+                            playing: $musicManager.music.isPlaying,
+                            size: 70,
+                            shrink: 8,
+                            cornerRadius: 13,
+                            nsImage: musicManager.albumArt ?? NSImage(named: "no_playback")!,
                         )
                         .padding(.top, 10)
                         .padding(.leading, 17)

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Luminare
+import JochexUI
 import Defaults
 
 struct SettingsMusicGlanceView: View {
@@ -67,12 +68,14 @@ struct SettingsMusicGlanceView: View {
                 Button { allPlayerMusicGlanceSetting.toggle() } label: {
                     Image(systemName: allPlayerMusicGlanceSetting ? "network" : "network.slash")
                         .foregroundStyle(.secondary)
+                        .imageScale(.large)
+                        .contentTransition(.symbolEffect(.replace))
                 }
                 .buttonStyle(.plain)
-                .luminarePopover() {
-                    Text("If deactivated, settings apply only for the currently selected player.")
-                        .padding()
-                }
+//                .luminarePopover() {
+//                    Text("If deactivated, settings apply only for the currently selected player.")
+//                        .padding()
+//                }
             }
             
             if musicGlanceBinding.wrappedValue {
@@ -86,13 +89,11 @@ struct SettingsMusicGlanceView: View {
                 ) {
                     Text("Display duration")
                 }
-                .luminareSliderLayout(.compact)
                 .padding(.vertical, 3)
             }
         } header: {
             Text("MusicGlance")
         }
-        .padding(.bottom, 14)
     }
 }
 

@@ -9,109 +9,14 @@ import SwiftUI
 import Defaults
 
 struct NotchMusicViewLeading: View {
-    @State private var notchManager = NotchManager.shared
-    @State private var musicManager = MusicManager.shared
-    
-    @State private var localTrackName: String = ""
-    
     var body: some View {
-        HStack {
-            Button (action: {
-                if notchManager.notchContent == .music {
-                    NotchManager.shared.setNotchContent(.musicGlance)
-                } else if notchManager.notchContent == .musicGlance {
-                    NotchManager.shared.setNotchContent(.music)
-                } else {
-                    return
-                }
-            }, label: {
-                AlbumArtView(size: (NSScreen.main?.isOnNotchScreen ?? false) ? 30.0 : 20.0,
-                             shrink: 5,
-                             cornerRadius: (NSScreen.main?.isOnNotchScreen ?? false) ? 6 : 4,
-                )
-            }) .buttonStyle(ScalingPlainButtonStyle(downScale: 0.85))
-                .padding(.leading, 3)
-            if notchManager.notchContent == .musicGlance {
-                Text(localTrackName)
-                    .foregroundStyle(Color(musicManager.aveColor ?? .white).gradient)
-                    .frame(minWidth: 75, maxWidth: 125)
-            }
-        }
-        .onAppear {
-            withAnimation(.bouncy(duration: 0.4)) {
-                localTrackName = musicManager.music.artistName
-            }
-        }
-        .onChange(of: musicManager.music.trackName) { _, newValue in
-            withAnimation(.bouncy(duration: 0.4)) {
-                localTrackName = newValue
-            }
-        }
-
+        MusicViewLeading()
     }
 }
 
 struct NotchMusicViewTrailing: View {
-    @State private var notchManager = NotchManager.shared
-    @State private var musicManager = MusicManager.shared
-    @State var accessibilityManager = AccessibilityManager.shared
-    
-    @Default(.coloredSpect) private var coloredSpect
-    @Default(.hoverBehavior) private var hoverBehavior
-    
-    @State private var isHovering: Bool = false
-    
-    @State private var localArtistName: String = "Artist"
-    
     var body: some View {
-        HStack {
-            if notchManager.notchContent == .musicGlance {
-                Text(localArtistName)
-                    .foregroundStyle(Color(musicManager.aveColor ?? .white).gradient)
-                    .frame(minWidth: 75, maxWidth: 125)
-            }
-            
-            Button {
-                MusicActions.playPause()
-            } label: {
-                ZStack {
-                    if !accessibilityManager.isReduceMotion {
-                        Rectangle()
-                            .fill(coloredSpect ? Color(nsColor: musicManager.aveColor ?? .white).gradient : Color.white.gradient)
-                            .frame(width: 30, alignment: .center)
-                            .mask {
-                                AudioSpectrumView(isPlaying: $musicManager.music.isPlaying)
-                                    .frame(width: 15, height: 15)
-                            }
-                        .blur(radius: isHovering ? 1.7 : 0)
-                    }
-                    
-                    if isHovering || accessibilityManager.isReduceMotion {
-                        Image(systemName: musicManager.music.isPlaying == true ? "pause.fill" : "play.fill")
-                            .contentTransition(.symbolEffect(.replace))
-                    }
-                } .frame(width: 30, height: 30)
-            }
-            .buttonStyle(PlainButtonStyle())
-            .onHover { hovering in
-                if hovering {
-                    guard hoverBehavior == .disabled else { isHovering = false ; return}
-                    isHovering = true
-                } else {
-                    isHovering = false
-                }
-            }
-        }
-        .onAppear {
-            withAnimation(.bouncy(duration: 0.4)) {
-                localArtistName = musicManager.music.artistName
-            }
-        }
-        .onChange(of: musicManager.music.artistName) { _, newValue in
-            withAnimation(.bouncy(duration: 0.4)) {
-                localArtistName = newValue
-            }
-        }
+        MusicViewTrailing()
     }
 }
 
@@ -124,6 +29,8 @@ struct NotchMusicViewExpanded: View {
     
     @State private var trackPosition: Double = 0
     
+    @Environment(NotchManager.self) private var notchManager
+    
     @Default(.coloredSpect) private var coloredSpect
     
     var body: some View {
@@ -132,7 +39,7 @@ struct NotchMusicViewExpanded: View {
                 Button {
                     openMusicApp()
                 } label: {
-                    AlbumArtView(size: 65, shrink: 10, cornerRadius: 12)
+                    AlbumArtView(playing: $musicManager.music.isPlaying, size: 65, shrink: 10, cornerRadius: 12, nsImage: musicManager.albumArt ?? NSImage(named: "no_playback")!)
                 }
                 .frame(width: 65, height: 65)
                 .buttonStyle(ScalingPlainButtonStyle(downScale: 0.85))
@@ -141,15 +48,15 @@ struct NotchMusicViewExpanded: View {
                     Text(musicManager.music.trackName)
                         .fontWeight(.medium)
                         .foregroundStyle(.white)
-                        .frame(width: 220, alignment: .leading)
+                        .frame(width: notchManager.notch?.usedStyle == .notch ? 220 : 200, alignment: .leading)
                     Text(musicManager.music.artistName)
                         .fontWeight(.light)
                         .foregroundStyle(.gray)
-                        .frame(width: 220, alignment: .leading)
+                        .frame(width: notchManager.notch?.usedStyle == .notch ? 220 : 200, alignment: .leading)
                 }
                 .lineLimit(1)
                 .padding(.leading, 11)
-                .padding(.top, 18)
+                .padding(.top, notchManager.notch?.usedStyle == .notch ? 18 : 0)
                 
                 Spacer()
                 
@@ -167,8 +74,10 @@ struct NotchMusicViewExpanded: View {
                         .frame(width: 35)
                 }
                 
-            } .frame(width: 350)
-                .padding(.bottom, 4)
+            }
+            .frame(width: notchManager.notch?.usedStyle == .notch ? 350 : 335)
+            .frame(height: 65, alignment: .center)
+            .padding(.bottom, 4)
         
             //Progress Bar
             HStack (spacing: 14){
@@ -227,8 +136,10 @@ struct NotchMusicViewExpanded: View {
                         .monospacedDigit()
                 }
                 
-            }.frame(width: 350, height: 15)
-                .padding(.bottom, 3)
+            }
+            .frame(width: notchManager.notch?.usedStyle == .notch ? 350 : 335, height: 15)
+            .padding(.bottom, 3)
+            
             PlayerButtonView()
             
         }
@@ -257,9 +168,6 @@ struct NotchMusicViewExpanded: View {
         .onDisappear {
             playbackTimer?.invalidate()
         }
-
-        .padding(.bottom, 10)
-        .padding(.top, 15)
         .contextMenu {
             ContextMenuView()
         }

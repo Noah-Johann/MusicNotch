@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Luminare
+import JochexUI
 import Defaults
 
 struct SettingsMusicView: View {
@@ -44,14 +45,11 @@ struct SettingsMusicView: View {
                             .font(.title3)
                     }
                 }
-                .buttonStyle(LuminareButtonStyle())
+                .luminareRoundingBehavior(bottom: true)
+                .luminareBorderedStates(.hovering)
                 .frame(height: 110)
-                .padding(3)
             }
-        } header: {
-            Text("Music")
         }
-        .padding(.bottom, 14)
         .onAppear {
             if SpotifyManager.shared.isSpotifyInstalled() == false && Defaults[.musicPlayer] == .spotify {
                 Defaults[.musicPlayer] = .nowPlaying

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Luminare
+import JochexUI
 import Defaults
 
 struct SettingsAppearanceView: View {
@@ -26,7 +27,6 @@ struct SettingsAppearanceView: View {
         } header: {
             Text("Appearance")
         }
-        .padding(.bottom, 14)
     }
 }
 

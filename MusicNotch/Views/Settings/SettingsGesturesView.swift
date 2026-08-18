@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Luminare
+import JochexUI
 import Defaults
 
 struct SettingsGesturesView: View {
@@ -17,29 +18,20 @@ struct SettingsGesturesView: View {
         LuminareSection {
             LuminareToggle(isOn: $enableGestures) {
                 Text("Enable Gesture control")
-                    .padding(.trailing, 5)
-                    .luminarePopover(attachedTo: .topTrailing) {
-                        Text("Swipe vertical to open and close the notch.")
-                            .padding()
-                    }
-                    .tint(.accentColor)
+                Spacer()
+                SettingsInfoItemView { Text("Swipe vertical to open and close the notch.") }
             }
             
             if enableGestures {
                 LuminareToggle(isOn: $mediaGestures) {
                     Text("Enable Media Gestures")
-                        .padding(.trailing, 5)
-                        .luminarePopover(attachedTo: .topTrailing) {
-                            Text("Swipe horizontal to change the current track.")
-                                .padding()
-                        }
-                        .tint(.accentColor)
+                    Spacer()
+                    SettingsInfoItemView { Text("Swipe horizontal to change the current track.") }
                 }
             }
         } header: {
             Text("Gestures")
         }
-        .padding(.bottom, 14)
     }
 }
 

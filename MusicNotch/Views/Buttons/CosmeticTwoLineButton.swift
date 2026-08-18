@@ -39,9 +39,15 @@ func CosmeticTwoLineButton(heading: LocalizedStringKey, description: LocalizedSt
                     .foregroundStyle(.secondary)
             }
             Spacer()
+            
+            Image(systemName: hoverIcon)
+                .imageScale(.large)
+                .foregroundStyle(.tertiary)
         }
         .padding(12)
     }
-    .buttonStyle(LuminareCosmeticButtonStyle(icon: Image(systemName: hoverIcon)))
+    .luminareBorderedStates(.hovering)
+    .frame(height: 70)
+    .buttonStyle(.luminare)
 }
 

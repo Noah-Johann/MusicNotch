@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Luminare
+import JochexUI
 import Defaults
 
 struct SettingsDisplayView: View {
@@ -32,16 +33,16 @@ struct SettingsDisplayView: View {
                         .font(.title3)
                 }
             }
-            .buttonStyle(LuminareButtonStyle())
+            .luminareRoundingBehavior(top: true)
+            .luminareBorderedStates(.hovering)
+            .buttonStyle(.luminare)
             .frame(height: 80)
-            .padding(3)
             LuminareToggle(isOn: $transparentNotch) {
                 Text("Hide closed notch")
             }
         } header: {
             Text("Display")
         }
-        .padding(.bottom, 14)
         .onChange(of: screen) {
             Task { @MainActor in
                 await NotchManager.shared.setNotchState(.compact, changeDisplay: true)

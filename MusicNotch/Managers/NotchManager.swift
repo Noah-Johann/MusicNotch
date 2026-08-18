@@ -10,50 +10,42 @@ import SwiftUI
 import Defaults
 import AppKit
 
-@MainActor @Observable
+@Observable
 final class NotchManager {
     static let shared = NotchManager()
-    
+        
     var notchState: NotchState = .hidden
     var notchContent: NotchContent = .music
     var notchDismissed: Bool = false
     
-    var notch: DynamicNotch<AnyView, AnyView, AnyView>?
+    var notch: DynamicNotch<NotchViewExpanded, NotchViewLeading, NotchViewTrailing>?
     
     private var openingTask: Task<Void, Never>?
     private var extensionNotchTask: Task<Void, Never>?
     private var extensionRequestCounter: Int = 0
     
-    private var isHovering = false
-
-    private var localScrollMonitor: Any?
-    private var globalScrollMonitor: Any?
-    private weak var observedWindow: NSWindow?
-
-    private var isHorizontalGestureActive = false
-    private var isVerticalGestureActive = false
-
-    var onHorizontalSwipe: ((SwipeDirection) -> Void)?
-    var onVerticalSwipe: ((SwipeDirection) -> Void)?
-
-    enum SwipeDirection { case left, right, up, down }
+    var isHovering = false
     
-    @MainActor deinit {
-        removeScrollMonitors()
-    }
+//    @MainActor deinit {
+//        removeScrollMonitors()
+//    }
     
     // MARK: - Setup
     
-    public func createNotch() {
+    @MainActor public func createNotch() {
         notch = nil
         notch = DynamicNotch(
             hoverBehavior: .increaseShadow,
-            style: .notch(topCornerRadius: 25, bottomCornerRadius: 50),
-            expanded: { AnyView(NotchViewExpanded()) },
-            compactLeading: { AnyView(NotchViewLeading()) },
-            compactTrailing: { AnyView(NotchViewTrailing()) }
+            style: .auto,
+            expanded: { NotchViewExpanded() },
+            compactLeading: { NotchViewLeading() },
+            compactTrailing: { NotchViewTrailing() }
         )
         guard let notch = notch else { return }
+        notch.topNotchSafeAreaInset = 15
+        notch.bottomNotchSafeAreaInset = 25
+        notch.verticalIslandSafeAreaInset = 25
+        notch.horizontalIslandSafeAreaInset = 25
         notch.moveToSky()
         notch.onHoverChanged = { [weak self] isHovering in
             guard let self = self else { return }
@@ -66,65 +58,14 @@ final class NotchManager {
             await self.setNotchState(.closed)
         }
         
-        Task {
-            self.addScrollMonitors()
-        }
-        
-        self.onHorizontalSwipe = { direction in
-            guard Defaults[.enableGestures] && Defaults[.mediaGestures] else { return }
-            if Defaults[.hapticFeedback] {
-                let performer = NSHapticFeedbackManager.defaultPerformer
-                performer.perform(.alignment, performanceTime: .default)
-            }
-            switch direction {
-            case .left:
-                MusicActions.nextTrack()
-                print("next track")
-            case .right:
-                MusicActions.lastTrack()
-                print("last track")
-            default:
-                break
-            }
-        }
-        self.onVerticalSwipe = { [weak self] direction in
-            guard Defaults[.enableGestures] else { return }
-            guard let self else { return }
-            if Defaults[.hapticFeedback] {
-                let performer = NSHapticFeedbackManager.defaultPerformer
-                performer.perform(.alignment, performanceTime: .default)
-            }
-            switch direction {
-            case .up:
-                Task {
-                    if self.notchState == .open {
-                        if MusicManager.shared.music.isPlaying == true {
-                            await self.setNotchState(.compact)
-                        } else {
-                            await self.setNotchState(.closed)
-                        }
-                        print("notch close")
-                    } else if self.notchState == .compact {
-                        self.notchDismissed = true
-                        await self.setNotchState(.transparent)
-                        print("dismiss notch")
-                    }
-                }
-            case .down:
-                Task {
-                    await self.setNotchState(.open)
-                }
-            default:
-                break
-            }
-        }
+        GestureManager.shared.addScrollMonitors()
     }
     
     // MARK: - Hover Management
-
+    
     private func handleHoverChange(_ hoverState: Bool) {
         guard self.notchContent != .locked && self.notchContent != .unlocked else { return }
-
+        
         self.isHovering = hoverState
         
         if isHovering {
@@ -148,7 +89,7 @@ final class NotchManager {
                 self.openingTask = Task { @MainActor in
                     do {
                         try await Task.sleep(for: .seconds(Defaults[.openingDelay]))
-                                                
+                        
                         guard self.isHovering && !Task.isCancelled else { return }
                         
                         await self.setNotchState(.open)
@@ -162,7 +103,7 @@ final class NotchManager {
             
             if notchState == .open {
                 Task {
-                    if MusicManager.shared.music.isPlaying {
+                    if await MusicManager.shared.music.isPlaying && HideManager.shared.isFullScreen == false {
                         await self.setNotchState(.compact)
                     } else {
                         await self.setNotchState(.closed)
@@ -170,7 +111,12 @@ final class NotchManager {
                 }
             }
             if Defaults[.hoverBehavior] == .musicGlance {
-                self.setNotchContent(.music)
+                Task {
+                    if HideManager.shared.isFullScreen {
+                        await self.setNotchState(.closed)
+                    }
+                    self.setNotchContent(.music)
+                }
             }
         }
         
@@ -180,90 +126,6 @@ final class NotchManager {
         }
     }
     
-    // MARK: - Gesture monitor setup
-    
-    private func addScrollMonitors() {
-        guard let notch = notch, let window = notch.windowController?.window else { return }
-        if observedWindow === window { return }
-
-        removeScrollMonitors()
-
-        observedWindow = window
-
-        localScrollMonitor = NSEvent.addLocalMonitorForEvents(matching: [.scrollWheel]) { [weak self] event in
-            self?.handleScrollEvent(event)
-            return event
-        }
-
-        globalScrollMonitor = NSEvent.addGlobalMonitorForEvents(matching: [.scrollWheel]) { [weak self] event in
-            self?.handleScrollEvent(event)
-        }
-    }
-
-    private func removeScrollMonitors() {
-        if let localScrollMonitor { NSEvent.removeMonitor(localScrollMonitor) }
-        if let globalScrollMonitor { NSEvent.removeMonitor(globalScrollMonitor) }
-        localScrollMonitor = nil
-        globalScrollMonitor = nil
-        observedWindow = nil
-        isHorizontalGestureActive = false
-        isVerticalGestureActive = false
-    }
-
-    private func handleScrollEvent(_ event: NSEvent) {
-
-        guard isHovering else { return }
-
-        let phase = event.phase
-        let momentum = event.momentumPhase
-
-        let dx = event.scrollingDeltaX
-        let dy = event.scrollingDeltaY
-
-        let inverted = event.isDirectionInvertedFromDevice
-
-        let absX = abs(dx)
-        let absY = abs(dy)
-        let horizontalDominant = absX > absY
-
-        let began = phase.contains(.began) || momentum.contains(.began)
-        let ended = momentum.contains(.ended)
-
-        if began {
-            if horizontalDominant {
-                if !isHorizontalGestureActive {
-                    isHorizontalGestureActive = true
-                    let direction: SwipeDirection = {
-                        if inverted {
-                            return dx > 0 ? .left : .right
-                        } else {
-                            return dx > 0 ? .right : .left
-                        }
-                    }()
-                    onHorizontalSwipe?(direction)
-                }
-                isVerticalGestureActive = false
-            } else {
-                if !isVerticalGestureActive {
-                    isVerticalGestureActive = true
-                    let direction: SwipeDirection = {
-                        if inverted {
-                            return dy > 0 ? .down : .up
-                        } else {
-                            return dy > 0 ? .up : .down
-                        }
-                    }()
-                    onVerticalSwipe?(direction)
-                }
-                isHorizontalGestureActive = false
-            }
-        }
-
-        if ended {
-            isHorizontalGestureActive = false
-            isVerticalGestureActive = false
-        }
-    }
     
     // MARK: - Notch control
     
@@ -274,10 +136,18 @@ final class NotchManager {
             await setNotchState(.open)
             
         } else if notchState == .open {
-            await setNotchState(.compact)
+            if HideManager.shared.isFullScreen {
+                await setNotchState(.closed)
+            } else {
+                await setNotchState(.compact)
+            }
             
         } else if notchState == .closed || notchState == .transparent {
-            await setNotchState(.compact)
+            if HideManager.shared.isFullScreen {
+                await setNotchState(.open)
+            } else {
+                await setNotchState(.compact)
+            }
         }
     }
     
@@ -289,13 +159,13 @@ final class NotchManager {
         }
     }
     
-    public func setNotchState(_ state: NotchState, changeDisplay: Bool = false) async {
+    @MainActor public func setNotchState(_ state: NotchState, changeDisplay: Bool = false) async {
         guard let notch = notch else { return }
         let prevNotchState = self.notchState
                 
         if changeDisplay == true {
             await notch.hide()
-            self.addScrollMonitors()
+            GestureManager.shared.addScrollMonitors()
             self.notchContent = .music
         }
         
@@ -335,7 +205,6 @@ final class NotchManager {
         case .hidden:
             await notch.hide()
         }
-        self.addScrollMonitors()
     }
     
     public func showExtensionNotch(type: NotchContent, duration: Double) {
@@ -384,6 +253,9 @@ final class NotchManager {
             }
 
             if MusicManager.shared.music.isPlaying {
+                if HideManager.shared.isFullScreen {
+                    await setNotchState(.closed)
+                }
                 setNotchContent(.music)
             } else {
                 if notchState != .open {

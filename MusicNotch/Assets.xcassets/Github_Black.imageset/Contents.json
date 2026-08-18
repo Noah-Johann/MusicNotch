@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "GitHub_Invertocat_White.png",
+      "filename" : "GitHub_Invertocat_Black.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "GitHub_Invertocat_White 1.png",
+      "filename" : "GitHub_Invertocat_Black 1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "GitHub_Invertocat_White 2.png",
+      "filename" : "GitHub_Invertocat_Black 2.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

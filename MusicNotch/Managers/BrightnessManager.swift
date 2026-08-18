@@ -33,7 +33,7 @@ class BrightnessManager {
         guard !bdManager.isBDRunning else { return }
         self.brightness = CGFloat(getCurrentBrightness() ?? -1)
         Task {
-            await NotchManager.shared.showExtensionNotch(type: .brightness, duration: Defaults[.displayDuration])
+            NotchManager.shared.showExtensionNotch(type: .brightness, duration: Defaults[.displayDuration])
         }
     }
     
