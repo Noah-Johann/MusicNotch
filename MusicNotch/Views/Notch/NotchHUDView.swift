@@ -200,9 +200,7 @@ struct NotchHUDViewExpanded: View {
                     .frame(width: width, height: 30)
                     .animation(.easeInOut(duration: 0.3), value: musicManager.music.volume)
                 }
-            } .padding(.bottom, 10)
-
-            
+            }
         case .brightness:
             HStack {
                 HStack {
@@ -213,15 +211,15 @@ struct NotchHUDViewExpanded: View {
                         Image(systemName: "sun.max")
                             .font(.system(size: 17))
                     }
-                } .frame(width: 20)
-                    .padding(.trailing, 5)
+                }
+                .frame(width: 20)
+                .padding(.trailing, 5)
                 
                 HStack {
                     HudSlider(value: $brightnessManager.brightness, height: 6)
                 }
             }
             .frame(width: width, height: 30)
-            .padding(.bottom, 10)
             .animation(.easeInOut(duration: 0.3), value: brightnessManager.brightness)
         }
     }

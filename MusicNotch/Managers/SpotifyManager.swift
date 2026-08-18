@@ -68,8 +68,9 @@ class SpotifyManager {
         }
     }
     
-    public func checkIfPlaying() -> Bool {
-        let result = AppleScriptHelper.executeAppleScript("tell application \"Spotify\" to set isPlaying to player state as string")
+    public func checkIfPlaying() async -> Bool {
+        guard let script = NSAppleScript(source: "tell application \"Spotify\" to set isPlaying to player state as string") else { return false }
+        let result = await AppleScriptHelper.executeAppleScript(script)
         if let stringValue = result?.stringValue, stringValue == "playing" {
             return true
         } else {
@@ -77,10 +78,10 @@ class SpotifyManager {
         }
     }
           
-    public func collectSpotifyInfo() -> MusicTrack? {
+    public func collectSpotifyInfo() async -> MusicTrack? {
         guard isSpotifyRunning() else { return nil }
         
-        let script = """
+        guard let script = NSAppleScript(source: """
         tell application "Spotify"
             try
                 set isPlaying to player state as string
@@ -105,8 +106,8 @@ class SpotifyManager {
             end try
         end tell
         """
-        
-        let result = AppleScriptHelper.executeAppleScript(script)
+        ) else { return nil }
+        let result = await AppleScriptHelper.executeAppleScript(script)
         guard
             let descriptor = result,
             descriptor.numberOfItems >= 12

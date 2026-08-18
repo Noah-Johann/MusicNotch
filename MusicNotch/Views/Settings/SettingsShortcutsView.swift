@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Luminare
+import JochexUI
 import KeyboardShortcuts
 import Defaults
 
@@ -41,10 +42,7 @@ struct SettingsShortcutsView: View {
                 .padding(.vertical, 6)
             }
             
-        } header: {
-            Text("Keyboard shortcuts")
         }
-        .padding(.bottom, 14)
     }
 }
 

@@ -33,17 +33,17 @@ func PermissionButton(permissionName: LocalizedStringKey, granted: Bool, icon: S
             VStack(alignment: .leading) {
                 Text(permissionName)
                     .padding(.trailing, 5)
-                    .luminarePopover(attachedTo: .topTrailing) {
-                        Text("Please relaunch the app after giving permissions")
-                            .padding()
-                    }
+//                    .luminarePopover(attachedTo: .topTrailing) {
+//                        Text("Please relaunch the app after giving permissions")
+//                            .padding()
+//                    }
             }
 
             Spacer()
         }
         .padding(8)
     }
-    .buttonStyle(LuminareCosmeticButtonStyle(icon: Image(systemName: icon)))
+  //  .buttonStyle(LuminareCosmeticButtonStyle(icon: Image(systemName: icon)))
 }
 //#Preview {
 //    PermissionButton(permissionName: "Accesibility Permissions", granted: true)

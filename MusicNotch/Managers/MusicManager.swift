@@ -41,8 +41,8 @@ class MusicManager {
     private var launched: Bool = false
     private var prevMusic = MusicTrack(trackName: "", artistName: "", albumName: "", trackDuration: 0, trackPosition: 0, isPlaying: false, isLoved: false, shuffle: false, repeating: false, type: .music)
     
-    private let appleMusicManager = AppleMusicManager()
-    private let spotifyManager = SpotifyManager()
+    private let appleMusicManager = AppleMusicManager.shared
+    private let spotifyManager = SpotifyManager.shared
     
     private var enableMusicGlance: Bool {
         if Defaults[.allPlayerMusicGlanceSetting] == true {
@@ -75,13 +75,11 @@ class MusicManager {
             }
         }
         mediaController.onListenerTerminated = {
-            self.music = self.disabledPlayback()
-            print("Listener terminated")
+            self.setDisabledPlayback()
         }
     }
     
     deinit {
-        DistributedNotificationCenter.default().removeObserver(self)
         mediaController.stopListening()
     }
     
@@ -94,30 +92,32 @@ class MusicManager {
     
     /// Updates the music info for a specified player and optional updateInfo for now playing info
     public func updateMusic(player: MusicApp, updateInfo: TrackInfo? = nil) {
-        if Defaults[.autoPlayer] {
-            checkAutoPlayer(notificationPlayer: player, updateInfo: updateInfo)
-        } else {
-            guard player == Defaults[.musicPlayer] else { return }
-            if Defaults[.musicPlayer] == .nowPlaying {
-                if let info = updateInfo {
-                    setNowPlayingInfo(trackInfo: info)
-                } else {
-                    mediaController.getTrackInfo() { trackInfo in
-                        self.setNowPlayingInfo(trackInfo: trackInfo)
-                    }
-                }
+        Task {
+            if Defaults[.autoPlayer] {
+                await checkAutoPlayer(notificationPlayer: player, updateInfo: updateInfo)
             } else {
-                self.music = getMusicInfo(player: player)
+                guard player == Defaults[.musicPlayer] else { return }
+                if Defaults[.musicPlayer] == .nowPlaying {
+                    if let info = updateInfo {
+                        setNowPlayingInfo(trackInfo: info)
+                    } else {
+                        mediaController.getTrackInfo() { trackInfo in
+                            self.setNowPlayingInfo(trackInfo: trackInfo)
+                        }
+                    }
+                } else {
+                    self.music = await getMusicInfo(player: player)
+                }
             }
+            
+            processMusicInfo()
         }
-        
-        processMusicInfo()
     }
     
     // MARK: - Private
 
     /// Fetch the music and set the correct player when auto player is enabled
-    private func checkAutoPlayer(notificationPlayer: MusicApp, updateInfo: TrackInfo? = nil) {
+    private func checkAutoPlayer(notificationPlayer: MusicApp, updateInfo: TrackInfo? = nil) async {
         guard Defaults[.autoPlayer] else { return }
         
         let prevPlayer = musicPlayer
@@ -125,20 +125,20 @@ class MusicManager {
         switch notificationPlayer {
         case .appleMusic:
             musicPlayer = .appleMusic
-            self.music = getMusicInfo(player: .appleMusic)
+            self.music = await getMusicInfo(player: .appleMusic)
         case .spotify:
             musicPlayer = .spotify
-            self.music = getMusicInfo(player: .spotify)
+            self.music = await getMusicInfo(player: .spotify)
         case .nowPlaying:
             if updateInfo != nil {
-                guard updateInfo?.payload.bundleIdentifier != "com.spotify.client" && updateInfo?.payload.bundleIdentifier != "com.apple.Music" else { print("supported player"); return }
+                guard updateInfo?.payload.bundleIdentifier != "com.spotify.client" && updateInfo?.payload.bundleIdentifier != "com.apple.Music" else { return }
             }
             
             // Check if prev player is still playing
             if prevPlayer == .appleMusic {
-                if appleMusicManager.checkIfPlaying() { print("AM running"); return }
+                if await appleMusicManager.checkIfPlaying() { return }
             } else if prevPlayer == .spotify {
-                if spotifyManager.checkIfPlaying() { print("Spotify running"); return }
+                if await spotifyManager.checkIfPlaying() { return }
             }
             
             musicPlayer = .nowPlaying
@@ -161,7 +161,9 @@ class MusicManager {
                 if launched == false {
                     launched = true
                 } else {
-                    NotchManager.shared.showExtensionNotch(type: .musicGlance, duration: Defaults[.musicGlanceDuration])
+                    if HideManager.shared.isFullScreen == false {
+                        NotchManager.shared.showExtensionNotch(type: .musicGlance, duration: Defaults[.musicGlanceDuration])
+                    }
                 }
             }
         }
@@ -177,6 +179,7 @@ class MusicManager {
             
             if NotchManager.shared.notchState == .closed || NotchManager.shared.notchState == .transparent {
                 guard !NotchManager.shared.notchDismissed else { return }
+                guard HideManager.shared.isFullScreen == false else { return }
                 
                 if enableMusicGlance {
                     NotchManager.shared.showExtensionNotch(type: .musicGlance, duration: Defaults[.musicGlanceDuration])
@@ -225,10 +228,10 @@ class MusicManager {
     }
     
     /// Gets the music info with AppleScript for Apple Music and Spotify
-    private func getMusicInfo(player: MusicApp) -> MusicTrack {
+    private func getMusicInfo(player: MusicApp) async  -> MusicTrack {
         switch player {
         case .appleMusic:
-            if let info = AppleMusicManager.shared.collectAppleMusicInfo() {
+            if let info = await AppleMusicManager.shared.collectAppleMusicInfo() {
                 self.playingAppName = "Music"
                 self.playingAppBundle = "com.apple.Music"
                 self.musicPlayer = .appleMusic
@@ -238,7 +241,7 @@ class MusicManager {
             }
             
         case .spotify:
-            if let info = SpotifyManager.shared.collectSpotifyInfo() {
+            if let info = await SpotifyManager.shared.collectSpotifyInfo() {
                 self.playingAppName = "Spotify"
                 self.playingAppBundle = "com.spotify.client"
                 self.musicPlayer = .spotify
@@ -291,25 +294,23 @@ class MusicManager {
     
     private func disabledPlayback() -> MusicTrack {
         let prevPlayback = self.music
-            let playback = MusicTrack(trackName: "Nothing playing",
-                                      artistName: "No current playback",
-                                      albumName: "Nothing",
-                                      trackDuration: 1,
-                                      trackPosition: 0,
-                                      isPlaying: false,
-                                      isLoved: false,
-                                      shuffle: false,
-                                      repeating: false,
-                                      type: .music,
-            )
+        let playback = MusicTrack(trackName: "Nothing playing",
+                                  artistName: "No current playback",
+                                  albumName: "Nothing",
+                                  trackDuration: 1,
+                                  trackPosition: 0,
+                                  isPlaying: false,
+                                  isLoved: false,
+                                  shuffle: false,
+                                  repeating: false,
+                                  type: .music,
+        )
         playingAppName = nil
         playingAppBundle = nil
         musicPlayer = .nowPlaying
         
-        Task { @MainActor in
-            self.albumArt = NSImage(named: "no_playback")
-            SpotifyManager.shared.oldTrackName = ""
-        }
+        self.albumArt = NSImage(named: "no_playback")
+        SpotifyManager.shared.oldTrackName = ""
         
         if NotchManager.shared.notchContent == .musicGlance || NotchManager.shared.notchContent == .music {
             Task {

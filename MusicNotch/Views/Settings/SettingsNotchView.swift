@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Luminare
+import JochexUI
 import Defaults
 
 struct SettingsNotchView: View {
@@ -14,6 +15,7 @@ struct SettingsNotchView: View {
     @Default(.hapticFeedback) private var hapticFeedback
     @Default(.openingDelay) private var openingDelay
     @Default(.hideNotchTime) private var hideNotchTime
+    @Default(.hideInFullScreen) private var hideInFullScreen
     
     var body: some View {
         LuminareSection {
@@ -35,12 +37,21 @@ struct SettingsNotchView: View {
                         .font(.title3)
                 }
             }
-            .buttonStyle(LuminareButtonStyle())
+            .luminareRoundingBehavior(top: true)
+            .luminareBorderedStates(.hovering)
             .frame(height: 50)
-            .padding(3)
             
             LuminareToggle(isOn: $hapticFeedback) {
                 Text("Haptic feedback")
+            }
+            
+            LuminareToggle(isOn: $hideInFullScreen) {
+                Text("Hide in full screen")
+            }
+            .onChange(of: hideInFullScreen) { _, newValue in
+                if newValue == false && HideManager.shared.isFullScreen == true {
+                    HideManager.shared.isFullScreen = false
+                }
             }
             
             if hoverBehavior == .expand {
@@ -66,11 +77,8 @@ struct SettingsNotchView: View {
                 
             ) {
                 Text("Hide delay")
-                    .padding(.trailing, 5)
-                    .luminarePopover(attachedTo: .topTrailing) {
-                        Text("The time it takes for the notch to hide if the playback is stopped.")
-                            .padding()
-                    }
+                Spacer()
+                SettingsInfoItemView { Text("The time it takes for the notch to hide if the playback is stopped.") }
                 
             }
             .luminareSliderLayout(.regular)
@@ -78,7 +86,6 @@ struct SettingsNotchView: View {
         } header: {
             Text("Hover Behavior")
         }
-        .padding(.bottom, 14)
     }
 }
 

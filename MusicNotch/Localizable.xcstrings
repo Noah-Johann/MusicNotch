@@ -2,6 +2,7 @@
   "sourceLanguage" : "en",
   "strings" : {
     " Thank you for downloading MusicNotch!\n\n Let's set up the App." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -17,11 +18,8 @@
     "%" : {
       "shouldTranslate" : false
     },
-    "%@" : {
-      "shouldTranslate" : false
-    },
-    "%lld %%" : {
-      "shouldTranslate" : false
+    "%lld" : {
+
     },
     "About" : {
       "localizations" : {
@@ -116,6 +114,9 @@
         }
       }
     },
+    "Battery" : {
+
+    },
     "Brightness" : {
       "localizations" : {
         "de" : {
@@ -125,6 +126,9 @@
           }
         }
       }
+    },
+    "Charging" : {
+
     },
     "Check for updates" : {
       "localizations" : {
@@ -145,6 +149,9 @@
           }
         }
       }
+    },
+    "Connectivity" : {
+
     },
     "Contribute on Github" : {
       "localizations" : {
@@ -311,16 +318,6 @@
         }
       }
     },
-    "Extensions" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Erweiterungen"
-          }
-        }
-      }
-    },
     "Finish" : {
       "localizations" : {
         "de" : {
@@ -360,6 +357,9 @@
           }
         }
       }
+    },
+    "Glances" : {
+
     },
     "Got it!" : {
       "extractionState" : "stale",
@@ -422,6 +422,9 @@
         }
       }
     },
+    "Hide in full screen" : {
+
+    },
     "Hide labels" : {
       "localizations" : {
         "de" : {
@@ -452,7 +455,7 @@
         }
       }
     },
-    "If deactivated, settings apply only for the currently selected player." : {
+    "HUD" : {
 
     },
     "If hidden, settings can be accessed via right click on the player" : {
@@ -495,16 +498,6 @@
         }
       }
     },
-    "Keyboard shortcuts" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kurzbefehle"
-          }
-        }
-      }
-    },
     "Launch at login" : {
       "localizations" : {
         "de" : {
@@ -528,15 +521,11 @@
     "LIVE" : {
 
     },
-    "LockScreen" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sperrbildschirm"
-          }
-        }
-      }
+    "Lock Screen" : {
+
+    },
+    "Low Battery" : {
+
     },
     "Low battery threshold" : {
       "localizations" : {
@@ -547,6 +536,9 @@
           }
         }
       }
+    },
+    "Low Power" : {
+
     },
     "Main display" : {
       "localizations" : {
@@ -570,6 +562,7 @@
       }
     },
     "Music" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -603,6 +596,7 @@
       }
     },
     "MusicNotch needs access to Spotify to work properly." : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -611,6 +605,9 @@
           }
         }
       }
+    },
+    "MusicNotch needs permission to control your music player." : {
+
     },
     "muted" : {
       "localizations" : {
@@ -661,6 +658,9 @@
           }
         }
       }
+    },
+    "Now Playing" : {
+
     },
     "Open Spotify to request permissions" : {
       "extractionState" : "stale",
@@ -785,16 +785,6 @@
         }
       }
     },
-    "Please relaunch the app after giving permissions" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bitte die App neustarten, nachdem Berechtigungen erteilt wurden"
-          }
-        }
-      }
-    },
     "Position adjustment" : {
       "localizations" : {
         "de" : {
@@ -880,6 +870,9 @@
           }
         }
       }
+    },
+    "Shortcuts" : {
+
     },
     "Show in %@" : {
 
@@ -1040,6 +1033,9 @@
         }
       }
     },
+    "Thank you for downloading MusicNotch!\n    \nLet's set up the App." : {
+
+    },
     "The time it takes for the notch to hide if the playback is stopped." : {
       "localizations" : {
         "de" : {
@@ -1118,17 +1114,6 @@
       },
       "shouldTranslate" : false
     },
-    "Version: %@ (%lld)" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Version: %1$@ (%2$lld)"
-          }
-        }
-      },
-      "shouldTranslate" : false
-    },
     "Volume" : {
       "localizations" : {
         "de" : {
@@ -1150,6 +1135,7 @@
       }
     },
     "Welcome" : {
+      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -1158,6 +1144,9 @@
           }
         }
       }
+    },
+    "Welcome!" : {
+
     },
     "You are all set up!" : {
       "extractionState" : "stale",

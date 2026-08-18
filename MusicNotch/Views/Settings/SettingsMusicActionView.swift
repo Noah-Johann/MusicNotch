@@ -28,7 +28,9 @@ struct SettingsMusicActionView: View {
                             .font(.title3)
                     }
                 }
-                .buttonStyle(LuminareButtonStyle())
+                .luminareRoundingBehavior(top: true, bottom: true)
+                .luminareBorderedStates(.hovering)
+                .buttonStyle(.luminare)
                 .frame(height: 75)
         } header: {
             Text("Music Action")

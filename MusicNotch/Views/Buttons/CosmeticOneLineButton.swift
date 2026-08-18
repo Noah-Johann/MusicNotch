@@ -18,10 +18,15 @@ func CosmeticOneLineButton(title: LocalizedStringKey, image: Image, hoverIcon: S
                 .imageScale(.large)
             Text(title)
             Spacer()
+            Image(systemName: hoverIcon)
+                .imageScale(.large)
+                .foregroundStyle(.tertiary)
         }
-        .padding(.horizontal, 8)
-        .frame(height: 36)
-    } .buttonStyle(LuminareCosmeticButtonStyle(icon: Image(systemName: hoverIcon)))
+        .padding(.horizontal, 14)
+    }
+    .luminareBorderedStates(.hovering)
+    .buttonStyle(.luminare)
+    .frame(height: 40)
 }
 
 

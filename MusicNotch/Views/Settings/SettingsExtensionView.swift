@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Luminare
+import JochexUI
 import Defaults
 
 struct SettingsExtensionView: View {
@@ -39,26 +40,20 @@ struct SettingsExtensionView: View {
             .luminareSliderLayout(.regular)
             .padding(.bottom, 3)
             
-        } header: {
-            Text("Extensions")
         }
+        
         LuminareSection {
             LuminareToggle(isOn: $batteryExtension) {
+                Image(systemName: "bolt.fill")
+                    .bold()
+                    .foregroundStyle(batteryExtension ? Color.accentColor : .secondary)
                 Text("Enable Battery extension")
             }
             
             LuminareToggle(isOn: $pluggedInSound) {
-                HStack {
-                    Text("Play charging sound")
-                    
-                    Button (action: {
-                        SoundHelper.shared.playSound(sound: .pluggedIn)
-                    }, label: {
-                        Image(systemName: "speaker.wave.2.circle.fill")
-                            .foregroundStyle(.secondary)
-                            .imageScale(.large)
-                    }) .buttonStyle(.plain)
-                }
+                Text("Play charging sound")
+                Spacer()
+                SettingsSoundItemView(sound: .pluggedIn)
             }
             
             LuminareToggle(isOn: $lowPowerWarning) {
@@ -79,23 +74,20 @@ struct SettingsExtensionView: View {
                 .padding(.bottom, 3)
                 
                 LuminareToggle(isOn: $lowPowerSound) {
-                    HStack {
-                        Text("Play low power sound")
-                        
-                        Button (action: {
-                            SoundHelper.shared.playSound(sound: .macLowBattery)
-                        }, label: {
-                            Image(systemName: "speaker.wave.2.circle.fill")
-                                .foregroundStyle(.secondary)
-                                .imageScale(.large)
-                        }) .buttonStyle(.plain)
-                    }
+                    Text("Play low power sound")
+                    Spacer()
+                    SettingsSoundItemView(sound: .macLowBattery)
                 }
             }
-        } 
-        
+        } header: {
+            Text("Battery")
+        }
+
         LuminareSection {
             LuminareToggle(isOn: $hudExtension) {
+                Image(systemName: "speaker.wave.2.fill")
+                    .bold()
+                    .foregroundStyle(hudExtension ? Color.accentColor : .secondary)
                 Text("Enable HUD extension")
             }
             
@@ -114,18 +106,24 @@ struct SettingsExtensionView: View {
             LuminareToggle(isOn: $gradientHudSlider) {
                 Text("Gradient slider")
             }
+        } header: {
+            Text("HUD")
         }
             
         LuminareSection {
             LuminareToggle(isOn: $bluetoothRecognition) {
+                Image(systemName: "headphones")
+                    .bold()
+                    .foregroundStyle(bluetoothRecognition ? Color.accentColor : .secondary)
                 Text("Enable Bluetooth extension")
             }
             
             LuminareToggle(isOn: $bluetoothSymbols) {
                 Text("Use device icons")
             }
+        } header: {
+            Text("Connectivity")
         }
-        .padding(.bottom, 14)
     }
 }
 
