@@ -1,5 +1,5 @@
 {
-  "originHash" : "fb8ceed9f5f0c0309dc4e66427f38a1de1299e44d0019eeaaaee89d6e6015d56",
+  "originHash" : "584f01579d787bad39669e970b57e2161dc24ac696d999493a56ae7bf81c633b",
   "pins" : [
     {
       "identity" : "defaults",
@@ -8,6 +8,24 @@
       "state" : {
         "branch" : "main",
         "revision" : "752bcb9eb2e110fa9d82826c99857b0e9a76fb1d"
+      }
+    },
+    {
+      "identity" : "dynamicnotchkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Noah-Johann/DynamicNotchKit",
+      "state" : {
+        "branch" : "main",
+        "revision" : "c281eb57e1b3192fb60f93fde05ea90a1840c0c1"
+      }
+    },
+    {
+      "identity" : "jochexui",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Noah-Johann/JochexUI",
+      "state" : {
+        "branch" : "main",
+        "revision" : "0ca944f08b901bdb8679c5ad5a093b45a1a877df"
       }
     },
     {
