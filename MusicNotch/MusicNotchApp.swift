@@ -45,9 +45,7 @@ struct MusicNotchApp: App {
     }
     
     var body: some Scene {
-        MenuBarExtra("MusicNotch", image: "notch.square", isInserted: Binding(get: {
-            showMenuBarItem
-        }, set: { _ in })) {
+        MenuBarExtra("MusicNotch", image: "notch.square", isInserted: $showMenuBarItem) {
             MenuBarExtraView()
         }
     }

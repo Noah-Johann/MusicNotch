@@ -21,56 +21,64 @@ struct MenuBarExtraView: View {
             Button {
                 MusicActions.playPause()
             } label: {
-                Image(systemName: musicManager.music.isPlaying == true ? "pause.fill" : "play.fill")
-                Text(musicManager.music.isPlaying == true ? "Pause" : "Play")
+                Label(musicManager.music.isPlaying == true ? "Pause" : "Play", systemImage: musicManager.music.isPlaying == true ? "pause.fill" : "play.fill")
             }
             
             Button {
                 MusicActions.nextTrack()
             } label: {
-                Image(systemName: "forward.end.fill")
-                Text("Next")
+                Label("Next", systemImage: "forward.end.fill")
             }
+            
             Button {
                 MusicActions.lastTrack()
             } label: {
-                Image(systemName: "backward.end.fill")
-                Text("Previous")
+                Label("Previous", systemImage: "backward.end.fill")
             }
+            
             Button {
                 openMusicApp()
             } label: {
                 switch MusicManager.shared.musicPlayer {
                 case .appleMusic:
-                    MusicManager.shared.musicPlayer.image.imageScale(.large)
-                    Text("Show in Apple Music")
-                case .spotify:
-                    MusicManager.shared.musicPlayer.image.imageScale(.large)
-                    Text("Show in Spotify")
-                case .nowPlaying:
-                    if MusicManager.shared.playingAppBundle != nil {
-                        getMusicAppImage(bundle: MusicManager.shared.playingAppBundle!).imageScale(.large)
-                    } else {
-                        MusicManager.shared.musicPlayer.image.imageScale(.large)
+                    Label {
+                        Text("Show in Apple Music")
+                    } icon: {
+                        musicManager.musicPlayer.image.imageScale(.large)
                     }
-                    if MusicManager.shared.playingAppName != nil {
-                        Text("Show in \(MusicManager.shared.playingAppName ?? "Now Playing")")
-                    } else {
-                        Text("Show in Now Playing")
+                case .spotify:
+                    Label {
+                        Text("Show in Spotify")
+                    } icon: {
+                        musicManager.musicPlayer.image.imageScale(.large)
+                    }
+                case .nowPlaying:
+                    Label {
+                        if let name = MusicManager.shared.playingAppName {
+                            Text("Show in \(name)")
+                        } else {
+                            Text("Show in Now Playing")
+                        }
+                    } icon: {
+                        if let bundle = MusicManager.shared.playingAppBundle {
+                            getMusicAppImage(bundle: bundle).imageScale(.large)
+                        } else {
+                            MusicManager.shared.musicPlayer.image.imageScale(.large)
+                        }
                     }
                 }
             }
-            
-        }
+        } .labelStyle(.titleAndIcon)
         
         if !autoPlayer {
             Section {
                 Picker("Source", selection: $musicPlayer) {
                     ForEach(MusicApp.allCases, id: \.self) { app in
-                        HStack {
-                            app.image.imageScale(.large)
+                        Label {
                             Text(app.text)
-                        }
+                        } icon: {
+                            app.image.imageScale(.large)
+                        } .labelStyle(.titleAndIcon)
                     }
                 }
             }
