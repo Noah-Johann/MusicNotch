@@ -35,6 +35,15 @@ struct SettingsView: View {
             } .drawingGroup()
         } content: {
             vm.selection.view()
+                .animation(.easeInOut(duration: 0.3), value: lowPowerWarning)
+                .animation(.easeInOut(duration: 0.3), value: bluetoothRecognition)
+                .animation(.easeInOut(duration: 0.3), value: enableGestures)
+                .animation(.easeInOut(duration: 0.3), value: hoverBehavior)
+                .animation(.easeInOut(duration: 0.3), value: autoMusicGlance)
+                .animation(.easeInOut(duration: 0.3), value: updateManager.updateState)
+                .animation(.bouncy(duration: 0.2), value: updateManager.updateProgress)
+                .animation(.bouncy(duration: 0.3), value: autoPlayer)
+            
         } .jochexUseGlassIfAvailable(true)
         
 //        LuminareDividedStack {
@@ -85,14 +94,7 @@ struct SettingsView: View {
 //                SettingsAboutView()
 //            }
 //            .padding(.horizontal, 5)
-//            .animation(.easeInOut(duration: 0.3), value: lowPowerWarning)
-//            .animation(.easeInOut(duration: 0.3), value: bluetoothRecognition)
-//            .animation(.easeInOut(duration: 0.3), value: enableGestures)
-//            .animation(.easeInOut(duration: 0.3), value: hoverBehavior)
-//            .animation(.easeInOut(duration: 0.3), value: autoMusicGlance)
-//            .animation(.easeInOut(duration: 0.3), value: updateManager.updateState)
-//            .animation(.bouncy(duration: 0.2), value: updateManager.updateProgress)
-//            .animation(.bouncy(duration: 0.3), value: autoPlayer)
+
 //
 //        }
     }

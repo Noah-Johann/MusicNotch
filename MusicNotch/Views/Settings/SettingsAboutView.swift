@@ -163,23 +163,25 @@ struct SettingsAboutView: View {
                             .imageScale(.large)
                         Text("Release Notes")
                         Spacer()
-                        Image(systemName: "arrow.up")
+                        Image(systemName: "arrow.up.right")
                             .imageScale(.large)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(.tertiary)
                     }
                     .padding(.horizontal)
                 }
+                .luminareRoundingBehavior(bottom: true)
+                .luminareBorderedStates(.hovering)
                 .buttonStyle(.luminare)
                 .frame(height: 36)
             }
-        } 
-            .onChange(of: updateManager.updateState) {
-                if updateManager.updateState == .noUpdates {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
-                        updateManager.updateState = .idle
-                    }
-                } else { return }
-            }
+        }
+        .onChange(of: updateManager.updateState) {
+            if updateManager.updateState == .noUpdates {
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
+                    updateManager.updateState = .idle
+                }
+            } else { return }
+        }
         
 // MARK: - About section
 
