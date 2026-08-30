@@ -19,7 +19,7 @@
       "shouldTranslate" : false
     },
     "%lld" : {
-
+      "shouldTranslate" : false
     },
     "About" : {
       "localizations" : {
@@ -102,7 +102,14 @@
       }
     },
     "Auto player" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatischer Player"
+          }
+        }
+      }
     },
     "Automatic MusicGlance" : {
       "localizations" : {
@@ -115,7 +122,14 @@
       }
     },
     "Battery" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Battery"
+          }
+        }
+      }
     },
     "Brightness" : {
       "localizations" : {
@@ -128,7 +142,14 @@
       }
     },
     "Charging" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lädt"
+          }
+        }
+      }
     },
     "Check for updates" : {
       "localizations" : {
@@ -141,7 +162,14 @@
       }
     },
     "Colored progress bar" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eingefärbte Progressbar"
+          }
+        }
+      }
     },
     "Colored spectogram" : {
       "localizations" : {
@@ -154,7 +182,14 @@
       }
     },
     "Connectivity" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konnektivität"
+          }
+        }
+      }
     },
     "Contribute on Github" : {
       "localizations" : {
@@ -309,7 +344,14 @@
       }
     },
     "Enable silent launch" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktiviere stummen Start"
+          }
+        }
+      }
     },
     "Expand" : {
       "localizations" : {
@@ -362,15 +404,11 @@
       }
     },
     "Glances" : {
-
-    },
-    "Got it!" : {
-      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Verstanden!"
+            "value" : "Glances"
           }
         }
       }
@@ -426,7 +464,14 @@
       }
     },
     "Hide in full screen" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Im Vollbildschirm schließen"
+          }
+        }
+      }
     },
     "Hide labels" : {
       "localizations" : {
@@ -459,7 +504,14 @@
       }
     },
     "HUD" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "HUD"
+          }
+        }
+      }
     },
     "If hidden, settings can be accessed via right click on the player" : {
       "localizations" : {
@@ -522,10 +574,17 @@
       }
     },
     "LIVE" : {
-
+      "shouldTranslate" : false
     },
     "Lock Screen" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sperrbildschirm"
+          }
+        }
+      }
     },
     "Low Battery" : {
 
@@ -541,7 +600,14 @@
       }
     },
     "Low Power" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stromsparen"
+          }
+        }
+      }
     },
     "Main display" : {
       "localizations" : {
@@ -553,30 +619,15 @@
         }
       }
     },
-    "Message" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nachricht"
-          }
-        }
-      }
-    },
-    "Music" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Musik"
-          }
-        }
-      }
-    },
     "Music Action" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Music-Action"
+          }
+        }
+      }
     },
     "MusicGlance" : {
       "localizations" : {
@@ -598,19 +649,15 @@
         }
       }
     },
-    "MusicNotch needs access to Spotify to work properly." : {
-      "extractionState" : "stale",
+    "MusicNotch needs permission to control your music player." : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "MusicNotch muss Spotify steuern können, um richtig zu funktionieren."
+            "value" : "MusicNotch braucht Berechtigungen, um ihren Musik-App zu steuern."
           }
         }
       }
-    },
-    "MusicNotch needs permission to control your music player." : {
-
     },
     "muted" : {
       "localizations" : {
@@ -663,15 +710,11 @@
       }
     },
     "Now Playing" : {
-
-    },
-    "Open Spotify to request permissions" : {
-      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Öffne Spotify um fortzufahren"
+            "value" : "Now Playing"
           }
         }
       }
@@ -692,17 +735,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pause"
-          }
-        }
-      }
-    },
-    "Permission denied" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Berechtigung abgelehnt"
           }
         }
       }
@@ -777,17 +809,6 @@
         }
       }
     },
-    "Please go to System Settings > Privacy & Security > Automation, and toggle Spotify under MusicNotch" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bitte öffnen sie Einstellungen > Datenschutz & Sicherheit > Automation und erlauben sie Spotify unter MusicNotch"
-          }
-        }
-      }
-    },
     "Position adjustment" : {
       "localizations" : {
         "de" : {
@@ -839,7 +860,14 @@
       }
     },
     "Repeat" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wiederhohlen"
+          }
+        }
+      }
     },
     "Request permission" : {
       "localizations" : {
@@ -852,7 +880,14 @@
       }
     },
     "Restart" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neu starten"
+          }
+        }
+      }
     },
     "s" : {
       "localizations" : {
@@ -875,19 +910,54 @@
       }
     },
     "Shortcuts" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kurzbefehle"
+          }
+        }
+      }
     },
     "Show in %@" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In %@ öffnen"
+          }
+        }
+      }
     },
     "Show in Apple Music" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In Apple Music öffnen"
+          }
+        }
+      }
     },
     "Show in Now Playing" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In Now Playing öffnen"
+          }
+        }
+      }
     },
     "Show in Spotify" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In Spotify öffnen"
+          }
+        }
+      }
     },
     "Show menubar item" : {
       "localizations" : {
@@ -920,7 +990,7 @@
       }
     },
     "Shuffle" : {
-
+      "shouldTranslate" : false
     },
     "Skip Backwards" : {
       "localizations" : {
@@ -963,7 +1033,14 @@
       }
     },
     "Source" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quelle"
+          }
+        }
+      }
     },
     "Spotify" : {
       "localizations" : {
@@ -971,17 +1048,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Spotify"
-          }
-        }
-      }
-    },
-    "Spotify is not opened" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Spotify ist nicht gestartet"
           }
         }
       }
@@ -1037,7 +1103,14 @@
       }
     },
     "Thank you for downloading MusicNotch!\n    \nLet's set up the App." : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Danke, dass sie MusicNotch installiert haben!"
+          }
+        }
+      }
     },
     "The time it takes for the notch to hide if the playback is stopped." : {
       "localizations" : {
@@ -1045,17 +1118,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Die Zeit, bis die Notch versteckt wird, wenn die Wiedergabe gestoppt wird."
-          }
-        }
-      }
-    },
-    "Title" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Titel"
           }
         }
       }
@@ -1137,27 +1199,12 @@
         }
       }
     },
-    "Welcome" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Willkommen"
-          }
-        }
-      }
-    },
     "Welcome!" : {
-
-    },
-    "You are all set up!" : {
-      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alles eingerichtet!"
+            "value" : "Willkommen!"
           }
         }
       }
