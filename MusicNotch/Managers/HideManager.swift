@@ -52,6 +52,7 @@ class HideManager {
     
     // Source: https://stackoverflow.com/a/79922931
     func CheckForFullScreen() -> Bool {
+        print("check fullscreen")
        guard
          let windows = CGWindowListCopyWindowInfo(
            .optionOnScreenOnly,
@@ -73,8 +74,7 @@ class HideManager {
          let bounds = CGRect(dictionaryRepresentation: windowBounds)
          let height = bounds?.size.height ?? 0
          let width = bounds?.size.width ?? 0
-         if window["kCGWindowOwnerName"] as? String == "Dock"
-           && window["kCGWindowLayer"] as? Int64 == -2_147_483_622
+         if window["kCGWindowLayer"] as? Int64 == -2_147_483_622
            && height == screen.height && width == screen.width
          {
            return true

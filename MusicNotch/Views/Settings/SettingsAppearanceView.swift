@@ -12,12 +12,17 @@ import Defaults
 
 struct SettingsAppearanceView: View {
     @Default(.coloredSpect) private var coloredSpect
+    @Default(.coloredProgressBar) private var coloredProgressBar
     @Default(.musicPlayerVolume) private var musicPlayerVolume
     
     var body: some View {
         LuminareSection {
             LuminareToggle(isOn: $coloredSpect) {
                 Text("Colored spectogram")
+            }
+            
+            LuminareToggle(isOn: $coloredProgressBar) {
+                Text("Colored progress bar")
             }
 
             LuminareToggle(isOn: $musicPlayerVolume) {

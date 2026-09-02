@@ -30,7 +30,8 @@ extension Defaults.Keys {
     
     // Appearance
     static let coloredSpect = Key<Bool>("coloredSpect", default: true)
-    static let musicPlayerVolume = Key<Bool>("musicPlayerVolume", default: true)
+    static let coloredProgressBar = Key<Bool>("coloredProgressBar", default: true)
+    static let musicPlayerVolume = Key<Bool>("musicPlayerVolume", default: false)
     
     // Notch
     static let hoverBehavior = Key<HoverBehavior>("hoverBehavior", default: .disabled)

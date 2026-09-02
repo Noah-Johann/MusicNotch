@@ -32,6 +32,7 @@ struct NotchMusicViewExpanded: View {
     @Environment(NotchManager.self) private var notchManager
     
     @Default(.coloredSpect) private var coloredSpect
+    @Default(.coloredProgressBar) private var coloredProgressBar
     
     var body: some View {
         VStack (spacing: 12) {
@@ -93,8 +94,8 @@ struct NotchMusicViewExpanded: View {
                     CustomSlider(
                         value: musicManager.music.isLive ? .constant(0) : $trackPosition,
                         inRange: 0...Double(musicManager.music.trackDuration > 0 ? musicManager.music.trackDuration : 1),
-                        activeFillColor: .gray.opacity(0.8),
-                        fillColor: musicManager.music.isLive ? Color(NSColor.darkGray).opacity(0.4) : .gray.opacity(0.8),
+                        activeFillColor: coloredProgressBar == true ? Color(nsColor: musicManager.aveColor ?? .gray) : Color.gray.opacity(0.8),
+                        fillColor: musicManager.music.isLive ? Color(NSColor.darkGray).opacity(0.4) : (coloredProgressBar == true ? Color(nsColor: musicManager.aveColor ?? .gray) : .gray.opacity(0.8)),
                         emptyColor: Color(NSColor.darkGray).opacity(0.6),
                         height: 7.0,
                         onEditingChanged: { isEditing in
