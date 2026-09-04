@@ -33,15 +33,15 @@ For details about upcoming and planned features, check out the [Roadmap](https:/
 
 ## Download
 
-> [!WARNING]
-> Since I dont have an Apple Developer Account, the app will show a popup on the first launch saying that the app couldn't be verified. To launch the app:
+> [!NOTE]
+> Since I don't have an Apple Developer Account, the app will show a popup on the first launch saying that the app couldn't be verified. To launch the app:
 > 
 > 1.  Click **OK** to close the popup
 > 2.  Open **Settings** -> **Privacy & Security**
 > 3.  Scroll down until you see **MusicNotch**
 > 4.  Click **Run anyway**
 > 
-> You only have to do this on the first launch of the App
+> You only have to do this on the first launch.
 
 
 ### Direct Download
