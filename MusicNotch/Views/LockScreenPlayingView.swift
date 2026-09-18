@@ -11,116 +11,43 @@ import Defaults
 
 struct LockScreenPlayingView: View {
     @State private var musicManager = MusicManager.shared
-    @State private var volumeManager = VolumeManager.shared
-  //  @State private var accessibilityManager = AccessibilityManager.shared
-    
-    @State private var trackPosition: Double = 0
-    @State private var isDragging: Bool = false
-    @State private var playbackTimer: Timer?
-        
-    @Default(.coloredSpect) private var coloredSpect
     
     var body: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 30)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .foregroundStyle(.ultraThinMaterial)
-            
-            VStack {
-                VStack (){
-                    HStack (alignment: .center) {
-                        AlbumArtView(
-                            playing: $musicManager.music.isPlaying,
-                            size: 70,
-                            shrink: 8,
-                            cornerRadius: 13,
-                            nsImage: musicManager.albumArt ?? NSImage(named: "no_playback")!,
-                        )
-                        .padding(.top, 10)
-                        .padding(.leading, 17)
-                        .padding(.trailing, 4)
-                        
-                        VStack (alignment: .leading, spacing: 4) {
-                            Text(musicManager.music.trackName)
-                                .font(.title2.bold())
-                                .foregroundStyle(.white)
-                                .frame(height: 27, alignment: .bottom)
-                            Text(musicManager.music.artistName)
-                                .font(.system(size: 14, weight: .regular))
-                                .foregroundStyle(.gray)
-                                .frame(height: 17, alignment: .top)
-                        } .frame(height: 70, alignment: .center)
-                        
-                        Spacer()
-                        
-//                        if !accessibilityManager.isReduceMotion {
-//                            Rectangle()
-//                                .fill(coloredSpect ? Color(nsColor: musicManager.aveColor ?? .white).gradient : Color.white.gradient)
-//                                .frame(width: 35, height: 45, alignment: .center)
-//                                .mask {
-//                                    AudioSpectrumView(isPlaying: $musicManager.music.isPlaying)
-//                                        .frame(width: 30, height: 30)
-//                                }
-//                                .padding(.bottom, 17)
-//                                .padding(.trailing, 10)
-//                        } else {
-//                            Rectangle()
-//                                .fill(Color.clear)
-//                                .frame(width: 35)
-//                        }
-                    } .frame(height: 90)
+        VStack {
+            VStack (){
+                HStack (alignment: .center) {
+                    AlbumArtView(
+                        playing: $musicManager.music.isPlaying,
+                        size: 70,
+                        shrink: 8,
+                        cornerRadius: 13,
+                        nsImage: musicManager.albumArt ?? NSImage(named: "no_playback")!,
+                    )
+                    .padding(.top, 10)
+                    .padding(.leading, 17)
+                    .padding(.trailing, 4)
                     
-                    HStack {
-                        Text(formatTime(Int(trackPosition)))
-                            .frame(minWidth: 50, maxWidth: 80, minHeight: 20, alignment: .center)
+                    VStack (alignment: .leading, spacing: 4) {
+                        Text(musicManager.music.trackName)
+                            .font(.title2.bold())
+                            .foregroundStyle(.white)
+                            .frame(height: 27, alignment: .bottom)
+                        Text(musicManager.music.artistName)
+                            .font(.system(size: 14, weight: .regular))
                             .foregroundStyle(.gray)
-                            .fontWeight(.semibold)
-                            .font(.system(size: 12))
-                        
-                        CustomSlider(value: $trackPosition,
-                                     inRange: 0...Double(musicManager.music.trackDuration),
-                                     activeFillColor: .white,
-                                     fillColor: .white,
-                                     emptyColor: Color(NSColor.darkGray),
-                                     height: 8.0,
-                                     onEditingChanged: { isEditing in
-                            isDragging = isEditing
-                            if !isEditing {
-                                MusicActions.setProgress(position: trackPosition)
-                            }
-                        }) .frame(width: 200, height: 10, alignment: .center)
-                        
-                        Text("-\(formatTime(Int(musicManager.music.trackDuration - trackPosition)))")
-                            .frame(minWidth: 55, maxWidth: 80, minHeight: 20, alignment: .center)
-                            .foregroundStyle(.gray)
-                            .fontWeight(.semibold)
-                            .font(.system(size: 12))
-                    }.frame(height: 15)
-                        .padding(.bottom, 6)
+                            .frame(height: 17, alignment: .top)
+                    } .frame(height: 70, alignment: .center)
                     
-                    
-                    PlayerButtonView(enableSpeaker: false)
-                        .padding(.bottom, 20)
-                } .frame(height: 190)
-            }
+                    Spacer()
+                } .frame(height: 90)
+                
+                MusicProgressBarView(width: 305, coloredProgressBar: false)
+                
+                PlayerButtonView(enableSpeaker: false)
+                    .padding(.bottom, 20)
+            } .frame(height: 190)
         }
         .frame(width: 350, height: 190)
-        .onChange(of: musicManager.music.trackPosition) { _, newValue in
-            trackPosition = Double(newValue)
-        }
-        .onAppear {
-            trackPosition = Double(musicManager.music.trackPosition)
-            playbackTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
-                Task { @MainActor in
-                    if musicManager.music.isPlaying == true {
-                        trackPosition += 1
-                    }
-                }
-            }
-        }
-        .onDisappear {
-            playbackTimer?.invalidate()
-        }
         .contextMenu {
             Text("Version \(Bundle.main.appVersion!)")
                 .foregroundStyle(.secondary)
@@ -133,10 +60,35 @@ struct LockScreenPlayingView: View {
                 } .keyboardShortcut("Q", modifiers: .command)
             }
         }
+        .background {
+            if #available(macOS 26, *) {
+                GlassView(style: .clear, cornerRadius: 30)
+                    .environment(\.controlActiveState, .active)
+            } else {
+                ZStack {
+                    MaterialView(
+                        material: .menu,
+                        blendingMode: .behindWindow
+                    )
+                    
+                    Rectangle()
+                        .foregroundStyle(.tint)
+                        .blendMode(.multiply)
+                }
+            }
+        }
     }
 }
 
 class MusicPlayerWindow: NSPanel {
+    override var canBecomeKey: Bool {
+        true
+    }
+    
+    override var canBecomeMain: Bool {
+        true
+    }
+    
     init() {
         super.init(
             contentRect: NSRect(x: 0, y: 0, width: 350, height: 190),
@@ -145,13 +97,13 @@ class MusicPlayerWindow: NSPanel {
             defer: false
         )
         
-        self.isOpaque = false
         self.backgroundColor = .clear
-        self.hasShadow = true
+        self.hasShadow = false
         
         self.level = .floating
         self.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
         self.isMovableByWindowBackground = false
+        self.isFloatingPanel = true
         
         self.contentView = NSHostingView(rootView: LockScreenPlayingView().moveToSky())
         
