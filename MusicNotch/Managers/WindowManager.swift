@@ -95,7 +95,9 @@ class WindowManager {
                     if lockscreenWindow == nil {
                         lockscreenWindow = MusicPlayerWindow()
                     }
+                    NSApp.activate(ignoringOtherApps: true)
                     lockscreenWindow?.orderFrontRegardless()
+                    lockscreenWindow?.makeKey()
                 }
             }
         }
