@@ -34,6 +34,7 @@ class WindowManager {
     var lockscreenWindow: MusicPlayerWindow? = nil
     
     func openSettings() {
+        SettingsViewManager.shared.selection = .general
         if settingsController == nil {
             let window = JochexWindow(width: 500, height: 600) {
                 SettingsView()
