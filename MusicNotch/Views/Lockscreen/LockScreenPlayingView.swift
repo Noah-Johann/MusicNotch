@@ -11,7 +11,7 @@ import Defaults
 
 struct LockScreenPlayingView: View {
     @State private var musicManager = MusicManager.shared
-    
+        
     var body: some View {
         VStack {
             VStack (){
@@ -45,6 +45,7 @@ struct LockScreenPlayingView: View {
                 
                 PlayerButtonView(enableSpeaker: false)
                     .padding(.bottom, 20)
+                    .environment(\EnvironmentValues.colorScheme, .dark)
             } .frame(height: 190)
         }
         .frame(width: 350, height: 190)
