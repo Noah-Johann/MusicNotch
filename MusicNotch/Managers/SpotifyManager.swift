@@ -69,6 +69,7 @@ class SpotifyManager {
     }
     
     public func checkIfPlaying() async -> Bool {
+        guard isSpotifyRunning() else { return false }
         guard let script = NSAppleScript(source: "tell application \"Spotify\" to set isPlaying to player state as string") else { return false }
         let result = await AppleScriptHelper.executeAppleScript(script)
         if let stringValue = result?.stringValue, stringValue == "playing" {

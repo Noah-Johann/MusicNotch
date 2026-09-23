@@ -59,6 +59,7 @@ class AppleMusicManager {
     }
     
     public func checkIfPlaying() async -> Bool {
+        guard checkIfMusicIsRunning() else { return false }
         guard let script = NSAppleScript(source: "tell application \"Music\" to set isPlaying to player state as string") else { return false }
         let result = await AppleScriptHelper.executeAppleScript(script)
         if let stringValue = result?.stringValue, stringValue == "playing" {

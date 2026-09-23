@@ -57,18 +57,6 @@ class MusicManager {
     }
     
     init () {
-        if Defaults[.autoPlayer] {
-            self.musicPlayer = .nowPlaying
-        } else {
-            self.musicPlayer = Defaults[.musicPlayer]
-        }
-        
-        appleMusicManager.setupObservers()
-        spotifyManager.setupObservers()
-        Task {
-            mediaController.startListening()
-        }
-        
         mediaController.onTrackInfoReceived = { trackInfo in
             Task {
                 self.updateMusic(player: .nowPlaying, updateInfo: trackInfo)
@@ -77,8 +65,24 @@ class MusicManager {
         mediaController.onListenerTerminated = {
             self.setDisabledPlayback()
         }
+        
+        
+        Task {
+            if Defaults[.autoPlayer] {
+                self.musicPlayer = await checkForPlayingApp() ?? .nowPlaying
+            } else {
+                self.musicPlayer = Defaults[.musicPlayer]
+            }
+            
+            
+            appleMusicManager.setupObservers()
+            spotifyManager.setupObservers()
+            mediaController.startListening()
+            
+            refreshMusic()
+        }
     }
-    
+     
     deinit {
         mediaController.stopListening()
     }
@@ -153,6 +157,22 @@ class MusicManager {
         }
     }
     
+    /// Checks all music sources and returns the source that is playing or nil when nothing is playing
+    private func checkForPlayingApp() async -> MusicApp? {
+        if await appleMusicManager.checkIfPlaying() {
+            return .appleMusic
+        } else if await spotifyManager.checkIfPlaying() {
+            return .spotify
+        } else {
+            let isNowPlaying: Bool = await withCheckedContinuation { continuation in
+                mediaController.getTrackInfo() { info in
+                    continuation.resume(returning: info?.payload.isPlaying ?? false)
+                }
+            }
+            return isNowPlaying ? .nowPlaying : nil
+        }
+    }
+    
     private func processMusicInfo() {
         if music.trackName != prevMusic.trackName {
             prevMusic = music
@@ -198,30 +218,37 @@ class MusicManager {
             }
             
             if hideTimer == nil {
-                if NotchManager.shared.notchContent == .music || NotchManager.shared.notchContent == .musicGlance {
-                    if NotchManager.shared.notchDismissed == false && NotchManager.shared.notchState == .compact {
-                        hideTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-                            guard let self = self else { return }
-                            Task { @MainActor in
-                                self.stopTime += 1
-                                print(self.stopTime)
-                                if NotchManager.shared.notchState == .compact {
-                                    if self.stopTime > Int(Defaults[.hideNotchTime]) {
-                                        guard NotchManager.shared.notchContent == .music else { return }
-                                        await NotchManager.shared.setNotchState(.closed)
-                                        self.hideTimer?.invalidate()
-                                        self.hideTimer = nil
-                                        self.stopTime = 0
-                                        
-                                    }
-                                } else {
-                                    self.hideTimer?.invalidate()
-                                    self.hideTimer = nil
-                                    self.stopTime = 0
-                                }
-                            }
+                guard NotchManager.shared.notchContent == .music || NotchManager.shared.notchContent == .musicGlance else { return }
+                guard NotchManager.shared.notchDismissed == false && NotchManager.shared.notchState == .compact else { return }
+                
+                hideTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+                    guard let self = self else { return }
+                    
+                    Task { @MainActor in
+                        self.stopTime += 1
+                        print(self.stopTime)
+                        
+                        guard NotchManager.shared.notchState == .compact else {
+                            self.hideTimer?.invalidate()
+                            self.hideTimer = nil
+                            self.stopTime = 0
+                            return
                         }
+                        guard self.stopTime > Int(Defaults[.hideNotchTime]) else { return }
+                        guard NotchManager.shared.notchContent == .music || NotchManager.shared.notchContent == .musicGlance else { return }
+                        
+                        let checkPlayer = await self.checkForPlayingApp()
+                        if let player = checkPlayer {
+                            self.updateMusic(player: player)
+                        } else {
+                            await NotchManager.shared.setNotchState(.closed)
+                        }
+                        self.hideTimer?.invalidate()
+                        self.hideTimer = nil
+                        self.stopTime = 0
+                        
                     }
+                    
                 }
             }
         }
