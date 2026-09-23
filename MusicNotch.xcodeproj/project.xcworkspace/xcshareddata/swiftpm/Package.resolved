@@ -25,7 +25,7 @@
       "location" : "https://github.com/Noah-Johann/JochexUI",
       "state" : {
         "branch" : "main",
-        "revision" : "1ee0de4f22d9baef8ad6f24aa1bc76f0cff61ba0"
+        "revision" : "b868e4fb283669d11e932e6b9ca48fe9b1fc2970"
       }
     },
     {
@@ -78,8 +78,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/sparkle-project/Sparkle",
       "state" : {
-        "revision" : "d46d456107feacc80711b21847b82b07bd9fb46e",
-        "version" : "2.9.3"
+        "revision" : "eef1a539a373c1f1a320624b1130fc5de7b2e100",
+        "version" : "2.10.0"
       }
     },
     {
