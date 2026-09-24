@@ -32,6 +32,7 @@ class WindowManager {
     var onboardingWindow: NSWindow? { onboardingController?.window }
  
     var lockscreenWindow: MusicPlayerWindow? = nil
+    var lockScreenIsHovering: Bool = false
     
     func openSettings() {
         SettingsViewManager.shared.selection = .general
@@ -104,6 +105,7 @@ class WindowManager {
     }
     
     func hideLockScreen() {
+        lockScreenIsHovering = false
         if Defaults[.lockPlayer] || lockscreenWindow != nil{
             lockscreenWindow?.close()
             lockscreenWindow = nil

@@ -15,19 +15,35 @@ class GestureManager {
     private var globalScrollMonitor: Any?
     private var localScrollMonitor: Any?
     
-    private var horizontalSwipeDelta: CGFloat = 0  // positive = +x, negative = -x
-    private var verticalSwipeDelta: CGFloat = 0    // positive = -y, negative = +y
-    
-    var horizontalSwipeThreshold: CGFloat = 200
-    var verticalSwipeThreshold: CGFloat = 200
-    private var horizontalThresholdCrossed: Bool = false
-    private var verticalThresholdCrossed: Bool = false
-    
     var swipeDirection: SwipeDirection = .vertical
     var horizontalType: HorizontalType = .right
     var verticalType: VerticalType = .up
+    var scrollTarget: ScrollTarget = .lock
+        
     
-    var horizontalGestureRelative: CGFloat {
+    // Notch
+    private var horizontalSwipeDelta: CGFloat = 0       // positive = +x, negative = -x
+    private var verticalSwipeDelta: CGFloat = 0         // positive = -y, negative = +y
+    var horizontalNotchSwipeThreshold: CGFloat = 200
+    var verticalNotchSwipeThreshold: CGFloat = 200
+    private var horizontalNotchThresholdCrossed: Bool = false
+    private var verticalNotchThresholdCrossed: Bool = false
+    
+    // LockScreen
+    var horizontalLockSwipeValue: CGFloat = 0   // positive = left, negative = right
+    var horizontalLockKeepThreshold: CGFloat = 90      // Threshold for keeping delete option on submit
+    var horizontalLockDeleteThreshold: CGFloat = 300    // Threshold for hiding widget on submit
+    var horizontalLockRightMax: CGFloat = 25
+    private var horizontalLockDeleteOpen: CGFloat = 110
+    private var horizontalLockKeepThresholdCrossed: Bool = false
+    private var horizontalLockDeleteThresholdCrossed: Bool = false
+    
+    public func setLockScreenDeleteOpen() {
+        horizontalLockSwipeValue = horizontalLockDeleteOpen
+    }
+        
+    
+    var horizontalNotchGestureRelative: CGFloat {
         if horizontalSwipeDelta > 0 {
             horizontalType = .right
         } else if horizontalSwipeDelta < 0 {
@@ -36,7 +52,7 @@ class GestureManager {
         
         let absDelta = abs(horizontalSwipeDelta)
         guard absDelta > 0 else { return 0 }
-        let relative = absDelta / horizontalSwipeThreshold
+        let relative = absDelta / horizontalNotchSwipeThreshold
         if relative < 0.1 {
             return 0
         }
@@ -46,7 +62,7 @@ class GestureManager {
         return relative
     }
     
-    var verticalGestureRelative: CGFloat {
+    var verticalNotchGestureRelative: CGFloat {
         if verticalSwipeDelta > 0 {
             verticalType = .down
         } else if verticalSwipeDelta < 0 {
@@ -55,7 +71,7 @@ class GestureManager {
         
         let absDelta = abs(verticalSwipeDelta)
         guard absDelta > 0 else { return 0 }
-        let relative = absDelta / horizontalSwipeThreshold
+        let relative = absDelta / verticalNotchSwipeThreshold
         if relative < 0.1 {
             return 0
         }
@@ -68,24 +84,39 @@ class GestureManager {
     enum SwipeDirection { case horizontal, vertical }
     enum HorizontalType { case left, right }
     enum VerticalType { case up, down }
+    enum ScrollTarget { case notch, lock }
     
     deinit {
         removeScrollMonitors()
     }
     
     private func handleScrollSubmit() {
+        print("Scroll target \(scrollTarget)")
+        print("value \(horizontalLockSwipeValue)")
         switch swipeDirection {
             case .horizontal:
-                guard Defaults[.mediaGestures] else { return }
-                guard abs(horizontalSwipeDelta) > horizontalSwipeThreshold else { return }
-                if horizontalSwipeDelta > 0 {
-                    MusicActions.nextTrack()
-                } else {
-                    MusicActions.lastTrack()
+                switch scrollTarget {
+                    case .notch:
+                        guard Defaults[.mediaGestures] else { return }
+                        guard abs(horizontalSwipeDelta) > horizontalNotchSwipeThreshold else { return }
+                        if horizontalSwipeDelta > 0 {
+                            MusicActions.nextTrack()
+                        } else {
+                            MusicActions.lastTrack()
+                        }
+                    case .lock:
+                        if horizontalLockSwipeValue > horizontalLockDeleteThreshold {
+                            WindowManager.shared.hideLockScreen()
+                            horizontalLockSwipeValue = 0
+                        } else if horizontalLockSwipeValue > horizontalLockKeepThreshold * 0.8 {
+                            horizontalLockSwipeValue = horizontalLockDeleteOpen
+                        } else {
+                            horizontalLockSwipeValue = 0
+                        }
                 }
             case .vertical:
                 guard Defaults[.enableGestures] else { return }
-                guard abs(verticalSwipeDelta) > verticalSwipeThreshold else { return }
+                guard abs(verticalSwipeDelta) > verticalNotchSwipeThreshold else { return }
                 if verticalSwipeDelta < 0 {
                     Task { @MainActor in
                         if NotchManager.shared.notchState == .open {
@@ -94,11 +125,9 @@ class GestureManager {
                             } else {
                                 await NotchManager.shared.setNotchState(.closed)
                             }
-                            print("notch close")
                         } else if NotchManager.shared.notchState == .compact {
                             NotchManager.shared.notchDismissed = true
                             await NotchManager.shared.setNotchState(.transparent)
-                            print("dismiss notch")
                         }
                     }
                 } else {
@@ -112,8 +141,8 @@ class GestureManager {
     
     private func handleScrollThresholdCross(direction: SwipeDirection) {
         switch direction {
-            case .horizontal: horizontalThresholdCrossed = true
-            case .vertical: verticalThresholdCrossed = true
+            case .horizontal: horizontalNotchThresholdCrossed = true
+            case .vertical: verticalNotchThresholdCrossed = true
         }
         if Defaults[.hapticFeedback] {
             let performer = NSHapticFeedbackManager.defaultPerformer
@@ -143,7 +172,7 @@ class GestureManager {
     }
     
     private func handleScrollEvent(_ event: NSEvent) {
-        guard NotchManager.shared.isHovering else { return }
+        guard NotchManager.shared.isHovering || WindowManager.shared.lockScreenIsHovering else { return }
         guard event.hasPreciseScrollingDeltas else { return }
         
         let phase = event.phase
@@ -152,52 +181,75 @@ class GestureManager {
         let dy = event.scrollingDeltaY
         
         if phase.contains(.began) {
+            if NotchManager.shared.isHovering {
+                scrollTarget = .notch
+            } else if WindowManager.shared.lockScreenIsHovering {
+                scrollTarget = .lock
+            }
+            
             if abs(dx) > abs(dy) {
                 swipeDirection = .horizontal
             } else {
                 swipeDirection = .vertical
             }
-            print("\(dx), \(dy)")
         } else if phase.contains(.changed) {
             if swipeDirection == .horizontal {
-                if self.horizontalSwipeDelta + dx > horizontalSwipeThreshold * 1.1 {
-                    self.horizontalSwipeDelta = horizontalSwipeThreshold * 1.1
-                } else {
-                    self.horizontalSwipeDelta += dx
-                }
-                self.swipeDirection = .horizontal
-                
-                let absDelta = abs(horizontalSwipeDelta)
-                if absDelta > horizontalSwipeThreshold && horizontalThresholdCrossed == false {
-                    handleScrollThresholdCross(direction: .horizontal)
-                }
-                if absDelta < horizontalSwipeThreshold * 0.8 && horizontalThresholdCrossed == true {
-                    horizontalThresholdCrossed = false
+                switch scrollTarget {
+                    case .notch:
+                        if abs(self.horizontalSwipeDelta) + dx > horizontalNotchSwipeThreshold * 1.1 {
+                            self.horizontalSwipeDelta = horizontalNotchSwipeThreshold * 1.1 * (dx > 0 ? 1 : -1)
+                        } else {
+                            self.horizontalSwipeDelta += dx
+                        }
+                        self.swipeDirection = .horizontal
+                        
+                        let absDelta = abs(horizontalSwipeDelta)
+                        if absDelta > horizontalNotchSwipeThreshold && horizontalNotchThresholdCrossed == false {
+                            handleScrollThresholdCross(direction: .horizontal)
+                        }
+                        if absDelta < horizontalNotchSwipeThreshold * 0.8 && horizontalNotchThresholdCrossed == true {
+                            horizontalNotchThresholdCrossed = false
+                        }
+                    case .lock:
+                        let lockDX = dx * -1
+                        if lockDX > 0 {
+                            horizontalLockSwipeValue += lockDX
+                        } else {
+                            if horizontalLockSwipeValue < 0 && abs(horizontalLockSwipeValue) + abs(lockDX) > horizontalLockRightMax {
+                                horizontalLockSwipeValue = -horizontalLockRightMax
+                            } else {
+                                horizontalLockSwipeValue += lockDX
+                            }
+                        }
                 }
             } else {
-                if self.verticalSwipeDelta + dy > verticalSwipeThreshold * 1.1 {
-                    self.verticalSwipeDelta = verticalSwipeThreshold * 1.1
+                guard NotchManager.shared.isHovering else { return }
+                
+                if self.verticalSwipeDelta + dy > verticalNotchSwipeThreshold * 1.1 {
+                    self.verticalSwipeDelta = verticalNotchSwipeThreshold * 1.1
                 } else {
                     self.verticalSwipeDelta += dy
                 }
                 self.swipeDirection = .vertical
                 
                 let absDelta = abs(verticalSwipeDelta)
-                if absDelta > verticalSwipeThreshold && verticalThresholdCrossed == false {
+                if absDelta > verticalNotchSwipeThreshold && verticalNotchThresholdCrossed == false {
                     handleScrollThresholdCross(direction: .vertical)
                 }
-                if absDelta < verticalSwipeThreshold * 0.8 && verticalThresholdCrossed == true {
-                    verticalThresholdCrossed = false
+                if absDelta < verticalNotchSwipeThreshold * 0.8 && verticalNotchThresholdCrossed == true {
+                    verticalNotchThresholdCrossed = false
                 }
             }
         } else if phase.contains(.ended) || phase.contains(.cancelled) {
             if phase.contains(.ended) {
                 handleScrollSubmit()
             }
-            verticalSwipeDelta = 0
-            horizontalSwipeDelta = 0
-            horizontalThresholdCrossed = false
-            verticalThresholdCrossed = false
+            if scrollTarget == .notch {
+                verticalSwipeDelta = 0
+                horizontalSwipeDelta = 0
+                horizontalNotchThresholdCrossed = false
+                verticalNotchThresholdCrossed = false
+            }
         }
     }
 

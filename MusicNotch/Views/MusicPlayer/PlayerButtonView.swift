@@ -96,9 +96,9 @@ struct PlayerButtonView: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .contentTransition(.symbolEffect(.replace))
-                    .foregroundStyle(Color.white.opacity(gestureManager.horizontalType == .right ? 1 - (gestureManager.horizontalGestureRelative / 2) : 1))
-                    .offset(x: gestureManager.horizontalType == .left ? gestureManager.horizontalGestureRelative * -5 : 0)
-                    .scaleEffect(gestureManager.horizontalType == .left ? 1 + (gestureManager.horizontalGestureRelative * 0.1) : 1)
+                    .foregroundStyle(Color.white.opacity(gestureManager.horizontalType == .right ? 1 - (gestureManager.horizontalNotchGestureRelative / 2) : 1))
+                    .offset(x: gestureManager.horizontalType == .left ? gestureManager.horizontalNotchGestureRelative * -5 : 0)
+                    .scaleEffect(gestureManager.horizontalType == .left ? 1 + (gestureManager.horizontalNotchGestureRelative * 0.1) : 1)
                     .frame(width: 25, height: 25)
             } .buttonStyle(ScalingHoverButtonStyle(downScale: 0.8, effectSize: 52))
             
@@ -109,7 +109,7 @@ struct PlayerButtonView: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .contentTransition(.symbolEffect(.replace))
-                    .foregroundStyle(Color.white.opacity(1 - (gestureManager.horizontalGestureRelative / 2)))
+                    .foregroundStyle(Color.white.opacity(1 - (gestureManager.horizontalNotchGestureRelative / 2)))
                     .frame(width: 25, height: 25)
             }
             .buttonStyle(ScalingHoverButtonStyle(downScale: 0.8, effectSize: 52))
@@ -127,9 +127,9 @@ struct PlayerButtonView: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .contentTransition(.symbolEffect(.replace))
-                    .foregroundStyle(Color.white.opacity(gestureManager.horizontalType == .left ? 1 - (gestureManager.horizontalGestureRelative / 2) : 1))
-                    .offset(x: gestureManager.horizontalType == .right ? gestureManager.horizontalGestureRelative * 5 : 0)
-                    .scaleEffect(gestureManager.horizontalType == .right ? 1 + (gestureManager.horizontalGestureRelative * 0.1) : 1)
+                    .foregroundStyle(Color.white.opacity(gestureManager.horizontalType == .left ? 1 - (gestureManager.horizontalNotchGestureRelative / 2) : 1))
+                    .offset(x: gestureManager.horizontalType == .right ? gestureManager.horizontalNotchGestureRelative * 5 : 0)
+                    .scaleEffect(gestureManager.horizontalType == .right ? 1 + (gestureManager.horizontalNotchGestureRelative * 0.1) : 1)
                     .frame(width: 25, height: 25)
             } .buttonStyle(ScalingHoverButtonStyle(downScale: 0.8, effectSize: 52))
             
@@ -153,7 +153,7 @@ struct PlayerButtonView: View {
             .disabled(!enableSpeaker)
         }
         .frame(height: 45)
-        .animation(.smooth, value: gestureManager.horizontalGestureRelative)
+        .animation(.smooth, value: gestureManager.horizontalNotchGestureRelative)
         .task {
             if #available(macOS 15, *) {
                 forwardArrowName = "15.arrow.trianglehead.clockwise"

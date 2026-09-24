@@ -20,7 +20,7 @@ class MusicPlayerWindow: NSPanel {
     
     init() {
         super.init(
-            contentRect: NSRect(x: 0, y: 0, width: 350, height: 190),
+            contentRect: NSRect(x: 0, y: 0, width: (NSScreen.main?.frame.width ?? NSScreen.screens.first?.frame.width ?? 700), height: 190),
             styleMask: [.borderless, .nonactivatingPanel],
             backing: .buffered,
             defer: false
@@ -34,14 +34,14 @@ class MusicPlayerWindow: NSPanel {
         self.isMovableByWindowBackground = false
         self.isFloatingPanel = true
         
-        self.contentView = NSHostingView(rootView: LockScreenPlayingView().moveToSky())
+        self.contentView = NSHostingView(rootView: LockScreenWidgetView().moveToSky())
         
         if let screen = NSScreen.screens.first {
             let screenFrame = screen.visibleFrame
 
-            self.setFrameOrigin(NSPoint(x: (screenFrame.maxX / 2) - 175, y: (screenFrame.maxY / 6) + Defaults[.lockPosition]))
+            self.setFrameOrigin(NSPoint(x: 0, y: (screenFrame.maxY / 5) + Defaults[.lockPosition]))
         } else {
-            self.setFrameOrigin(NSPoint(x: 500, y: 200 + Defaults[.lockPosition]))
+            self.setFrameOrigin(NSPoint(x: 0, y: 200 + Defaults[.lockPosition]))
         }
     }
 }

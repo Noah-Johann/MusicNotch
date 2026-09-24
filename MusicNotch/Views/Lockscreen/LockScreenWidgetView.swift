@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct LockScreenWidgetView: View {
-    @Binding var animationProgress: CGFloat
+    @State private var gestureManager = GestureManager.shared
     
     var stackSpacing: CGFloat {
         interpolate(
-            progress: animationProgress,
+            progress: gestureManager.horizontalLockSwipeValue,
             keyframes: [
                 (0, 0),
                 (15, 0),
@@ -25,7 +25,7 @@ struct LockScreenWidgetView: View {
     
     var clearTextOpacity: CGFloat {
         interpolate(
-            progress: animationProgress,
+            progress: gestureManager.horizontalLockSwipeValue,
             keyframes: [
                 (0, 0),
                 (40, 0),
@@ -36,7 +36,7 @@ struct LockScreenWidgetView: View {
     
     var clearFrameScaleEffect: CGFloat {
         interpolate(
-            progress: animationProgress,
+            progress: gestureManager.horizontalLockSwipeValue,
             keyframes: [
                 (0, 0),
                 (30, 0.8),
@@ -47,7 +47,7 @@ struct LockScreenWidgetView: View {
     
     var clearFrameOpacity: CGFloat {
         interpolate(
-            progress: animationProgress,
+            progress: gestureManager.horizontalLockSwipeValue,
             keyframes: [
                 (0, 0),
                 (30, 0),
@@ -58,7 +58,7 @@ struct LockScreenWidgetView: View {
     
     var clearFrameSize: CGFloat {
         interpolate(
-            progress: animationProgress,
+            progress: gestureManager.horizontalLockSwipeValue,
             keyframes: [
                 (0, 0),
                 (350, 350),
@@ -67,53 +67,66 @@ struct LockScreenWidgetView: View {
     }
     
     var globalOffset: CGFloat {
-        return stackSpacing / 2 + (clearFrameSize / 2)
+        if gestureManager.horizontalLockSwipeValue < 0 {
+            return gestureManager.horizontalLockSwipeValue
+        } else {
+            return stackSpacing / 2 + (clearFrameSize / 2)
+        }
     }
     
     var globalOpacity: CGFloat {
         interpolate(
-            progress: animationProgress,
+            progress: gestureManager.horizontalLockSwipeValue,
             keyframes: [
                 (0, 1),
                 (350, 1),
-                (600, 0),
+                (750, 0),
             ]
         )
     }
     
     var body: some View {
-        HStack(spacing: stackSpacing) {
-            LockScreenPlayingView()
-            
+        ZStack {
+            HStack(spacing: stackSpacing) {
+                LockScreenPlayingView()
+                
                 Text("Clear")
                     .lineLimit(1)
                     .foregroundStyle(.white.opacity(clearTextOpacity))
-            .frame(width: clearFrameSize, height: 190, alignment: .center)
-            .background {
-                if #available(macOS 26, *) {
-                    GlassView(style: .clear, cornerRadius: 30)
-                        .environment(\.controlActiveState, .active)
-                } else {
-                    ZStack {
-                        MaterialView(
-                            material: .menu,
-                            blendingMode: .behindWindow
-                        )
-                        
-                        Rectangle()
-                            .foregroundStyle(.tint)
-                            .blendMode(.multiply)
+                    .frame(width: clearFrameSize, height: 190, alignment: .center)
+                    .background {
+                        if #available(macOS 26, *) {
+                            GlassView(style: .clear, cornerRadius: 30)
+                                .environment(\.controlActiveState, .active)
+                        } else {
+                            ZStack {
+                                MaterialView(
+                                    material: .menu,
+                                    blendingMode: .behindWindow
+                                )
+                                
+                                Rectangle()
+                                    .foregroundStyle(.tint)
+                                    .blendMode(.multiply)
+                            }
+                        }
                     }
-                }
+                    .scaleEffect(clearFrameScaleEffect, anchor: .trailing)
+                    .opacity(clearFrameOpacity)
             }
-            .scaleEffect(clearFrameScaleEffect, anchor: .trailing)
-            .opacity(clearFrameOpacity)
+            .animation(.snappy(duration: 0.3), value: gestureManager.horizontalLockSwipeValue)
+            .offset(x: -globalOffset)
+            .opacity(globalOpacity)
+            .onHover { hovering in
+                print("lock hovering \(hovering)")
+                WindowManager.shared.lockScreenIsHovering = hovering
+                print("manager \(WindowManager.shared.lockScreenIsHovering)")
+            }
         }
-        .animation(.snappy(duration: 0.3), value: animationProgress)
-        .offset(x: -globalOffset)
-        .opacity(globalOpacity)
+        .frame(width: (NSScreen.main?.frame.width ?? NSScreen.screens.first?.frame.width ?? 700), alignment: .center)
     }
 }
+    
 
 @available(macOS 26, *)
 #Preview {
@@ -123,7 +136,7 @@ struct LockScreenWidgetView: View {
             Text("\(spacing.rounded())")
             Slider(value: $spacing, in: 0...500, step: 1)
         }
-        LockScreenWidgetView(animationProgress: $spacing)
+        LockScreenWidgetView()
     } .frame(width: 700)
     
 }

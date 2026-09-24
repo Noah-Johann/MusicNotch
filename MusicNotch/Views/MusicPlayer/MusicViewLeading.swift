@@ -26,7 +26,7 @@ struct MusicViewLeading: View {
             offset -= 120
         }
         if gestureManager.horizontalType == .left {
-            offset -= gestureManager.horizontalGestureRelative * 23
+            offset -= gestureManager.horizontalNotchGestureRelative * 23
         }
         return offset
     }
@@ -59,7 +59,7 @@ struct MusicViewLeading: View {
         }
         
         if gestureManager.horizontalType == .left {
-            width += gestureManager.horizontalGestureRelative * 27
+            width += gestureManager.horizontalNotchGestureRelative * 27
         }
 
         return width
@@ -70,10 +70,10 @@ struct MusicViewLeading: View {
             Image(systemName: "backward.end.fill")
                 .resizable()
                 .scaledToFit()
-                .foregroundStyle(Color.white.opacity(gestureManager.horizontalGestureRelative))
+                .foregroundStyle(Color.white.opacity(gestureManager.horizontalNotchGestureRelative))
                 .frame(width: 12, height: 12)
-                .scaleEffect(gestureManager.horizontalType == .left ? gestureManager.horizontalGestureRelative : 0, anchor: .trailing)
-                .blur(radius: 5 - gestureManager.horizontalGestureRelative * 5)
+                .scaleEffect(gestureManager.horizontalType == .left ? gestureManager.horizontalNotchGestureRelative : 0, anchor: .trailing)
+                .blur(radius: 5 - gestureManager.horizontalNotchGestureRelative * 5)
                 .offset(x: skipIconOffset)
             
             Button {
